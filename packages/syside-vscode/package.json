@@ -211,9 +211,20 @@
                 "command": "syside.editor.allCommands.console",
                 "shortTitle": "Get all available language server commands",
                 "title": "SysIDE Editor: Get all available language server commands"
+            },
+            {
+                "command": "syside.semantifyr.sysml.compile",
+                "shortTitle": "Compile SysML to Semantifyr",
+                "title": "Semantifyr SysIDE Extension: Compile this SysML file into the Semantifyr representation"
             }
         ],
         "menus": {
+            "explorer/context": [
+                {
+                    "command": "syside.semantifyr.sysml.compile",
+                    "when": "resourceExtname == .sysml"
+                }
+            ],
             "editor/context": [
                 {
                     "submenu": "syside.editor.commands"

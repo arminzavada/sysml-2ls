@@ -154,7 +154,9 @@
             "outFiles": [
                 "${workspaceFolder}/packages/*/dist/**/*.js",
                 "${workspaceFolder}/node_modules/langium"
-            ]
+            ],
+            "timeout": 120000,
+            "restart": true
         },
         {
             "name": "Jest",
