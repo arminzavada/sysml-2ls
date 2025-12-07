@@ -46,6 +46,7 @@ import {
     FeatureValue,
     InlineExpression,
     isElement,
+    isNamespace,
     Type,
 } from "../../generated/ast.js";
 import { JSONMetaReplacer, JSONreplacer, toJSON } from "../../utils/common.js";
@@ -54,6 +55,8 @@ import { FeatureMeta, Metamodel } from "../../model/index.js";
 import { RegisterTextEditorCommandsRequest } from "syside-protocol";
 import { makeLinkingScope } from "../../utils/scopes.js";
 import { toSExp } from "../../model/sexp.js";
+import { mapSysMLNamespaceToSemantifyr } from "./semantifyr/SemantifyrMapper";
+import { upsertTextFile } from "../../utils/file-utils";
 
 type EditorCommand<T> = (
     editor: RegisterTextEditorCommandsRequest.Parameters,
@@ -130,7 +133,7 @@ function editorCommand(name: string) {
 }
 
 function wrapSimpleCommand<T>(
-    name: string,
+    _name: string,
     command: SimpleCommand<T>,
     thisObj?: ThisParameterType<unknown>
 ): ExecuteCommandFunction {
@@ -471,6 +474,37 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
     ): Promise<void> {
         const uri = URI.from(uriComp);
         await this.builder.update([uri], [], token);
+    }
+
+    /**
+     * Try updating a document
+     * @param uriComp URI components of the document to update
+     * @param _ cancellation token
+     */
+    @documentCommand("syside.semantifyr.sysml.compile")
+    protected async semantifyrSysMLCompile(
+        uriComp: UriComponents,
+        _ = CancellationToken.None
+    ): Promise<void> {
+        if (!this.connection) {
+            return;
+        }
+
+        const uri = URI.from(uriComp);
+        if (!this.documents.hasDocument(uri)) {
+            return;
+        }
+
+        const document = this.documents.getOrCreateDocument(uri);
+        const rootNode = document.parseResult.value;
+        if (!isNamespace(rootNode)) {
+            return;
+        }
+
+        const oxstsCode = mapSysMLNamespaceToSemantifyr(rootNode);
+        const newuri = uri.toString().replace(".sysml", ".oxsts");
+
+        await upsertTextFile(this.connection, newuri, oxstsCode, "Generated Semantifyr Code");
     }
 
     override async executeCommand(
