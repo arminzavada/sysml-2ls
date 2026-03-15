@@ -41,7 +41,7 @@ if (existsSync(dir)) {
         // .then(() => exec(`git checkout tags/${tag}`, { cwd: dir }));
 } else {
     await exec(
-        `git clone --depth 1 --branch ${branch} https://github.com/daumantas-kavolis-sensmetry/SysML-v2-Release.git`,
+        `git clone --depth 1 --branch ${branch} https://github.com/arminzavada/SysML-v2-Release.git`,
         // `git clone --depth 1 --branch ${tag} https://github.com/Systems-Modeling/SysML-v2-Release.git`,
         { cwd: root }
     )
