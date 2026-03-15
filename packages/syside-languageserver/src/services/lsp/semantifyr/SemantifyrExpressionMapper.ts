@@ -17,6 +17,8 @@ import {
     ParameterMembership,
     Feature,
     FeatureValue,
+    isFeatureChainExpression,
+    OwningMembership,
 } from "../../../generated/ast";
 
 export type OperatorExpression_Operator =
@@ -44,14 +46,14 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
     }
 
     mapExpression(featureName: string, expression: ast.Expression): Generated {
+        if (isFeatureReferenceExpression(expression)) {
+            return this.mapFeatureReferenceExpression(featureName, expression);
+        }
         if (isOperatorExpression(expression)) {
             return this.mapOperatorExpression(featureName, expression);
         }
         if (isLiteralExpression(expression)) {
             return this.mapLiteralExpression(featureName, expression);
-        }
-        if (isFeatureReferenceExpression(expression)) {
-            return this.mapFeatureReferenceExpression(featureName, expression);
         }
         if (isInvocationExpression(expression)) {
             return this.mapInvocationExpression(featureName, expression);
@@ -114,6 +116,25 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
 
     private mapOperatorExpression(featureName: string, expression: OperatorExpression): Generated {
         const operator = expression.operator as OperatorExpression_Operator;
+
+        if (isFeatureChainExpression(expression)) {
+            const parameter = expression.children[0] as OwningMembership;
+            const parameterFeature = parameter.target as Feature;
+            // const parameterValue = parameterFeature.value as FeatureValue;
+            // const parameterExpression = parameterValue.target as Expression;
+            const parameterExpressionString =
+                this.expressionStringifier.stringifyElement(parameterFeature);
+
+            const left = expression.operands[0] as FeatureReferenceExpression;
+            const leftExpr = left.expression;
+
+            return expandToNode`
+                redefine contains ${featureName}: AttributeReferenceExpression {
+                    redefine refers attribute: Attribute = ${this.expressionStringifier.stringifyMembershipReference(leftExpr)}.${parameterExpressionString}
+                }
+            `;
+        }
+
         const operatorType = this.mapOperatorExpression_OperatorToTypeName(operator);
         if (operatorType == "UnaryNotExpression") {
             return expandToNode`
