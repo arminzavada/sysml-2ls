@@ -13,10 +13,7 @@ import {
     isRequirementVerificationMembership,
     isSubjectMembership,
     isUsage,
-    ObjectiveMembership,
-    RequirementConstraintMembership,
     RequirementUsage,
-    RequirementVerificationMembership,
 } from "../../../generated/ast";
 import { SemantifyrExpressionMapper } from "./SemantifyrExpressionMapper";
 
@@ -32,10 +29,8 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
     public mapVerificationCaseDefinition(
         verificationCase: ast.VerificationCaseDefinition
     ): Generated {
-        const expected = this.calculateExpectedVerificationResult(verificationCase);
-
         return expandToNode`
-            @VerificationCase(${expected})
+            @VerificationCase
             class ${this.stableName(verificationCase)} : VerificationCaseDefinition {
                 ${joinToNode(verificationCase.children, (e) => this.mapMembership(e), { appendNewLineIfNotEmpty: true })}
             }
@@ -96,37 +91,6 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
         return expandToNode`
             contains ${subjectName}: ${subjectTypeName}[1] redefines subject
         `;
-    }
-
-    private calculateExpectedVerificationResult(
-        verificationCase: ast.VerificationCaseDefinition
-    ): Generated {
-        const objectiveMembership = verificationCase.children.find((m) =>
-            isObjectiveMembership(m)
-        ) as ObjectiveMembership;
-
-        const requirementUsage = objectiveMembership.target as RequirementUsage;
-        if (requirementUsage === undefined) {
-            return undefined;
-        }
-        const requirementVerificationMembership = requirementUsage
-            .children[0] as RequirementVerificationMembership;
-        const requirementVerification =
-            requirementVerificationMembership.target as RequirementUsage;
-        const requirementConstraintMembership = requirementVerification
-            .children[0] as RequirementConstraintMembership;
-        const requirementConstraint = requirementConstraintMembership.target as ConstraintUsage;
-        const resultExpression = requirementConstraint.result?.target as Expression;
-
-        const invocationType = this.featureClassifier(resultExpression);
-        if (invocationType?.declaredName === "eventually") {
-            return "VerificationResult::UNSAFE";
-        }
-        if (invocationType?.declaredName === "never") {
-            return "VerificationResult::SAFE";
-        }
-
-        return "VerificationResult::UNKNOWN";
     }
 
     private mapObjectiveMembership(membership: ast.ObjectiveMembership): Generated {
