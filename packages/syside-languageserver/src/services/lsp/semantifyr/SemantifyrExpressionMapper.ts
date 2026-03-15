@@ -204,8 +204,8 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         if (invocationType?.declaredName === "isStateActive") {
             return this.mapIsStateActiveInvocationExpression(featureName, expression);
         }
-        if (invocationType?.declaredName === "never") {
-            return this.mapNeverInvocationExpression(featureName, expression);
+        if (invocationType?.declaredName === "mustAlways") {
+            return this.mapMustAlwaysInvocationExpression(featureName, expression);
         }
         if (invocationType?.declaredName === "eventually") {
             return this.mapEventuallyInvocationExpression(featureName, expression);
@@ -232,7 +232,7 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private mapNeverInvocationExpression(
+    private mapMustAlwaysInvocationExpression(
         featureName: string,
         expression: ast.InvocationExpression
     ): Generated {
@@ -241,7 +241,11 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         const parameterValue = parameterFeature.value as FeatureValue;
         const parameterExpression = parameterValue.target as Expression;
 
-        return this.mapExpression(featureName, parameterExpression);
+        return expandToNode`
+            redefine contains ${featureName}: MustAlways {
+                ${this.mapExpression("body", parameterExpression)}
+            }
+        `;
     }
 
     private mapEventuallyInvocationExpression(
@@ -253,6 +257,10 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         const parameterValue = parameterFeature.value as FeatureValue;
         const parameterExpression = parameterValue.target as Expression;
 
-        return this.mapExpression(featureName, parameterExpression);
+        return expandToNode`
+            redefine contains ${featureName}: Eventually {
+                ${this.mapExpression("body", parameterExpression)}
+            }
+        `;
     }
 }

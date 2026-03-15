@@ -53,7 +53,6 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
             import semantifyr::sysml::actions
             import semantifyr::sysml::triggers
             import semantifyr::sysml::verification
-            import semantifyr::verification
         `;
     }
 
