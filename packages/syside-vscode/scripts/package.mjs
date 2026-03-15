@@ -49,4 +49,4 @@ fs.copy(
 
 exec("pnpm vsce package " + process.argv.slice(2).join(" "))
     .then(() => fs.copyFile(".README", "README.md"))
-    .finally(() => fs.unlink(".README"));
+    .then(() => fs.unlink(".README"));
