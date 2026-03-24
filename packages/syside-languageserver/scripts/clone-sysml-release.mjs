@@ -18,7 +18,6 @@ import util from "util";
 import child_process from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
-import { existsSync } from "fs";
 
 const exec = util.promisify(child_process.exec);
 
@@ -28,24 +27,12 @@ const __dirname = path.dirname(__filename);
 const root = path.join(__dirname, "..", "..", "..");
 const dir = path.join(root, "SysML-v2-Release");
 
-const branch = "fixes";
 const commit = "1888927c6930c0c7f5a483411b0187831a9a5d1c";
 // const tag = "2024-12";
 
-if (existsSync(dir)) {
-    await exec(`git config remote.origin.fetch "+${branch}:${commit}"`, { cwd: dir })
-    .then(() => exec(`git fetch --depth=1 --update-head-ok`, { cwd: dir }))
-    .then(() => exec(`git checkout ${commit}`, { cwd: dir }));
-    // await exec(`git config remote.origin.fetch "+refs/tags/${tag}:refs/tags/${tag}"`, { cwd: dir })
-        // .then(() => exec(`git fetch --depth=1`, { cwd: dir }))
-        // .then(() => exec(`git checkout tags/${tag}`, { cwd: dir }));
-} else {
-    await exec(
-        `git clone --depth 1 --branch ${branch} https://github.com/arminzavada/SysML-v2-Release.git`,
-        // `git clone --depth 1 --branch ${tag} https://github.com/Systems-Modeling/SysML-v2-Release.git`,
-        { cwd: root }
-    )
-    .then(() => exec(`git checkout ${commit}`, { cwd: dir }));
-}
+await exec(`git init`)
+await exec(`git remote add origin https://github.com/arminzavada/SysML-v2-Release.git || true`) 
+await exec(`git fetch`, { cwd: dir });
+await exec(`git checkout ${commit}`, { cwd: dir });
 
 export const SYSMLRELEASE = dir
