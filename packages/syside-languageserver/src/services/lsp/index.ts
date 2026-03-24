@@ -20,3 +20,4 @@ export * from "./formatter";
 export * from "./hover-provider";
 export * from "./language-server";
 export * from "./semantic-token-provider";
+export * from "./semantifyr/SemantifyrMapper";
