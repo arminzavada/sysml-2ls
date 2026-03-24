@@ -85,6 +85,21 @@
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
+            "name": "Semantifyr Cli",
+            "type": "node",
+            "request": "launch",
+            "sourceMaps": true,
+            "program": "${workspaceFolder}/packages/syside-cli/lib/index.js",
+            "args": [
+                "compile",
+                "a.sysml",
+                "-o", "a.oxsts"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/packages/syside-cli/lib/*"
+            ]
+        },
+        {
             "name": "Run Extension",
             "type": "extensionHost",
             "request": "launch",

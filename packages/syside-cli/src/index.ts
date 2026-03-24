@@ -18,39 +18,34 @@ import { Command, Option } from "commander";
 import { Extensions, evalAction } from "./sysml-util";
 import { SysMLExtensions, compileAction } from "./semantifyr-util";
 
-export default function (): void {
-    const program = new Command();
+const program = new Command();
 
-    program
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        .version(require("../package.json").version);
+program
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    .version(require("../package.json").version);
 
-    program
-        .command("dump")
-        .argument("<file>", `possible file extensions: ${Extensions.join(", ")}`)
-        .option("-v, --validate", "Enable validation checks", false)
-        .addOption(
-            new Option("-l, --stdlib <standardLibrary>", "Set standard library type")
-                .choices(["none", "standard", "local"])
-                .default("standard")
-        )
-        .description("Dump AST as JSON to console")
-        .action(evalAction);
+program
+    .command("dump")
+    .argument("<file>", `possible file extensions: ${Extensions.join(", ")}`)
+    .option("-v, --validate", "Enable validation checks", false)
+    .addOption(
+        new Option("-l, --stdlib <standardLibrary>", "Set standard library type")
+            .choices(["none", "standard", "local"])
+            .default("standard")
+    )
+    .description("Dump AST as JSON to console")
+    .action(evalAction);
 
-    program
-        .command("compile")
-        .argument("<file>", `possible file extensions: ${SysMLExtensions.join(", ")}`)
-        .addOption(
-            new Option("-l, --stdlib <standardLibrary>", "Set standard library type")
-                .choices(["none", "standard", "local"])
-                .default("standard")
-        )
-        .option(
-            "-o, --output <file>",
-            "Output file path (default: input file with .oxsts extension)"
-        )
-        .description("Compile SysML model to Semantifyr (OXSTS) format")
-        .action(compileAction);
+program
+    .command("compile")
+    .argument("<file>", `possible file extensions: ${SysMLExtensions.join(", ")}`)
+    .addOption(
+        new Option("-l, --stdlib <standardLibrary>", "Set standard library type")
+            .choices(["none", "standard", "local"])
+            .default("standard")
+    )
+    .option("-o, --output <file>", "Output file path (default: input file with .oxsts extension)")
+    .description("Compile SysML model to Semantifyr (OXSTS) format")
+    .action(compileAction);
 
-    program.parse(process.argv);
-}
+program.parse(process.argv);
