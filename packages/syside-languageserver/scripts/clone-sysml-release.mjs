@@ -18,6 +18,7 @@ import util from "util";
 import child_process from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "node:fs/promises"
 
 const exec = util.promisify(child_process.exec);
 
@@ -30,8 +31,14 @@ const dir = path.join(root, "SysML-v2-Release");
 const commit = "1888927c6930c0c7f5a483411b0187831a9a5d1c";
 // const tag = "2024-12";
 
+await fs.mkdir(dir, { recursive: true });
 await exec(`git init`, { cwd: dir })
-await exec(`git remote add origin https://github.com/arminzavada/SysML-v2-Release.git 2> /dev/null || true`, { cwd: dir })
+
+try {
+    await exec(`git remote add origin https://github.com/arminzavada/SysML-v2-Release.git`, { cwd: dir });
+} catch (e) {
+	// ignore
+}
 await exec(`git fetch`, { cwd: dir });
 await exec(`git checkout ${commit}`, { cwd: dir });
 
