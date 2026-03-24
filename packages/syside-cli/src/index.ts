@@ -39,7 +39,11 @@ program
 
 program
     .command("compile")
-    .argument("<file>", `possible file extensions: ${SysMLExtensions.join(", ")}`)
+    .argument(
+        "<model file>",
+        `The file to be compiled. possible file extensions: ${SysMLExtensions.join(", ")}`
+    )
+    .argument("<standard library path>", `The path to the standard library root directory`)
     .addOption(
         new Option("-l, --stdlib <standardLibrary>", "Set standard library type")
             .choices(["none", "standard", "local"])
