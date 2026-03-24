@@ -31,7 +31,7 @@ const commit = "1888927c6930c0c7f5a483411b0187831a9a5d1c";
 // const tag = "2024-12";
 
 await exec(`git init`, { cwd: dir })
-await exec(`git remote add origin https://github.com/arminzavada/SysML-v2-Release.git || true`, { cwd: dir })
+await exec(`git remote add origin https://github.com/arminzavada/SysML-v2-Release.git 2> /dev/null || true`, { cwd: dir })
 await exec(`git fetch`, { cwd: dir });
 await exec(`git checkout ${commit}`, { cwd: dir });
 
