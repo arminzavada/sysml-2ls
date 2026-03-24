@@ -92,11 +92,14 @@
             "program": "${workspaceFolder}/packages/syside-cli/lib/index.js",
             "args": [
                 "compile",
-                "a.sysml",
-                "-o", "a.oxsts"
+                "${workspaceFolder}/semantifyr/example/stm21.sysml",
+                "${workspaceFolder}/packages/syside-vscode/sysml.library",
+                "-o", "/home/armin/work/ftsrg/semantifyr/subprojects/frontends/sysmlv2/sysmlv2-semantics/TestModels/stm21.oxsts"
             ],
             "outFiles": [
-                "${workspaceFolder}/packages/syside-cli/lib/*"
+                "${workspaceFolder}/packages/**/*.ts",
+                "${workspaceFolder}/packages/**/*.js",
+                "${workspaceFolder}/packages/**/*.map"
             ]
         },
         {
