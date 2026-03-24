@@ -29,7 +29,7 @@ const root = path.join(__dirname, "..", "..", "..");
 const dir = path.join(root, "SysML-v2-Release");
 
 const branch = "fixes";
-const commit = "c37f87f048806d9f66c8457d75aedf76af187b17";
+const commit = "1888927c6930c0c7f5a483411b0187831a9a5d1c";
 // const tag = "2024-12";
 
 if (existsSync(dir)) {
