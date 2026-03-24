@@ -70,7 +70,7 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
         }
 
         if (isItemUsage(element)) {
-            return this.mapItemUsage(element);
+            // return this.mapItemUsage(element);
         }
 
         return undefined;
