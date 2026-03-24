@@ -20,3 +20,4 @@ export * from "./formatter.js";
 export * from "./hover-provider.js";
 export * from "./language-server.js";
 export * from "./semantic-token-provider.js";
+export * from "./semantifyr/SemantifyrMapper";
