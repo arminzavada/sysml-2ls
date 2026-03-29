@@ -6,6 +6,7 @@ import { SemantifyrItemMapper } from "./SemantifyrItemMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
 import {
     Feature,
+    FeatureMembership,
     FeatureReferenceExpression,
     FeatureValue,
     InvocationExpression,
@@ -15,6 +16,7 @@ import {
     isOperatorExpression,
     isPerformActionUsage,
     isSendActionUsage,
+    isTriggerInvocationExpression,
     ParameterMembership,
     ReferenceUsage,
     TriggerInvocationExpression,
@@ -63,26 +65,41 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         acceptAction: ast.AcceptActionUsage,
         kind: FeatureKind
     ): Generated {
-        const payload = acceptAction.payload.target as ReferenceUsage;
-        const payloadClassifier = this.featureClassifier(payload);
-        if (!isItemDefinition(payloadClassifier)) {
-            return this.mapAcceptTimoutActionUsage(featureName, acceptAction, kind);
+        const payloadTarget = acceptAction.payload.target as ReferenceUsage;
+        const targetClassifier = this.featureClassifier(payloadTarget);
+        if (isItemDefinition(targetClassifier)) {
+            return this.mapAcceptItemActionUsage(featureName, acceptAction, kind);
         }
 
-        return this.mapAcceptItemActionUsage(featureName, acceptAction, kind);
+        const actualTarget = payloadTarget.value?.target;
+
+        if (isTriggerInvocationExpression(actualTarget)) {
+            if (actualTarget.kind === "after") {
+                return this.mapAcceptTimoutActionUsage(
+                    featureName,
+                    acceptAction,
+                    actualTarget,
+                    kind
+                );
+            }
+            if (actualTarget.kind === "when") {
+                return this.mapAcceptWhenActionUsage(featureName, acceptAction, actualTarget, kind);
+            }
+            if (actualTarget.kind === "at") {
+                return "AT_TRIGGERS_ARE_NOT_SUPPORTED";
+            }
+        }
+
+        return "UNKNOWN_ACCEPT_ACTION";
     }
 
     private mapAcceptTimoutActionUsage(
         featureName: string,
         acceptAction: ast.AcceptActionUsage,
+        trigger: TriggerInvocationExpression,
         kind: FeatureKind
     ): Generated {
-        const payload = acceptAction.payload.target as ReferenceUsage;
-        const payloadExpression = payload.value?.target as TriggerInvocationExpression | undefined;
-        if (!payloadExpression) {
-            return "UNKNOWN_KIND_OF_ACCEPT_ACTION";
-        }
-        const parameterMembership = payloadExpression.children[0] as ParameterMembership;
+        const parameterMembership = trigger.children[0] as ParameterMembership;
         const parameter = parameterMembership.target as Feature;
         const parameterValue = parameter.value as FeatureValue;
         const parameterValueExpression = parameterValue.target;
@@ -103,6 +120,26 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         return expandToNode`
             ${this.containsFeatureLine(featureName, acceptAction, "AcceptTimeoutAction", kind)} {
                 redefine refers afterTime: int = ${timeoutValueString}
+            }
+        `;
+    }
+
+    private mapAcceptWhenActionUsage(
+        featureName: string,
+        acceptAction: ast.AcceptActionUsage,
+        trigger: TriggerInvocationExpression,
+        kind: FeatureKind
+    ): Generated {
+        const parameterMembership = trigger.children[0] as ParameterMembership;
+        const parameter = parameterMembership.target as Feature;
+        const parameterValue = parameter.value as FeatureValue;
+        const parameterValueExpression = parameterValue.target as FeatureReferenceExpression;
+        const feature = parameterValueExpression.expression as FeatureMembership;
+        const expression = feature.target;
+
+        return expandToNode`
+            ${this.containsFeatureLine(featureName, acceptAction, "AcceptWhenAction", kind)} {
+                ${this.expressionMapper.mapExpression("expression", expression as ast.Expression)}
             }
         `;
     }
