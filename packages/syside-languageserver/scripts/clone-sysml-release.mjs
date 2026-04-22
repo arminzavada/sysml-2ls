@@ -14,13 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import util from "util";
 import child_process from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "node:fs/promises"
-
-const exec = util.promisify(child_process.exec);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,16 +28,25 @@ const dir = path.join(root, "SysML-v2-Release");
 const commit = "1888927c6930c0c7f5a483411b0187831a9a5d1c";
 // const tag = "2024-12";
 
-await fs.mkdir(dir, { recursive: true });
-await exec(`git init`, { cwd: dir })
-
-try {
-    await exec(`git remote add origin https://github.com/arminzavada/SysML-v2-Release.git`, { cwd: dir });
-} catch (e) {
-	// ignore
+function run(args, { cwd, allowFailure = false } = {}) {
+    return new Promise((resolve, reject) => {
+        const child = child_process.spawn("git", args, { cwd, stdio: "inherit" });
+        child.on("error", reject);
+        child.on("exit", (code) => {
+            if (code === 0 || allowFailure) {
+                resolve(code);
+            } else {
+                reject(new Error(`git ${args.join(" ")} exited with code ${code}`));
+            }
+        });
+    });
 }
-await exec(`git fetch`, { cwd: dir });
-await exec(`git checkout ${commit}`, { cwd: dir });
+
+await fs.mkdir(dir, { recursive: true });
+await run(["init"], { cwd: dir });
+await run(["remote", "add", "origin", "https://github.com/arminzavada/SysML-v2-Release.git"], { cwd: dir, allowFailure: true });
+await run(["fetch", "--progress"], { cwd: dir });
+await run(["checkout", commit], { cwd: dir });
 
 export const SYSMLRELEASE = dir
 ;
