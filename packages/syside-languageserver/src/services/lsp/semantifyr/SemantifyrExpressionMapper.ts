@@ -244,7 +244,7 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
 
         return expandToNode`
             redefine contains ${featureName}: IsStateActiveExpression {
-                redefine refers state: State = ${parameterExpressionString}
+                redefine refers state: AbstractState = ${parameterExpressionString}
             }
         `;
     }
