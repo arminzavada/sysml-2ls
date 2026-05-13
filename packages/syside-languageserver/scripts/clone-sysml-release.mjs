@@ -45,8 +45,8 @@ function run(args, { cwd, allowFailure = false } = {}) {
 await fs.mkdir(dir, { recursive: true });
 await run(["init"], { cwd: dir });
 await run(["remote", "add", "origin", "https://github.com/arminzavada/SysML-v2-Release.git"], { cwd: dir, allowFailure: true });
-await run(["fetch", "--progress"], { cwd: dir });
-await run(["checkout", commit], { cwd: dir });
+await run(["fetch", "--progress", "--depth=1", "origin", commit], { cwd: dir });
+await run(["checkout", "FETCH_HEAD"], { cwd: dir });
 
 export const SYSMLRELEASE = dir
 ;
