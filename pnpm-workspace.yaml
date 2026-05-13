@@ -5,3 +5,8 @@ packages:
   - "packages/syside-languageclient"
   - "packages/syside-protocol"
   - "packages/syside-vscode"
+allowBuilds:
+  '@swc/core': true
+  '@vscode/vsce-sign': true
+  esbuild: true
+  keytar: true
