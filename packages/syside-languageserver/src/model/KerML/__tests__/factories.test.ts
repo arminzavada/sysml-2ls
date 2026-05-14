@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { TypeClassifier } from "../../enums";
-import { basicIdProvider } from "../../metamodel";
-import { AssociationStructMeta } from "../association-structure";
-import { emptyDocument } from "../../../testing/utils";
-import { DataTypeMeta } from "../data-type";
-import { TypeMeta } from "../type";
-import { ClassMeta } from "../class";
-import { StructureMeta } from "../structure";
-import { AssociationMeta } from "../association";
+import { TypeClassifier } from "../../enums.js";
+import { basicIdProvider } from "../../metamodel.js";
+import { AssociationStructMeta } from "../association-structure.js";
+import { emptyDocument } from "../../../testing/utils.js";
+import { DataTypeMeta } from "../data-type.js";
+import { TypeMeta } from "../type.js";
+import { ClassMeta } from "../class.js";
+import { StructureMeta } from "../structure.js";
+import { AssociationMeta } from "../association.js";
 import {
     DependencyMeta,
     DocumentationMeta,
@@ -40,9 +40,9 @@ import {
     SuccessionItemFlowMeta,
     SuccessionItemFlowOptions,
     TextualRepresentationMeta,
-} from "../_internal";
-import { Visibility } from "../../../utils";
-import { NullExpression } from "../../../generated/ast";
+} from "../_internal.js";
+import { Visibility } from "../../../utils/index.js";
+import { NullExpression } from "../../../generated/ast.js";
 
 describe("Element factories", () => {
     const id = basicIdProvider();

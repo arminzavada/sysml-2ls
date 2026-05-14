@@ -22,10 +22,10 @@ import {
     recursiveObjectContaining,
     sanitizeTree,
     services,
-} from "../../../testing";
-import { ElementMeta, FeatureMeta } from "../../KerML";
-import { RangeGenerator } from "../range";
-import { ExpressionResultValue } from "../util";
+} from "../../../testing/index.js";
+import { ElementMeta, FeatureMeta } from "../../KerML/index.js";
+import { RangeGenerator } from "../range.js";
+import { ExpressionResultValue } from "../util.js";
 
 type EvaluationCase = {
     text: string;

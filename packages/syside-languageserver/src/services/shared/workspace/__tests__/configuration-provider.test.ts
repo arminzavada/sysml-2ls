@@ -16,10 +16,10 @@
 
 import { DeepPartial } from "langium";
 import { Disposable } from "vscode-languageserver";
-import { recursiveObjectContaining, services } from "../../../../testing";
-import { SysMLConfig } from "../../../config";
-import { LanguageConfig } from "../../../events";
-import { SETTINGS_KEY } from "../configuration-provider";
+import { recursiveObjectContaining, services } from "../../../../testing/index.js";
+import { SysMLConfig } from "../../../config.js";
+import { LanguageConfig } from "../../../events.js";
+import { SETTINGS_KEY } from "../configuration-provider.js";
 
 describe("Configuration provider", () => {
     const provider = services.shared.workspace.ConfigurationProvider;

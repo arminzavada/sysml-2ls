@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { NullExpression } from "../../../generated/ast";
+import { NullExpression } from "../../../generated/ast.js";
 import {
     ElementIDProvider,
     MetatypeProto,
     ModelElementOptions,
     metamodelOf,
-} from "../../metamodel";
-import { ExpressionMeta, RelationshipMeta, TypeMeta } from "../_internal";
+} from "../../metamodel.js";
+import { ExpressionMeta, RelationshipMeta, TypeMeta } from "../_internal.js";
 
 export const ImplicitNullExpressions = {
     base: "Performances::nullEvaluations",
@@ -54,7 +54,7 @@ export class NullExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface NullExpression {
         $meta: NullExpressionMeta;
     }

@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { AstReflection } from "langium";
-import * as ast from "../generated/ast";
-import { SysMLTypeList } from "../services/sysml-ast-reflection";
+import * as ast from "../generated/ast.js";
+import { SysMLTypeList } from "../services/sysml-ast-reflection.js";
 
 export type TypeMap<TKey, T> = {
     [type in keyof TKey]?: T;

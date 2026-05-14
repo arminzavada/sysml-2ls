@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { anything, qualifiedTypeReference } from "../../../testing";
-import { Dependency } from "../../../generated/ast";
+import { anything, qualifiedTypeReference } from "../../../testing/index.js";
+import { Dependency } from "../../../generated/ast.js";
 
 test("relationships are parseable", async () => {
     return expect(`

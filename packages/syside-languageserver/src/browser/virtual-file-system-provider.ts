@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { FileSystemNode } from "langium";
-import { SysMLFileSystemProvider } from "../services/shared/workspace/file-system-provider";
+import { SysMLFileSystemProvider } from "../services/shared/workspace/file-system-provider.js";
 import { URI } from "vscode-uri";
 import { STDLIB } from "syside-base";
 import fetch from "node-fetch";

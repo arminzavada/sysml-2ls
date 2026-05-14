@@ -16,14 +16,14 @@
 
 /* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ElementMeta, OPERATORS, OperatorExpressionMeta, RangeGenerator } from "../..";
+import { ElementMeta, OPERATORS, OperatorExpressionMeta, RangeGenerator } from "../../index.js";
 import {
     BuiltinFunction,
     ModelLevelExpressionEvaluator,
     ExpressionResultValue,
     ExpressionResult,
     functionFor,
-} from "../util";
+} from "../util.js";
 
 const PACKAGE = "DataFunctions";
 

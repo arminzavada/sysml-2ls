@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureTyping } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { FeatureTyping } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     FeatureMeta,
     RelationshipMeta,
     RelationshipOptions,
     SpecializationMeta,
     TypeMeta,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(FeatureTyping)
 // @ts-expect-error ignoring static inheritance error
@@ -46,7 +46,7 @@ export class FeatureTypingMeta<T extends TypeMeta = TypeMeta> extends Specializa
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FeatureTyping {
         $meta: FeatureTypingMeta;
     }

@@ -14,17 +14,17 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./collect-expression";
-export * from "./feature-chain-expression";
-export * from "./feature-reference-expression";
-export * from "./index-expression";
-export * from "./invocation-expression";
-export * from "./literal-boolean";
-export * from "./literal-expression";
-export * from "./literal-infinity";
-export * from "./literal-number";
-export * from "./literal-string";
-export * from "./metadata-access-expression";
-export * from "./null-expression";
-export * from "./operator-expression";
-export * from "./select-expression";
+export * from "./collect-expression.js";
+export * from "./feature-chain-expression.js";
+export * from "./feature-reference-expression.js";
+export * from "./index-expression.js";
+export * from "./invocation-expression.js";
+export * from "./literal-boolean.js";
+export * from "./literal-expression.js";
+export * from "./literal-infinity.js";
+export * from "./literal-number.js";
+export * from "./literal-string.js";
+export * from "./metadata-access-expression.js";
+export * from "./null-expression.js";
+export * from "./operator-expression.js";
+export * from "./select-expression.js";

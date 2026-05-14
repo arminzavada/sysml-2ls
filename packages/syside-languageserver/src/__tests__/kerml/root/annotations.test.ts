@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 /* eslint-disable quotes */
-import { Comment, Documentation, TextualRepresentation } from "../../../generated/ast";
-import { prettyAnnotationBody } from "../../../model";
-import { parsedNode } from "../../../testing/utils";
+import { Comment, Documentation, TextualRepresentation } from "../../../generated/ast.js";
+import { prettyAnnotationBody } from "../../../model/index.js";
+import { parsedNode } from "../../../testing/utils.js";
 
 describe("elements are parseable with annotations", () => {
     // TODO: strip surrounding /* */ from annotations, it would be nice to display comments on hover

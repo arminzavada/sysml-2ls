@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { OwningMembership } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ElementMeta, MembershipMeta, NamespaceMeta, RelationshipOptionsBody } from "../_internal";
+import { OwningMembership } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ElementMeta, MembershipMeta, NamespaceMeta, RelationshipOptionsBody } from "../_internal.js";
 
 @metamodelOf(OwningMembership)
 export class OwningMembershipMeta<T extends ElementMeta = ElementMeta> extends MembershipMeta<T> {
@@ -57,7 +57,7 @@ export class OwningMembershipMeta<T extends ElementMeta = ElementMeta> extends M
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface OwningMembership {
         $meta: OwningMembershipMeta;
     }

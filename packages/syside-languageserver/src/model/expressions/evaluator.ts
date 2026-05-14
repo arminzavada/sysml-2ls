@@ -34,9 +34,9 @@ import {
     Redefinition,
     Type,
     TypeReference,
-} from "../../generated/ast";
-import { SysMLType, SysMLTypeList } from "../../services/sysml-ast-reflection";
-import { KeysMatching } from "../../utils/common";
+} from "../../generated/ast.js";
+import { SysMLType, SysMLTypeList } from "../../services/sysml-ast-reflection.js";
+import { KeysMatching } from "../../utils/common.js";
 import {
     ElementMeta,
     ElementReferenceMeta,
@@ -50,8 +50,8 @@ import {
     LiteralStringMeta,
     MetadataAccessExpressionMeta,
     TypeMeta,
-} from "../KerML";
-import { Metamodel, Property } from "../metamodel";
+} from "../KerML/index.js";
+import { Metamodel, Property } from "../metamodel.js";
 import {
     builtinFunction,
     Evaluable,
@@ -60,16 +60,16 @@ import {
     isMetaclassFeature,
     ModelLevelExpressionEvaluator,
     normalize,
-} from "./util";
-import { SysMLSharedServices } from "../../services/services";
-import { ModelUtil } from "../../services/shared/model-utils";
-import { SysMLIndexManager } from "../../services/shared/workspace/index-manager";
+} from "./util.js";
+import { SysMLSharedServices } from "../../services/services.js";
+import { ModelUtil } from "../../services/shared/model-utils.js";
+import { SysMLIndexManager } from "../../services/shared/workspace/index-manager.js";
 
 // import last
-import "./functions";
+import "./functions/index.js";
 import { LangiumDocument } from "langium";
-import { typeIndex, TypeMap } from "../types";
-import { RangeGenerator } from "./range";
+import { typeIndex, TypeMap } from "../types.js";
+import { RangeGenerator } from "./range.js";
 
 export type EvaluatorFunction<T = Metamodel> = (
     expression: T,

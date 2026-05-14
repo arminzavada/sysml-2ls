@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { Stream, TreeStreamImpl, EMPTY_STREAM } from "langium";
-import { Element, Membership, Redefinition } from "../generated/ast";
-import { ElementMeta, Metamodel, FeatureMeta, MembershipMeta } from "../model";
-import { DeepReadonly } from "./common";
+import { Element, Membership, Redefinition } from "../generated/ast.js";
+import { ElementMeta, Metamodel, FeatureMeta, MembershipMeta } from "../model/index.js";
+import { DeepReadonly } from "./common.js";
 
 /**
  * Visibility level.

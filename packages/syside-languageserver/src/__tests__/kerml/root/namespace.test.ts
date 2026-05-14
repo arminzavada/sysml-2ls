@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Comment } from "../../../generated/ast";
-import { anything, parsedNode } from "../../../testing";
+import { Comment } from "../../../generated/ast.js";
+import { anything, parsedNode } from "../../../testing/index.js";
 
 test("namespaces are parseable", async () => {
     return expect(`namespace <'1.1'> N1; // This is an empty namespace.

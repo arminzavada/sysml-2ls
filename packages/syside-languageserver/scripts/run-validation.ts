@@ -16,13 +16,22 @@
 
 import path from "path";
 import fs from "fs";
-import { createSysMLServices } from "../src/sysml-module";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+import { createSysMLServices } from "../src/sysml-module.js";
 import { URI, Utils } from "vscode-uri";
 import { LangiumDocument, LangiumSharedServices } from "langium";
 import { Diagnostic, Position, Range } from "vscode-languageserver";
-import * as ExpectedDiagnostics from "./expected-diagnostics.json";
 import { Command } from "commander";
-import { SysMLNodeFileSystem } from "../src/node/node-file-system-provider";
+import { SysMLNodeFileSystem } from "../src/node/node-file-system-provider.js";
+
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load JSON via createRequire to avoid the `with { type: "json" }` syntax,
+// which depends on Node ≥20.10 and tsx version specifics.
+const ExpectedDiagnostics: Record<string, Diagnostic[]> = require("./expected-diagnostics.json");
 
 function equalPosition(lhs: Position, rhs: Position): boolean {
     return lhs.line === rhs.line && lhs.character === rhs.character;
@@ -214,9 +223,7 @@ async function run(exportDiagnostics = false, ignoreKnown = false): Promise<numb
 async function main(): Promise<void> {
     const program = new Command();
 
-    program
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        .version(require("../package.json").version);
+    program.version(require("../package.json").version);
 
     program
         .option("-e, --export", "Export found diagnostics", false)

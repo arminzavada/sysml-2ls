@@ -21,12 +21,12 @@ import {
     MetadataFeature,
     SysMLFunction,
     Type,
-} from "../../generated/ast";
-import * as meta from "../KerML";
-import { ElementMeta, FeatureMeta, TypeMeta } from "../KerML";
-import { BasicMetamodel, isMetamodel } from "../metamodel";
-import { concatNames } from "../naming";
-import { RangeGenerator } from "./range";
+} from "../../generated/ast.js";
+import * as meta from "../KerML/index.js";
+import { ElementMeta, FeatureMeta, TypeMeta } from "../KerML/index.js";
+import { BasicMetamodel, isMetamodel } from "../metamodel.js";
+import { concatNames } from "../naming.js";
+import { RangeGenerator } from "./range.js";
 
 // TODO: we may need to add a range generator type as well for extent
 // expressions, generating a large extent upfront may crash the server otherwise

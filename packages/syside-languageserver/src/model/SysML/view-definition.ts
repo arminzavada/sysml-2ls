@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ViewDefinition } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { PartDefinitionMeta, PartDefinitionOptions } from "./part-definition";
+import { ViewDefinition } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { PartDefinitionMeta, PartDefinitionOptions } from "./part-definition.js";
 
 export type ViewDefinitionOptions = PartDefinitionOptions;
 
@@ -29,7 +29,7 @@ export class ViewDefinitionMeta extends PartDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ViewDefinition {
         $meta: ViewDefinitionMeta;
     }

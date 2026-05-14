@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { Interaction } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { AssociationMeta, AssociationOptions, BehaviorMeta, BehaviorOptions } from "./_internal";
+import { Interaction } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { AssociationMeta, AssociationOptions, BehaviorMeta, BehaviorOptions } from "./_internal.js";
 
 export interface InteractionOptions extends AssociationOptions, BehaviorOptions {}
 
@@ -28,7 +28,7 @@ export class InteractionMeta extends Mixin(AssociationMeta, BehaviorMeta) {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Interaction {
         $meta: InteractionMeta;
     }

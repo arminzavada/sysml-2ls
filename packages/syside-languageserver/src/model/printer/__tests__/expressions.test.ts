@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Feature, FeatureValue, Namespace } from "../../../generated/ast";
-import { parsedNode } from "../../../testing/utils";
+import { Feature, FeatureValue, Namespace } from "../../../generated/ast.js";
+import { parsedNode } from "../../../testing/utils.js";
 import {
     ExpressionMeta,
     LiteralBooleanMeta,
@@ -23,8 +23,8 @@ import {
     LiteralNumberMeta,
     LiteralStringMeta,
     NullExpressionMeta,
-} from "../../KerML";
-import { expectPrinted, makeEmpty, printKerMLElement, printSysMLElement } from "./utils";
+} from "../../KerML/index.js";
+import { expectPrinted, makeEmpty, printKerMLElement, printSysMLElement } from "./utils.js";
 
 const parseExpr = async (expr: string): Promise<ExpressionMeta> => {
     const e = (

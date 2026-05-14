@@ -27,7 +27,7 @@ import {
 } from "langium";
 import { CancellationToken, Connection, Disposable, Position } from "vscode-languageserver";
 import { URI } from "vscode-uri";
-import { UriComponents } from "vscode-uri/lib/umd/uri";
+import { UriComponents } from "vscode-uri/lib/umd/uri.js";
 import {
     Element,
     Feature,
@@ -35,13 +35,13 @@ import {
     InlineExpression,
     isElement,
     Type,
-} from "../../generated/ast";
-import { JSONMetaReplacer, JSONreplacer, toJSON } from "../../utils/common";
-import { SysMLSharedServices } from "../services";
-import { FeatureMeta, Metamodel } from "../../model";
+} from "../../generated/ast.js";
+import { JSONMetaReplacer, JSONreplacer, toJSON } from "../../utils/common.js";
+import { SysMLSharedServices } from "../services.js";
+import { FeatureMeta, Metamodel } from "../../model/index.js";
 import { RegisterTextEditorCommandsRequest } from "syside-protocol";
-import { makeLinkingScope } from "../../utils/scopes";
-import { toSExp } from "../../model/sexp";
+import { makeLinkingScope } from "../../utils/scopes.js";
+import { toSExp } from "../../model/sexp.js";
 
 type EditorCommand<T> = (
     editor: RegisterTextEditorCommandsRequest.Parameters,

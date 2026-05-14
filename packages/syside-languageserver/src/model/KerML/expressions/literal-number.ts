@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { LiteralNumber } from "../../../generated/ast";
-import { enumerable } from "../../../utils";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal";
+import { LiteralNumber } from "../../../generated/ast.js";
+import { enumerable } from "../../../utils/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal.js";
 
 export const ImplicitLiteralNumbers = {
     // can't parse ints and reals into separate node
@@ -72,7 +72,7 @@ export class LiteralNumberMeta extends LiteralExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface LiteralNumber {
         $meta: LiteralNumberMeta;
     }

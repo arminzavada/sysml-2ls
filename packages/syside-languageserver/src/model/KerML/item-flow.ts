@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ItemFlow, ItemFlowEnd } from "../../generated/ast";
+import { ItemFlow, ItemFlowEnd } from "../../generated/ast.js";
 import {
     BasicMetamodel,
     ElementIDProvider,
     GeneralType,
     MetatypeProto,
     metamodelOf,
-} from "../metamodel";
+} from "../metamodel.js";
 import {
     ConnectorMeta,
     ConnectorOptions,
@@ -36,9 +36,9 @@ import {
     MembershipMeta,
     StepMeta,
     StepOptions,
-} from "./_internal";
+} from "./_internal.js";
 import { AstNode, LangiumDocument } from "langium";
-import { enumerable } from "../../utils";
+import { enumerable } from "../../utils/index.js";
 
 export const ImplicitItemFlows = {
     base: "Transfers::flowTransfers",
@@ -118,7 +118,7 @@ export class ItemFlowMeta extends Mixin(StepMeta, ConnectorMeta) {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ItemFlow {
         $meta: ItemFlowMeta;
     }

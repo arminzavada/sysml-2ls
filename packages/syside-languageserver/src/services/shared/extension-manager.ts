@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { URI, Utils } from "vscode-uri";
-import { waitAllPromises } from "../../utils/common";
-import { SysMLSharedServices } from "../services";
-import { SysMLFileSystemProvider } from "./workspace/file-system-provider";
+import { waitAllPromises } from "../../utils/common.js";
+import { SysMLSharedServices } from "../services.js";
+import { SysMLFileSystemProvider } from "./workspace/file-system-provider.js";
 
 export class ExtensionManager {
     protected readonly services: SysMLSharedServices;

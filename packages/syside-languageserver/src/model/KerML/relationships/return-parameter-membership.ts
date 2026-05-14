@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ReturnParameterMembership } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { ReturnParameterMembership } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ExpressionMeta,
     FeatureMeta,
     FunctionMeta,
     ParameterMembershipMeta,
     RelationshipOptionsBody,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(ReturnParameterMembership)
 export class ReturnParameterMembershipMeta<
@@ -43,7 +43,7 @@ export class ReturnParameterMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ReturnParameterMembership {
         $meta: ReturnParameterMembershipMeta;
     }

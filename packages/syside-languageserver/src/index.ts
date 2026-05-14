@@ -14,15 +14,15 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * as ast from "./generated/ast";
-export * from "./generated/grammar";
-export * from "./generated/module";
-export * from "./model";
-export * from "./sysml-module";
-export * from "./services";
-export * from "./utils";
-export * from "./launch";
-export * from "./version";
+export * as ast from "./generated/ast.js";
+export * from "./generated/grammar.js";
+export * from "./generated/module.js";
+export * from "./model/index.js";
+export * from "./sysml-module.js";
+export * from "./services/index.js";
+export * from "./utils/index.js";
+export * from "./launch/index.js";
+export * from "./version.js";
 
 // exporting this for utility so that downstream packages don't have to add
 // langium as dependency

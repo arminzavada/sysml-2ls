@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { OwningMembership } from "../../generated/ast";
-import { FeatureMeta, MembershipMeta, TypeMeta } from "../KerML/_internal";
-import { PositionalFeaturesBase } from "./positional-features";
+import { OwningMembership } from "../../generated/ast.js";
+import { FeatureMeta, MembershipMeta, TypeMeta } from "../KerML/_internal.js";
+import { PositionalFeaturesBase } from "./positional-features.js";
 
 const Filter: (f: MembershipMeta<FeatureMeta>) => boolean = (f) => {
     if (!f.is(OwningMembership)) return false;

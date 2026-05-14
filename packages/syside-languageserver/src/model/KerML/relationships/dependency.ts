@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument, Stream, stream } from "langium";
-import { Dependency } from "../../../generated/ast";
-import { NonNullable, enumerable } from "../../../utils";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { Dependency } from "../../../generated/ast.js";
+import { NonNullable, enumerable } from "../../../utils/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     AnnotationMeta,
     Edge,
@@ -26,7 +26,7 @@ import {
     ElementParts,
     MetadataFeatureMeta,
     RelationshipMeta,
-} from "../_internal";
+} from "../_internal.js";
 
 export interface DependencyOptions extends ElementOptions<RelationshipMeta> {
     /**
@@ -170,7 +170,7 @@ export class DependencyMeta extends RelationshipMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Dependency {
         $meta: DependencyMeta;
     }

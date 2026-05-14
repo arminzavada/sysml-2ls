@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { qualifiedTypeReference, anything, withQualifiedName } from "../../../testing";
-import { Specialization, Documentation, Class } from "../../../generated/ast";
+import { qualifiedTypeReference, anything, withQualifiedName } from "../../../testing/index.js";
+import { Specialization, Documentation, Class } from "../../../generated/ast.js";
 
 const Common = `
 class A;

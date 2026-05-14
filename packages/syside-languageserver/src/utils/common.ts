@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { AstNode, CstNode, DeepPartial, OperationCancelled } from "langium";
-import { isAbstractRule, isRuleCall } from "langium/lib/grammar/generated/ast";
+import { isAbstractRule, isRuleCall } from "langium/lib/grammar/generated/ast.js";
 import { CancellationToken, Range } from "vscode-languageserver";
-import { Element, isElementReference } from "../generated/ast";
+import { Element, isElementReference } from "../generated/ast.js";
 import now from "performance-now";
-import { isMetamodel } from "../model";
+import { isMetamodel } from "../model/index.js";
 import path from "path";
 
 /**

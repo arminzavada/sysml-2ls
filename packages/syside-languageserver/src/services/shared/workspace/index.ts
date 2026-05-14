@@ -14,11 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./ast-descriptions";
-export * from "./configuration-provider";
-export * from "./document-builder";
-export * from "./documents";
-export * from "./file-system-provider";
-export * from "./index-manager";
-export * from "./metamodel-builder";
-export * from "./workspace-manager";
+export * from "./ast-descriptions.js";
+export * from "./configuration-provider.js";
+export * from "./document-builder.js";
+export * from "./documents.js";
+export * from "./file-system-provider.js";
+export * from "./index-manager.js";
+export * from "./metamodel-builder.js";
+export * from "./workspace-manager.js";

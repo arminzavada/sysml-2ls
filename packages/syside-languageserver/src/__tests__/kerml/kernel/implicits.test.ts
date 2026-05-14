@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { formatString } from "typescript-string-operations";
-import { parseKerML, NO_ERRORS, sanitizeTree, anything } from "../../../testing";
-import { SysMLBuildOptions } from "../../../services/shared/workspace/document-builder";
-import { Feature, Subclassification, Subsetting, Type } from "../../../generated/ast";
+import { parseKerML, NO_ERRORS, sanitizeTree, anything } from "../../../testing/index.js";
+import { SysMLBuildOptions } from "../../../services/shared/workspace/document-builder.js";
+import { Feature, Subclassification, Subsetting, Type } from "../../../generated/ast.js";
 import { DocumentValidator } from "langium";
 
 const Base = `

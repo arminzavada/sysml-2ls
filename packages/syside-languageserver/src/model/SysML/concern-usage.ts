@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ConcernUsage, FramedConcernMembership } from "../../generated/ast";
-import { GeneralType, metamodelOf } from "../metamodel";
-import { RequirementUsageMeta, RequirementUsageOptions } from "./requirement-usage";
+import { ConcernUsage, FramedConcernMembership } from "../../generated/ast.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
+import { RequirementUsageMeta, RequirementUsageOptions } from "./requirement-usage.js";
 
 export type ConcernUsageOptions = RequirementUsageOptions;
 
@@ -50,7 +50,7 @@ export class ConcernUsageMeta extends RequirementUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ConcernUsage {
         $meta: ConcernUsageMeta;
     }

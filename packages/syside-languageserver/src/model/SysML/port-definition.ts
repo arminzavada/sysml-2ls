@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConjugatedPortDefinition, PortDefinition } from "../../generated/ast";
-import { StructureMeta, StructureOptions } from "../KerML/structure";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurrence-definition";
-import { ElementParts, OwningMembershipMeta } from "../KerML";
-import { enumerable } from "../../utils";
+import { ConjugatedPortDefinition, PortDefinition } from "../../generated/ast.js";
+import { StructureMeta, StructureOptions } from "../KerML/structure.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurrence-definition.js";
+import { ElementParts, OwningMembershipMeta } from "../KerML/index.js";
+import { enumerable } from "../../utils/index.js";
 import { AstNode, LangiumDocument } from "langium";
-import { PortConjugationMeta } from "./relationships";
+import { PortConjugationMeta } from "./relationships/index.js";
 
 export interface PortDefinitionOptions extends StructureOptions, OccurrenceDefinitionOptions {}
 
@@ -106,7 +106,7 @@ export class ConjugatedPortDefinitionMeta extends PortDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface PortDefinition {
         $meta: PortDefinitionMeta;
     }

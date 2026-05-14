@@ -23,11 +23,11 @@ import {
     MetadataFeature,
     Relationship,
     TextualRepresentation,
-} from "../../generated/ast";
-import { NonNullable, enumerable } from "../../utils";
-import { Visibility } from "../../utils/scope-util";
-import { ElementContainer } from "../containers";
-import { ElementIDProvider, MetatypeProto, ModelElementOptions, metamodelOf } from "../metamodel";
+} from "../../generated/ast.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
+import { Visibility } from "../../utils/scope-util.js";
+import { ElementContainer } from "../containers.js";
+import { ElementIDProvider, MetatypeProto, ModelElementOptions, metamodelOf } from "../metamodel.js";
 import {
     CommentMeta,
     DocumentationMeta,
@@ -36,7 +36,7 @@ import {
     FeatureMeta,
     MetadataFeatureMeta,
     TextualRepresentationMeta,
-} from "./_internal";
+} from "./_internal.js";
 
 export type NonNullRelationship<
     R extends RelationshipMeta = RelationshipMeta,
@@ -221,7 +221,7 @@ export abstract class RelationshipMeta<
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Relationship {
         $meta: RelationshipMeta;
     }

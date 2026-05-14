@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { ReferenceUsage, TransitionUsage } from "../../generated/ast";
-import { enumerable } from "../../utils/common";
-import { Edge, ParameterMembershipMeta } from "../KerML";
-import { ElementIDProvider, GeneralType, metamodelOf } from "../metamodel";
-import { UsageMeta, UsageOptions } from "./usage";
+import { ReferenceUsage, TransitionUsage } from "../../generated/ast.js";
+import { enumerable } from "../../utils/common.js";
+import { Edge, ParameterMembershipMeta } from "../KerML/index.js";
+import { ElementIDProvider, GeneralType, metamodelOf } from "../metamodel.js";
+import { UsageMeta, UsageOptions } from "./usage.js";
 
 export type ReferenceUsageOptions = UsageOptions;
 
@@ -48,7 +48,7 @@ export class ReferenceUsageMeta extends UsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ReferenceUsage {
         $meta: ReferenceUsageMeta;
     }

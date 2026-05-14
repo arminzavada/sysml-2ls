@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { AstNode, CstNode, Mutable, stream, TypeMetaData } from "langium";
-import * as ast from "../generated/ast";
-import { typeIndex } from "../model/types";
-import { AstContainer, AstParent, AstPropertiesFor } from "../utils/ast-util";
-import { SysMLReferenceInfo } from "./references/linker";
+import * as ast from "../generated/ast.js";
+import { typeIndex } from "../model/types.js";
+import { AstContainer, AstParent, AstPropertiesFor } from "../utils/ast-util.js";
+import { SysMLReferenceInfo } from "./references/linker.js";
 
 export type SysMLType = {
     [K in keyof ast.SysMlAstType]: ast.SysMlAstType[K] extends string ? never : K;

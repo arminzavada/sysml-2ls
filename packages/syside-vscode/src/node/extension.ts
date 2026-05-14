@@ -16,9 +16,9 @@
 
 import * as vscode from "vscode";
 import { LanguageClient, ServerOptions, TransportKind } from "vscode-languageclient/node";
-import { SysMLVSCodeClientExtender } from "./vscode";
-import { Extension, initialize, runExtensions } from "../common/extension";
-import { uriToFsPath } from "vscode-uri/lib/umd/uri";
+import { SysMLVSCodeClientExtender } from "./vscode.js";
+import { Extension, initialize, runExtensions } from "../common/extension.js";
+import { uriToFsPath } from "vscode-uri/lib/umd/uri.js";
 import { SETTINGS_KEY } from "syside-languageserver";
 
 let data: {

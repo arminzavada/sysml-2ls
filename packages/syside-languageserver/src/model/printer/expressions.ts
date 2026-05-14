@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import * as ast from "../../generated/ast";
+import * as ast from "../../generated/ast.js";
 import {
     AnyOperator,
     ElementMeta,
@@ -30,7 +30,7 @@ import {
     NullExpressionMeta,
     OPERATORS,
     OperatorExpressionMeta,
-} from "../KerML";
+} from "../KerML/index.js";
 import { SemanticTokenTypes } from "vscode-languageserver";
 import {
     DefaultElementPrinter,
@@ -38,7 +38,7 @@ import {
     ModelPrinterContext,
     assertSysML,
     printModelElement,
-} from "./print";
+} from "./print.js";
 import {
     Doc,
     brackets,
@@ -55,19 +55,19 @@ import {
     printInnerComments,
     softline,
     text,
-} from "../../utils";
+} from "../../utils/index.js";
 import {
     DescendantPrinter,
     formatPreserved,
     printDescendant,
     printReference,
     throwError,
-} from "./utils";
-import { printAssignmentExpression, printChaining, printTarget } from "./edges";
-import { BasicMetamodel } from "../metamodel";
+} from "./utils.js";
+import { printAssignmentExpression, printChaining, printTarget } from "./edges.js";
+import { BasicMetamodel } from "../metamodel.js";
 import { findNodeForKeyword } from "langium";
-import { printChildrenBlock, printKerMLFeature } from "./namespaces";
-import { TriggerInvocationExpressionMeta } from "../SysML";
+import { printChildrenBlock, printKerMLFeature } from "./namespaces.js";
+import { TriggerInvocationExpressionMeta } from "../SysML/index.js";
 
 /**
  * Expression precedence levels, higher number binds tighter

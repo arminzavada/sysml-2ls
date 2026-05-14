@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { formatBytes } from "../download";
+import { formatBytes } from "../download.js";
 
 test.concurrent.each([
     [123, 2, "123 B"],

@@ -75,7 +75,7 @@ import {
     ItemFlow,
     FlowConnectionUsage,
     CrossSubsetting,
-} from "../../../generated/ast";
+} from "../../../generated/ast.js";
 import {
     BasicMetamodel,
     FeatureMeta,
@@ -127,28 +127,28 @@ import {
     CrossSubsettingMeta,
     FeatureChainingMeta,
     FeatureMembershipMeta,
-} from "../../../model";
-import { SysMLDefaultServices, SysMLSharedServices } from "../../services";
-import { SysMLIndexManager } from "./index-manager";
-import { TypeMap, typeIndex } from "../../../model/types";
-import { implicitIndex } from "../../../model/implicits";
-import { FeatureDirectionKind, TransitionFeatureKind } from "../../../model/enums";
-import { NonNullReference, SysMLLinker } from "../../references/linker";
-import { NonNullable, Statistics } from "../../../utils/common";
+} from "../../../model/index.js";
+import { SysMLDefaultServices, SysMLSharedServices } from "../../services.js";
+import { SysMLIndexManager } from "./index-manager.js";
+import { TypeMap, typeIndex } from "../../../model/types.js";
+import { implicitIndex } from "../../../model/implicits.js";
+import { FeatureDirectionKind, TransitionFeatureKind } from "../../../model/enums.js";
+import { NonNullReference, SysMLLinker } from "../../references/linker.js";
+import { NonNullable, Statistics } from "../../../utils/common.js";
 import {
     SubtypeKeys,
     SysMLAstReflection,
     SysMLInterface,
     SysMLType,
     SysMLTypeList,
-} from "../../sysml-ast-reflection";
-import { SysMLConfigurationProvider } from "./configuration-provider";
+} from "../../sysml-ast-reflection.js";
+import { SysMLConfigurationProvider } from "./configuration-provider.js";
 import { URI } from "vscode-uri";
-import { ModelUtil } from "../model-utils";
-import { isExpressionError, SysMLExpressionEvaluator } from "../evaluator";
-import { astToModel, clearArtifacts } from "../../../utils/ast-to-model";
-import { TypedModelDiagnostic } from "../../validation";
-import { streamModel } from "../../../utils";
+import { ModelUtil } from "../model-utils.js";
+import { isExpressionError, SysMLExpressionEvaluator } from "../evaluator.js";
+import { astToModel, clearArtifacts } from "../../../utils/ast-to-model.js";
+import { TypedModelDiagnostic } from "../../validation/index.js";
+import { streamModel } from "../../../utils/index.js";
 
 const MetaclassPackages = [
     "KerML::Root::",

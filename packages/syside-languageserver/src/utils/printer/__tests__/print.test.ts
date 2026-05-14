@@ -30,7 +30,7 @@ import {
     printIgnored,
     softline,
     text,
-} from "..";
+} from "../index.js";
 import * as ls from "vscode-languageserver";
 
 describe("highlighting", () => {

@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { expectEvaluationResult } from "./util";
+import { expectEvaluationResult } from "./util.js";
 
 test.concurrent.each([
     ["Cast", "B as A", [{ qualifiedName: "B" }]],

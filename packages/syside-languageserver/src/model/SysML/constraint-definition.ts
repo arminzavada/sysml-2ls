@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConstraintDefinition } from "../../generated/ast";
-import { PredicateMeta, PredicateOptions } from "../KerML/predicate";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurrence-definition";
+import { ConstraintDefinition } from "../../generated/ast.js";
+import { PredicateMeta, PredicateOptions } from "../KerML/predicate.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurrence-definition.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export interface ConstraintDefinitionOptions
@@ -50,7 +50,7 @@ export class ConstraintDefinitionMeta extends Mixin(PredicateMeta, OccurrenceDef
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ConstraintDefinition {
         $meta: ConstraintDefinitionMeta;
     }

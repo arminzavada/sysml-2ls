@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { MetadataUsage } from "../../generated/ast";
-import { MetadataFeatureMeta, MetadataFeatureOptions } from "../KerML/metadata-feature";
-import { ElementID, metamodelOf } from "../metamodel";
-import { ItemUsageMeta, ItemUsageOptions } from "./item-usage";
+import { MetadataUsage } from "../../generated/ast.js";
+import { MetadataFeatureMeta, MetadataFeatureOptions } from "../KerML/metadata-feature.js";
+import { ElementID, metamodelOf } from "../metamodel.js";
+import { ItemUsageMeta, ItemUsageOptions } from "./item-usage.js";
 import { Class } from "ts-mixer/dist/types/types";
 
 export interface MetadataUsageOptions extends MetadataFeatureOptions, ItemUsageOptions {}
@@ -41,7 +41,7 @@ export class MetadataUsageMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface MetadataUsage {
         $meta: MetadataUsageMeta;
     }

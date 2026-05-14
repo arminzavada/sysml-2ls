@@ -14,13 +14,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./config";
-export * from "./events";
-export * from "./lsp";
-export * from "./parser";
-export * from "./references";
-export * from "./services";
-export * from "./shared";
-export * from "./sysml-ast-reflection";
-export * from "./sysml-validation";
-export * from "./validation";
+export * from "./config.js";
+export * from "./events.js";
+export * from "./lsp/index.js";
+export * from "./parser/index.js";
+export * from "./references/index.js";
+export * from "./services.js";
+export * from "./shared/index.js";
+export * from "./sysml-ast-reflection.js";
+export * from "./sysml-validation.js";
+export * from "./validation/index.js";

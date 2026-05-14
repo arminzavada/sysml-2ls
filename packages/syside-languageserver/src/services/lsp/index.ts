@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./completion-provider";
-export * from "./execute-command-handler";
-export * from "./formatter";
-export * from "./hover-provider";
-export * from "./language-server";
-export * from "./semantic-token-provider";
+export * from "./completion-provider.js";
+export * from "./execute-command-handler.js";
+export * from "./formatter.js";
+export * from "./hover-provider.js";
+export * from "./language-server.js";
+export * from "./semantic-token-provider.js";

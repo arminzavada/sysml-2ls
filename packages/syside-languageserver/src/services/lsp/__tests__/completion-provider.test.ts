@@ -20,7 +20,7 @@ import {
     parseSysML,
     recursiveObjectContaining,
     findCursor,
-} from "../../../testing";
+} from "../../../testing/index.js";
 import { LangiumDocument } from "langium";
 import {
     CompletionParams,

@@ -20,8 +20,8 @@ import {
     parseSysML,
     services,
     TEST_BUILD_OPTIONS,
-} from "../../../testing";
-import * as ast from "../../../generated/ast";
+} from "../../../testing/index.js";
+import * as ast from "../../../generated/ast.js";
 import { Diagnostic } from "vscode-languageserver";
 import {
     ActionUsageMeta,
@@ -52,8 +52,8 @@ import {
     TransitionFeatureMembershipMeta,
     UsageMeta,
     ViewRenderingMembershipMeta,
-} from "../../../model";
-import { ModelDiagnostic } from "../validation-registry";
+} from "../../../model/index.js";
+import { ModelDiagnostic } from "../validation-registry.js";
 import { LangiumDocument } from "langium";
 
 const BUILD_OPTIONS: ParseOptions = { ...TEST_BUILD_OPTIONS, validationChecks: "all" };

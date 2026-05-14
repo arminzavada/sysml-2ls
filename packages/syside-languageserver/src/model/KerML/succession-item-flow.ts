@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SuccessionItemFlow } from "../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
+import { SuccessionItemFlow } from "../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import {
     Edge,
     EndFeatureMembershipMeta,
@@ -25,7 +25,7 @@ import {
     ItemFlowOptions,
     SuccessionMeta,
     SuccessionOptions,
-} from "./_internal";
+} from "./_internal.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export const ImplicitSuccessionItemFlows = {
@@ -62,7 +62,7 @@ export class SuccessionItemFlowMeta extends Mixin(ItemFlowMeta, SuccessionMeta) 
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface SuccessionItemFlow {
         $meta: SuccessionItemFlowMeta;
     }

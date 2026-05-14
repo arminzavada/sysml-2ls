@@ -15,14 +15,13 @@
  ********************************************************************************/
 
 import { Command, Option } from "commander";
-import { Extensions, evalAction } from "./sysml-util";
+import { Extensions, evalAction } from "./sysml-util.js";
+import { Version } from "./version.js";
 
 export default function (): void {
     const program = new Command();
 
-    program
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        .version(require("../package.json").version);
+    program.version(Version);
 
     program
         .command("dump")

@@ -15,22 +15,22 @@
  ********************************************************************************/
 
 import { LangiumDocument, AstNode, DeepPartial } from "langium";
-import { SubtypeKeys } from "../../../services";
-import { emptyDocument, getRange, parseKerML, parseSysML } from "../../../testing";
-import { PrinterConfig, mergeWithPartial, DefaultPrinterConfig, print } from "../../../utils";
-import { ElementMeta, NamespaceMeta } from "../../KerML";
-import { ElementIDProvider, basicIdProvider, MetatypeProto, Metatype } from "../../metamodel";
+import { SubtypeKeys } from "../../../services/index.js";
+import { emptyDocument, getRange, parseKerML, parseSysML } from "../../../testing/index.js";
+import { PrinterConfig, mergeWithPartial, DefaultPrinterConfig, print } from "../../../utils/index.js";
+import { ElementMeta, NamespaceMeta } from "../../KerML/index.js";
+import { ElementIDProvider, basicIdProvider, MetatypeProto, Metatype } from "../../metamodel.js";
 import {
     ModelPrinterContext,
     printModelElement,
     defaultKerMLPrinterContext,
     defaultSysMLPrinterContext,
     collectUnprintedNotes,
-} from "../print";
-import { Element, OwningMembership } from "../../../generated/ast";
-import { parsedNode } from "../../../testing";
-import { ElementRange, collectPrintRange } from "../utils";
-import { attachNotes } from "../../notes";
+} from "../print.js";
+import { Element, OwningMembership } from "../../../generated/ast.js";
+import { parsedNode } from "../../../testing/index.js";
+import { ElementRange, collectPrintRange } from "../utils.js";
+import { attachNotes } from "../../notes/index.js";
 
 let provider: ElementIDProvider;
 let document: LangiumDocument;

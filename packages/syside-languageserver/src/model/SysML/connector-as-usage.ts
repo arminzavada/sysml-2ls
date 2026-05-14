@@ -15,13 +15,13 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConnectorAsUsage } from "../../generated/ast";
-import { ConnectorMeta, ConnectorOptions } from "../KerML/connector";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { UsageMeta, UsageOptions } from "./usage";
+import { ConnectorAsUsage } from "../../generated/ast.js";
+import { ConnectorMeta, ConnectorOptions } from "../KerML/connector.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { UsageMeta, UsageOptions } from "./usage.js";
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureMeta, InheritanceMeta, MembershipMeta, TypeMeta, ElementParts } from "../KerML";
-import { enumerable } from "../../utils";
+import { FeatureMeta, InheritanceMeta, MembershipMeta, TypeMeta, ElementParts } from "../KerML/index.js";
+import { enumerable } from "../../utils/index.js";
 
 export interface ConnectorAsUsageOptions extends UsageOptions, ConnectorOptions {}
 
@@ -75,7 +75,7 @@ export class ConnectorAsUsageMeta extends Mixin(ConnectorMeta, UsageMeta) {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ConnectorAsUsage {
         $meta: ConnectorAsUsageMeta;
     }

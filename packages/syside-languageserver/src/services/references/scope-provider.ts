@@ -38,26 +38,26 @@ import {
     Specialization,
     Subsetting,
     SysMLFunction,
-} from "../../generated/ast";
+} from "../../generated/ast.js";
 import {
     CHILD_CONTENTS_OPTIONS,
     DEFAULT_ALIAS_RESOLVER,
     ScopeOptions,
-} from "../../utils/scope-util";
+} from "../../utils/scope-util.js";
 import {
     SysMLScope,
     makeScope,
     makeLinkingScope,
     FilteredScope,
     ScopeStream,
-} from "../../utils/scopes";
-import { SysMLDefaultServices } from "../services";
-import { SysMLIndexManager } from "../shared/workspace/index-manager";
-import { MetamodelBuilder } from "../shared/workspace/metamodel-builder";
+} from "../../utils/scopes.js";
+import { SysMLDefaultServices } from "../services.js";
+import { SysMLIndexManager } from "../shared/workspace/index-manager.js";
+import { MetamodelBuilder } from "../shared/workspace/metamodel-builder.js";
 import { CancellationToken } from "vscode-languageserver";
-import { getPreviousNode } from "../../utils/cst-util";
-import { ElementMeta, ElementReferenceMeta, FeatureMeta, Metamodel } from "../../model";
-import { SysMLType } from "../sysml-ast-reflection";
+import { getPreviousNode } from "../../utils/cst-util.js";
+import { ElementMeta, ElementReferenceMeta, FeatureMeta, Metamodel } from "../../model/index.js";
+import { SysMLType } from "../sysml-ast-reflection.js";
 
 export class SysMLScopeProvider extends DefaultScopeProvider {
     protected override indexManager: SysMLIndexManager;

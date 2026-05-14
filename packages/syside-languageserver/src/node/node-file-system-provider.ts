@@ -14,12 +14,29 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { NodeFileSystemProvider } from "langium/node";
-import { SysMLFileSystemProvider } from "../services/shared/workspace/file-system-provider";
+import { NodeFileSystemProvider } from "langium/node.js";
+import { SysMLFileSystemProvider } from "../services/shared/workspace/file-system-provider.js";
 import fs from "fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { URI } from "vscode-uri";
 import { pathToURI, resolvePathURI } from "syside-base";
-import { backtrackToDirname } from "../utils";
+import { backtrackToDirname } from "../utils/index.js";
+
+// ESM equivalent of CommonJS' `__dirname`. Defined with a non-reserved name
+// so it doesn't collide with the CJS `__dirname` global re-injected by SWC
+// when running under Jest (`@swc/jest`), and also so it works when esbuild
+// bundles this file to CJS (where `import.meta.url` is empty).
+declare const __dirname: string | undefined;
+const currentDir = (() => {
+    try {
+        return path.dirname(fileURLToPath(import.meta.url));
+    } catch {
+        // `import.meta.url` is empty under esbuild's CJS bundling — fall back
+        // to the global CJS `__dirname`, which esbuild keeps populated.
+        return typeof __dirname === "string" ? __dirname : process.cwd();
+    }
+})();
 
 export class SysMLNodeFileSystemProvider
     extends NodeFileSystemProvider
@@ -37,7 +54,7 @@ export class SysMLNodeFileSystemProvider
      */
     get extensionDir(): URI | undefined {
         if (this._extensionDir === undefined) {
-            const extensionDir = backtrackToDirname(__dirname, /out|src/);
+            const extensionDir = backtrackToDirname(currentDir, /out|src/);
             this._extensionDir = extensionDir ? pathToURI(extensionDir) : null;
         }
 

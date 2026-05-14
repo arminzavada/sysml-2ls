@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./connector";
-export * from "./function";
-export * from "./input-parameters";
-export * from "./positional-features";
+export * from "./connector.js";
+export * from "./function.js";
+export * from "./input-parameters.js";
+export * from "./positional-features.js";

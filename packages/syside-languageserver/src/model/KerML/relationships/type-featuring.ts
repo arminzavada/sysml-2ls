@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { TypeFeaturing } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { TypeFeaturing } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     FeatureMeta,
     FeaturingMeta,
     RelationshipMeta,
     RelationshipOptions,
     TypeMeta,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(TypeFeaturing)
 export class TypeFeaturingMeta<T extends TypeMeta = TypeMeta> extends FeaturingMeta<T> {
@@ -44,7 +44,7 @@ export class TypeFeaturingMeta<T extends TypeMeta = TypeMeta> extends FeaturingM
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface TypeFeaturing {
         $meta: TypeFeaturingMeta;
     }

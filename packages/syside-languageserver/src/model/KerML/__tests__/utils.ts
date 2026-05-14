@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { OwningMembership } from "../../../generated/ast";
-import { emptyDocument } from "../../../testing";
-import { ElementIDProvider, basicIdProvider } from "../../metamodel";
-import { Edge, ElementMeta } from "../_internal";
-import { RelationshipMeta } from "../relationship";
-import "../../../testing/utils";
+import { OwningMembership } from "../../../generated/ast.js";
+import { emptyDocument } from "../../../testing/index.js";
+import { ElementIDProvider, basicIdProvider } from "../../metamodel.js";
+import { Edge, ElementMeta } from "../_internal.js";
+import { RelationshipMeta } from "../relationship.js";
+import "../../../testing/utils.js";
 
 type MetatypeProto<T extends ElementMeta = ElementMeta> = {
     prototype: T;

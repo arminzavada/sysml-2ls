@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { MarkupContent, Position, TextDocumentIdentifier } from "vscode-languageserver";
-import { parseSysML, services } from "../../../testing";
+import { parseSysML, services } from "../../../testing/index.js";
 
 const sysMLExampleRaw = `part def Camera {
 	import PictureTaking::*;

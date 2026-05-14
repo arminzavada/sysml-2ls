@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { RequirementConstraintMembership } from "../../../generated/ast";
-import { RequirementConstraintKind } from "../../enums";
-import { RelationshipOptionsBody } from "../../KerML";
-import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership";
-import { ElementIDProvider, metamodelOf, MetatypeProto } from "../../metamodel";
-import { ConstraintUsageMeta } from "../constraint-usage";
-import { RequirementDefinitionMeta } from "../requirement-definition";
-import { RequirementUsageMeta } from "../requirement-usage";
+import { RequirementConstraintMembership } from "../../../generated/ast.js";
+import { RequirementConstraintKind } from "../../enums.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership.js";
+import { ElementIDProvider, metamodelOf, MetatypeProto } from "../../metamodel.js";
+import { ConstraintUsageMeta } from "../constraint-usage.js";
+import { RequirementDefinitionMeta } from "../requirement-definition.js";
+import { RequirementUsageMeta } from "../requirement-usage.js";
 
 export interface RequirementConstraintMembershipOptions
     extends RelationshipOptionsBody<
@@ -65,7 +65,7 @@ export class RequirementConstraintMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface RequirementConstraintMembership {
         $meta: RequirementConstraintMembershipMeta;
     }

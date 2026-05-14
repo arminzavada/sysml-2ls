@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureChaining } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { FeatureMeta, RelationshipMeta, RelationshipOptionsBody } from "../_internal";
+import { FeatureChaining } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { FeatureMeta, RelationshipMeta, RelationshipOptionsBody } from "../_internal.js";
 
 @metamodelOf(FeatureChaining)
 // @ts-expect-error ignoring static inheritance error
@@ -36,7 +36,7 @@ export class FeatureChainingMeta<T extends FeatureMeta = FeatureMeta> extends Re
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FeatureChaining {
         $meta: FeatureChainingMeta;
     }

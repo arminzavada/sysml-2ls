@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { Expression, FeatureValue, Multiplicity } from "../../generated/ast";
-import { isModelLevelEvaluable } from "../expressions/util";
-import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel";
-import { FunctionMixin } from "../mixins/function";
+import { Expression, FeatureValue, Multiplicity } from "../../generated/ast.js";
+import { isModelLevelEvaluable } from "../expressions/util.js";
+import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { FunctionMixin } from "../mixins/function.js";
 import {
     Edge,
     ElementParts,
@@ -28,8 +28,8 @@ import {
     StepMeta,
     StepOptions,
     TypeMeta,
-} from "./_internal";
-import { NonNullable, enumerable } from "../../utils/common";
+} from "./_internal.js";
+import { NonNullable, enumerable } from "../../utils/common.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export const ImplicitExpressions = {
@@ -119,7 +119,7 @@ export class ExpressionMeta extends Mixin(StepMeta, FunctionMixin) {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Expression {
         $meta: ExpressionMeta;
     }

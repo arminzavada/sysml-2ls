@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./evaluator";
-export * from "./extension-manager";
-export * from "./model-utils";
-export * from "./service-registry";
-export * from "./workspace";
+export * from "./evaluator.js";
+export * from "./extension-manager.js";
+export * from "./model-utils.js";
+export * from "./service-registry.js";
+export * from "./workspace/index.js";

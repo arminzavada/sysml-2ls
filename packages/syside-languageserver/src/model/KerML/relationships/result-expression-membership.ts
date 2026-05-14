@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ResultExpressionMembership } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { ResultExpressionMembership } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ExpressionMeta,
     FeatureMembershipMeta,
     FunctionMeta,
     RelationshipOptionsBody,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(ResultExpressionMembership)
 export class ResultExpressionMembershipMeta<
@@ -42,7 +42,7 @@ export class ResultExpressionMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ResultExpressionMembership {
         $meta: ResultExpressionMembershipMeta;
     }

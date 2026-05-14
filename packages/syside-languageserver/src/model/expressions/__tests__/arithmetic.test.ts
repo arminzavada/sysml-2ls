@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 /* eslint-disable quotes */
-import { LiteralInfinity } from "../../../generated/ast";
-import { RangeGenerator } from "../range";
-import { expectEvaluationResult } from "./util";
+import { LiteralInfinity } from "../../../generated/ast.js";
+import { RangeGenerator } from "../range.js";
+import { expectEvaluationResult } from "./util.js";
 
 test.concurrent.each([
     ["Literal number", "15", [15]],

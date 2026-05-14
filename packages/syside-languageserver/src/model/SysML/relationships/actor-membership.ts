@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ActorMembership } from "../../../generated/ast";
-import { RelationshipOptionsBody } from "../../KerML";
-import { ParameterMembershipMeta } from "../../KerML/relationships/parameter-membership";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { PartUsageMeta } from "../part-usage";
-import { CaseUsageMeta } from "../case-usage";
-import { CaseDefinitionMeta } from "../case-definition";
-import { RequirementDefinitionMeta } from "../requirement-definition";
-import { RequirementUsageMeta } from "../requirement-usage";
+import { ActorMembership } from "../../../generated/ast.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { ParameterMembershipMeta } from "../../KerML/relationships/parameter-membership.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { PartUsageMeta } from "../part-usage.js";
+import { CaseUsageMeta } from "../case-usage.js";
+import { CaseDefinitionMeta } from "../case-definition.js";
+import { RequirementDefinitionMeta } from "../requirement-definition.js";
+import { RequirementUsageMeta } from "../requirement-usage.js";
 
 @metamodelOf(ActorMembership)
 export class ActorMembershipMeta<
@@ -46,7 +46,7 @@ export class ActorMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ActorMembership {
         $meta: ActorMembershipMeta;
     }

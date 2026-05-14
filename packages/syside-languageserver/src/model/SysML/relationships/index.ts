@@ -14,19 +14,19 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./actor-membership";
-export * from "./conjugated-port-typing";
-export * from "./expose";
-export * from "./framed-concern-membership";
-export * from "./membership-expose";
-export * from "./namespace-expose";
-export * from "./objective-membership";
-export * from "./port-conjugation";
-export * from "./requirement-constraint-membership";
-export * from "./requirement-verification-membership";
-export * from "./stakeholder-membership";
-export * from "./state-subaction-membership";
-export * from "./subject-membership";
-export * from "./transition-feature-membership";
-export * from "./variant-membership";
-export * from "./view-rendering-membership";
+export * from "./actor-membership.js";
+export * from "./conjugated-port-typing.js";
+export * from "./expose.js";
+export * from "./framed-concern-membership.js";
+export * from "./membership-expose.js";
+export * from "./namespace-expose.js";
+export * from "./objective-membership.js";
+export * from "./port-conjugation.js";
+export * from "./requirement-constraint-membership.js";
+export * from "./requirement-verification-membership.js";
+export * from "./stakeholder-membership.js";
+export * from "./state-subaction-membership.js";
+export * from "./subject-membership.js";
+export * from "./transition-feature-membership.js";
+export * from "./variant-membership.js";
+export * from "./view-rendering-membership.js";

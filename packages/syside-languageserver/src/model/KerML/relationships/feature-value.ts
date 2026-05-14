@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureValue } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { FeatureValue } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ExpressionMeta,
     FeatureMeta,
     OwningMembershipMeta,
     RelationshipOptions,
-} from "../_internal";
+} from "../_internal.js";
 
 export interface FeatureValueOptions
     extends RelationshipOptions<ExpressionMeta, FeatureMeta, never> {
@@ -51,7 +51,7 @@ export class FeatureValueMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FeatureValue {
         $meta: FeatureValueMeta;
     }

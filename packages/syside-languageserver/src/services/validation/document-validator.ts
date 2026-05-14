@@ -25,19 +25,19 @@ import {
     toDiagnosticSeverity,
 } from "langium";
 import { CancellationToken, Diagnostic, Range } from "vscode-languageserver";
-import { AstErrorInformation } from "../sysml-validation";
-import { SysMLLinker } from "../references/linker";
-import { SysMLDefaultServices } from "../services";
-import { MetamodelBuilder } from "../shared/workspace/metamodel-builder";
-import { sanitizeRange } from "../../utils/common";
-import { ElementMeta } from "../../model";
+import { AstErrorInformation } from "../sysml-validation.js";
+import { SysMLLinker } from "../references/linker.js";
+import { SysMLDefaultServices } from "../services.js";
+import { MetamodelBuilder } from "../shared/workspace/metamodel-builder.js";
+import { sanitizeRange } from "../../utils/common.js";
+import { ElementMeta } from "../../model/index.js";
 import {
     BaseValidationRegistry,
     ModelDiagnostic,
     ModelDiagnosticInfo,
     ModelValidationAcceptor,
-} from "./validation-registry";
-import { streamModel } from "../../utils/ast-util";
+} from "./validation-registry.js";
+import { streamModel } from "../../utils/ast-util.js";
 
 /**
  * SysML document validator that additionally gathers SysML specific document

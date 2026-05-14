@@ -16,7 +16,7 @@
 
 import path from "path";
 import { ExecuteCommandRequest, ProtocolConnection } from "vscode-languageserver";
-import { cacheDir } from "./download";
+import { cacheDir } from "./download.js";
 import { FindStdlibRequest, RegisterTextEditorCommandsRequest } from "syside-protocol";
 import { STDLIB } from "syside-base";
 

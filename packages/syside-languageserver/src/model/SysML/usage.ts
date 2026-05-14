@@ -24,11 +24,11 @@ import {
     StateSubactionMembership,
     Usage,
     VariantMembership,
-} from "../../generated/ast";
-import { enumerable } from "../../utils";
-import { ElementMeta } from "../KerML";
-import { FeatureMeta, FeatureOptions } from "../KerML/feature";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
+} from "../../generated/ast.js";
+import { enumerable } from "../../utils/index.js";
+import { ElementMeta } from "../KerML/index.js";
+import { FeatureMeta, FeatureOptions } from "../KerML/feature.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 
 export interface UsageOptions extends FeatureOptions {
     isVariation?: boolean;
@@ -141,7 +141,7 @@ export class UsageMeta extends FeatureMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Usage {
         $meta: UsageMeta;
     }

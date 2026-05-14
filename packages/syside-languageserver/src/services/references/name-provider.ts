@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { AstNode, CstNode, DefaultNameProvider, findNodeForProperty } from "langium";
-import { isElement } from "../../generated/ast";
-import { getName } from "../../model/naming";
+import { isElement } from "../../generated/ast.js";
+import { getName } from "../../model/naming.js";
 
 export class SysMLNameProvider extends DefaultNameProvider {
     // overriding name provider methods since names can also be provided by the

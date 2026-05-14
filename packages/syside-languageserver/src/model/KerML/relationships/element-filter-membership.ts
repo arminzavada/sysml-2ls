@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ElementFilterMembership, NamespaceImport, Package } from "../../../generated/ast";
-import { Visibility, enumerable } from "../../../utils";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { ElementFilterMembership, NamespaceImport, Package } from "../../../generated/ast.js";
+import { Visibility, enumerable } from "../../../utils/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ExpressionMeta,
     NamespaceMeta,
     OwningMembershipMeta,
     RelationshipOptionsBody,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(ElementFilterMembership)
 export class ElementFilterMembershipMeta<
@@ -54,7 +54,7 @@ export class ElementFilterMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ElementFilterMembership {
         $meta: ElementFilterMembershipMeta;
     }

@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { PortConjugation } from "../../../generated/ast";
-import { ConjugationMeta, RelationshipOptionsBody } from "../../KerML";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ConjugatedPortDefinitionMeta, PortDefinitionMeta } from "../port-definition";
+import { PortConjugation } from "../../../generated/ast.js";
+import { ConjugationMeta, RelationshipOptionsBody } from "../../KerML/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ConjugatedPortDefinitionMeta, PortDefinitionMeta } from "../port-definition.js";
 
 @metamodelOf(PortConjugation)
 // @ts-expect-error ignoring static inheritance error
@@ -39,7 +39,7 @@ export class PortConjugationMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface PortConjugation {
         $meta: PortConjugationMeta;
     }

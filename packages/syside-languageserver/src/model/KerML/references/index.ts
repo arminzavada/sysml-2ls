@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./classifier-reference";
-export * from "./element-reference";
-export * from "./feature-reference";
-export * from "./membership-reference";
-export * from "./metaclass-reference";
-export * from "./namespace-reference";
-export * from "./type-reference";
+export * from "./classifier-reference.js";
+export * from "./element-reference.js";
+export * from "./feature-reference.js";
+export * from "./membership-reference.js";
+export * from "./metaclass-reference.js";
+export * from "./namespace-reference.js";
+export * from "./type-reference.js";

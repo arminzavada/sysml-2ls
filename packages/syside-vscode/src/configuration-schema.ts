@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import type { SysMLConfig } from "syside-languageserver";
-import type { ClientConfig } from "./common/extension";
+import type { ClientConfig } from "./common/extension.js";
 import type { ServerConfig } from "syside-languageclient";
 
 /**

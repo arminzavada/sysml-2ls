@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { RequirementDefinition } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ConstraintDefinitionMeta, ConstraintDefinitionOptions } from "./constraint-definition";
+import { RequirementDefinition } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ConstraintDefinitionMeta, ConstraintDefinitionOptions } from "./constraint-definition.js";
 
 export type RequirementDefinitionOptions = ConstraintDefinitionOptions;
 
@@ -29,7 +29,7 @@ export class RequirementDefinitionMeta extends ConstraintDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface RequirementDefinition {
         $meta: RequirementDefinitionMeta;
     }

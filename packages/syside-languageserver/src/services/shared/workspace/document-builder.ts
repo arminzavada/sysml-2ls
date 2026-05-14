@@ -22,13 +22,13 @@ import {
     LangiumDocument,
 } from "langium";
 import { CancellationToken, Disposable } from "vscode-languageserver";
-import { SysMLSharedServices } from "../../services";
-import { erase, mergeWithPartial, Statistics, Timer } from "../../../utils/common";
+import { SysMLSharedServices } from "../../services.js";
+import { erase, mergeWithPartial, Statistics, Timer } from "../../../utils/common.js";
 import { URI } from "vscode-uri";
 import now from "performance-now";
-import { BuildProgress } from "./documents";
-import { SysMLConfigurationProvider } from "./configuration-provider";
-import { SysMLIndexManager } from "./index-manager";
+import { BuildProgress } from "./documents.js";
+import { SysMLConfigurationProvider } from "./configuration-provider.js";
+import { SysMLIndexManager } from "./index-manager.js";
 
 export type StandardLibrary = "none" | "standard" | "local";
 export interface SysMLBuildOptions extends BuildOptions {

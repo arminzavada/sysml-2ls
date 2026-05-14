@@ -23,12 +23,12 @@ import {
     WorkspaceFolder,
 } from "vscode-languageserver";
 import { URI, Utils } from "vscode-uri";
-import { SysMLSharedServices } from "../../services";
-import { SysMLConfigurationProvider } from "./configuration-provider";
+import { SysMLSharedServices } from "../../services.js";
+import { SysMLConfigurationProvider } from "./configuration-provider.js";
 import { FindStdlibRequest } from "syside-protocol";
 import now from "performance-now";
-import { SysMLFileSystemProvider } from "./file-system-provider";
-import { ExtensionManager } from "../extension-manager";
+import { SysMLFileSystemProvider } from "./file-system-provider.js";
+import { ExtensionManager } from "../extension-manager.js";
 import path from "path";
 import { isUriLike, pathToURI } from "syside-base";
 

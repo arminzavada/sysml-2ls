@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SysMLFunction } from "../../generated/ast";
-import { isModelLevelEvaluable } from "../expressions/util";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { FunctionMixin } from "../mixins/function";
+import { SysMLFunction } from "../../generated/ast.js";
+import { isModelLevelEvaluable } from "../expressions/util.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { FunctionMixin } from "../mixins/function.js";
 import {
     BehaviorMeta,
     BehaviorOptions,
@@ -26,9 +26,9 @@ import {
     ElementParts,
     ResultExpressionMembershipMeta,
     TypeMeta,
-} from "./_internal";
+} from "./_internal.js";
 import { AstNode, LangiumDocument } from "langium";
-import { enumerable } from "../../utils";
+import { enumerable } from "../../utils/index.js";
 
 export const ImplicitFunctions = {
     base: "Performances::Evaluation",
@@ -85,7 +85,7 @@ export class FunctionMeta extends Mixin(BehaviorMeta, FunctionMixin) {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface SysMLFunction {
         $meta: FunctionMeta;
     }

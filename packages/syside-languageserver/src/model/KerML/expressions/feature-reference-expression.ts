@@ -20,8 +20,8 @@ import {
     FeatureMembership,
     FeatureReferenceExpression,
     SysMLFunction,
-} from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+} from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     Edge,
     ElementParts,
@@ -30,7 +30,7 @@ import {
     FeatureMeta,
     MembershipMeta,
     TypeMeta,
-} from "../_internal";
+} from "../_internal.js";
 
 export interface FeatureReferenceExpressionOptions extends ExpressionOptions {
     expression: Edge<MembershipMeta, FeatureMeta>;
@@ -87,7 +87,7 @@ export class FeatureReferenceExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FeatureReferenceExpression {
         $meta: FeatureReferenceExpressionMeta;
     }

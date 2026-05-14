@@ -18,16 +18,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from "@jest/globals";
 import type { MatcherContext } from "expect";
-import { IRecognitionException, ILexingError } from "chevrotain";
-import { Namespace } from "../generated/ast";
-import { parseKerML, ParseResult, parseSysML, TEST_BUILD_OPTIONS } from "./utils";
+import type { IRecognitionException, ILexingError } from "chevrotain";
+import { Namespace } from "../generated/ast.js";
+import { parseKerML, ParseResult, parseSysML, TEST_BUILD_OPTIONS } from "./utils.js";
 import { isLinkingError, stream } from "langium";
 import { getObjectSubset } from "@jest/expect-utils";
 import { MatcherHintOptions, printWithType } from "jest-matcher-utils";
 import chalk from "chalk";
 import { Diagnostic } from "vscode-languageserver";
-import { SysMLBuildOptions } from "../services/shared/workspace/document-builder";
-import { isJSONConvertible, JSONType, stringify } from "../utils/common";
+import { SysMLBuildOptions } from "../services/shared/workspace/document-builder.js";
+import { isJSONConvertible, JSONType, stringify } from "../utils/common.js";
 import { Context } from "jest-snapshot";
 
 // Omit colon and one or more spaces, so can call getLabelPrinter.

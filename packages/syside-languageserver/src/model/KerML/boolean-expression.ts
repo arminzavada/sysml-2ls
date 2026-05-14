@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { BooleanExpression } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ExpressionMeta, ExpressionOptions } from "./_internal";
+import { BooleanExpression } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ExpressionMeta, ExpressionOptions } from "./_internal.js";
 
 export const ImplicitBooleanExpressions = {
     base: "Performances::booleanEvaluations",
@@ -31,7 +31,7 @@ export class BooleanExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface BooleanExpression {
         $meta: BooleanExpressionMeta;
     }

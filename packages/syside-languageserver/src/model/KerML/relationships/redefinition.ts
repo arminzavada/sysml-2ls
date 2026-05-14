@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Redefinition } from "../../../generated/ast";
-import { metamodelOf } from "../../metamodel";
-import { FeatureMeta, SubsettingMeta } from "../_internal";
+import { Redefinition } from "../../../generated/ast.js";
+import { metamodelOf } from "../../metamodel.js";
+import { FeatureMeta, SubsettingMeta } from "../_internal.js";
 
 @metamodelOf(Redefinition)
 export class RedefinitionMeta<T extends FeatureMeta = FeatureMeta> extends SubsettingMeta<T> {
@@ -25,7 +25,7 @@ export class RedefinitionMeta<T extends FeatureMeta = FeatureMeta> extends Subse
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Redefinition {
         $meta: RedefinitionMeta;
     }

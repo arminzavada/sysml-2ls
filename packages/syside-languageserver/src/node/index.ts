@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./arg-parser";
-export * from "./cli";
-export * from "./node-file-system-provider";
-export * from "./server";
+export * from "./arg-parser.js";
+export * from "./cli.js";
+export * from "./node-file-system-provider.js";
+export * from "./server.js";

@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { StateDefinition, StateUsage } from "../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
+import { StateDefinition, StateUsage } from "../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
 
 export interface StateUsageOptions extends ActionUsageOptions {
     isParallel?: boolean;
@@ -65,7 +65,7 @@ export class StateUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface StateUsage {
         $meta: StateUsageMeta;
     }

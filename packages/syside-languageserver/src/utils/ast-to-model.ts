@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { AstNode } from "langium";
-import { SysMLInterface, SysMLType } from "../services";
-import * as ast from "../generated/ast";
+import { SysMLInterface, SysMLType } from "../services/index.js";
+import * as ast from "../generated/ast.js";
 import {
     ActionUsageMeta,
     AnnotationMeta,
@@ -41,9 +41,9 @@ import {
     prettyAnnotationBody,
     sanitizeName,
     typeIndex,
-} from "../model";
-import { streamModel } from "./ast-util";
-import { Visibility } from "./scope-util";
+} from "../model/index.js";
+import { streamModel } from "./ast-util.js";
+import { Visibility } from "./scope-util.js";
 
 type AstToModelFunction<T extends AstNode = AstNode> = (
     model: NonNullable<T["$meta"]>,

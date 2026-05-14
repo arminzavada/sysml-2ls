@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ClassifierReference } from "../../../generated/ast";
-import { Target } from "../../../utils/containers";
-import { metamodelOf } from "../../metamodel";
-import { ClassifierMeta, TypeReferenceMeta } from "../_internal";
+import { ClassifierReference } from "../../../generated/ast.js";
+import { Target } from "../../../utils/containers.js";
+import { metamodelOf } from "../../metamodel.js";
+import { ClassifierMeta, TypeReferenceMeta } from "../_internal.js";
 
 @metamodelOf(ClassifierReference)
 export class ClassifierReferenceMeta extends TypeReferenceMeta {
@@ -28,7 +28,7 @@ export class ClassifierReferenceMeta extends TypeReferenceMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ClassifierReference {
         $meta: ClassifierReferenceMeta;
     }

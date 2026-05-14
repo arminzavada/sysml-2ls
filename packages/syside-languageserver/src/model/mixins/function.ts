@@ -14,15 +14,15 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Expression, ReturnParameterMembership, SysMLFunction } from "../../generated/ast";
+import { Expression, ReturnParameterMembership, SysMLFunction } from "../../generated/ast.js";
 import {
     ExpressionMeta,
     FunctionMeta,
     ResultExpressionMembershipMeta,
     ReturnParameterMembershipMeta,
     TypeMeta,
-} from "../KerML/_internal";
-import { BasicMetamodel } from "../metamodel";
+} from "../KerML/_internal.js";
+import { BasicMetamodel } from "../metamodel.js";
 
 export class FunctionMixin {
     protected _result: ResultExpressionMembershipMeta | undefined;

@@ -15,13 +15,13 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ObjectiveMembership } from "../../../generated/ast";
-import { RelationshipOptionsBody } from "../../KerML";
-import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { CaseDefinitionMeta } from "../case-definition";
-import { CaseUsageMeta } from "../case-usage";
-import { RequirementUsageMeta } from "../requirement-usage";
+import { ObjectiveMembership } from "../../../generated/ast.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { CaseDefinitionMeta } from "../case-definition.js";
+import { CaseUsageMeta } from "../case-usage.js";
+import { RequirementUsageMeta } from "../requirement-usage.js";
 
 @metamodelOf(ObjectiveMembership)
 export class ObjectiveMembershipMeta<
@@ -41,7 +41,7 @@ export class ObjectiveMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ObjectiveMembership {
         $meta: ObjectiveMembershipMeta;
     }

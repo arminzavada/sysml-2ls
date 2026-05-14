@@ -21,8 +21,8 @@ import {
     StateDefinition,
     StateUsage,
     TransitionUsage,
-} from "../../generated/ast";
-import { NonNullable, enumerable } from "../../utils";
+} from "../../generated/ast.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
     ElementParts,
@@ -31,13 +31,13 @@ import {
     MembershipMeta,
     OwningMembershipMeta,
     ParameterMembershipMeta,
-} from "../KerML/_internal";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { AcceptActionUsageMeta } from "./accept-action-usage";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
-import { ReferenceUsageMeta } from "./reference-usage";
-import { TransitionFeatureMembershipMeta } from "./relationships";
-import { SuccessionAsUsageMeta } from "./succession-as-usage";
+} from "../KerML/_internal.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { AcceptActionUsageMeta } from "./accept-action-usage.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { ReferenceUsageMeta } from "./reference-usage.js";
+import { TransitionFeatureMembershipMeta } from "./relationships/index.js";
+import { SuccessionAsUsageMeta } from "./succession-as-usage.js";
 
 export interface TransitionUsageOptions extends ActionUsageOptions {
     source?: Edge<MembershipMeta, FeatureMeta>;
@@ -243,7 +243,7 @@ export class TransitionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface TransitionUsage {
         $meta: TransitionUsageMeta;
     }

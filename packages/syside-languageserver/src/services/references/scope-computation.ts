@@ -30,13 +30,13 @@ import {
     Element,
     Membership,
     isMembership,
-} from "../../generated/ast";
-import { MembershipMeta } from "../../model";
-import { SysMLDefaultServices } from "../services";
+} from "../../generated/ast.js";
+import { MembershipMeta } from "../../model/index.js";
+import { SysMLDefaultServices } from "../services.js";
 import {
     SysMLNodeDescription,
     SysMLNodeDescriptionProvider,
-} from "../shared/workspace/ast-descriptions";
+} from "../shared/workspace/ast-descriptions.js";
 
 export class SysMLScopeComputation extends DefaultScopeComputation {
     protected override readonly descriptions: SysMLNodeDescriptionProvider;

@@ -16,8 +16,8 @@
 
 import { DefaultLanguageServer } from "langium";
 import { InitializeParams, InitializeResult } from "vscode-languageserver";
-import { SUPPORTED_TRIGGER_CHARACTERS } from "./completion-provider";
-import { DefaultSysMLSemanticTokenOptions } from "../../model/semantic-tokens";
+import { SUPPORTED_TRIGGER_CHARACTERS } from "./completion-provider.js";
+import { DefaultSysMLSemanticTokenOptions } from "../../model/semantic-tokens.js";
 
 export class SysMLLanguageServer extends DefaultLanguageServer {
     protected override buildInitializeResult(params: InitializeParams): InitializeResult {

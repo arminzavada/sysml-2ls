@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { CalculationDefinition } from "../../generated/ast";
-import { FunctionMeta, FunctionOptions } from "../KerML/function";
-import { metamodelOf } from "../metamodel";
-import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition";
-import { ElementParts } from "../KerML";
+import { CalculationDefinition } from "../../generated/ast.js";
+import { FunctionMeta, FunctionOptions } from "../KerML/function.js";
+import { metamodelOf } from "../metamodel.js";
+import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition.js";
+import { ElementParts } from "../KerML/index.js";
 
 export interface CalculationDefinitionOptions extends FunctionOptions, ActionDefinitionOptions {}
 
@@ -37,7 +37,7 @@ export class CalculationDefinitionMeta extends Mixin(FunctionMeta, ActionDefinit
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface CalculationDefinition {
         $meta: CalculationDefinitionMeta;
     }

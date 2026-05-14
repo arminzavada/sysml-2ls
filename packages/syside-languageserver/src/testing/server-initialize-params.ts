@@ -16,6 +16,13 @@
 
 import { InitializeParams } from "vscode-languageserver";
 import { URI } from "vscode-uri";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// ESM equivalent of CommonJS' `__dirname`. Defined with a non-reserved name
+// so it doesn't collide with the CJS `__dirname` global re-injected by SWC
+// when running under Jest (`@swc/jest`).
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Parameters that client sends to the server as part of initialize request.
@@ -26,8 +33,8 @@ export const ClientParams: InitializeParams = {
     // prevents watchdog from keeping test script alive
     processId: null,
     locale: "en-gb",
-    rootPath: __dirname,
-    rootUri: URI.file(__dirname).toString(),
+    rootPath: currentDir,
+    rootUri: URI.file(currentDir).toString(),
     capabilities: {
         workspace: {
             applyEdit: true,
@@ -379,7 +386,7 @@ export const ClientParams: InitializeParams = {
     trace: "verbose",
     workspaceFolders: [
         {
-            uri: URI.file(__dirname).toString(),
+            uri: URI.file(currentDir).toString(),
             name: "tests",
         },
     ],

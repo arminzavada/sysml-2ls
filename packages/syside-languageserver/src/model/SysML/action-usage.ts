@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ActionUsage, PartDefinition, PartUsage } from "../../generated/ast";
-import { StepMeta, StepOptions } from "../KerML/step";
-import { GeneralType, metamodelOf } from "../metamodel";
-import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage";
+import { ActionUsage, PartDefinition, PartUsage } from "../../generated/ast.js";
+import { StepMeta, StepOptions } from "../KerML/step.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
+import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.js";
 
 export interface ActionUsageOptions extends StepOptions, OccurrenceUsageOptions {}
 
@@ -71,7 +71,7 @@ export class ActionUsageMeta extends Mixin(StepMeta, OccurrenceUsageMeta) {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ActionUsage {
         $meta: ActionUsageMeta;
     }

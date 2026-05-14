@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { anything, parseKerML, withQualifiedName } from "../../../testing";
-import { Feature } from "../../../generated/ast";
+import { anything, parseKerML, withQualifiedName } from "../../../testing/index.js";
+import { Feature } from "../../../generated/ast.js";
 
 test("feature chains allow qualified feature names in between chain parts", async () => {
     const result = await parseKerML(`

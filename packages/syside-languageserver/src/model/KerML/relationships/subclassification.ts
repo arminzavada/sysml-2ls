@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Subclassification } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { Subclassification } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ClassifierMeta,
     RelationshipMeta,
     RelationshipOptions,
     SpecializationMeta,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(Subclassification)
 // @ts-expect-error ignoring static inheritance error
@@ -46,7 +46,7 @@ export class SubclassificationMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Subclassification {
         $meta: SubclassificationMeta;
     }

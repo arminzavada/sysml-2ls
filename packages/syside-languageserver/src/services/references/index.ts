@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./linker";
-export * from "./name-provider";
-export * from "./scope-computation";
-export * from "./scope-provider";
+export * from "./linker.js";
+export * from "./name-provider.js";
+export * from "./scope-computation.js";
+export * from "./scope-provider.js";

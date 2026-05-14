@@ -16,11 +16,11 @@
 
 import { Stream, stream, EMPTY_STREAM, LangiumDocument } from "langium";
 import { URI, Utils } from "vscode-uri";
-import { SysMLScope, ExportedMember } from "./scopes";
-import { Namespace } from "../generated/ast";
-import { MembershipMeta, NamespaceMeta, ElementMeta, namedMembership } from "../model";
-import { erase } from "./common";
-import { Visibility } from "./scope-util";
+import { SysMLScope, ExportedMember } from "./scopes.js";
+import { Namespace } from "../generated/ast.js";
+import { MembershipMeta, NamespaceMeta, ElementMeta, namedMembership } from "../model/index.js";
+import { erase } from "./common.js";
+import { Visibility } from "./scope-util.js";
 
 /**
  * Get a language ID from a URI

@@ -26,11 +26,11 @@ import {
     SemanticTokenModifiers,
     SemanticTokensOptions,
 } from "vscode-languageserver";
-import { SysMLType } from "../services";
-import { typeIndex } from "./types";
-import { ElementMeta } from "./KerML";
-import { Type, Classifier, Feature } from "../generated/ast";
-import { HighlightCommand } from "../utils";
+import { SysMLType } from "../services/index.js";
+import { typeIndex } from "./types.js";
+import { ElementMeta } from "./KerML/index.js";
+import { Type, Classifier, Feature } from "../generated/ast.js";
+import { HighlightCommand } from "../utils/index.js";
 
 /**
  * Semantic token types used by the SysML language server

@@ -20,10 +20,10 @@ import {
     RenderingDefinition,
     RenderingUsage,
     ViewRenderingMembership,
-} from "../../generated/ast";
-import { FeatureMeta } from "../KerML";
-import { GeneralType, metamodelOf } from "../metamodel";
-import { PartUsageMeta, PartUsageOptions } from "./part-usage";
+} from "../../generated/ast.js";
+import { FeatureMeta } from "../KerML/index.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
+import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
 
 export type RenderingUsageOptions = PartUsageOptions;
 
@@ -65,7 +65,7 @@ export class RenderingUsageMeta extends PartUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface RenderingUsage {
         $meta: RenderingUsageMeta;
     }

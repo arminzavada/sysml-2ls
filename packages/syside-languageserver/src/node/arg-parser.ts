@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Command, ParseOptions } from "commander";
-import { LauncherOptions } from "../launch";
+import { LauncherOptions } from "../launch/index.js";
 
 export const DefaultLauncherOptions: Required<LauncherOptions> = {};
 

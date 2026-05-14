@@ -24,12 +24,12 @@ import {
 } from "langium";
 import type { TextDocument } from "vscode-languageserver-textdocument";
 import { URI } from "vscode-uri";
-import { streamAst } from "../../../utils";
-import { SysMLSharedServices } from "../../services";
-import { MetamodelBuilder } from "./metamodel-builder";
-import { SysMLConfigurationProvider } from "./configuration-provider";
-import { ElementMeta } from "../../../model";
-import { ModelDiagnostic } from "../../validation";
+import { streamAst } from "../../../utils/index.js";
+import { SysMLSharedServices } from "../../services.js";
+import { MetamodelBuilder } from "./metamodel-builder.js";
+import { SysMLConfigurationProvider } from "./configuration-provider.js";
+import { ElementMeta } from "../../../model/index.js";
+import { ModelDiagnostic } from "../../validation/index.js";
 import now from "performance-now";
 
 export const enum BuildProgress {

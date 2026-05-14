@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing";
-import { TypeFeaturing, Feature, FeatureTyping } from "../../../generated/ast";
+import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing/index.js";
+import { TypeFeaturing, Feature, FeatureTyping } from "../../../generated/ast.js";
 
 test("type featuring can be parsed", async () => {
     return expect(`

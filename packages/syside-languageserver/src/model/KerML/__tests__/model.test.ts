@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { emptyDocument } from "../../../testing";
-import { basicIdProvider } from "../../metamodel";
-import { DocumentationMeta } from "../documentation";
+import { emptyDocument } from "../../../testing/index.js";
+import { basicIdProvider } from "../../metamodel.js";
+import { DocumentationMeta } from "../documentation.js";
 import {
     AnnotationMeta,
     CommentMeta,
@@ -49,7 +49,7 @@ import {
     TypeMeta,
     UnioningMeta,
     namespaceChildren,
-} from "../_internal";
+} from "../_internal.js";
 import {
     Dependency,
     Disjoining,
@@ -71,10 +71,10 @@ import {
     SysMLFunction,
     Expression,
     ItemFlow,
-} from "../../../generated/ast";
-import { SysMLEmptyFileSystem, SysMLInterface } from "../../../services";
-import { testChildProperty, testChildrenArray } from "./utils";
-import { createSysMLServices } from "../../../sysml-module";
+} from "../../../generated/ast.js";
+import { SysMLEmptyFileSystem, SysMLInterface } from "../../../services/index.js";
+import { testChildProperty, testChildrenArray } from "./utils.js";
+import { createSysMLServices } from "../../../sysml-module.js";
 import { URI } from "vscode-uri";
 
 describe("Model elements", () => {

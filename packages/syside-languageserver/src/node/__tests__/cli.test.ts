@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ArgParser } from "../arg-parser";
-import { createArgParser, DefaultNodeLauncherOptions, NodeLauncherOptions } from "../cli";
+import { ArgParser } from "../arg-parser.js";
+import { createArgParser, DefaultNodeLauncherOptions, NodeLauncherOptions } from "../cli.js";
 
 describe("Node CLI", () => {
     let parser: ArgParser<NodeLauncherOptions>;

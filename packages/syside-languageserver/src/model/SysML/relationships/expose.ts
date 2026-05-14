@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Expose } from "../../../generated/ast";
-import { Visibility } from "../../../utils";
-import { enumerable } from "../../../utils";
-import { Importable, ImportMeta, ImportOptions } from "../../KerML/relationships/import";
-import { ElementIDProvider, metamodelOf, MetatypeProto } from "../../metamodel";
-import { ViewUsageMeta } from "../view-usage";
+import { Expose } from "../../../generated/ast.js";
+import { Visibility } from "../../../utils/index.js";
+import { enumerable } from "../../../utils/index.js";
+import { Importable, ImportMeta, ImportOptions } from "../../KerML/relationships/import.js";
+import { ElementIDProvider, metamodelOf, MetatypeProto } from "../../metamodel.js";
+import { ViewUsageMeta } from "../view-usage.js";
 
 @metamodelOf(Expose, "abstract")
 export abstract class ExposeMeta<T extends Importable = Importable> extends ImportMeta<T> {
@@ -58,7 +58,7 @@ export abstract class ExposeMeta<T extends Importable = Importable> extends Impo
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Expose {
         $meta: ExposeMeta;
     }

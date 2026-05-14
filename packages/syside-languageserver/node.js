@@ -1,2 +1,2 @@
-// eslint-disable-next-line no-undef
-module.exports = require("./lib/node");
+// Convenience re-export so consumers can `import ... from "syside-languageserver/node.js"`
+export * from "./lib/node/index.js";

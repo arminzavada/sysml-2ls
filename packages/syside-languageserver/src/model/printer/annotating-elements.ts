@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { findNodeForKeyword } from "langium";
-import { FeatureMembership, FeatureTyping, Redefinition } from "../../generated/ast";
+import { FeatureMembership, FeatureTyping, Redefinition } from "../../generated/ast.js";
 import {
     Doc,
     text,
@@ -31,7 +31,7 @@ import {
     keyword,
     getPreviousNode,
     fill,
-} from "../../utils";
+} from "../../utils/index.js";
 import {
     AnnotationMeta,
     CommentMeta,
@@ -39,17 +39,17 @@ import {
     FeatureMembershipMeta,
     MetadataFeatureMeta,
     TextualRepresentationMeta,
-} from "../KerML";
-import { SysMLSemanticTokenTypes } from "../semantic-tokens";
-import { printTarget } from "./edges";
-import { printChildrenBlock, printDeclaredRelationships, printPrefixes } from "./namespaces";
+} from "../KerML/index.js";
+import { SysMLSemanticTokenTypes } from "../semantic-tokens.js";
+import { printTarget } from "./edges.js";
+import { printChildrenBlock, printDeclaredRelationships, printPrefixes } from "./namespaces.js";
 import {
     ElementPrinter,
     ModelPrinterContext,
     DefaultElementPrinter,
     printModelElement,
-} from "./print";
-import { formatPreserved, printIdentifiers, throwError } from "./utils";
+} from "./print.js";
+import { formatPreserved, printIdentifiers, throwError } from "./utils.js";
 
 /**
  * Returns pretty-printed annotating element body

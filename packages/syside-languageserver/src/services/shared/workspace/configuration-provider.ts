@@ -16,11 +16,11 @@
 
 import { DeepPartial, DefaultConfigurationProvider } from "langium";
 import { DidChangeConfigurationNotification } from "vscode-languageserver";
-import { mergeWithPartial } from "../../../utils/common";
-import { SysMLConfig } from "../../config";
-import { LanguageConfig, LanguageEvents, SharedEvents } from "../../events";
-import { SysMLDefaultServices, SysMLSharedServices } from "../../services";
-import { SysMLFileSystemProvider } from "./file-system-provider";
+import { mergeWithPartial } from "../../../utils/common.js";
+import { SysMLConfig } from "../../config.js";
+import { LanguageConfig, LanguageEvents, SharedEvents } from "../../events.js";
+import { SysMLDefaultServices, SysMLSharedServices } from "../../services.js";
+import { SysMLFileSystemProvider } from "./file-system-provider.js";
 
 export const SETTINGS_KEY = "syside.editor";
 

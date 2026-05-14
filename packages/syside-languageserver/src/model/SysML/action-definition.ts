@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ActionDefinition } from "../../generated/ast";
-import { BehaviorMeta, BehaviorOptions } from "../KerML/behavior";
-import { metamodelOf } from "../metamodel";
-import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurrence-definition";
+import { ActionDefinition } from "../../generated/ast.js";
+import { BehaviorMeta, BehaviorOptions } from "../KerML/behavior.js";
+import { metamodelOf } from "../metamodel.js";
+import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurrence-definition.js";
 
 export interface ActionDefinitionOptions extends BehaviorOptions, OccurrenceDefinitionOptions {}
 
@@ -31,7 +31,7 @@ export class ActionDefinitionMeta extends Mixin(BehaviorMeta, OccurrenceDefiniti
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ActionDefinition {
         $meta: ActionDefinitionMeta;
     }

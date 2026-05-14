@@ -15,13 +15,13 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { SendActionUsage } from "../../generated/ast";
-import { NonNullable, enumerable } from "../../utils";
-import { Edge, ElementParts, FeatureMeta, MembershipMeta, ParameterMembershipMeta } from "../KerML";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
-import { ReferenceUsageMeta } from "./reference-usage";
-import { createEmptyParameterMember } from "./reference-usage";
+import { SendActionUsage } from "../../generated/ast.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
+import { Edge, ElementParts, FeatureMeta, MembershipMeta, ParameterMembershipMeta } from "../KerML/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { ReferenceUsageMeta } from "./reference-usage.js";
+import { createEmptyParameterMember } from "./reference-usage.js";
 
 export interface SendActionUsageOptions extends ActionUsageOptions {
     payload?: Edge<ParameterMembershipMeta, ReferenceUsageMeta>;
@@ -125,7 +125,7 @@ export class SendActionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface SendActionUsage {
         $meta: SendActionUsageMeta;
     }

@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Conjugation } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal";
-import { InheritanceMeta } from "./inheritance";
+import { Conjugation } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
+import { InheritanceMeta } from "./inheritance.js";
 
 @metamodelOf(Conjugation)
 export class ConjugationMeta<T extends TypeMeta = TypeMeta> extends InheritanceMeta<T> {
@@ -39,7 +39,7 @@ export class ConjugationMeta<T extends TypeMeta = TypeMeta> extends InheritanceM
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Conjugation {
         $meta: ConjugationMeta;
     }

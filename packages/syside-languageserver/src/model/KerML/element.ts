@@ -15,16 +15,16 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument, Stream, stream } from "langium";
-import { Element, Membership, MembershipImport } from "../../generated/ast";
-import { SysMLNodeDescription } from "../../services/shared/workspace/ast-descriptions";
+import { Element, Membership, MembershipImport } from "../../generated/ast.js";
+import { SysMLNodeDescription } from "../../services/shared/workspace/ast-descriptions.js";
 import {
     BasicMetamodel,
     ElementIDProvider,
     MetatypeProto,
     ModelElementOptions,
     metamodelOf,
-} from "../metamodel";
-import { computeQualifiedName, Name } from "../naming";
+} from "../metamodel.js";
+import { computeQualifiedName, Name } from "../naming.js";
 import {
     CommentMeta,
     DocumentationMeta,
@@ -37,10 +37,10 @@ import {
     TargetType,
     OwningMembershipMeta,
     NonNullRelationship,
-} from "./_internal";
-import { LazyGetter, enumerable } from "../../utils/common";
-import { removeIfObserved } from "../containers";
-import { SysMLInterface, SysMLType } from "../../services";
+} from "./_internal.js";
+import { LazyGetter, enumerable } from "../../utils/common.js";
+import { removeIfObserved } from "../containers.js";
+import { SysMLInterface, SysMLType } from "../../services/index.js";
 
 /**
  * Types used in named children cache
@@ -551,7 +551,7 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Element {
         $meta: ElementMeta;
     }

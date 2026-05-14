@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { MetadataAccessExpression } from "../../../generated/ast";
+import { MetadataAccessExpression } from "../../../generated/ast.js";
 import {
     ElementIDProvider,
     MetatypeProto,
     ModelElementOptions,
     metamodelOf,
-} from "../../metamodel";
-import { ElementMeta, ExpressionMeta, RelationshipMeta, TypeMeta } from "../_internal";
-import { enumerable } from "../../../utils";
+} from "../../metamodel.js";
+import { ElementMeta, ExpressionMeta, RelationshipMeta, TypeMeta } from "../_internal.js";
+import { enumerable } from "../../../utils/index.js";
 
 export interface MetadataAccessExpressionOptions extends ModelElementOptions<RelationshipMeta> {
     reference: ElementMeta;
@@ -61,7 +61,7 @@ export class MetadataAccessExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface MetadataAccessExpression {
         $meta: MetadataAccessExpressionMeta;
     }

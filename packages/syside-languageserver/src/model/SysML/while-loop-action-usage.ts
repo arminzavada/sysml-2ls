@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { WhileLoopActionUsage } from "../../generated/ast";
-import { NonNullable, enumerable } from "../../utils";
+import { WhileLoopActionUsage } from "../../generated/ast.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
     ElementParts,
@@ -24,10 +24,10 @@ import {
     FeatureMeta,
     MembershipMeta,
     ParameterMembershipMeta,
-} from "../KerML";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta } from "./action-usage";
-import { LoopActionUsageMeta, LoopActionUsageOptions } from "./loop-action-usage";
+} from "../KerML/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta } from "./action-usage.js";
+import { LoopActionUsageMeta, LoopActionUsageOptions } from "./loop-action-usage.js";
 
 export interface WhileLoopActionUsageOptions extends LoopActionUsageOptions {
     condition?: Edge<ParameterMembershipMeta, ExpressionMeta>;
@@ -109,7 +109,7 @@ export class WhileLoopActionUsageMeta extends LoopActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface WhileLoopActionUsage {
         $meta: WhileLoopActionUsageMeta;
     }

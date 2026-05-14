@@ -14,13 +14,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { TransitionFeatureKind, TransitionFeatureMembership } from "../../../generated/ast";
-import { ExpressionMeta, RelationshipOptionsBody } from "../../KerML";
-import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ActionUsageMeta } from "../action-usage";
-import { TransitionUsageMeta } from "../transition-usage";
-import { enumerable } from "../../../utils";
+import { TransitionFeatureKind, TransitionFeatureMembership } from "../../../generated/ast.js";
+import { ExpressionMeta, RelationshipOptionsBody } from "../../KerML/index.js";
+import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ActionUsageMeta } from "../action-usage.js";
+import { TransitionUsageMeta } from "../transition-usage.js";
+import { enumerable } from "../../../utils/index.js";
 import { AstNode, LangiumDocument } from "langium";
 
 type Transition = ActionUsageMeta | ExpressionMeta;
@@ -57,7 +57,7 @@ export class TransitionFeatureMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface TransitionFeatureMembership {
         $meta: TransitionFeatureMembershipMeta;
     }

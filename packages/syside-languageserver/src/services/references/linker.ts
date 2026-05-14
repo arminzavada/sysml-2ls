@@ -44,22 +44,22 @@ import {
     PortDefinition,
     Relationship,
     Type,
-} from "../../generated/ast";
-import { SysMLIndexManager } from "../shared/workspace/index-manager";
-import { SysMLScopeProvider } from "./scope-provider";
-import { SysMLDefaultServices } from "../services";
-import { LinkedReferenceInfo, MetamodelBuilder } from "../shared/workspace/metamodel-builder";
-import { TypeMap, typeIndex } from "../../model/types";
-import { sanitizeName } from "../../model/naming";
-import { SysMLConfigurationProvider } from "../shared/workspace/configuration-provider";
-import { SysMLNodeDescription } from "../shared/workspace/ast-descriptions";
-import { ElementMeta, MembershipMeta, NamespaceMeta, ImportMeta } from "../../model";
-import { AliasResolver, streamParents } from "../../utils/scope-util";
-import { KeysMatching } from "../../utils/common";
-import { SysMLType, SysMLTypeList } from "../sysml-ast-reflection";
-import { followAlias } from "../../utils/ast-util";
-import { clearArtifacts } from "../../utils";
-import { TypedModelDiagnostic } from "../validation";
+} from "../../generated/ast.js";
+import { SysMLIndexManager } from "../shared/workspace/index-manager.js";
+import { SysMLScopeProvider } from "./scope-provider.js";
+import { SysMLDefaultServices } from "../services.js";
+import { LinkedReferenceInfo, MetamodelBuilder } from "../shared/workspace/metamodel-builder.js";
+import { TypeMap, typeIndex } from "../../model/types.js";
+import { sanitizeName } from "../../model/naming.js";
+import { SysMLConfigurationProvider } from "../shared/workspace/configuration-provider.js";
+import { SysMLNodeDescription } from "../shared/workspace/ast-descriptions.js";
+import { ElementMeta, MembershipMeta, NamespaceMeta, ImportMeta } from "../../model/index.js";
+import { AliasResolver, streamParents } from "../../utils/scope-util.js";
+import { KeysMatching } from "../../utils/common.js";
+import { SysMLType, SysMLTypeList } from "../sysml-ast-reflection.js";
+import { followAlias } from "../../utils/ast-util.js";
+import { clearArtifacts } from "../../utils/index.js";
+import { TypedModelDiagnostic } from "../validation/index.js";
 
 /**
  * Reference used by SysML services that makes use of knowing that only Elements can be referenced

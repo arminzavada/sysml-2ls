@@ -31,15 +31,15 @@ import {
     NextFeature,
     stream,
 } from "langium";
-import { CrossReference, Keyword } from "langium/lib/grammar/generated/ast";
-import { SysMLDefaultServices } from "../services";
+import { CrossReference, Keyword } from "langium/lib/grammar/generated/ast.js";
+import { SysMLDefaultServices } from "../services.js";
 import {
     FeatureChainExpression,
     InlineExpression,
     isElementReference,
     isFeature,
     MetadataAccessExpression,
-} from "../../generated/ast";
+} from "../../generated/ast.js";
 import {
     CancellationToken,
     CompletionItem,
@@ -48,12 +48,12 @@ import {
     CompletionParams,
     CompletionTriggerKind,
 } from "vscode-languageserver";
-import { BuildProgress } from "../shared/workspace/documents";
-import { SysMLScopeProvider } from "../references/scope-provider";
-import { ScopeStream, SysMLScope } from "../../utils/scopes";
-import { asyncWaitWhile } from "../../utils/common";
-import { MembershipMeta } from "../../model";
-import { ScopeOptions } from "../../utils/scope-util";
+import { BuildProgress } from "../shared/workspace/documents.js";
+import { SysMLScopeProvider } from "../references/scope-provider.js";
+import { ScopeStream, SysMLScope } from "../../utils/scopes.js";
+import { asyncWaitWhile } from "../../utils/common.js";
+import { MembershipMeta } from "../../model/index.js";
+import { ScopeOptions } from "../../utils/scope-util.js";
 
 const ALPHA_NUM = /[a-zA-z\d_]/;
 const NON_ALPHA_NUM = /[^a-zA-z\d_\s]/;

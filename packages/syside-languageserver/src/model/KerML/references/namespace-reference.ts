@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { NamespaceReference } from "../../../generated/ast";
-import { Target } from "../../../utils/containers";
-import { metamodelOf } from "../../metamodel";
-import { ElementReferenceMeta, NamespaceMeta } from "../_internal";
+import { NamespaceReference } from "../../../generated/ast.js";
+import { Target } from "../../../utils/containers.js";
+import { metamodelOf } from "../../metamodel.js";
+import { ElementReferenceMeta, NamespaceMeta } from "../_internal.js";
 
 @metamodelOf(NamespaceReference)
 export class NamespaceReferenceMeta extends ElementReferenceMeta {
@@ -28,7 +28,7 @@ export class NamespaceReferenceMeta extends ElementReferenceMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface NamespaceReference {
         $meta: NamespaceReferenceMeta;
     }

@@ -4,8 +4,8 @@
  ******************************************************************************/
 
 import type { LangiumGeneratedServices, LangiumGeneratedSharedServices, LangiumSharedServices, LangiumServices, LanguageMetaData, Module, IParserConfig } from 'langium';
-import { SysMlAstReflection } from './ast';
-import { KerMLGrammar, SysMLGrammar } from './grammar';
+import { SysMlAstReflection } from './ast.js';
+import { KerMLGrammar, SysMLGrammar } from './grammar.js';
 
 export const KerMLLanguageMetaData: LanguageMetaData = {
     languageId: 'kerml',

@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./evaluator";
-export * from "./functions";
-export * from "./range";
-export * from "./util";
+export * from "./evaluator.js";
+export * from "./functions/index.js";
+export * from "./range.js";
+export * from "./util.js";

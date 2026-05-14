@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { UseCaseDefinition } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { CaseDefinitionMeta, CaseDefinitionOptions } from "./case-definition";
+import { UseCaseDefinition } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { CaseDefinitionMeta, CaseDefinitionOptions } from "./case-definition.js";
 
 export type UseCaseDefinitionOptions = CaseDefinitionOptions;
 
@@ -29,7 +29,7 @@ export class UseCaseDefinitionMeta extends CaseDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface UseCaseDefinition {
         $meta: UseCaseDefinitionMeta;
     }

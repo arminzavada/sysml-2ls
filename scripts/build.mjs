@@ -122,6 +122,9 @@ export const Builds = {
         ...Options,
         platform: "node",
         format: "cjs",
+        // emit .cjs so that bundles are loaded as CommonJS even when the
+        // surrounding package.json sets "type": "module" (ESM workspace).
+        outExtension: { ".js": ".cjs" },
 
         entryPoints: entries,
     }),
@@ -131,6 +134,7 @@ export const Builds = {
         platform: "browser",
         // iife doesn't work in VSCode
         format: "cjs",
+        outExtension: { ".js": ".cjs" },
 
         entryPoints: entries,
         inject: [require.resolve("node-stdlib-browser/helpers/esbuild/shim")],

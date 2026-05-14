@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ItemFlow, Step } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { FeatureMeta, FeatureOptions } from "./_internal";
+import { ItemFlow, Step } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { FeatureMeta, FeatureOptions } from "./_internal.js";
 
 export const ImplicitSteps = {
     base: "Performances::performances",
@@ -50,7 +50,7 @@ export class StepMeta extends FeatureMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Step {
         $meta: StepMeta;
     }

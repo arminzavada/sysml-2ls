@@ -24,29 +24,29 @@ import {
     SendActionUsage,
     TerminateActionUsage,
     TransitionUsage,
-} from "../../../generated/ast";
-import { emptyDocument } from "../../../testing";
+} from "../../../generated/ast.js";
+import { emptyDocument } from "../../../testing/index.js";
 import {
     ExpressionMeta,
     FeatureMeta,
     MembershipMeta,
     OwningMembershipMeta,
     ParameterMembershipMeta,
-} from "../../KerML";
-import { testChildProperty } from "../../KerML/__tests__/utils";
-import { basicIdProvider } from "../../metamodel";
-import { AcceptActionUsageMeta } from "../accept-action-usage";
-import { ActionUsageMeta } from "../action-usage";
-import { AssignmentActionUsageMeta } from "../assignment-action-usage";
-import { ForLoopActionUsageMeta } from "../for-loop-action-usage";
-import { IfActionUsageMeta } from "../if-action-usage";
-import { ReferenceUsageMeta } from "../reference-usage";
-import { SubjectMembershipMeta, TransitionFeatureMembershipMeta } from "../relationships";
-import { SatisfyRequirementUsageMeta } from "../satisfy-requirement-usage";
-import { SendActionUsageMeta } from "../send-action-usage";
-import { SuccessionAsUsageMeta } from "../succession-as-usage";
-import { TerminateActionUsageMeta } from "../terminate-action-usage";
-import { TransitionUsageMeta, TransitionUsageOptions } from "../transition-usage";
+} from "../../KerML/index.js";
+import { testChildProperty } from "../../KerML/__tests__/utils.js";
+import { basicIdProvider } from "../../metamodel.js";
+import { AcceptActionUsageMeta } from "../accept-action-usage.js";
+import { ActionUsageMeta } from "../action-usage.js";
+import { AssignmentActionUsageMeta } from "../assignment-action-usage.js";
+import { ForLoopActionUsageMeta } from "../for-loop-action-usage.js";
+import { IfActionUsageMeta } from "../if-action-usage.js";
+import { ReferenceUsageMeta } from "../reference-usage.js";
+import { SubjectMembershipMeta, TransitionFeatureMembershipMeta } from "../relationships/index.js";
+import { SatisfyRequirementUsageMeta } from "../satisfy-requirement-usage.js";
+import { SendActionUsageMeta } from "../send-action-usage.js";
+import { SuccessionAsUsageMeta } from "../succession-as-usage.js";
+import { TerminateActionUsageMeta } from "../terminate-action-usage.js";
+import { TransitionUsageMeta, TransitionUsageOptions } from "../transition-usage.js";
 
 describe("Model elements", () => {
     describe(`${AcceptActionUsage} elements`, () => {

@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { AnnotatingElement } from "../../generated/ast";
-import { NonNullable } from "../../utils";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { AnnotationMeta, Edge, ElementOptions, RelationshipMeta } from "./_internal";
-import { ElementMeta, ElementParts } from "./element";
+import { AnnotatingElement } from "../../generated/ast.js";
+import { NonNullable } from "../../utils/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { AnnotationMeta, Edge, ElementOptions, RelationshipMeta } from "./_internal.js";
+import { ElementMeta, ElementParts } from "./element.js";
 
 export interface AnnotatingElementOptions extends ElementOptions<RelationshipMeta> {
     annotations?: readonly Edge<AnnotationMeta, ElementMeta>[];
@@ -98,7 +98,7 @@ export abstract class AnnotatingElementMeta extends ElementMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface AnnotatingElement {
         $meta: AnnotatingElementMeta;
     }

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 /* eslint-disable quotes */
-import { expectEvaluationResult } from "./util";
+import { expectEvaluationResult } from "./util.js";
 
 const PACKAGE = `
 package StringFunctions {

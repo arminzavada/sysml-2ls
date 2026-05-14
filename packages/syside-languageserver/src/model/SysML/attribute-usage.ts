@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AttributeUsage } from "../../generated/ast";
-import { enumerable } from "../../utils";
-import { metamodelOf } from "../metamodel";
-import { UsageMeta, UsageOptions } from "./usage";
+import { AttributeUsage } from "../../generated/ast.js";
+import { enumerable } from "../../utils/index.js";
+import { metamodelOf } from "../metamodel.js";
+import { UsageMeta, UsageOptions } from "./usage.js";
 
 export type AttributeUsageOptions = UsageOptions;
 
@@ -38,7 +38,7 @@ export class AttributeUsageMeta extends UsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface AttributeUsage {
         $meta: AttributeUsageMeta;
     }

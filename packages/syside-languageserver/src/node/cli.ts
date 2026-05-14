@@ -26,10 +26,10 @@ import {
     RAL,
     SocketMessageReader,
     SocketMessageWriter,
-} from "vscode-languageserver/node";
-import { ArgParser, DefaultLauncherOptions } from "./arg-parser";
-import { LauncherOptions } from "../launch";
-import { Version } from "../version";
+} from "vscode-languageserver/node.js";
+import { ArgParser, DefaultLauncherOptions } from "./arg-parser.js";
+import { LauncherOptions } from "../launch/index.js";
+import { Version } from "../version.js";
 
 export interface StdioTransport {
     /**

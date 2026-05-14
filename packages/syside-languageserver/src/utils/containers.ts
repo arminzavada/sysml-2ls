@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ElementMeta } from "../model";
-import { JSONConvertible } from "./common";
+import { ElementMeta } from "../model/index.js";
+import { JSONConvertible } from "./common.js";
 
 export class Target<T extends ElementMeta = ElementMeta> implements JSONConvertible {
     protected ref: T | null | undefined;

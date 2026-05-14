@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { IfActionUsage } from "../../generated/ast";
+import { IfActionUsage } from "../../generated/ast.js";
 import {
     Edge,
     ElementParts,
@@ -22,10 +22,10 @@ import {
     FeatureMeta,
     MembershipMeta,
     ParameterMembershipMeta,
-} from "../KerML";
-import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
-import { NonNullable, enumerable } from "../../utils";
+} from "../KerML/index.js";
+import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export interface IfActionUsageOptions extends ActionUsageOptions {
@@ -114,7 +114,7 @@ export class IfActionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface IfActionUsage {
         $meta: IfActionUsageMeta;
     }

@@ -26,11 +26,11 @@ import {
     MetadataFeature,
     Namespace,
     TextualRepresentation,
-} from "../../generated/ast";
-import { SubtypeKeys, SysMLInterface, SysMLTypeList } from "../../services";
-import { KeysMatching, NonNullable, enumerable } from "../../utils";
-import { BuildState } from "../enums";
-import { BasicMetamodel, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
+} from "../../generated/ast.js";
+import { SubtypeKeys, SysMLInterface, SysMLTypeList } from "../../services/index.js";
+import { KeysMatching, NonNullable, enumerable } from "../../utils/index.js";
+import { BuildState } from "../enums.js";
+import { BasicMetamodel, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import {
     CommentMeta,
     DocumentationMeta,
@@ -48,8 +48,8 @@ import {
     RelationshipMeta,
     RestEdges,
     TextualRepresentationMeta,
-} from "./_internal";
-import { ElementContainer } from "../containers";
+} from "./_internal.js";
+import { ElementContainer } from "../containers.js";
 
 const FeatureMembers = (e: ElementMeta): e is MembershipMeta<FeatureMeta> =>
     Boolean(
@@ -280,7 +280,7 @@ export class NamespaceMeta extends ElementMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Namespace {
         $meta: NamespaceMeta;
     }

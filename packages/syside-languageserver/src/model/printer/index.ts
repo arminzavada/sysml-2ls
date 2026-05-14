@@ -14,14 +14,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./actions";
-export * from "./annotating-elements";
-export * from "./connectors";
-export * from "./definition-usages";
-export * from "./edges";
-export * from "./expressions";
-export * from "./format-options";
-export * from "./namespaces";
-export * from "./print";
-export * from "./successions";
-export * from "./utils";
+export * from "./actions.js";
+export * from "./annotating-elements.js";
+export * from "./connectors.js";
+export * from "./definition-usages.js";
+export * from "./edges.js";
+export * from "./expressions.js";
+export * from "./format-options.js";
+export * from "./namespaces.js";
+export * from "./print.js";
+export * from "./successions.js";
+export * from "./utils.js";

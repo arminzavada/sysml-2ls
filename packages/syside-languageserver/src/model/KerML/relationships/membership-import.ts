@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { MembershipImport } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ImportMeta, ImportOptions, MembershipMeta } from "../_internal";
+import { MembershipImport } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ImportMeta, ImportOptions, MembershipMeta } from "../_internal.js";
 
 @metamodelOf(MembershipImport)
 export class MembershipImportMeta<T extends MembershipMeta = MembershipMeta> extends ImportMeta<T> {
@@ -39,7 +39,7 @@ export class MembershipImportMeta<T extends MembershipMeta = MembershipMeta> ext
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface MembershipImport {
         $meta: MembershipImportMeta;
     }

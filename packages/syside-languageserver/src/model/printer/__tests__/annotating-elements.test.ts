@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { DeepPartial } from "langium";
-import { PrinterTestContext, printKerMLElement, printSysMLElement } from "./utils";
+import { PrinterTestContext, printKerMLElement, printSysMLElement } from "./utils.js";
 import {
     Comment,
     Documentation,
     MetadataFeature,
     MetadataUsage,
     TextualRepresentation,
-} from "../../../generated/ast";
-import { parsedNode } from "../../../testing/utils";
+} from "../../../generated/ast.js";
+import { parsedNode } from "../../../testing/utils.js";
 
 describe("comments", () => {
     const expectPrinted = async (

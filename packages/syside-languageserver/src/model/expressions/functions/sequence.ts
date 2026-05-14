@@ -14,13 +14,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ElementMeta, InvocationExpressionMeta } from "../../KerML";
+import { ElementMeta, InvocationExpressionMeta } from "../../KerML/index.js";
 import {
     BuiltinFunction,
     ModelLevelExpressionEvaluator,
     functionFor,
     ExpressionResult,
-} from "../util";
+} from "../util.js";
 
 const PACKAGE = "SequenceFunctions";
 

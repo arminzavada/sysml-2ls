@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Featuring } from "../../../generated/ast";
-import { metamodelOf } from "../../metamodel";
-import { ElementMeta, RelationshipMeta, TypeMeta } from "../_internal";
+import { Featuring } from "../../../generated/ast.js";
+import { metamodelOf } from "../../metamodel.js";
+import { ElementMeta, RelationshipMeta, TypeMeta } from "../_internal.js";
 
 @metamodelOf(Featuring, "abstract")
 export abstract class FeaturingMeta<T extends TypeMeta = TypeMeta> extends RelationshipMeta<T> {
@@ -47,7 +47,7 @@ export abstract class FeaturingMeta<T extends TypeMeta = TypeMeta> extends Relat
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Featuring {
         $meta: FeaturingMeta;
     }

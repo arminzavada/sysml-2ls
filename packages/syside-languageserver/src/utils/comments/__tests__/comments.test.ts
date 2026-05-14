@@ -28,11 +28,11 @@ import {
     trimComment,
     trimLineComment,
     visitComments,
-} from "../comments";
-import { parseKerML, recursiveObjectContaining } from "../../../testing";
+} from "../comments.js";
+import { parseKerML, recursiveObjectContaining } from "../../../testing/index.js";
 import { CstNode, DeepPartial, Mutable } from "langium";
-import { Annotation, Comment, OwningMembership, Package } from "../../../generated/ast";
-import { print } from "../../printer/print";
+import { Annotation, Comment, OwningMembership, Package } from "../../../generated/ast.js";
+import { print } from "../../printer/print.js";
 import {
     brackets,
     group,
@@ -43,7 +43,7 @@ import {
     lineSuffixBoundary,
     literals,
     text,
-} from "../../printer/doc";
+} from "../../printer/doc.js";
 
 describe("trim", () => {
     it("should trim line comments", () => {

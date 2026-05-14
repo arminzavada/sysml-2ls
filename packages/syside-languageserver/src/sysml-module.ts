@@ -27,18 +27,18 @@ import {
     SysMlGeneratedSharedModule,
     KerMLGeneratedModule,
     SysMLGeneratedModule,
-} from "./generated/module";
-import { SysMLValidationRegistry } from "./services/validation/sysml-validation-registry";
-import { SysMLScopeComputation } from "./services/references/scope-computation";
-import { SysMLNameProvider } from "./services/references/name-provider";
-import { SysMLDocumentBuilder } from "./services/shared/workspace/document-builder";
-import { SysMLLinker } from "./services/references/linker";
-import { SysMLIndexManager } from "./services/shared/workspace/index-manager";
-import { SysMLScopeProvider } from "./services/references/scope-provider";
-import { SysMLCompletionProvider } from "./services/lsp/completion-provider";
-import { SysMLDocumentValidator } from "./services/validation/document-validator";
-import { SysMLAstReflection } from "./services/sysml-ast-reflection";
-import { SysMLMetamodelBuilder } from "./services/shared/workspace/metamodel-builder";
+} from "./generated/module.js";
+import { SysMLValidationRegistry } from "./services/validation/sysml-validation-registry.js";
+import { SysMLScopeComputation } from "./services/references/scope-computation.js";
+import { SysMLNameProvider } from "./services/references/name-provider.js";
+import { SysMLDocumentBuilder } from "./services/shared/workspace/document-builder.js";
+import { SysMLLinker } from "./services/references/linker.js";
+import { SysMLIndexManager } from "./services/shared/workspace/index-manager.js";
+import { SysMLScopeProvider } from "./services/references/scope-provider.js";
+import { SysMLCompletionProvider } from "./services/lsp/completion-provider.js";
+import { SysMLDocumentValidator } from "./services/validation/document-validator.js";
+import { SysMLAstReflection } from "./services/sysml-ast-reflection.js";
+import { SysMLMetamodelBuilder } from "./services/shared/workspace/metamodel-builder.js";
 import {
     SysMLServices,
     SysMLAddedServices,
@@ -48,30 +48,30 @@ import {
     SysMLAddedSharedServices,
     PartialSysMLDefaultServices,
     SysMLDefaultServices,
-} from "./services/services";
-import { createSysMLParser } from "./services/parser/parser";
-import { DefaultAstNodeLocator } from "langium/lib/workspace/ast-node-locator";
-import { SysMLNodeDescriptionProvider } from "./services/shared/workspace/ast-descriptions";
-import { SysMLExecuteCommandHandler } from "./services/lsp/execute-command-handler";
-import { SysMLWorkspaceManager } from "./services/shared/workspace/workspace-manager";
-import { SysMLDocumentFactory, SysMLDocuments } from "./services/shared/workspace/documents";
-import { DefaultSysMLConfig, SysMLConfig } from "./services/config";
-import { mergeWithPartial, PartialKeys, Statistics } from "./utils/common";
-import { SysMLSemanticTokenProvider } from "./services/lsp/semantic-token-provider";
-import { SysMLLanguageServer } from "./services/lsp/language-server";
-import { SysMLConfigurationProvider } from "./services/shared/workspace/configuration-provider";
-import { SysMLHoverProvider } from "./services/lsp/hover-provider";
-import { SysMLFormatter } from "./services/lsp/formatter";
-import { createSysMLGrammarConfig } from "./services/parser/grammar-config";
-import { KerMLValidationRegistry } from "./services/validation/kerml-validation-registry";
-import { KerMLValidator } from "./services/validation/kerml-validator";
-import { SysMLValidator } from "./services/validation/sysml-validator";
-import { SysMLFileSystemProvider } from "./services/shared/workspace/file-system-provider";
-import { LanguageEvents, SharedEvents } from "./services/events";
-import { ExtensionManager } from "./services/shared/extension-manager";
-import { ModelUtil } from "./services/shared/model-utils";
-import { SysMLExpressionEvaluator } from "./services/shared/evaluator";
-import { SysMLServiceRegistry } from "./services";
+} from "./services/services.js";
+import { createSysMLParser } from "./services/parser/parser.js";
+import { DefaultAstNodeLocator } from "langium/lib/workspace/ast-node-locator.js";
+import { SysMLNodeDescriptionProvider } from "./services/shared/workspace/ast-descriptions.js";
+import { SysMLExecuteCommandHandler } from "./services/lsp/execute-command-handler.js";
+import { SysMLWorkspaceManager } from "./services/shared/workspace/workspace-manager.js";
+import { SysMLDocumentFactory, SysMLDocuments } from "./services/shared/workspace/documents.js";
+import { DefaultSysMLConfig, SysMLConfig } from "./services/config.js";
+import { mergeWithPartial, PartialKeys, Statistics } from "./utils/common.js";
+import { SysMLSemanticTokenProvider } from "./services/lsp/semantic-token-provider.js";
+import { SysMLLanguageServer } from "./services/lsp/language-server.js";
+import { SysMLConfigurationProvider } from "./services/shared/workspace/configuration-provider.js";
+import { SysMLHoverProvider } from "./services/lsp/hover-provider.js";
+import { SysMLFormatter } from "./services/lsp/formatter.js";
+import { createSysMLGrammarConfig } from "./services/parser/grammar-config.js";
+import { KerMLValidationRegistry } from "./services/validation/kerml-validation-registry.js";
+import { KerMLValidator } from "./services/validation/kerml-validator.js";
+import { SysMLValidator } from "./services/validation/sysml-validator.js";
+import { SysMLFileSystemProvider } from "./services/shared/workspace/file-system-provider.js";
+import { LanguageEvents, SharedEvents } from "./services/events.js";
+import { ExtensionManager } from "./services/shared/extension-manager.js";
+import { ModelUtil } from "./services/shared/model-utils.js";
+import { SysMLExpressionEvaluator } from "./services/shared/evaluator.js";
+import { SysMLServiceRegistry } from "./services/index.js";
 
 /**
  * Dependency injection module that overrides Langium default services and

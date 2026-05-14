@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { DataType } from "../../generated/ast";
-import { TypeClassifier } from "../enums";
-import { metamodelOf } from "../metamodel";
-import { ClassifierMeta, ClassifierOptions } from "./_internal";
+import { DataType } from "../../generated/ast.js";
+import { TypeClassifier } from "../enums.js";
+import { metamodelOf } from "../metamodel.js";
+import { ClassifierMeta, ClassifierOptions } from "./_internal.js";
 
 export const ImplicitDataTypes = {
     base: "Base::DataValue",
@@ -34,7 +34,7 @@ export class DataTypeMeta extends ClassifierMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface DataType {
         $meta: DataTypeMeta;
     }

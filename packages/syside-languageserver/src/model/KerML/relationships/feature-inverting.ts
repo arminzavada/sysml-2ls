@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureInverting } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ElementMeta, FeatureMeta, RelationshipMeta, RelationshipOptions } from "../_internal";
+import { FeatureInverting } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ElementMeta, FeatureMeta, RelationshipMeta, RelationshipOptions } from "../_internal.js";
 
 @metamodelOf(FeatureInverting)
 export class FeatureInvertingMeta<T extends FeatureMeta = FeatureMeta> extends RelationshipMeta<T> {
@@ -57,7 +57,7 @@ export class FeatureInvertingMeta<T extends FeatureMeta = FeatureMeta> extends R
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FeatureInverting {
         $meta: FeatureInvertingMeta;
     }

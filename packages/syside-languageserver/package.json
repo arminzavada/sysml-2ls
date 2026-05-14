@@ -23,6 +23,7 @@
     "bugs": {
         "url": "https://gitlab.com/sensmetry/public/sysml-2ls/-/issues"
     },
+    "type": "module",
     "files": [
         "bin",
         "out",

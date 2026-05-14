@@ -40,7 +40,7 @@ import {
     markAsRoot,
     dedentToRoot,
     addAlignment,
-} from "..";
+} from "../index.js";
 
 const Options: PrinterConfig = {
     ...DefaultPrinterConfig,

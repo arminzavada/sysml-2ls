@@ -38,25 +38,25 @@ import {
     ProposedFeatures,
     StreamMessageReader,
     StreamMessageWriter,
-} from "vscode-languageserver/node";
+} from "vscode-languageserver/node.js";
 import { DeepPartial } from "langium";
 import { InitializeRequest } from "vscode-languageserver";
-import { ClientParams } from "../../../testing/server-initialize-params";
+import { ClientParams } from "../../../testing/server-initialize-params.js";
 import { Trace } from "vscode-languageserver";
-import { TEST_SERVER_OPTIONS } from "../../../testing";
-import { asyncWaitWhile } from "../../../utils/common";
-import { SysMLConfig, DefaultSysMLConfig } from "../../config";
-import { SysMLSharedServices } from "../../services";
-import { SETTINGS_KEY } from "../../shared/workspace/configuration-provider";
-import { SysMLEmptyFileSystem } from "../../shared/workspace/file-system-provider";
-import { SUPPORTED_TRIGGER_CHARACTERS } from "../completion-provider";
-import { SysMLExecuteCommandHandler } from "../execute-command-handler";
+import { TEST_SERVER_OPTIONS } from "../../../testing/index.js";
+import { asyncWaitWhile } from "../../../utils/common.js";
+import { SysMLConfig, DefaultSysMLConfig } from "../../config.js";
+import { SysMLSharedServices } from "../../services.js";
+import { SETTINGS_KEY } from "../../shared/workspace/configuration-provider.js";
+import { SysMLEmptyFileSystem } from "../../shared/workspace/file-system-provider.js";
+import { SUPPORTED_TRIGGER_CHARACTERS } from "../completion-provider.js";
+import { SysMLExecuteCommandHandler } from "../execute-command-handler.js";
 import { ClientConfig, GenericLanguageClient, SysMLClientExtender } from "syside-languageclient";
-import { startServer } from "../../../launch/server";
+import { startServer } from "../../../launch/server.js";
 import {
     SysMLSemanticTokenTypes,
     SysMLSemanticTokenModifiers,
-} from "../../../model/semantic-tokens";
+} from "../../../model/semantic-tokens.js";
 
 class NullLogger implements Logger {
     error(_message: string): void {}

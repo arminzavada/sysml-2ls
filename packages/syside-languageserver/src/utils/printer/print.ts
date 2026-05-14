@@ -35,9 +35,9 @@ import {
     literals,
     text,
     visitDoc,
-} from "./doc";
+} from "./doc.js";
 import { DocumentSegment, Stream } from "langium";
-import { TextComment } from "../comments";
+import { TextComment } from "../comments/index.js";
 
 type Indentation = "indent" | "dedent" | Text | number;
 

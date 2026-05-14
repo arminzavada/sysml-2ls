@@ -24,20 +24,20 @@ import {
     Type,
     TypeRelationship,
     Conjugation,
-} from "../../generated/ast";
-import { SubtypeKeys, SysMLInterface, SysMLTypeList } from "../../services/sysml-ast-reflection";
-import { enumerable, KeysMatching } from "../../utils/common";
-import { collectRedefinitions } from "../../utils/scope-util";
-import { ElementContainer } from "../containers";
-import { FeatureDirectionKind, getTypeClassifierString, TypeClassifier } from "../enums";
+} from "../../generated/ast.js";
+import { SubtypeKeys, SysMLInterface, SysMLTypeList } from "../../services/sysml-ast-reflection.js";
+import { enumerable, KeysMatching } from "../../utils/common.js";
+import { collectRedefinitions } from "../../utils/scope-util.js";
+import { ElementContainer } from "../containers.js";
+import { FeatureDirectionKind, getTypeClassifierString, TypeClassifier } from "../enums.js";
 import {
     BasicMetamodel,
     ElementID,
     ElementIDProvider,
     metamodelOf,
     MetatypeProto,
-} from "../metamodel";
-import { InputParametersMixin } from "../mixins";
+} from "../metamodel.js";
+import { InputParametersMixin } from "../mixins/index.js";
 import {
     Edge,
     EdgeContainer,
@@ -56,7 +56,7 @@ import {
     RestEdges,
     SpecializationMeta,
     TargetType,
-} from "./_internal";
+} from "./_internal.js";
 import { Class } from "ts-mixer/dist/types/types";
 
 export const ImplicitTypes = {
@@ -695,7 +695,7 @@ export class TypeMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Type {
         $meta: TypeMeta;
     }

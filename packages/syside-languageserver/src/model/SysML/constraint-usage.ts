@@ -20,12 +20,12 @@ import {
     ItemDefinition,
     ItemUsage,
     RequirementConstraintMembership,
-} from "../../generated/ast";
-import { RequirementConstraintKind } from "../enums";
-import { FeatureMeta } from "../KerML";
-import { BooleanExpressionMeta, BooleanExpressionOptions } from "../KerML/boolean-expression";
-import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel";
-import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage";
+} from "../../generated/ast.js";
+import { RequirementConstraintKind } from "../enums.js";
+import { FeatureMeta } from "../KerML/index.js";
+import { BooleanExpressionMeta, BooleanExpressionOptions } from "../KerML/boolean-expression.js";
+import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export interface ConstraintUsageOptions extends BooleanExpressionOptions, OccurrenceUsageOptions {}
@@ -100,7 +100,7 @@ export class ConstraintUsageMeta extends Mixin(BooleanExpressionMeta, Occurrence
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ConstraintUsage {
         $meta: ConstraintUsageMeta;
     }

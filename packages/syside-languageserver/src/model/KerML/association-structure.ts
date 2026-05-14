@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { AssociationStructure } from "../../generated/ast";
-import { TypeClassifier } from "../enums";
-import { metamodelOf } from "../metamodel";
-import { AssociationMeta, AssociationOptions, StructureMeta, StructureOptions } from "./_internal";
+import { AssociationStructure } from "../../generated/ast.js";
+import { TypeClassifier } from "../enums.js";
+import { metamodelOf } from "../metamodel.js";
+import { AssociationMeta, AssociationOptions, StructureMeta, StructureOptions } from "./_internal.js";
 
 export const ImplicitAssociationStructures = {
     base: "Objects::LinkObject",
@@ -36,7 +36,7 @@ export class AssociationStructMeta extends Mixin(StructureMeta, AssociationMeta)
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface AssociationStructure {
         $meta: AssociationStructMeta;
     }

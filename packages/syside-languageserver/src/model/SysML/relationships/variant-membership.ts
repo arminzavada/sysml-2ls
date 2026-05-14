@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { VariantMembership } from "../../../generated/ast";
-import { RelationshipOptionsBody } from "../../KerML";
-import { OwningMembershipMeta } from "../../KerML/relationships/owning-membership";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { UsageMeta } from "../usage";
-import { InterfaceUsageMeta } from "../interface-usage";
-import { DefinitionMeta } from "../definition";
-import { ActionUsageMeta } from "../action-usage";
+import { VariantMembership } from "../../../generated/ast.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { OwningMembershipMeta } from "../../KerML/relationships/owning-membership.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { UsageMeta } from "../usage.js";
+import { InterfaceUsageMeta } from "../interface-usage.js";
+import { DefinitionMeta } from "../definition.js";
+import { ActionUsageMeta } from "../action-usage.js";
 
 @metamodelOf(VariantMembership)
 export class VariantMembershipMeta<
@@ -45,7 +45,7 @@ export class VariantMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface VariantMembership {
         $meta: VariantMembershipMeta;
     }

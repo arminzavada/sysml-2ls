@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Membership } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { Membership } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ElementMeta,
     ElementOptions,
     NamespaceMeta,
     RelationshipMeta,
     RelationshipOptionsBody,
-} from "../_internal";
+} from "../_internal.js";
 
 export interface MembershipOptions<
     Target extends ElementMeta = ElementMeta,
@@ -87,7 +87,7 @@ export class MembershipMeta<T extends ElementMeta = ElementMeta> extends Relatio
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Membership {
         $meta: MembershipMeta;
     }

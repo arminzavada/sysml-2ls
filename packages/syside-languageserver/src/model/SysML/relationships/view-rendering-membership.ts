@@ -15,13 +15,13 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ViewRenderingMembership } from "../../../generated/ast";
-import { RelationshipOptionsBody } from "../../KerML";
-import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { RenderingUsageMeta } from "../rendering-usage";
-import { ViewDefinitionMeta } from "../view-definition";
-import { ViewUsageMeta } from "../view-usage";
+import { ViewRenderingMembership } from "../../../generated/ast.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { RenderingUsageMeta } from "../rendering-usage.js";
+import { ViewDefinitionMeta } from "../view-definition.js";
+import { ViewUsageMeta } from "../view-usage.js";
 
 @metamodelOf(ViewRenderingMembership)
 export class ViewRenderingMembershipMeta<
@@ -41,7 +41,7 @@ export class ViewRenderingMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ViewRenderingMembership {
         $meta: ViewRenderingMembershipMeta;
     }

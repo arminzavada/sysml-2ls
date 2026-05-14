@@ -17,11 +17,11 @@
 import { AstNode, AstNodeHoverProvider, getDocument, LangiumDocument, MaybePromise } from "langium";
 import { Hover, HoverParams } from "vscode-languageserver";
 import { Utils } from "vscode-uri";
-import { isElement, Membership, Type } from "../../generated/ast";
-import { ElementMeta } from "../../model";
-import { LanguageEvents } from "../events";
-import { SysMLDefaultServices } from "../services";
-import { NonNullable } from "../../utils";
+import { isElement, Membership, Type } from "../../generated/ast.js";
+import { ElementMeta } from "../../model/index.js";
+import { LanguageEvents } from "../events.js";
+import { SysMLDefaultServices } from "../services.js";
+import { NonNullable } from "../../utils/index.js";
 
 export class SysMLHoverProvider extends AstNodeHoverProvider {
     protected readonly events: LanguageEvents;

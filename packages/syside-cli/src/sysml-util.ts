@@ -20,7 +20,7 @@
  * terms of the MIT License, which is available in the project root.
  ******************************************************************************/
 
-import { extractDocument } from "./cli-util";
+import { extractDocument } from "./cli-util.js";
 import { CommandOptions } from "commander";
 import {
     StandardLibrary,
@@ -30,7 +30,7 @@ import {
     KerMLLanguageMetaData,
     SysMLLanguageMetaData,
 } from "syside-languageserver";
-import { SysMLNodeFileSystem } from "syside-languageserver/node";
+import { SysMLNodeFileSystem } from "syside-languageserver/node.js";
 // import chalk from 'chalk';
 
 interface Options extends CommandOptions {

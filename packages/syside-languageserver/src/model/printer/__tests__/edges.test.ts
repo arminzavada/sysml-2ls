@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { expectPrinted as expectPrintedAs, printKerMLElement } from "./utils";
+import { expectPrinted as expectPrintedAs, printKerMLElement } from "./utils.js";
 import {
     Specialization,
     Subclassification,
@@ -47,9 +47,9 @@ import {
     ViewRenderingMembership,
     OwningMembership,
     Feature,
-} from "../../../generated/ast";
-import { SubtypeKeys } from "../../../services";
-import { parsedNode } from "../../../testing/utils";
+} from "../../../generated/ast.js";
+import { SubtypeKeys } from "../../../services/index.js";
+import { parsedNode } from "../../../testing/utils.js";
 
 const expectPrinted: typeof expectPrintedAs = (text, context?) => {
     return expectPrintedAs(text, {

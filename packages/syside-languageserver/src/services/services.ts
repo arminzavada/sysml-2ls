@@ -15,30 +15,30 @@
  ********************************************************************************/
 
 import { DeepPartial, LangiumServices, LangiumSharedServices } from "langium";
-import { AstNodeLocator } from "langium/lib/workspace/ast-node-locator";
-import { MetamodelBuilder } from "./shared/workspace/metamodel-builder";
-import { SysMLParser } from "./parser/parser";
-import { SysMLConfig } from "./config";
-import { Statistics } from "../utils/common";
-import { SysMLLanguageServer } from "./lsp/language-server";
-import { SysMLDocumentFactory, SysMLDocuments } from "./shared/workspace/documents";
-import { SysMLConfigurationProvider } from "./shared/workspace/configuration-provider";
-import { SysMLIndexManager } from "./shared/workspace/index-manager";
-import { SysMLScopeProvider } from "./references/scope-provider";
-import { SysMLDocumentBuilder } from "./shared/workspace/document-builder";
-import { KerMLValidator } from "./validation/kerml-validator";
-import { SysMLValidator } from "./validation/sysml-validator";
-import { SysMLAstReflection } from "./sysml-ast-reflection";
-import { SysMLLinker } from "./references/linker";
-import { SysMLNodeDescriptionProvider } from "./shared/workspace/ast-descriptions";
-import { SysMLScopeComputation } from "./references/scope-computation";
-import { SysMLFileSystemProvider } from "./shared/workspace/file-system-provider";
-import { LanguageEvents, SharedEvents } from "./events";
-import { ExtensionManager } from "./shared/extension-manager";
-import { ModelUtil } from "./shared/model-utils";
-import { SysMLExpressionEvaluator } from "./shared/evaluator";
-import { BaseValidationRegistry } from "./validation/validation-registry";
-import { SysMLDocumentValidator } from "./validation";
+import { AstNodeLocator } from "langium/lib/workspace/ast-node-locator.js";
+import { MetamodelBuilder } from "./shared/workspace/metamodel-builder.js";
+import { SysMLParser } from "./parser/parser.js";
+import { SysMLConfig } from "./config.js";
+import { Statistics } from "../utils/common.js";
+import { SysMLLanguageServer } from "./lsp/language-server.js";
+import { SysMLDocumentFactory, SysMLDocuments } from "./shared/workspace/documents.js";
+import { SysMLConfigurationProvider } from "./shared/workspace/configuration-provider.js";
+import { SysMLIndexManager } from "./shared/workspace/index-manager.js";
+import { SysMLScopeProvider } from "./references/scope-provider.js";
+import { SysMLDocumentBuilder } from "./shared/workspace/document-builder.js";
+import { KerMLValidator } from "./validation/kerml-validator.js";
+import { SysMLValidator } from "./validation/sysml-validator.js";
+import { SysMLAstReflection } from "./sysml-ast-reflection.js";
+import { SysMLLinker } from "./references/linker.js";
+import { SysMLNodeDescriptionProvider } from "./shared/workspace/ast-descriptions.js";
+import { SysMLScopeComputation } from "./references/scope-computation.js";
+import { SysMLFileSystemProvider } from "./shared/workspace/file-system-provider.js";
+import { LanguageEvents, SharedEvents } from "./events.js";
+import { ExtensionManager } from "./shared/extension-manager.js";
+import { ModelUtil } from "./shared/model-utils.js";
+import { SysMLExpressionEvaluator } from "./shared/evaluator.js";
+import { BaseValidationRegistry } from "./validation/validation-registry.js";
+import { SysMLDocumentValidator } from "./validation/index.js";
 
 export type SysMLAddedSharedServices = {
     workspace: {

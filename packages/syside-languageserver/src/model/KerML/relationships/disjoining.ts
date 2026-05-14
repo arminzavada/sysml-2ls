@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Disjoining } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal";
+import { Disjoining } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
 @metamodelOf(Disjoining)
 export class DisjoiningMeta<T extends TypeMeta = TypeMeta> extends RelationshipMeta<T> {
@@ -57,7 +57,7 @@ export class DisjoiningMeta<T extends TypeMeta = TypeMeta> extends RelationshipM
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Disjoining {
         $meta: DisjoiningMeta;
     }

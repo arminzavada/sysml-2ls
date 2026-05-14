@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { LiteralInfinity } from "../../../generated/ast";
-import { metamodelOf } from "../../metamodel";
-import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal";
+import { LiteralInfinity } from "../../../generated/ast.js";
+import { metamodelOf } from "../../metamodel.js";
+import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal.js";
 
 export const ImplicitLiteralInfinities = {
     base: "Performances::literalIntegerEvaluations",
@@ -35,7 +35,7 @@ export class LiteralInfinityMeta extends LiteralExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface LiteralInfinity {
         $meta: LiteralInfinityMeta;
     }

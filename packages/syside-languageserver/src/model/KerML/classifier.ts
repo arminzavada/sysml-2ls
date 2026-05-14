@@ -15,16 +15,16 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Classifier, Inheritance, Subclassification } from "../../generated/ast";
-import { SubtypeKeys } from "../../services";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
+import { Classifier, Inheritance, Subclassification } from "../../generated/ast.js";
+import { SubtypeKeys } from "../../services/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import {
     ConjugationMeta,
     EdgeContainer,
     SubclassificationMeta,
     TypeMeta,
     TypeOptions,
-} from "./_internal";
+} from "./_internal.js";
 
 export const ImplicitClassifiers = {
     base: "Base::Anything",
@@ -54,7 +54,7 @@ export class ClassifierMeta extends TypeMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Classifier {
         $meta: ClassifierMeta;
     }

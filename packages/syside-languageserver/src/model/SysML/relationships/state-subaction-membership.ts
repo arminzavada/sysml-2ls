@@ -15,13 +15,13 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { StateSubactionKind, StateSubactionMembership } from "../../../generated/ast";
-import { RelationshipOptionsBody } from "../../KerML";
-import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ActionUsageMeta } from "../action-usage";
-import { StateDefinitionMeta } from "../state-definition";
-import { StateUsageMeta } from "../state-usage";
+import { StateSubactionKind, StateSubactionMembership } from "../../../generated/ast.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ActionUsageMeta } from "../action-usage.js";
+import { StateDefinitionMeta } from "../state-definition.js";
+import { StateUsageMeta } from "../state-usage.js";
 
 export interface StateSubactionMembershipOptions
     extends RelationshipOptionsBody<ActionUsageMeta, StateDefinitionMeta | StateUsageMeta> {
@@ -50,7 +50,7 @@ export class StateSubactionMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface StateSubactionMembership {
         $meta: StateSubactionMembershipMeta;
     }

@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { emptyDocument } from "../../testing/utils";
-import { CommentMeta, ElementMeta, NamespaceMeta } from "../KerML";
-import { ElementContainer, removeIfObserved, removeObserved } from "../containers";
-import { basicIdProvider } from "../metamodel";
-import { Namespace } from "../../generated/ast";
+import { emptyDocument } from "../../testing/utils.js";
+import { CommentMeta, ElementMeta, NamespaceMeta } from "../KerML/index.js";
+import { ElementContainer, removeIfObserved, removeObserved } from "../containers.js";
+import { basicIdProvider } from "../metamodel.js";
+import { Namespace } from "../../generated/ast.js";
 
 describe("Containers", () => {
     const id = basicIdProvider();

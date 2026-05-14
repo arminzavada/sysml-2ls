@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { OccurrenceDefinition } from "../../generated/ast";
-import { ClassMeta, ClassOptions } from "../KerML/class";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { DefinitionMeta, DefinitionOptions } from "./definition";
-import { EdgeContainer, OwningMembershipMeta, SubclassificationMeta } from "../KerML";
-import { LifeClassMeta } from "./life-class";
+import { OccurrenceDefinition } from "../../generated/ast.js";
+import { ClassMeta, ClassOptions } from "../KerML/class.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { DefinitionMeta, DefinitionOptions } from "./definition.js";
+import { EdgeContainer, OwningMembershipMeta, SubclassificationMeta } from "../KerML/index.js";
+import { LifeClassMeta } from "./life-class.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export interface OccurrenceDefinitionOptions extends ClassOptions, DefinitionOptions {}
@@ -68,7 +68,7 @@ export class OccurrenceDefinitionMeta extends Mixin(ClassMeta, DefinitionMeta) {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface OccurrenceDefinition {
         $meta: OccurrenceDefinitionMeta;
     }

@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { MultiplicityRange } from "../../generated/ast";
-import { enumerable, LazyGetter } from "../../utils";
-import { ElementIDProvider, metamodelOf, MetatypeProto } from "../metamodel";
+import { MultiplicityRange } from "../../generated/ast.js";
+import { enumerable, LazyGetter } from "../../utils/index.js";
+import { ElementIDProvider, metamodelOf, MetatypeProto } from "../metamodel.js";
 import {
     Edge,
     ElementParts,
@@ -25,7 +25,7 @@ import {
     MultiplicityMeta,
     MultiplicityOptions,
     OwningMembershipMeta,
-} from "./_internal";
+} from "./_internal.js";
 
 export const ImplicitMultiplicityRanges = {
     feature: "Base::naturals",
@@ -84,7 +84,7 @@ export class MultiplicityRangeMeta extends MultiplicityMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface MultiplicityRange {
         $meta: MultiplicityRangeMeta;
     }

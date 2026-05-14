@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { LangiumServices } from "langium";
-import { isRegexToken } from "langium/lib/grammar/generated/ast";
-import { createGrammarConfig, GrammarConfig } from "langium/lib/grammar/grammar-config";
+import { isRegexToken } from "langium/lib/grammar/generated/ast.js";
+import { createGrammarConfig, GrammarConfig } from "langium/lib/grammar/grammar-config.js";
 
 // Cached grammar config since it is identical between KerML and SysML. May be
 // helpful when/if we decide to create services per test case.

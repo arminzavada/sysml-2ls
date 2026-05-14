@@ -16,8 +16,8 @@
 
 import * as vscode from "vscode";
 import { LanguageClient } from "vscode-languageclient/browser";
-import { SysMLVSCodeClientExtender } from "./vscode";
-import { Extension, initialize, runExtensions } from "../common/extension";
+import { SysMLVSCodeClientExtender } from "./vscode.js";
+import { Extension, initialize, runExtensions } from "../common/extension.js";
 
 let data: {
     client: LanguageClient;

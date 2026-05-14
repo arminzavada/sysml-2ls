@@ -23,8 +23,8 @@ import {
     streamContents,
     streamCst,
 } from "langium";
-import { createParser } from "langium/lib/parser/parser-builder-base";
-import { CstNodeBuilder } from "langium/lib/parser/cst-node-builder";
+import { createParser } from "langium/lib/parser/parser-builder-base.js";
+import { CstNodeBuilder } from "langium/lib/parser/cst-node-builder.js";
 import {
     EndFeatureMembership,
     Expose,
@@ -46,13 +46,13 @@ import {
     TransitionUsage,
     Usage,
     WhileLoopActionUsage,
-} from "../../generated/ast";
-import { typeIndex, TypeMap } from "../../model/types";
-import { SysMLDefaultServices } from "../services";
-import { compareRanges } from "../../utils/ast-util";
-import { isRuleCall } from "langium/lib/grammar/generated/ast";
-import { SysMLType, SysMLTypeList } from "../sysml-ast-reflection";
-import { erase } from "../../utils/common";
+} from "../../generated/ast.js";
+import { typeIndex, TypeMap } from "../../model/types.js";
+import { SysMLDefaultServices } from "../services.js";
+import { compareRanges } from "../../utils/ast-util.js";
+import { isRuleCall } from "langium/lib/grammar/generated/ast.js";
+import { SysMLType, SysMLTypeList } from "../sysml-ast-reflection.js";
+import { erase } from "../../utils/common.js";
 
 const ClassificationTestOperator = ["istype", "hastype", "@", "as"];
 
@@ -302,7 +302,7 @@ export function prepareSysMLParser(services: SysMLDefaultServices): SysMLParser 
     return createParser(grammar, parser, lexer.definition);
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ElementReference {
         text?: string;
     }

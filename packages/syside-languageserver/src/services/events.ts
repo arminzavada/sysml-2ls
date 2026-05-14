@@ -16,8 +16,8 @@
 
 import { LangiumDocument, MaybePromise } from "langium";
 import { Disposable, HoverParams } from "vscode-languageserver";
-import { erase } from "../utils/common";
-import { SysMLConfig } from "./config";
+import { erase } from "../utils/common.js";
+import { SysMLConfig } from "./config.js";
 
 interface Callback<T extends unknown[], Return> {
     /**

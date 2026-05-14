@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing";
-import { Subsetting } from "../../../generated/ast";
+import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing/index.js";
+import { Subsetting } from "../../../generated/ast.js";
 
 test.concurrent.each(["subsets", ":>"])(
     "subsetting can be parsed with '%s'",

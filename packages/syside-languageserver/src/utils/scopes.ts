@@ -31,7 +31,7 @@ import {
     MembershipImport,
     Namespace,
     OwningMembership,
-} from "../generated/ast";
+} from "../generated/ast.js";
 import {
     ElementMeta,
     NamespaceMeta,
@@ -45,9 +45,9 @@ import {
     NamespaceImportMeta,
     namedMembership,
     BasicMetamodel,
-} from "../model";
-import { SysMLNodeDescription } from "../services/shared/workspace/ast-descriptions";
-import { SysMLType, SysMLTypeList } from "../services/sysml-ast-reflection";
+} from "../model/index.js";
+import { SysMLNodeDescription } from "../services/shared/workspace/ast-descriptions.js";
+import { SysMLType, SysMLTypeList } from "../services/sysml-ast-reflection.js";
 import {
     Visibility,
     ContentsOptions,
@@ -59,8 +59,8 @@ import {
     PARENT_CONTENTS_OPTIONS,
     streamParents,
     isVisibleWith,
-} from "./scope-util";
-import { NonNullable } from "./common";
+} from "./scope-util.js";
+import { NonNullable } from "./common.js";
 
 /**
  * Tuple of [exported name, membership]

@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Documentation } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { CommentMeta, CommentOptions } from "./_internal";
+import { Documentation } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { CommentMeta, CommentOptions } from "./_internal.js";
 
 export type DocumentationOptions = CommentOptions;
 
@@ -27,7 +27,7 @@ export class DocumentationMeta extends CommentMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Documentation {
         $meta: DocumentationMeta;
     }

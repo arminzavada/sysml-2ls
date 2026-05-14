@@ -16,7 +16,7 @@
 
 import { DefaultServiceRegistry } from "langium";
 import { URI } from "vscode-uri";
-import { SysMLDefaultServices } from "../services";
+import { SysMLDefaultServices } from "../services.js";
 
 export class SysMLServiceRegistry extends DefaultServiceRegistry {
     override getServices(uri: URI): SysMLDefaultServices {

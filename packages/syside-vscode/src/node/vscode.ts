@@ -20,7 +20,7 @@ import fs from "fs-extra";
 import path from "path";
 import type CONFIG from "../../package.json";
 import fetch from "node-fetch";
-import { BaseSysMLVSCodeClientExtender } from "../common/vscode";
+import { BaseSysMLVSCodeClientExtender } from "../common/vscode.js";
 
 type Options = keyof typeof CONFIG.contributes.configuration.properties;
 

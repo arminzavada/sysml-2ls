@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Namespace, Package, Type } from "../../generated/ast";
-import { childrenNames, directScopeNames, parseKerML, NO_ERRORS } from "../../testing";
+import { Namespace, Package, Type } from "../../generated/ast.js";
+import { childrenNames, directScopeNames, parseKerML, NO_ERRORS } from "../../testing/index.js";
 import { formatString } from "typescript-string-operations";
 import { stream } from "langium";
 

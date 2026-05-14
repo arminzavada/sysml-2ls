@@ -14,5 +14,5 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./server";
-export * from "./virtual-file-system-provider";
+export * from "./server.js";
+export * from "./virtual-file-system-provider.js";

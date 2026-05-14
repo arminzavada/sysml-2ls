@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { JoinNode } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ControlNodeMeta, ControlNodeOptions } from "./control-node";
+import { JoinNode } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ControlNodeMeta, ControlNodeOptions } from "./control-node.js";
 
 export type JoinNodeOptions = ControlNodeOptions;
 
@@ -29,7 +29,7 @@ export class JoinNodeMeta extends ControlNodeMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface JoinNode {
         $meta: JoinNodeMeta;
     }

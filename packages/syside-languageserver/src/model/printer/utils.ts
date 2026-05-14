@@ -16,7 +16,7 @@
 
 import { SemanticTokenModifiers } from "vscode-languageserver";
 import type { LangiumDocument } from "langium";
-import { ElementMeta, FeatureMeta, NamespaceMeta } from "../KerML";
+import { ElementMeta, FeatureMeta, NamespaceMeta } from "../KerML/index.js";
 import {
     HighlightCommand,
     Text,
@@ -36,9 +36,9 @@ import {
     TextComment,
     label,
     NonNullable,
-} from "../../utils";
-import { tokenType, tokenModifiers } from "../semantic-tokens";
-import { sanitizeName, unsanitizeName } from "../naming";
+} from "../../utils/index.js";
+import { tokenType, tokenModifiers } from "../semantic-tokens.js";
+import { sanitizeName, unsanitizeName } from "../naming.js";
 import {
     ElementReference,
     InlineExpression,
@@ -47,8 +47,8 @@ import {
     Namespace,
     OwningMembership,
     Relationship,
-} from "../../generated/ast";
-import { BasicMetamodel } from "../metamodel";
+} from "../../generated/ast.js";
+import { BasicMetamodel } from "../metamodel.js";
 import {
     DefaultElementPrinter,
     ElementPrinter,
@@ -57,13 +57,13 @@ import {
     defaultPrintNotes,
     printElementIgnored,
     printModelElement,
-} from "./print";
+} from "./print.js";
 import { CstNode, DocumentSegment, Grammar, findNodeForKeyword, stream, streamAst } from "langium";
-import { isKeyword } from "langium/lib/grammar/generated/ast";
-import { KerMLGrammar, SysMLGrammar } from "../../generated/grammar";
-import { PreservableFormatting } from "./format-options";
+import { isKeyword } from "langium/lib/grammar/generated/ast.js";
+import { KerMLGrammar, SysMLGrammar } from "../../generated/grammar.js";
+import { PreservableFormatting } from "./format-options.js";
 import assert from "assert";
-import { UsageMeta } from "../SysML";
+import { UsageMeta } from "../SysML/index.js";
 
 /**
  * Computes semantic highlighting for `element` that can be used with `text` and

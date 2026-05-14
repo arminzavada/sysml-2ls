@@ -25,15 +25,15 @@ import {
     isOperationCancelled,
 } from "langium";
 import { CancellationToken, Disposable } from "vscode-languageserver";
-import { BasicMetamodel, ElementMeta, typeIndex } from "../../model";
+import { BasicMetamodel, ElementMeta, typeIndex } from "../../model/index.js";
 import {
     SubtypeKeys,
     SysMLAstReflection,
     SysMLInterface,
     SysMLType,
     SysMLTypeList,
-} from "../sysml-ast-reflection";
-import { Element } from "../../generated/ast";
+} from "../sysml-ast-reflection.js";
+import { Element } from "../../generated/ast.js";
 
 type ModelAst<T extends BasicMetamodel = BasicMetamodel> = NonNullable<ReturnType<T["ast"]>>;
 

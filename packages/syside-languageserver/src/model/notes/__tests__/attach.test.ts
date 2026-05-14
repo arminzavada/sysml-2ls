@@ -22,11 +22,11 @@ import {
     NullExpression,
     OwningMembership,
     Subsetting,
-} from "../../../generated/ast";
-import { SysMLType } from "../../../services";
-import { parseKerML, parseSysML, recursiveObjectContaining } from "../../../testing";
-import { TextComment } from "../../../utils";
-import { attachNotes } from "../attach";
+} from "../../../generated/ast.js";
+import { SysMLType } from "../../../services/index.js";
+import { parseKerML, parseSysML, recursiveObjectContaining } from "../../../testing/index.js";
+import { TextComment } from "../../../utils/index.js";
+import { attachNotes } from "../attach.js";
 
 async function expectNotes(
     text: string,

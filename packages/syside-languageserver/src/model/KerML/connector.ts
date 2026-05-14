@@ -16,9 +16,9 @@
 
 import { AstNode, LangiumDocument, stream } from "langium";
 import { Mixin } from "ts-mixer";
-import { Connector, ReferenceSubsetting } from "../../generated/ast";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ConnectorMixin } from "../mixins/connector";
+import { Connector, ReferenceSubsetting } from "../../generated/ast.js";
+import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ConnectorMixin } from "../mixins/connector.js";
 import {
     Edge,
     ElementParts,
@@ -30,8 +30,8 @@ import {
     ReferenceSubsettingMeta,
     RelationshipMeta,
     TypeMeta,
-} from "./_internal";
-import { NonNullable, enumerable } from "../../utils";
+} from "./_internal.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
 import { Class } from "ts-mixer/dist/types/types";
 
 export const ImplicitConnectors = {
@@ -191,7 +191,7 @@ export class ConnectorMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Connector {
         $meta: ConnectorMeta;
     }

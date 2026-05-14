@@ -20,9 +20,9 @@ import {
     getDocument,
     LangiumDocument,
 } from "langium";
-import { AstNodeLocator } from "langium/lib/workspace/ast-node-locator";
-import { Element } from "../../../generated/ast";
-import { SysMLSharedServices } from "../../services";
+import { AstNodeLocator } from "langium/lib/workspace/ast-node-locator.js";
+import { Element } from "../../../generated/ast.js";
+import { SysMLSharedServices } from "../../services.js";
 
 export interface SysMLNodeDescription<T extends Element = Element> extends AstNodeDescription {
     node?: T;

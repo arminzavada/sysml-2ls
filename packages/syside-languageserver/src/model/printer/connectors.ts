@@ -28,7 +28,7 @@ import {
     softline,
     text,
     indentIfBreak,
-} from "../../utils";
+} from "../../utils/index.js";
 import {
     BindingConnectorMeta,
     ConnectorMeta,
@@ -39,9 +39,9 @@ import {
     ItemFlowMeta,
     ParameterMembershipMeta,
     SuccessionMeta,
-} from "../KerML";
-import { PreservableFormatting } from "./format-options";
-import { ModelPrinterContext, printModelElement, printModelElements } from "./print";
+} from "../KerML/index.js";
+import { PreservableFormatting } from "./format-options.js";
+import { ModelPrinterContext, printModelElement, printModelElements } from "./print.js";
 import {
     computeHighlighting,
     formatPreserved,
@@ -51,10 +51,10 @@ import {
     selectDeclarationKeyword,
     shouldIgnoreRef,
     throwError,
-} from "./utils";
-import * as ast from "../../generated/ast";
+} from "./utils.js";
+import * as ast from "../../generated/ast.js";
 import { findNodeForKeyword } from "langium";
-import { printTarget } from "./edges";
+import { printTarget } from "./edges.js";
 import {
     printSpecializationPart,
     defaultSpecializationGrouper,
@@ -64,13 +64,13 @@ import {
     featureValueAppender,
     printKerMLOwnedCrossFeature,
     printOwnedCrossMultiplicityPart,
-} from "./namespaces";
-import { BasicMetamodel } from "../metamodel";
+} from "./namespaces.js";
+import { BasicMetamodel } from "../metamodel.js";
 import {
     occurrenceUsageModifiers,
     sysmlUsageModifiers,
     printSysmlOwnedCrossFeature,
-} from "./definition-usages";
+} from "./definition-usages.js";
 import {
     AllocationUsageMeta,
     BindingConnectorAsUsageMeta,
@@ -78,8 +78,8 @@ import {
     ConnectorAsUsageMeta,
     FlowConnectionUsageMeta,
     InterfaceUsageMeta,
-} from "../SysML";
-import { actionBodyJoiner } from "./actions";
+} from "../SysML/index.js";
+import { actionBodyJoiner } from "./actions.js";
 
 type EndMemberArray = readonly EndFeatureMembershipMeta[] | readonly ParameterMembershipMeta[];
 type EndMember = EndMemberArray[number];

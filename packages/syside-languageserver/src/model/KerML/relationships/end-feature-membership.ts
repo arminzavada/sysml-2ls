@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { EndFeatureMembership } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { EndFeatureMembership } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     AssociationMeta,
     ConnectorMeta,
     FeatureMembershipMeta,
     FeatureMeta,
     RelationshipOptionsBody,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(EndFeatureMembership)
 export class EndFeatureMembershipMeta<
@@ -43,7 +43,7 @@ export class EndFeatureMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface EndFeatureMembership {
         $meta: EndFeatureMembershipMeta;
     }

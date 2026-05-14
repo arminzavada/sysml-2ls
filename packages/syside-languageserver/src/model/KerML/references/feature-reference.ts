@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { FeatureReference } from "../../../generated/ast";
-import { Target } from "../../../utils/containers";
-import { metamodelOf } from "../../metamodel";
-import { FeatureMeta, TypeReferenceMeta } from "./../_internal";
+import { FeatureReference } from "../../../generated/ast.js";
+import { Target } from "../../../utils/containers.js";
+import { metamodelOf } from "../../metamodel.js";
+import { FeatureMeta, TypeReferenceMeta } from "./../_internal.js";
 
 @metamodelOf(FeatureReference)
 export class FeatureReferenceMeta extends TypeReferenceMeta {
@@ -28,7 +28,7 @@ export class FeatureReferenceMeta extends TypeReferenceMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FeatureReference {
         $meta: FeatureReferenceMeta;
     }

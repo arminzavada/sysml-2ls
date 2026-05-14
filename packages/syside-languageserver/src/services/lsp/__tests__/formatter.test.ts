@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { FormattingOptions, Range, TextDocumentIdentifier } from "vscode-languageserver";
-import { SysMLFormatter } from "../formatter";
+import { SysMLFormatter } from "../formatter.js";
 import { TextDocument, TextEdit } from "vscode-languageserver-textdocument";
 import type { LangiumDocument, DeepPartial } from "langium";
-import { getRange, parseKerML, parseSysML, services } from "../../../testing";
-import { PrintRange } from "../../../model";
+import { getRange, parseKerML, parseSysML, services } from "../../../testing/index.js";
+import { PrintRange } from "../../../model/index.js";
 
 const unformattedSysMLExample = `
 part def Camera {private import PictureTaking::*;perform action takePicture[*] :> PictureTaking::takePicture;

@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./arithmetic";
-export * from "./base";
-export * from "./boolean";
-export * from "./control";
-export * from "./numerical";
-export * from "./sequence";
-export * from "./string";
+export * from "./arithmetic.js";
+export * from "./base.js";
+export * from "./boolean.js";
+export * from "./control.js";
+export * from "./numerical.js";
+export * from "./sequence.js";
+export * from "./string.js";

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { stream } from "langium";
-import { FeatureMeta, MembershipMeta, NamespaceMeta, TypeMeta } from "../KerML/_internal";
+import { FeatureMeta, MembershipMeta, NamespaceMeta, TypeMeta } from "../KerML/_internal.js";
 
 export class PositionalFeaturesBase {
     private _owned: FeatureMeta[] | undefined = undefined;

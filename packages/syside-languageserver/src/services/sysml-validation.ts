@@ -16,7 +16,7 @@
 
 import { AstNode, isAstNode } from "langium";
 import { Range } from "vscode-languageserver";
-import { ElementMeta } from "../model/KerML";
+import { ElementMeta } from "../model/KerML/index.js";
 
 export type AstErrorInformation = {
     /**

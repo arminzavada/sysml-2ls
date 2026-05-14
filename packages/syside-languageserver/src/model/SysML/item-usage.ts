@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ItemDefinition, ItemUsage } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage";
+import { ItemDefinition, ItemUsage } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.js";
 
 export type ItemUsageOptions = OccurrenceUsageOptions;
 
@@ -44,7 +44,7 @@ export class ItemUsageMeta extends OccurrenceUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ItemUsage {
         $meta: ItemUsageMeta;
     }

@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Subsetting } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { Subsetting } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     FeatureMeta,
     RelationshipMeta,
     RelationshipOptions,
     SpecializationMeta,
-} from "../_internal";
+} from "../_internal.js";
 
 @metamodelOf(Subsetting)
 // @ts-expect-error ignoring static inheritance error
@@ -44,7 +44,7 @@ export class SubsettingMeta<T extends FeatureMeta = FeatureMeta> extends Special
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Subsetting {
         $meta: SubsettingMeta;
     }

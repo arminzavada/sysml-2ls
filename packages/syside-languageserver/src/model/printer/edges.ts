@@ -31,7 +31,7 @@ import {
     literals,
     softline,
     text,
-} from "../../utils";
+} from "../../utils/index.js";
 import {
     ConjugationMeta,
     DependencyMeta,
@@ -57,7 +57,7 @@ import {
     SubsettingMeta,
     TargetType,
     TypeFeaturingMeta,
-} from "../KerML";
+} from "../KerML/index.js";
 import {
     ModelPrinterContext,
     PrintModelElementOptions,
@@ -65,22 +65,22 @@ import {
     assertSysML,
     defaultPrintNotes,
     printModelElement,
-} from "./print";
-import * as ast from "../../generated/ast";
+} from "./print.js";
+import * as ast from "../../generated/ast.js";
 import {
     formatPreserved,
     printAstReference,
     printIdentifiers,
     printReference,
     throwError,
-} from "./utils";
-import { DeclaredRelationshipFormat, PreservableFormatting } from "./format-options";
+} from "./utils.js";
+import { DeclaredRelationshipFormat, PreservableFormatting } from "./format-options.js";
 import {
     featureValueAppender,
     printChildrenBlock,
     printGenericFeature,
     printPrefixes,
-} from "./namespaces";
+} from "./namespaces.js";
 import { findNodeForKeyword } from "langium";
 import {
     ActorMembershipMeta,
@@ -94,14 +94,14 @@ import {
     UsageMeta,
     VariantMembershipMeta,
     ViewRenderingMembershipMeta,
-} from "../SysML";
+} from "../SysML/index.js";
 import {
     canPrintShorthandUsage,
     printGenericOccurrenceUsage,
     printShorthandUsage,
-} from "./definition-usages";
-import { printCondition } from "./actions";
-import { PREC_LEVELS, getOperator, precedence } from "./expressions";
+} from "./definition-usages.js";
+import { printCondition } from "./actions.js";
+import { PREC_LEVELS, getOperator, precedence } from "./expressions.js";
 
 /**
  * Prints `target` as a chained reference. Should only be used by feature

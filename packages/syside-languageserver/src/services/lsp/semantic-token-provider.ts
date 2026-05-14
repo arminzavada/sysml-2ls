@@ -31,7 +31,7 @@ import {
     TextualRepresentation,
     OperatorExpression,
     Membership,
-} from "../../generated/ast";
+} from "../../generated/ast.js";
 import {
     CancellationToken,
     SemanticTokens,
@@ -43,16 +43,16 @@ import {
     SemanticTokensRefreshRequest,
     ResponseError,
 } from "vscode-languageserver";
-import { SysMLDefaultServices } from "../services";
-import { TypeMap, typeIndex } from "../../model";
-import { SysMLDocumentBuilder } from "../shared/workspace/document-builder";
-import { SysMLType, SysMLTypeList } from "../sysml-ast-reflection";
+import { SysMLDefaultServices } from "../services.js";
+import { TypeMap, typeIndex } from "../../model/index.js";
+import { SysMLDocumentBuilder } from "../shared/workspace/document-builder.js";
+import { SysMLType, SysMLTypeList } from "../sysml-ast-reflection.js";
 import {
     SysMLSemanticTokenModifiers,
     SysMLSemanticTokenTypes,
     tokenModifiers,
     tokenType,
-} from "../../model/semantic-tokens";
+} from "../../model/semantic-tokens.js";
 
 type ReturnType = void | "prune" | undefined;
 

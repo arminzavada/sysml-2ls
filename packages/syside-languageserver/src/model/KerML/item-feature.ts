@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Inheritance, ItemFeature, Redefinition } from "../../generated/ast";
-import { SubtypeKeys } from "../../services/sysml-ast-reflection";
-import { metamodelOf } from "../metamodel";
-import { FeatureMeta, FeatureOptions } from "./_internal";
+import { Inheritance, ItemFeature, Redefinition } from "../../generated/ast.js";
+import { SubtypeKeys } from "../../services/sysml-ast-reflection.js";
+import { metamodelOf } from "../metamodel.js";
+import { FeatureMeta, FeatureOptions } from "./_internal.js";
 
 export const ItemFeatureImplicits = {
     payload: "Transfers::Transfer::item",
@@ -39,7 +39,7 @@ export class ItemFeatureMeta extends FeatureMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ItemFeature {
         $meta: ItemFeatureMeta;
     }

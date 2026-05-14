@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FramedConcernMembership } from "../../../generated/ast";
-import { RelationshipOptionsBody } from "../../KerML";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ConcernUsageMeta } from "../concern-usage";
-import { RequirementDefinitionMeta } from "../requirement-definition";
-import { RequirementConstraintMembershipMeta } from "./requirement-constraint-membership";
-import { RequirementUsageMeta } from "../requirement-usage";
-import { RequirementConstraintKind } from "../../enums";
+import { FramedConcernMembership } from "../../../generated/ast.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ConcernUsageMeta } from "../concern-usage.js";
+import { RequirementDefinitionMeta } from "../requirement-definition.js";
+import { RequirementConstraintMembershipMeta } from "./requirement-constraint-membership.js";
+import { RequirementUsageMeta } from "../requirement-usage.js";
+import { RequirementConstraintKind } from "../../enums.js";
 
 @metamodelOf(FramedConcernMembership)
 export class FramedConcernMembershipMeta<
@@ -52,7 +52,7 @@ export class FramedConcernMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FramedConcernMembership {
         $meta: FramedConcernMembershipMeta;
     }

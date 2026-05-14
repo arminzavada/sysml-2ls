@@ -18,14 +18,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { AstNode, CstNode, LangiumDocument } from "langium";
-import { typeIndex, TypeMap } from "./types";
-import { BuildState } from "./enums";
-import { SubtypeKeys, SysMLType, SysMLTypeList } from "../services/sysml-ast-reflection";
-import { Inheritance, NonOwnerType, Specialization } from "../generated/ast";
-import type { ElementMeta } from "./KerML";
+import { typeIndex, TypeMap } from "./types.js";
+import { BuildState } from "./enums.js";
+import { SubtypeKeys, SysMLType, SysMLTypeList } from "../services/sysml-ast-reflection.js";
+import { Inheritance, NonOwnerType, Specialization } from "../generated/ast.js";
+import type { ElementMeta } from "./KerML/index.js";
 import * as mixer from "ts-mixer";
 import { Class } from "ts-mixer/dist/types/types";
-import { TextComment } from "../utils";
+import { TextComment } from "../utils/index.js";
 
 export type ElementID = number;
 export type ElementIDProvider = () => ElementID;

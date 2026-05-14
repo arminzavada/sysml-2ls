@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { AnnotatingElement, Annotation } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { AnnotatingElement, Annotation } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     AnnotatingElementMeta,
     ElementMeta,
     RelationshipMeta,
     RelationshipOptionsBody,
-} from "../_internal";
+} from "../_internal.js";
 
 export type AnnotationOptions<Parent extends ElementMeta | undefined = ElementMeta> =
     Parent extends AnnotatingElementMeta | undefined
@@ -73,7 +73,7 @@ export class AnnotationMeta<T extends ElementMeta = ElementMeta> extends Relatio
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Annotation {
         $meta: AnnotationMeta;
     }

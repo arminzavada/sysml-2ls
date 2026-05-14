@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Behavior } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ClassMeta, ClassOptions } from "./_internal";
+import { Behavior } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ClassMeta, ClassOptions } from "./_internal.js";
 
 export const ImplicitBehaviors = {
     base: "Performances::Performance",
@@ -31,7 +31,7 @@ export class BehaviorMeta extends ClassMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Behavior {
         $meta: BehaviorMeta;
     }

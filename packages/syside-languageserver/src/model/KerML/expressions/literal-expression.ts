@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { LiteralExpression } from "../../../generated/ast";
+import { LiteralExpression } from "../../../generated/ast.js";
 import {
     ElementIDProvider,
     MetatypeProto,
     ModelElementOptions,
     metamodelOf,
-} from "../../metamodel";
-import { ExpressionMeta, RelationshipMeta } from "../_internal";
+} from "../../metamodel.js";
+import { ExpressionMeta, RelationshipMeta } from "../_internal.js";
 
 export const ImplicitLiteralExpressions = {
     base: "Performances::literalIntegerEvaluations",
@@ -50,7 +50,7 @@ export class LiteralExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface LiteralExpression {
         $meta: LiteralExpressionMeta;
     }

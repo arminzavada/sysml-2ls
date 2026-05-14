@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { MetadataFeature } from "../../generated/ast";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
+import { MetadataFeature } from "../../generated/ast.js";
+import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import {
     AnnotatingElementMeta,
     AnnotatingElementOptions,
     ElementParts,
     FeatureMeta,
     FeatureOptions,
-} from "./_internal";
+} from "./_internal.js";
 import { Class } from "ts-mixer/dist/types/types";
 import { AstNode, LangiumDocument } from "langium";
 
@@ -75,7 +75,7 @@ export class MetadataFeatureMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface MetadataFeature {
         $meta: MetadataFeatureMeta;
     }

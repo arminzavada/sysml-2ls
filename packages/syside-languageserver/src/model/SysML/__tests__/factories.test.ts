@@ -15,25 +15,25 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { basicIdProvider } from "../../metamodel";
-import { emptyDocument } from "../../../testing/utils";
+import { basicIdProvider } from "../../metamodel.js";
+import { emptyDocument } from "../../../testing/utils.js";
 import {
     MembershipExposeMeta,
     NamespaceExposeMeta,
     RequirementConstraintMembershipMeta,
     StateSubactionMembershipMeta,
-} from "../relationships";
-import { AssertConstraintUsageMeta } from "../assert-constraint-usage";
-import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "../connector-as-usage";
-import { UsageMeta, UsageOptions } from "../usage";
-import { PortDefinitionMeta } from "../port-definition";
-import { StateDefinitionMeta } from "../state-definition";
-import { StateUsageMeta } from "../state-usage";
-import { TransitionUsageMeta } from "../transition-usage";
-import { ReferenceUsage } from "../../../generated/ast";
-import { FlowConnectionUsageMeta } from "../flow-connection-usage";
-import { EndFeatureMembershipMeta, ItemFlowEndMeta, ParameterMembershipMeta } from "../../KerML";
-import { EventOccurrenceUsageMeta } from "../event-occurrence-usage";
+} from "../relationships/index.js";
+import { AssertConstraintUsageMeta } from "../assert-constraint-usage.js";
+import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "../connector-as-usage.js";
+import { UsageMeta, UsageOptions } from "../usage.js";
+import { PortDefinitionMeta } from "../port-definition.js";
+import { StateDefinitionMeta } from "../state-definition.js";
+import { StateUsageMeta } from "../state-usage.js";
+import { TransitionUsageMeta } from "../transition-usage.js";
+import { ReferenceUsage } from "../../../generated/ast.js";
+import { FlowConnectionUsageMeta } from "../flow-connection-usage.js";
+import { EndFeatureMembershipMeta, ItemFlowEndMeta, ParameterMembershipMeta } from "../../KerML/index.js";
+import { EventOccurrenceUsageMeta } from "../event-occurrence-usage.js";
 
 describe("Element factories", () => {
     const id = basicIdProvider();

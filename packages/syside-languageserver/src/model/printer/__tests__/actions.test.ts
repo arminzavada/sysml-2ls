@@ -28,12 +28,12 @@ import {
     StateSubactionMembership,
     TerminateActionUsage,
     WhileLoopActionUsage,
-} from "../../../generated/ast";
-import { parsedNode } from "../../../testing/utils";
-import { ExpressionMeta, FeatureValueMeta, ParameterMembershipMeta } from "../../KerML";
-import { AssignmentActionUsageMeta, ReferenceUsageMeta } from "../../SysML";
-import { basicIdProvider } from "../../metamodel";
-import { expectPrinted, printSysMLElement } from "./utils";
+} from "../../../generated/ast.js";
+import { parsedNode } from "../../../testing/utils.js";
+import { ExpressionMeta, FeatureValueMeta, ParameterMembershipMeta } from "../../KerML/index.js";
+import { AssignmentActionUsageMeta, ReferenceUsageMeta } from "../../SysML/index.js";
+import { basicIdProvider } from "../../metamodel.js";
+import { expectPrinted, printSysMLElement } from "./utils.js";
 
 describe("assignment actions", () => {
     it("should print fitting actions on one line", async () => {

@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Element } from "../../generated/ast";
-import { SubtypeKeys, SysMLInterface, SysMLType } from "../../services";
+import { Element } from "../../generated/ast.js";
+import { SubtypeKeys, SysMLInterface, SysMLType } from "../../services/index.js";
 import {
     Doc,
     PrintCommentContext,
@@ -32,13 +32,13 @@ import {
     streamModel,
     surroundWithComments,
     text,
-} from "../../utils";
-import { ElementMeta, ElementReferenceMeta } from "../KerML";
-import * as ast from "../../generated/ast";
+} from "../../utils/index.js";
+import { ElementMeta, ElementReferenceMeta } from "../KerML/index.js";
+import * as ast from "../../generated/ast.js";
 import { SemanticTokenTypes } from "vscode-languageserver";
-import { FormatOptions, DefaultFormatOptions } from "./format-options";
-import * as expr from "./expressions";
-import * as edges from "./edges";
+import { FormatOptions, DefaultFormatOptions } from "./format-options.js";
+import * as expr from "./expressions.js";
+import * as edges from "./edges.js";
 import {
     ElementRange,
     KerMLKeywords,
@@ -47,20 +47,20 @@ import {
     getElementStart,
     hasFormatIgnore,
     throwError,
-} from "./utils";
-import { BasicMetamodel } from "../metamodel";
+} from "./utils.js";
+import { BasicMetamodel } from "../metamodel.js";
 import assert from "assert";
 import {
     printDocumentation,
     printCommentElement,
     printTextualRepresentation,
     printMetadataFeature,
-} from "./annotating-elements";
-import * as nss from "./namespaces";
-import * as connectors from "./connectors";
-import * as sysml from "./definition-usages";
-import * as actions from "./actions";
-import * as successions from "./successions";
+} from "./annotating-elements.js";
+import * as nss from "./namespaces.js";
+import * as connectors from "./connectors.js";
+import * as sysml from "./definition-usages.js";
+import * as actions from "./actions.js";
+import * as successions from "./successions.js";
 
 export interface ModelPrinterContext extends PrintCommentContext {
     /**

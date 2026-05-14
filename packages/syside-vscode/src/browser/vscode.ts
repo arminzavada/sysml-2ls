@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { ClientConfig, MaybePromise } from "syside-languageclient";
-import { BaseSysMLVSCodeClientExtender } from "../common/vscode";
+import { BaseSysMLVSCodeClientExtender } from "../common/vscode.js";
 
 /**
  * SysML language client for browser VS Code.

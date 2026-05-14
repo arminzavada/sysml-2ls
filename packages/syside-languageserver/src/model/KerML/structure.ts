@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Structure } from "../../generated/ast";
-import { TypeClassifier } from "../enums";
-import { metamodelOf } from "../metamodel";
-import { ClassMeta, ClassOptions } from "./_internal";
+import { Structure } from "../../generated/ast.js";
+import { TypeClassifier } from "../enums.js";
+import { metamodelOf } from "../metamodel.js";
+import { ClassMeta, ClassOptions } from "./_internal.js";
 
 export const ImplicitStructures = {
     base: "Objects::Object",
@@ -34,7 +34,7 @@ export class StructureMeta extends ClassMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Structure {
         $meta: StructureMeta;
     }

@@ -39,15 +39,15 @@ import {
     Subsetting,
     Type,
     TypeFeaturing,
-} from "../../generated/ast";
-import { FeatureDirectionKind, TypeClassifier } from "../enums";
+} from "../../generated/ast.js";
+import { FeatureDirectionKind, TypeClassifier } from "../enums.js";
 import {
     BasicMetamodel,
     ElementIDProvider,
     GeneralType,
     MetatypeProto,
     metamodelOf,
-} from "../metamodel";
+} from "../metamodel.js";
 import {
     ConjugationMeta,
     Edge,
@@ -67,11 +67,11 @@ import {
     TypeMeta,
     TypeOptions,
     TypeRelationshipMeta,
-} from "./_internal";
-import { SubtypeKeys, SysMLType } from "../../services/sysml-ast-reflection";
+} from "./_internal.js";
+import { SubtypeKeys, SysMLType } from "../../services/sysml-ast-reflection.js";
 import { AstNode, EMPTY_STREAM, LangiumDocument, stream, Stream, TreeStreamImpl } from "langium";
-import { NonNullable, enumerable } from "../../utils";
-import { CrossSubsettingMeta } from "./relationships";
+import { NonNullable, enumerable } from "../../utils/index.js";
+import { CrossSubsettingMeta } from "./relationships/index.js";
 
 export const ImplicitFeatures = {
     base: "Base::things",
@@ -724,7 +724,7 @@ export class FeatureMeta extends TypeMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Feature {
         $meta: FeatureMeta;
     }

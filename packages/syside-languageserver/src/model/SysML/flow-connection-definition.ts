@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { FlowConnectionDefinition } from "../../generated/ast";
-import { InteractionMeta, InteractionOptions } from "../KerML/interaction";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition";
+import { FlowConnectionDefinition } from "../../generated/ast.js";
+import { InteractionMeta, InteractionOptions } from "../KerML/interaction.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export interface FlowConnectionDefinitionOptions
@@ -51,7 +51,7 @@ export class FlowConnectionDefinitionMeta extends Mixin(InteractionMeta, ActionD
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface FlowConnectionDefinition {
         $meta: FlowConnectionDefinitionMeta;
     }

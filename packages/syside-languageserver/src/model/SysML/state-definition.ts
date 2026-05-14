@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { StateDefinition } from "../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition";
+import { StateDefinition } from "../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition.js";
 
 export interface StateDefinitionOptions extends ActionDefinitionOptions {
     isParallel?: boolean;
@@ -45,7 +45,7 @@ export class StateDefinitionMeta extends ActionDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface StateDefinition {
         $meta: StateDefinitionMeta;
     }

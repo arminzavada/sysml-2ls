@@ -15,16 +15,16 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ParameterMembership } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+import { ParameterMembership } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ExpressionMeta,
     FeatureMembershipMeta,
     FeatureMeta,
     FunctionMeta,
     RelationshipOptions,
-} from "../_internal";
-import type { ActionUsageMeta } from "../../SysML";
+} from "../_internal.js";
+import type { ActionUsageMeta } from "../../SysML/index.js";
 
 @metamodelOf(ParameterMembership)
 export class ParameterMembershipMeta<
@@ -48,7 +48,7 @@ export class ParameterMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ParameterMembership {
         $meta: ParameterMembershipMeta;
     }

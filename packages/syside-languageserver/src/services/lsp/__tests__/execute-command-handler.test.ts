@@ -17,9 +17,9 @@
 import { LangiumDocument, ParseResult } from "langium";
 import { CancellationToken, Disposable, TextDocumentIdentifier } from "vscode-languageserver";
 import { URI } from "vscode-uri";
-import { parseKerML, parseSysML, services, TEST_BUILD_OPTIONS } from "../../../testing";
+import { parseKerML, parseSysML, services, TEST_BUILD_OPTIONS } from "../../../testing/index.js";
 import { RegisterTextEditorCommandsRequest } from "syside-protocol";
-import { SysMLExecuteCommandHandler } from "../execute-command-handler";
+import { SysMLExecuteCommandHandler } from "../execute-command-handler.js";
 
 const log = console.log;
 const mockLock = jest.fn();

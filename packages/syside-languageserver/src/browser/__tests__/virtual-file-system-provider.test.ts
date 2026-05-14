@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { STDLIB } from "syside-base";
-import { VirtualFileSystemProvider } from "../virtual-file-system-provider";
+import { VirtualFileSystemProvider } from "../virtual-file-system-provider.js";
 import { URI } from "vscode-uri";
 
 describe("Virtual FS provider", () => {

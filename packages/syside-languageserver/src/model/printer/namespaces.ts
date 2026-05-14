@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { findNodeForKeyword } from "langium";
-import * as ast from "../../generated/ast";
+import * as ast from "../../generated/ast.js";
 import {
     Doc,
     Text,
@@ -36,7 +36,7 @@ import {
     printInnerComments,
     softline,
     text,
-} from "../../utils";
+} from "../../utils/index.js";
 import {
     ElementMeta,
     ExpressionMeta,
@@ -51,9 +51,9 @@ import {
     RelationshipMeta,
     ResultExpressionMembershipMeta,
     TypeMeta,
-} from "../KerML";
-import { printChaining, printTarget } from "./edges";
-import { DeclaredRelationshipFormat } from "./format-options";
+} from "../KerML/index.js";
+import { printChaining, printTarget } from "./edges.js";
+import { DeclaredRelationshipFormat } from "./format-options.js";
 import {
     DefaultElementPrinter,
     ModelPrinterContext,
@@ -62,9 +62,9 @@ import {
     assertSysML,
     printModelElement,
     printModelElements,
-} from "./print";
-import { formatPreserved, printDescendant, printIdentifiers, throwError } from "./utils";
-import { printArgument } from "./expressions";
+} from "./print.js";
+import { formatPreserved, printDescendant, printIdentifiers, throwError } from "./utils.js";
+import { printArgument } from "./expressions.js";
 
 /**
  * Returns an array of printed metadata prefixes. Callee should handle

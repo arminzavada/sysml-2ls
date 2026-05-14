@@ -28,7 +28,7 @@ import {
     SendActionUsage,
     SuccessionAsUsage,
     TransitionUsage,
-} from "../../generated/ast";
+} from "../../generated/ast.js";
 import {
     Doc,
     KeysMatching,
@@ -44,7 +44,7 @@ import {
     literals,
     softline,
     text,
-} from "../../utils";
+} from "../../utils/index.js";
 import {
     ElementMeta,
     ExpressionMeta,
@@ -53,7 +53,7 @@ import {
     OwningMembershipMeta,
     ParameterMembershipMeta,
     ResultExpressionMembershipMeta,
-} from "../KerML";
+} from "../KerML/index.js";
 import {
     AcceptActionUsageMeta,
     ActionUsageMeta,
@@ -70,36 +70,36 @@ import {
     TerminateActionUsageMeta,
     TransitionUsageMeta,
     WhileLoopActionUsageMeta,
-} from "../SysML";
+} from "../SysML/index.js";
 import {
     basicOccurrenceUsageModifiers,
     printGenericOccurrenceDefinition,
     printGenericOccurrenceUsage,
     printPerformAction,
-} from "./definition-usages";
+} from "./definition-usages.js";
 import {
     printAsTarget,
     printAssignmentExpression,
     printChaining,
     printTarget,
     printWithVisibility,
-} from "./edges";
-import { getOperator } from "./expressions";
+} from "./edges.js";
+import { getOperator } from "./expressions.js";
 import {
     ChildrenJoiner,
     featureValueAppender,
     printChildrenBlock,
     printGenericFeature,
     printGenericNamespace,
-} from "./namespaces";
+} from "./namespaces.js";
 import {
     DefaultElementPrinter,
     ModelPrinterContext,
     assertSysML,
     printModelElement,
-} from "./print";
-import { successionAsUsageKind } from "./successions";
-import { assertMember, printDescendant, selectDeclarationKeyword, throwError } from "./utils";
+} from "./print.js";
+import { successionAsUsageKind } from "./successions.js";
+import { assertMember, printDescendant, selectDeclarationKeyword, throwError } from "./utils.js";
 
 function printNodeParameter<
     T extends ElementMeta,

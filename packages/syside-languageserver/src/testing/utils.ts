@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { createSysMLServices } from "../sysml-module";
-import { SysMLNodeFileSystem } from "../node/node-file-system-provider";
+import { createSysMLServices } from "../sysml-module.js";
+import { SysMLNodeFileSystem } from "../node/node-file-system-provider.js";
 import {
     DeepPartial,
     DocumentValidator,
@@ -23,15 +23,15 @@ import {
     ParseResult as LangiumParseResult,
 } from "langium";
 import { URI } from "vscode-uri";
-import { Element, Namespace } from "../../src/generated/ast";
+import { Element, Namespace } from "../../src/generated/ast.js";
 import { Diagnostic } from "vscode-languageserver";
-import { SysMLBuildOptions } from "../services/shared/workspace/document-builder";
-import { makeLinkingScope, makeScope, SysMLScope } from "../utils/scopes";
-import { SysMLConfig } from "../services/config";
-import { Visibility } from "../utils/scope-util";
+import { SysMLBuildOptions } from "../services/shared/workspace/document-builder.js";
+import { makeLinkingScope, makeScope, SysMLScope } from "../utils/scopes.js";
+import { SysMLConfig } from "../services/config.js";
+import { Visibility } from "../utils/scope-util.js";
 import { expect } from "@jest/globals";
-import { BasicMetamodel, PrintRange, RelationshipMeta, attachNotes } from "../model";
-import { SysMLType, SysMLInterface } from "../services";
+import { BasicMetamodel, PrintRange, RelationshipMeta, attachNotes } from "../model/index.js";
+import { SysMLType, SysMLInterface } from "../services/index.js";
 
 export const TEST_SERVER_OPTIONS: DeepPartial<SysMLConfig> = {
     // don't parse the standard library
@@ -186,7 +186,7 @@ export function findCursor(text: string): { text: string; cursor: number } {
     return { text, cursor };
 }
 
-declare module "../model/metamodel" {
+declare module "../model/metamodel.js" {
     interface BasicMetamodel {
         toJSON(): Record<string, unknown>;
     }

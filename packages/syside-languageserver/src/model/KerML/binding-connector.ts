@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { BindingConnector } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ConnectorMeta, ConnectorOptions } from "./_internal";
+import { BindingConnector } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ConnectorMeta, ConnectorOptions } from "./_internal.js";
 
 export const ImplicitBindingConnectors = {
     binary: "Links::selfLinks",
@@ -31,7 +31,7 @@ export class BindingConnectorMeta extends ConnectorMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface BindingConnector {
         $meta: BindingConnectorMeta;
     }

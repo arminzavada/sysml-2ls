@@ -23,8 +23,8 @@ import {
     EvaluatorFunction,
     ExpressionResult,
     ExpressionResultValue,
-} from "../../model";
-import { SysMLSharedServices } from "../services";
+} from "../../model/index.js";
+import { SysMLSharedServices } from "../services.js";
 
 export interface ExpressionError {
     /**

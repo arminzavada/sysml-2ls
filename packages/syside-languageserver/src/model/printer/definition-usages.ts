@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { findNodeForKeyword } from "langium";
-import * as ast from "../../generated/ast";
-import { Doc, group, indent, keyword, line, literals } from "../../utils";
-import { FeatureMeta, ResultExpressionMembershipMeta } from "../KerML";
+import * as ast from "../../generated/ast.js";
+import { Doc, group, indent, keyword, line, literals } from "../../utils/index.js";
+import { FeatureMeta, ResultExpressionMembershipMeta } from "../KerML/index.js";
 import {
     AssertConstraintUsageMeta,
     AttributeUsageMeta,
@@ -33,8 +33,8 @@ import {
     ReferenceUsageMeta,
     SatisfyRequirementUsageMeta,
     UsageMeta,
-} from "../SysML";
-import { PreservableFormatting } from "./format-options";
+} from "../SysML/index.js";
+import { PreservableFormatting } from "./format-options.js";
 import {
     TypePrinterOptions,
     defaultSpecializationGrouper,
@@ -44,12 +44,12 @@ import {
     printOwnedCrossFeaturePart,
     printSpecializationPart,
     printType,
-} from "./namespaces";
-import { ModelPrinterContext, assertSysML, printModelElement } from "./print";
-import { formatPreserved, shouldIgnoreRef, throwError } from "./utils";
-import { printTarget } from "./edges";
-import { actionBodyJoiner } from "./actions";
-import { SubtypeKeys } from "../../services";
+} from "./namespaces.js";
+import { ModelPrinterContext, assertSysML, printModelElement } from "./print.js";
+import { formatPreserved, shouldIgnoreRef, throwError } from "./utils.js";
+import { printTarget } from "./edges.js";
+import { actionBodyJoiner } from "./actions.js";
+import { SubtypeKeys } from "../../services/index.js";
 
 function usageBasicModifiers(node: UsageMeta, ignoreRef = false): Doc[] {
     const modifiers: Doc[] = [];

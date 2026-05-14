@@ -17,10 +17,10 @@
 /* eslint-disable quotes */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import { parseKerML, parseSysML, services } from "../../../../testing";
-import { Feature } from "../../../../generated/ast";
-import { ElementMeta, Evaluable, ExpressionResultValue } from "../../../../model";
-import { ExpressionError, SysMLExpressionEvaluator } from "../../evaluator";
+import { parseKerML, parseSysML, services } from "../../../../testing/index.js";
+import { Feature } from "../../../../generated/ast.js";
+import { ElementMeta, Evaluable, ExpressionResultValue } from "../../../../model/index.js";
+import { ExpressionError, SysMLExpressionEvaluator } from "../../evaluator.js";
 
 type CaseDescription = {
     type: string;

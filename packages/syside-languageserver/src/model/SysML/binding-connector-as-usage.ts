@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { BindingConnectorAsUsage } from "../../generated/ast";
-import { BindingConnectorMeta, BindingConnectorOptions } from "../KerML/binding-connector";
-import { metamodelOf } from "../metamodel";
-import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage";
+import { BindingConnectorAsUsage } from "../../generated/ast.js";
+import { BindingConnectorMeta, BindingConnectorOptions } from "../KerML/binding-connector.js";
+import { metamodelOf } from "../metamodel.js";
+import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
 
 export interface BindingConnectorAsUsageOptions
     extends BindingConnectorOptions,
@@ -34,7 +34,7 @@ export class BindingConnectorAsUsageMeta extends Mixin(BindingConnectorMeta, Con
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface BindingConnectorAsUsage {
         $meta: BindingConnectorAsUsageMeta;
     }

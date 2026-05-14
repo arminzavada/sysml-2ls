@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Feature, Type } from "../../../generated/ast";
+import { Feature, Type } from "../../../generated/ast.js";
 import {
     ElementMeta,
     FeatureChainExpressionMeta,
@@ -22,15 +22,15 @@ import {
     IMPLICIT_OPERATORS,
     OPERATORS,
     OperatorExpressionMeta,
-} from "../../KerML";
-import { RangeGenerator } from "../range";
+} from "../../KerML/index.js";
+import { RangeGenerator } from "../range.js";
 import {
     BuiltinFunction,
     ModelLevelExpressionEvaluator,
     ExpressionResult,
     functionFor,
     normalize,
-} from "../util";
+} from "../util.js";
 
 const PACKAGE = "ControlFunctions";
 

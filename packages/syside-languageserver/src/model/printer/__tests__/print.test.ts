@@ -15,17 +15,17 @@
  ********************************************************************************/
 
 import { LeafCstNode } from "langium";
-import { printDoc, text } from "../../../utils";
-import { LiteralInfinityMeta, NullExpressionMeta } from "../../KerML";
+import { printDoc, text } from "../../../utils/index.js";
+import { LiteralInfinityMeta, NullExpressionMeta } from "../../KerML/index.js";
 import {
     collectUnprintedNotes,
     defaultKerMLPrinterContext,
     defaultPrintNotes,
     defaultSysMLPrinterContext,
     printModelRange,
-} from "../print";
-import { expectPrinted, getPrintRange, makeEmpty } from "./utils";
-import { ElementRange } from "../utils";
+} from "../print.js";
+import { expectPrinted, getPrintRange, makeEmpty } from "./utils.js";
+import { ElementRange } from "../utils.js";
 
 describe("notes", () => {
     let warn: typeof console.warn;

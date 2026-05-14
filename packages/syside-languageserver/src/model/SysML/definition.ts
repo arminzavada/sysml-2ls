@@ -15,10 +15,10 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Definition, Usage } from "../../generated/ast";
-import { enumerable } from "../../utils";
-import { ClassifierMeta, ClassifierOptions } from "../KerML/classifier";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
+import { Definition, Usage } from "../../generated/ast.js";
+import { enumerable } from "../../utils/index.js";
+import { ClassifierMeta, ClassifierOptions } from "../KerML/classifier.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 
 export interface DefinitionOptions extends ClassifierOptions {
     isVariation?: boolean;
@@ -74,7 +74,7 @@ export class DefinitionMeta extends ClassifierMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Definition {
         $meta: DefinitionMeta;
     }

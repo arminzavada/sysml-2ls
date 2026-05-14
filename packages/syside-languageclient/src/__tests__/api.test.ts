@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { LanguageClientExtension } from "../api";
+import { LanguageClientExtension } from "../api.js";
 
 describe("Language client extension", () => {
     const keys = ["onBeforeStart", "onStarted", "onDeactivate"];

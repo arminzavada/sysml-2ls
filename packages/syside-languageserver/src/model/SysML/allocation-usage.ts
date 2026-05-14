@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AllocationUsage } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ConnectionUsageMeta, ConnectionUsageOptions } from "./connection-usage";
+import { AllocationUsage } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ConnectionUsageMeta, ConnectionUsageOptions } from "./connection-usage.js";
 
 export type AllocationUsageOptions = ConnectionUsageOptions;
 
@@ -30,7 +30,7 @@ export class AllocationUsageMeta extends ConnectionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface AllocationUsage {
         $meta: AllocationUsageMeta;
     }

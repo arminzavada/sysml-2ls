@@ -14,14 +14,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { IndexExpression } from "../../../generated/ast";
-import { metamodelOf } from "../../metamodel";
+import { IndexExpression } from "../../../generated/ast.js";
+import { metamodelOf } from "../../metamodel.js";
 import {
     AnyOperator,
     IMPLICIT_OPERATORS,
     OperatorExpressionMeta,
     OperatorExpressionOptions,
-} from "../_internal";
+} from "../_internal.js";
 
 export interface IndexExpressionOptions extends OperatorExpressionOptions {
     operator?: never;
@@ -38,7 +38,7 @@ export class IndexExpressionMeta extends OperatorExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface IndexExpression {
         $meta: IndexExpressionMeta;
     }

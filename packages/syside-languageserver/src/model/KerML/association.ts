@@ -15,17 +15,17 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { Association } from "../../generated/ast";
-import { TypeClassifier } from "../enums";
-import { ElementID, metamodelOf } from "../metamodel";
-import { ConnectorMixin } from "../mixins/connector";
+import { Association } from "../../generated/ast.js";
+import { TypeClassifier } from "../enums.js";
+import { ElementID, metamodelOf } from "../metamodel.js";
+import { ConnectorMixin } from "../mixins/connector.js";
 import {
     ClassifierMeta,
     ClassifierOptions,
     InheritanceMeta,
     RelationshipMeta,
     TypeMeta,
-} from "./_internal";
+} from "./_internal.js";
 import { Class } from "ts-mixer/dist/types/types";
 
 export const ImplicitAssociations = {
@@ -63,7 +63,7 @@ export class AssociationMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Association {
         $meta: AssociationMeta;
     }

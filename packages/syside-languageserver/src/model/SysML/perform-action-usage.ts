@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { PerformActionUsage, ReferenceSubsetting } from "../../generated/ast";
-import { FeatureMeta } from "../KerML";
-import { GeneralType, metamodelOf } from "../metamodel";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
-import { EventOccurrenceUsageMeta, EventOccurrenceUsageOptions } from "./event-occurrence-usage";
-import { enumerable } from "../../utils";
+import { PerformActionUsage, ReferenceSubsetting } from "../../generated/ast.js";
+import { FeatureMeta } from "../KerML/index.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { EventOccurrenceUsageMeta, EventOccurrenceUsageOptions } from "./event-occurrence-usage.js";
+import { enumerable } from "../../utils/index.js";
 
 export interface PerformActionUsageOptions
     extends EventOccurrenceUsageOptions,
@@ -54,7 +54,7 @@ export class PerformActionUsageMeta extends Mixin(EventOccurrenceUsageMeta, Acti
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface PerformActionUsage {
         $meta: PerformActionUsageMeta;
     }

@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureMembership } from "../../../generated/ast";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel";
-import { FeatureMeta } from "../feature";
-import { FeaturingMeta } from "./featuring";
-import { OwningMembershipMeta } from "./owning-membership";
-import { NamespaceMeta } from "../namespace";
-import { RelationshipOptionsBody } from "../relationship";
-import { ElementMeta } from "../_internal";
+import { FeatureMembership } from "../../../generated/ast.js";
+import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
+import { FeatureMeta } from "../feature.js";
+import { FeaturingMeta } from "./featuring.js";
+import { OwningMembershipMeta } from "./owning-membership.js";
+import { NamespaceMeta } from "../namespace.js";
+import { RelationshipOptionsBody } from "../relationship.js";
+import { ElementMeta } from "../_internal.js";
 
 export interface FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta>
     extends OwningMembershipMeta<T>,
@@ -66,7 +66,7 @@ export class FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta> {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface FeatureMembership {
         $meta: FeatureMembershipMeta;
     }

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { MultiMap, Properties, Stream, stream } from "langium";
-import * as ast from "../../generated/ast";
+import * as ast from "../../generated/ast.js";
 import {
     AnyOperator,
     AssociationMeta,
@@ -59,18 +59,18 @@ import {
     SubsettingMeta,
     typeArgument,
     TypeMeta,
-} from "../../model";
-import { SysMLSharedServices } from "../services";
-import { SysMLIndexManager } from "../shared/workspace/index-manager";
-import { SubtypeKeys, SysMLInterface, SysMLType } from "../sysml-ast-reflection";
+} from "../../model/index.js";
+import { SysMLSharedServices } from "../services.js";
+import { SysMLIndexManager } from "../shared/workspace/index-manager.js";
+import { SubtypeKeys, SysMLInterface, SysMLType } from "../sysml-ast-reflection.js";
 import {
     ModelDiagnosticInfo,
     ModelValidationAcceptor,
     Severity,
     validateKerML,
-} from "./validation-registry";
-import { NonNullable, Visibility } from "../../utils";
-import { SysMLFileSystemProvider } from "../shared";
+} from "./validation-registry.js";
+import { NonNullable, Visibility } from "../../utils/index.js";
+import { SysMLFileSystemProvider } from "../shared/index.js";
 
 /**
  * Implementation of custom validations.

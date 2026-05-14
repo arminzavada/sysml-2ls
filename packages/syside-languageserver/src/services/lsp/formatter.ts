@@ -33,11 +33,11 @@ import {
     defaultSysMLPrinterContext,
     printModelElement,
     printModelRange,
-} from "../../model";
+} from "../../model/index.js";
 import { Utils } from "vscode-uri";
-import { PrinterConfig, printDoc } from "../../utils";
-import { SysMLConfigurationProvider } from "../shared";
-import { SysMLDefaultServices } from "../services";
+import { PrinterConfig, printDoc } from "../../utils/index.js";
+import { SysMLConfigurationProvider } from "../shared/index.js";
+import { SysMLDefaultServices } from "../services.js";
 
 export type integer = number;
 export interface LanguageSettings {

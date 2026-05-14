@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { TriggerInvocationExpression } from "../../../generated/ast";
+import { TriggerInvocationExpression } from "../../../generated/ast.js";
 import {
     InvocationExpressionMeta,
     InvocationExpressionOptions,
-} from "../../KerML/expressions/invocation-expression";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
+} from "../../KerML/expressions/invocation-expression.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 
 export type TriggerInvocationExpressionKind = "when" | "at" | "after";
 
@@ -51,7 +51,7 @@ export class TriggerInvocationExpressionMeta extends InvocationExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface TriggerInvocationExpression {
         $meta: TriggerInvocationExpressionMeta;
     }

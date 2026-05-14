@@ -38,8 +38,8 @@ import {
     MetadataUsage,
     TextualRepresentation,
     CrossSubsetting,
-} from "../../generated/ast";
-import { typeIndex } from "../types";
+} from "../../generated/ast.js";
+import { typeIndex } from "../types.js";
 
 test.concurrent.each([
     [Element, []],

@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { DefaultFormatOptions, FormatOptions } from "../model";
-import { DeepReadonly, DeepRequired } from "../utils/common";
-import { LanguageSettings } from "./lsp";
-import { SysMLBuildOptions } from "./shared/workspace/document-builder";
+import { DefaultFormatOptions, FormatOptions } from "../model/index.js";
+import { DeepReadonly, DeepRequired } from "../utils/common.js";
+import { LanguageSettings } from "./lsp/index.js";
+import { SysMLBuildOptions } from "./shared/workspace/document-builder.js";
 
 export interface FormatterConfig extends FormatOptions, LanguageSettings {}
 

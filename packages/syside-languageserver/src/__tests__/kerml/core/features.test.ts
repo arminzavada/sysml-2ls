@@ -24,7 +24,7 @@ import {
     childrenNames,
     sanitizeTree,
     recursiveObjectContaining,
-} from "../../../testing";
+} from "../../../testing/index.js";
 import {
     Feature,
     MultiplicityRange,
@@ -34,8 +34,8 @@ import {
     FeatureChaining,
     FeatureInverting,
     TypeFeaturing,
-} from "../../../generated/ast";
-import { Visibility } from "../../../utils/scope-util";
+} from "../../../generated/ast.js";
+import { Visibility } from "../../../utils/scope-util.js";
 
 test.concurrent.each([
     "typed by A, B subsets f redefines g",

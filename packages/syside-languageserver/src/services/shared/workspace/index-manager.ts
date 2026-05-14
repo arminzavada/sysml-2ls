@@ -24,13 +24,13 @@ import {
 } from "langium";
 import { CancellationToken } from "vscode-languageserver";
 import { URI } from "vscode-uri";
-import { Type, Namespace, Membership } from "../../../generated/ast";
-import { ElementMeta, NamedChild, sanitizeName, TypeMeta } from "../../../model";
-import { getLanguageId, GlobalScope } from "../../../utils/global-scope";
-import { makeScope, SysMLScope } from "../../../utils/scopes";
-import { SysMLScopeComputation } from "../../references/scope-computation";
-import { SysMLDefaultServices } from "../../services";
-import { SysMLNodeDescription } from "./ast-descriptions";
+import { Type, Namespace, Membership } from "../../../generated/ast.js";
+import { ElementMeta, NamedChild, sanitizeName, TypeMeta } from "../../../model/index.js";
+import { getLanguageId, GlobalScope } from "../../../utils/global-scope.js";
+import { makeScope, SysMLScope } from "../../../utils/scopes.js";
+import { SysMLScopeComputation } from "../../references/scope-computation.js";
+import { SysMLDefaultServices } from "../../services.js";
+import { SysMLNodeDescription } from "./ast-descriptions.js";
 
 /**
  * Overrides the default IndexManager from Langium to work with members imported

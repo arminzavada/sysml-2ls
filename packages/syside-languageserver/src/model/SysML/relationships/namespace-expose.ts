@@ -15,13 +15,13 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { NamespaceExpose } from "../../../generated/ast";
-import { NamespaceMeta } from "../../KerML/namespace";
-import { NamespaceImportMeta } from "../../KerML/relationships/namespace-import";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel";
-import { ExposeMeta } from "./expose";
-import { ImportOptions } from "../../KerML";
-import { ViewUsageMeta } from "../view-usage";
+import { NamespaceExpose } from "../../../generated/ast.js";
+import { NamespaceMeta } from "../../KerML/namespace.js";
+import { NamespaceImportMeta } from "../../KerML/relationships/namespace-import.js";
+import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
+import { ExposeMeta } from "./expose.js";
+import { ImportOptions } from "../../KerML/index.js";
+import { ViewUsageMeta } from "../view-usage.js";
 
 export interface NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta>
     extends ExposeMeta<T>,
@@ -52,7 +52,7 @@ export class NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta> {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface NamespaceExpose {
         $meta: NamespaceExposeMeta;
     }

@@ -22,9 +22,9 @@ import {
     RequirementDefinition,
     RequirementUsage,
     StakeholderMembership,
-} from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ItemUsageMeta, ItemUsageOptions } from "./item-usage";
+} from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ItemUsageMeta, ItemUsageOptions } from "./item-usage.js";
 
 export type PartUsageOptions = ItemUsageOptions;
 
@@ -75,7 +75,7 @@ export class PartUsageMeta extends ItemUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface PartUsage {
         $meta: PartUsageMeta;
     }

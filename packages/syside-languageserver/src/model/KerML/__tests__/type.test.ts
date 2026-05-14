@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { NO_ERRORS, parseKerML } from "../../../testing";
-import { TypeMeta } from "../type";
+import { NO_ERRORS, parseKerML } from "../../../testing/index.js";
+import { TypeMeta } from "../type.js";
 
 describe("Conformance", () => {
     test("types conform to supertype qualified names", async () => {

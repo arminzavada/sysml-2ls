@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { FlowConnectionUsage } from "../../generated/ast";
-import { ItemFlowMeta, ItemFlowOptions } from "../KerML/item-flow";
-import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
-import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage";
+import { FlowConnectionUsage } from "../../generated/ast.js";
+import { ItemFlowMeta, ItemFlowOptions } from "../KerML/item-flow.js";
+import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
 import { AstNode, LangiumDocument } from "langium";
 import {
     Edge,
@@ -28,9 +28,9 @@ import {
     FeatureMeta,
     ItemFlowEndMeta,
     ParameterMembershipMeta,
-} from "../KerML";
-import { EventOccurrenceUsageMeta } from "./event-occurrence-usage";
-import { enumerable } from "../../utils";
+} from "../KerML/index.js";
+import { EventOccurrenceUsageMeta } from "./event-occurrence-usage.js";
+import { enumerable } from "../../utils/index.js";
 
 export interface FlowConnectionUsageOptions
     extends ConnectorAsUsageOptions,
@@ -148,7 +148,7 @@ export class FlowConnectionUsageMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface FlowConnectionUsage {
         $meta: FlowConnectionUsageMeta;
     }

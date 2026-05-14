@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ExhibitStateUsage, ReferenceSubsetting } from "../../generated/ast";
-import { FeatureMeta } from "../KerML";
-import { GeneralType, metamodelOf } from "../metamodel";
-import { PerformActionUsageMeta, PerformActionUsageOptions } from "./perform-action-usage";
-import { StateUsageMeta, StateUsageOptions } from "./state-usage";
-import { enumerable } from "../../utils";
+import { ExhibitStateUsage, ReferenceSubsetting } from "../../generated/ast.js";
+import { FeatureMeta } from "../KerML/index.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
+import { PerformActionUsageMeta, PerformActionUsageOptions } from "./perform-action-usage.js";
+import { StateUsageMeta, StateUsageOptions } from "./state-usage.js";
+import { enumerable } from "../../utils/index.js";
 
 export interface ExhibitStateUsageOptions extends PerformActionUsageOptions, StateUsageOptions {}
 
@@ -51,7 +51,7 @@ export class ExhibitStateUsageMeta extends Mixin(PerformActionUsageMeta, StateUs
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ExhibitStateUsage {
         $meta: ExhibitStateUsageMeta;
     }

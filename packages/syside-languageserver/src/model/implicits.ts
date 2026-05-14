@@ -14,13 +14,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { IMPLICIT_MAP } from "./metamodel";
-import { typeIndex } from "./types";
-import { SysMLType } from "../services/sysml-ast-reflection";
+import { IMPLICIT_MAP } from "./metamodel.js";
+import { typeIndex } from "./types.js";
+import { SysMLType } from "../services/sysml-ast-reflection.js";
 
 //! import metamodel types last to let decorators run
-import "./KerML";
-import "./SysML";
+import "./KerML/index.js";
+import "./SysML/index.js";
 
 /**
  * Index class for implicit specializations

@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SuccessionFlowConnectionUsage } from "../../generated/ast";
-import { SuccessionItemFlowMeta, SuccessionItemFlowOptions } from "../KerML/succession-item-flow";
-import { metamodelOf } from "../metamodel";
-import { FlowConnectionUsageMeta, FlowConnectionUsageOptions } from "./flow-connection-usage";
-import { Edge, EndFeatureMembershipMeta, ItemFlowEndMeta } from "../KerML";
+import { SuccessionFlowConnectionUsage } from "../../generated/ast.js";
+import { SuccessionItemFlowMeta, SuccessionItemFlowOptions } from "../KerML/succession-item-flow.js";
+import { metamodelOf } from "../metamodel.js";
+import { FlowConnectionUsageMeta, FlowConnectionUsageOptions } from "./flow-connection-usage.js";
+import { Edge, EndFeatureMembershipMeta, ItemFlowEndMeta } from "../KerML/index.js";
 
 export interface SuccessionFlowConnectionUsageOptions
     extends SuccessionItemFlowOptions,
@@ -40,7 +40,7 @@ export class SuccessionFlowConnectionUsageMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface SuccessionFlowConnectionUsage {
         $meta: SuccessionFlowConnectionUsageMeta;
     }

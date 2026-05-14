@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { stream } from "langium";
-import * as ast from "../../generated/ast";
+import * as ast from "../../generated/ast.js";
 import {
     AcceptActionUsageMeta,
     ActionUsageMeta,
@@ -88,11 +88,11 @@ import {
     ViewRenderingMembershipMeta,
     ViewUsageMeta,
     ViewpointUsageMeta,
-} from "../../model";
-import { KeysMatching } from "../../utils";
-import { SubtypeKeys, SysMLType } from "../sysml-ast-reflection";
-import { KerMLValidator } from "./kerml-validator";
-import { ModelDiagnosticInfo, ModelValidationAcceptor, validateSysML } from "./validation-registry";
+} from "../../model/index.js";
+import { KeysMatching } from "../../utils/index.js";
+import { SubtypeKeys, SysMLType } from "../sysml-ast-reflection.js";
+import { KerMLValidator } from "./kerml-validator.js";
+import { ModelDiagnosticInfo, ModelValidationAcceptor, validateSysML } from "./validation-registry.js";
 
 /**
  * Implementation of custom validations.

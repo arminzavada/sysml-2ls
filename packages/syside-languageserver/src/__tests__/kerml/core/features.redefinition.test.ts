@@ -21,9 +21,9 @@ import {
     parseKerML,
     NO_ERRORS,
     childrenNames,
-} from "../../../testing";
-import { Redefinition, Feature } from "../../../generated/ast";
-import { Visibility } from "../../../utils/scope-util";
+} from "../../../testing/index.js";
+import { Redefinition, Feature } from "../../../generated/ast.js";
+import { Visibility } from "../../../utils/scope-util.js";
 
 test.concurrent.each(["redefines", ":>>"])(
     "redefinition can be parsed with '%s'",

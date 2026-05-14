@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { RangeGenerator } from "../range";
+import { RangeGenerator } from "../range.js";
 
 describe("Range generator tests", () => {
     test("length is calculated for valid ranges", async () => {

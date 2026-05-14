@@ -14,11 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { parseKerML, parseSysML } from "../../../testing";
-import { services } from "../../../testing";
+import { parseKerML, parseSysML } from "../../../testing/index.js";
+import { services } from "../../../testing/index.js";
 import { TextDocumentIdentifier, SemanticTokens } from "vscode-languageserver";
 import { AllSemanticTokenTypes, AllSemanticTokenModifiers } from "langium";
-import { flagNames } from "../../../utils/common";
+import { flagNames } from "../../../utils/common.js";
 
 interface Case {
     text: string;

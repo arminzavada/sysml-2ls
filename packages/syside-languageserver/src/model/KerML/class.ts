@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Class } from "../../generated/ast";
-import { TypeClassifier } from "../enums";
-import { metamodelOf } from "../metamodel";
-import { ClassifierMeta, ClassifierOptions } from "./_internal";
+import { Class } from "../../generated/ast.js";
+import { TypeClassifier } from "../enums.js";
+import { metamodelOf } from "../metamodel.js";
+import { ClassifierMeta, ClassifierOptions } from "./_internal.js";
 
 export const ImplicitClasses = {
     base: "Occurrences::Occurrence",
@@ -34,7 +34,7 @@ export class ClassMeta extends ClassifierMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Class {
         $meta: ClassMeta;
     }

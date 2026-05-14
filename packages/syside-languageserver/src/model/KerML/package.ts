@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Package } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ElementMeta, NamespaceMeta, NamespaceOptions } from "./_internal";
+import { Package } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ElementMeta, NamespaceMeta, NamespaceOptions } from "./_internal.js";
 
 export type PackageOptions = NamespaceOptions;
 
@@ -31,7 +31,7 @@ export class PackageMeta extends NamespaceMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface Package {
         $meta: PackageMeta;
     }

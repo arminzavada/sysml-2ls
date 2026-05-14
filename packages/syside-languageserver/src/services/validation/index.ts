@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./document-validator";
-export * from "./kerml-validation-registry";
-export * from "./kerml-validator";
-export * from "./sysml-validation-registry";
-export * from "./sysml-validator";
-export * from "./validation-registry";
+export * from "./document-validator.js";
+export * from "./kerml-validation-registry.js";
+export * from "./kerml-validator.js";
+export * from "./sysml-validation-registry.js";
+export * from "./sysml-validator.js";
+export * from "./validation-registry.js";

@@ -26,7 +26,7 @@ import {
     isLeafCstNode,
     streamCst,
 } from "langium";
-import { distance, newLineCount } from "../cst-util";
+import { distance, newLineCount } from "../cst-util.js";
 import {
     Doc,
     breakParent,
@@ -39,9 +39,9 @@ import {
     literalline,
     literals,
     text,
-} from "../printer/doc";
+} from "../printer/doc.js";
 import { SemanticTokenTypes } from "vscode-languageserver";
-import { getNextNode, getPreviousNode } from "../cst-util";
+import { getNextNode, getPreviousNode } from "../cst-util.js";
 
 export type TextCommentKind = "line" | "block";
 

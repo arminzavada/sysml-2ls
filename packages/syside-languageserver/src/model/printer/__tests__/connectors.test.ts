@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { DeepPartial } from "langium";
-import { SubtypeKeys } from "../../../services";
-import { PrinterTestContext, expectPrinted as expectPrintedAs } from "./utils";
+import { SubtypeKeys } from "../../../services/index.js";
+import { PrinterTestContext, expectPrinted as expectPrintedAs } from "./utils.js";
 import {
     Element,
     Connector,
@@ -30,7 +30,7 @@ import {
     SuccessionFlowConnectionUsage,
     AllocationUsage,
     InterfaceUsage,
-} from "../../../generated/ast";
+} from "../../../generated/ast.js";
 
 describe("connectors", () => {
     const expectPrinted = (

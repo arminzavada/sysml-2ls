@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ForLoopActionUsage } from "../../generated/ast";
-import { NonNullable, enumerable } from "../../utils";
+import { ForLoopActionUsage } from "../../generated/ast.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
     ElementParts,
@@ -24,11 +24,11 @@ import {
     FeatureMeta,
     MembershipMeta,
     ParameterMembershipMeta,
-} from "../KerML";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta } from "./action-usage";
-import { LoopActionUsageMeta, LoopActionUsageOptions } from "./loop-action-usage";
-import { ReferenceUsageMeta } from "./reference-usage";
+} from "../KerML/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta } from "./action-usage.js";
+import { LoopActionUsageMeta, LoopActionUsageOptions } from "./loop-action-usage.js";
+import { ReferenceUsageMeta } from "./reference-usage.js";
 
 export interface ForLoopActionUsageOptions extends LoopActionUsageOptions {
     variable?: Edge<FeatureMembershipMeta, ReferenceUsageMeta>;
@@ -111,7 +111,7 @@ export class ForLoopActionUsageMeta extends LoopActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ForLoopActionUsage {
         $meta: ForLoopActionUsageMeta;
     }

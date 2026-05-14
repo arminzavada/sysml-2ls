@@ -18,10 +18,10 @@ import {
     BrowserMessageReader,
     BrowserMessageWriter,
     createConnection,
-} from "vscode-languageserver/browser";
-import { createSysMLServices } from "../sysml-module";
-import { VirtualFileSystem } from "./virtual-file-system-provider";
-import { startServer as _startServer } from "../launch";
+} from "vscode-languageserver/browser.js";
+import { createSysMLServices } from "../sysml-module.js";
+import { VirtualFileSystem } from "./virtual-file-system-provider.js";
+import { startServer as _startServer } from "../launch/index.js";
 
 declare const self: DedicatedWorkerGlobalScope;
 

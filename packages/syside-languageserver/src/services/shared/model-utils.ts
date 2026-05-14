@@ -20,7 +20,7 @@ import {
     FeatureChainingMeta,
     FeatureMeta,
     basicIdProvider,
-} from "../../model";
+} from "../../model/index.js";
 
 /**
  * Utilities for working with the internal model. This is a class instead of the

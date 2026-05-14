@@ -21,7 +21,7 @@ import {
     ParseOptions,
     services,
     TEST_BUILD_OPTIONS,
-} from "../../../testing";
+} from "../../../testing/index.js";
 import {
     basicIdProvider,
     EdgeContainer,
@@ -40,10 +40,10 @@ import {
     ReturnParameterMembershipMeta,
     SpecializationMeta,
     TypeMeta,
-} from "../../../model";
-import { ModelDiagnostic } from "../validation-registry";
-import { SETTINGS_KEY } from "../../shared";
-import { SysMLConfig } from "../../config";
+} from "../../../model/index.js";
+import { ModelDiagnostic } from "../validation-registry.js";
+import { SETTINGS_KEY } from "../../shared/index.js";
+import { SysMLConfig } from "../../config.js";
 
 const BUILD_OPTIONS: ParseOptions = { ...TEST_BUILD_OPTIONS, validationChecks: "all" };
 

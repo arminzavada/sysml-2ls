@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { parseKerML, parseSysML, TEST_BUILD_OPTIONS } from "../../testing";
-import { GlobalScope } from "../global-scope";
+import { parseKerML, parseSysML, TEST_BUILD_OPTIONS } from "../../testing/index.js";
+import { GlobalScope } from "../global-scope.js";
 
 const SaneKerML = "package <k1> K1; private package K2;";
 const SaneSysML = "package S1; package K1;";

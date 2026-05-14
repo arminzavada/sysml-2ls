@@ -20,14 +20,14 @@ import {
     RequirementVerificationMembership,
     VerificationCaseDefinition,
     VerificationCaseUsage,
-} from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { RequirementConstraintMembershipMeta } from "./requirement-constraint-membership";
-import { RequirementUsageMeta } from "../requirement-usage";
+} from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { RequirementConstraintMembershipMeta } from "./requirement-constraint-membership.js";
+import { RequirementUsageMeta } from "../requirement-usage.js";
 import { AstNode, LangiumDocument } from "langium";
-import { RelationshipOptionsBody } from "../../KerML";
-import { RequirementDefinitionMeta } from "../requirement-definition";
-import { RequirementConstraintKind } from "../../enums";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { RequirementDefinitionMeta } from "../requirement-definition.js";
+import { RequirementConstraintKind } from "../../enums.js";
 
 @metamodelOf(RequirementVerificationMembership)
 export class RequirementVerificationMembershipMeta<
@@ -64,7 +64,7 @@ export class RequirementVerificationMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface RequirementVerificationMembership {
         $meta: RequirementVerificationMembershipMeta;
     }

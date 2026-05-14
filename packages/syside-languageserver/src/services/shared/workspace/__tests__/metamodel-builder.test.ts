@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { typeIndex } from "../../../../model/types";
-import { SysMLMetamodelBuilder } from "../metamodel-builder";
-import { services } from "../../../../testing";
+import { typeIndex } from "../../../../model/types.js";
+import { SysMLMetamodelBuilder } from "../metamodel-builder.js";
+import { services } from "../../../../testing/index.js";
 
 class TestingBuilder extends SysMLMetamodelBuilder {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

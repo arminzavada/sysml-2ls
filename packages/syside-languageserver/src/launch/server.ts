@@ -16,7 +16,7 @@
 
 import { startLanguageServer } from "langium";
 import type { Connection } from "vscode-languageserver";
-import { createSysMLServices, SharedModuleContext } from "../sysml-module";
+import { createSysMLServices, SharedModuleContext } from "../sysml-module.js";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface LauncherOptions {

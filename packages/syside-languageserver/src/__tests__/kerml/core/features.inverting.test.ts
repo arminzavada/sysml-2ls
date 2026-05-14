@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing";
-import { FeatureInverting, Feature, Classifier } from "../../../generated/ast";
+import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing/index.js";
+import { FeatureInverting, Feature, Classifier } from "../../../generated/ast.js";
 
 test("feature inverting can be parsed", async () => {
     return expect(`

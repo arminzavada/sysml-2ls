@@ -153,7 +153,7 @@ export async function initialize(
     } else {
         serverModule = vscode.Uri.joinPath(
             context.extensionUri,
-            `dist/${root}/language-server/main.js`
+            `dist/${root}/language-server/main.cjs`
         );
     }
 

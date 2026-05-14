@@ -14,11 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { createConnection, ProposedFeatures } from "vscode-languageserver/node";
-import { createSysMLServices } from "../sysml-module";
-import { createTransport, NodeLauncherOptions } from "./cli";
-import { SysMLNodeFileSystem } from "./node-file-system-provider";
-import { startServer as _startServer } from "../launch";
+import { createConnection, ProposedFeatures } from "vscode-languageserver/node.js";
+import { createSysMLServices } from "../sysml-module.js";
+import { createTransport, NodeLauncherOptions } from "./cli.js";
+import { SysMLNodeFileSystem } from "./node-file-system-provider.js";
+import { startServer as _startServer } from "../launch/index.js";
 
 export function startServer(options: NodeLauncherOptions): ReturnType<typeof createSysMLServices> {
     const [input, output] = createTransport(options);

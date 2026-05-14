@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Inheritance } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal";
+import { Inheritance } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
 @metamodelOf(Inheritance, "abstract")
 export abstract class InheritanceMeta<T extends TypeMeta = TypeMeta> extends RelationshipMeta<T> {
@@ -60,7 +60,7 @@ export abstract class InheritanceMeta<T extends TypeMeta = TypeMeta> extends Rel
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface Inheritance {
         $meta: InheritanceMeta;
     }

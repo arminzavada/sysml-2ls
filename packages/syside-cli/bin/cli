@@ -1,11 +1,19 @@
 #!/usr/bin/env node
 /* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-var-requires */
+
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const require = createRequire(import.meta.url);
 
 try {
-    // prefer esbuild packaged module for better performance
-    require("../out").default();
+    // prefer esbuild packaged CJS bundle for better startup time
+    require(path.resolve(__dirname, "../out/index.cjs")).default();
 } catch (e) {
     if (!(e instanceof Error) || !e.message.startsWith("Cannot find module")) throw e;
-    require("../lib").default();
+    const mod = await import(new URL("../lib/index.js", import.meta.url));
+    mod.default();
 }

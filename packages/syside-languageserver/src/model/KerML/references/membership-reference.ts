@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { MembershipReference } from "../../../generated/ast";
-import { Target } from "../../../utils/containers";
-import { metamodelOf } from "../../metamodel";
-import { ElementReferenceMeta, MembershipMeta } from "../_internal";
+import { MembershipReference } from "../../../generated/ast.js";
+import { Target } from "../../../utils/containers.js";
+import { metamodelOf } from "../../metamodel.js";
+import { ElementReferenceMeta, MembershipMeta } from "../_internal.js";
 
 @metamodelOf(MembershipReference)
 export class MembershipReferenceMeta extends ElementReferenceMeta {
@@ -28,7 +28,7 @@ export class MembershipReferenceMeta extends ElementReferenceMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface MembershipReference {
         $meta: MembershipReferenceMeta;
     }

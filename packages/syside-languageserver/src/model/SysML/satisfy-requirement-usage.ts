@@ -15,14 +15,14 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SatisfyRequirementUsage } from "../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { AssertConstraintUsageMeta, AssertConstraintUsageOptions } from "./assert-constraint-usage";
-import { RequirementUsageMeta, RequirementUsageOptions } from "./requirement-usage";
-import { SubjectMembershipMeta } from "./relationships";
-import { NonNullable, enumerable } from "../../utils";
-import { Edge, ElementParts, FeatureMeta, MembershipMeta } from "../KerML";
-import { OccurrenceUsageMeta } from "./occurrence-usage";
+import { SatisfyRequirementUsage } from "../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { AssertConstraintUsageMeta, AssertConstraintUsageOptions } from "./assert-constraint-usage.js";
+import { RequirementUsageMeta, RequirementUsageOptions } from "./requirement-usage.js";
+import { SubjectMembershipMeta } from "./relationships/index.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
+import { Edge, ElementParts, FeatureMeta, MembershipMeta } from "../KerML/index.js";
+import { OccurrenceUsageMeta } from "./occurrence-usage.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export interface SatisfyRequirementUsageOptions
@@ -96,7 +96,7 @@ export class SatisfyRequirementUsageMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface SatisfyRequirementUsage {
         $meta: SatisfyRequirementUsageMeta;
     }

@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { DefaultPrinterConfig, group, print, printDoc } from "../../../utils";
-import { NamespaceMeta } from "../../KerML";
-import { ElementIDProvider, basicIdProvider } from "../../metamodel";
+import { DefaultPrinterConfig, group, print, printDoc } from "../../../utils/index.js";
+import { NamespaceMeta } from "../../KerML/index.js";
+import { ElementIDProvider, basicIdProvider } from "../../metamodel.js";
 import {
     KerMLKeywords,
     SysMLKeywords,
@@ -25,10 +25,10 @@ import {
     printIdentifier,
     printIdentifiers,
     throwError,
-} from "../utils";
-import { emptyDocument, parsedNode } from "../../../testing";
-import { ElementReference, Package } from "../../../generated/ast";
-import { defaultKerMLPrinterContext } from "../print";
+} from "../utils.js";
+import { emptyDocument, parsedNode } from "../../../testing/index.js";
+import { ElementReference, Package } from "../../../generated/ast.js";
+import { defaultKerMLPrinterContext } from "../print.js";
 
 let provider: ElementIDProvider;
 let document: LangiumDocument;

@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { JSONConvertible } from "../utils/common";
-import { SubtypeKeys, SysMLInterface, SysMLType } from "../services";
-import { Element } from "../generated/ast";
-import { BasicMetamodel } from "./metamodel";
+import { JSONConvertible } from "../utils/common.js";
+import { SubtypeKeys, SysMLInterface, SysMLType } from "../services/index.js";
+import { Element } from "../generated/ast.js";
+import { BasicMetamodel } from "./metamodel.js";
 
 /**
  * Container for elements that also allows filtering by type with caching

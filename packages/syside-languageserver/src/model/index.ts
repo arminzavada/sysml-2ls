@@ -14,17 +14,17 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./KerML";
-export * from "./SysML";
-export * from "./containers";
-export * from "./enums";
-export * from "./expressions";
-export * from "./implicits";
-export * from "./metamodel";
-export * from "./mixins";
-export * from "./naming";
-export * from "./notes";
-export * from "./printer";
-export * from "./semantic-tokens";
-export * from "./types";
-export * from "./util";
+export * from "./KerML/index.js";
+export * from "./SysML/index.js";
+export * from "./containers.js";
+export * from "./enums.js";
+export * from "./expressions/index.js";
+export * from "./implicits.js";
+export * from "./metamodel.js";
+export * from "./mixins/index.js";
+export * from "./naming.js";
+export * from "./notes/index.js";
+export * from "./printer/index.js";
+export * from "./semantic-tokens.js";
+export * from "./types.js";
+export * from "./util.js";

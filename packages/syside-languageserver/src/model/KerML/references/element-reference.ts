@@ -15,16 +15,16 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ElementReference } from "../../../generated/ast";
-import { Target } from "../../../utils/containers";
+import { ElementReference } from "../../../generated/ast.js";
+import { Target } from "../../../utils/containers.js";
 import {
     BasicMetamodel,
     ElementIDProvider,
     MetatypeProto,
     ModelElementOptions,
     metamodelOf,
-} from "../../metamodel";
-import { ElementMeta } from "../_internal";
+} from "../../metamodel.js";
+import { ElementMeta } from "../_internal.js";
 
 @metamodelOf(ElementReference)
 export class ElementReferenceMeta extends BasicMetamodel<ElementReference> {
@@ -62,7 +62,7 @@ export class ElementReferenceMeta extends BasicMetamodel<ElementReference> {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ElementReference {
         $meta: ElementReferenceMeta;
     }

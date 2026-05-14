@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ViewpointDefinition } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { RequirementDefinitionMeta } from "./requirement-definition";
-import { RequirementUsageOptions } from "./requirement-usage";
+import { ViewpointDefinition } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { RequirementDefinitionMeta } from "./requirement-definition.js";
+import { RequirementUsageOptions } from "./requirement-usage.js";
 
 export type ViewpointDefinitionOptions = RequirementUsageOptions;
 
@@ -30,7 +30,7 @@ export class ViewpointDefinitionMeta extends RequirementDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ViewpointDefinition {
         $meta: ViewpointDefinitionMeta;
     }

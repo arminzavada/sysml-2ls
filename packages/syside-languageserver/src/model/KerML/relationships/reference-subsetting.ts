@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ReferenceSubsetting } from "../../../generated/ast";
-import { metamodelOf } from "../../metamodel";
-import { FeatureMeta, SubsettingMeta } from "../_internal";
+import { ReferenceSubsetting } from "../../../generated/ast.js";
+import { metamodelOf } from "../../metamodel.js";
+import { FeatureMeta, SubsettingMeta } from "../_internal.js";
 
 @metamodelOf(ReferenceSubsetting)
 export class ReferenceSubsettingMeta<
@@ -27,7 +27,7 @@ export class ReferenceSubsettingMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface ReferenceSubsetting {
         $meta: ReferenceSubsettingMeta;
     }

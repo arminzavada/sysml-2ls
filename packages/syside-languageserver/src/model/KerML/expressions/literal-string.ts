@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { LiteralString } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal";
+import { LiteralString } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal.js";
 
 export const ImplicitLiteralStrings = {
     base: "Performances::literalStringEvaluations",
@@ -51,7 +51,7 @@ export class LiteralStringMeta extends LiteralExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface LiteralString {
         $meta: LiteralStringMeta;
     }

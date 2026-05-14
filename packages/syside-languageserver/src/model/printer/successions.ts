@@ -20,8 +20,8 @@ import {
     StateDefinition,
     StateSubactionMembership,
     StateUsage,
-} from "../../generated/ast";
-import { Doc, group, indent, keyword, line, literals } from "../../utils";
+} from "../../generated/ast.js";
+import { Doc, group, indent, keyword, line, literals } from "../../utils/index.js";
 import {
     ElementMeta,
     EndFeatureMembershipMeta,
@@ -30,35 +30,35 @@ import {
     MembershipMeta,
     OwningMembershipMeta,
     ResultExpressionMembershipMeta,
-} from "../KerML";
+} from "../KerML/index.js";
 import {
     AcceptActionUsageMeta,
     ActionUsageMeta,
     SuccessionAsUsageMeta,
     TransitionFeatureMembershipMeta,
     TransitionUsageMeta,
-} from "../SysML";
+} from "../SysML/index.js";
 import {
     actionBodyJoiner,
     printAccepterParameterPart,
     printCondition,
     printSubaction,
-} from "./actions";
-import { SourceFormatAlways, printConnectorAsUsage, printConnectorEndMember } from "./connectors";
-import { printAsTarget, printChaining } from "./edges";
+} from "./actions.js";
+import { SourceFormatAlways, printConnectorAsUsage, printConnectorEndMember } from "./connectors.js";
+import { printAsTarget, printChaining } from "./edges.js";
 import {
     printChildrenBlock,
     printGenericFeature,
     printDeclaredMultiplicityRange,
-} from "./namespaces";
-import { ModelPrinterContext, printModelElement } from "./print";
+} from "./namespaces.js";
+import { ModelPrinterContext, printModelElement } from "./print.js";
 import {
     assertMember,
     formatPreserved,
     hasFeatureDeclaration,
     printDescendant,
     selectDeclarationKeyword,
-} from "./utils";
+} from "./utils.js";
 
 const isExplicitConnectorEnd = (end: EndFeatureMembershipMeta): boolean =>
     Boolean(

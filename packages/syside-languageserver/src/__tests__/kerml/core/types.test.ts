@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { withQualifiedName, qualifiedTypeReference } from "../../../testing";
+import { withQualifiedName, qualifiedTypeReference } from "../../../testing/index.js";
 import {
     MultiplicityRange,
     LiteralNumber,
@@ -24,7 +24,7 @@ import {
     Conjugation,
     Namespace,
     Class,
-} from "../../../generated/ast";
+} from "../../../generated/ast.js";
 
 const Common = `
 abstract datatype Anything;

@@ -14,13 +14,18 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { createSysMLServices } from "../../../sysml-module";
-import { SysMLNodeFileSystem } from "../../../node/node-file-system-provider";
-import { ExtensionManager } from "../extension-manager";
+import { createSysMLServices } from "../../../sysml-module.js";
+import { SysMLNodeFileSystem } from "../../../node/node-file-system-provider.js";
+import { ExtensionManager } from "../extension-manager.js";
 import { URI } from "vscode-uri";
 import path from "path";
+import { fileURLToPath } from "node:url";
 
-const SAMPLES_DIR = path.join(__dirname, "samples");
+// ESM equivalent of CommonJS' `__dirname`. Defined with a non-reserved name
+// so it doesn't collide with the CJS `__dirname` global re-injected by SWC
+// when running under Jest (`@swc/jest`).
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const SAMPLES_DIR = path.join(currentDir, "samples");
 const SAMPLES = [
     URI.file(path.join(SAMPLES_DIR, "sample.js")),
     URI.file(path.join(SAMPLES_DIR, "sample2.js")),

@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { TerminateActionUsage } from "../../generated/ast";
-import { NonNullable, enumerable } from "../../utils";
-import { Edge, ElementParts, FeatureMeta, MembershipMeta, ParameterMembershipMeta } from "../KerML";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
-import { ReferenceUsageMeta } from "./reference-usage";
+import { TerminateActionUsage } from "../../generated/ast.js";
+import { NonNullable, enumerable } from "../../utils/index.js";
+import { Edge, ElementParts, FeatureMeta, MembershipMeta, ParameterMembershipMeta } from "../KerML/index.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { ReferenceUsageMeta } from "./reference-usage.js";
 
 export interface TerminateActionUsageOptions extends ActionUsageOptions {
     terminatedOccurrence: Edge<ParameterMembershipMeta, ReferenceUsageMeta>;
@@ -81,7 +81,7 @@ export class TerminateActionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface TerminateActionUsage {
         $meta: TerminateActionUsageMeta;
     }

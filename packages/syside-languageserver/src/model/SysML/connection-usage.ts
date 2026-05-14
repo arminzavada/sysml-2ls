@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConnectionUsage } from "../../generated/ast";
-import { metamodelOf } from "../metamodel";
-import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage";
-import { PartUsageMeta, PartUsageOptions } from "./part-usage";
-import { FeatureMeta, InheritanceMeta, MembershipMeta, TypeMeta, ElementParts } from "../KerML";
-import { enumerable } from "../../utils";
+import { ConnectionUsage } from "../../generated/ast.js";
+import { metamodelOf } from "../metamodel.js";
+import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
+import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
+import { FeatureMeta, InheritanceMeta, MembershipMeta, TypeMeta, ElementParts } from "../KerML/index.js";
+import { enumerable } from "../../utils/index.js";
 
 export interface ConnectionUsageOptions extends PartUsageOptions, ConnectorAsUsageOptions {}
 
@@ -65,7 +65,7 @@ export class ConnectionUsageMeta extends Mixin(ConnectorAsUsageMeta, PartUsageMe
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ConnectionUsage {
         $meta: ConnectionUsageMeta;
     }

@@ -15,12 +15,12 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { CalculationDefinition, CalculationUsage } from "../../generated/ast";
-import { ExpressionMeta, ExpressionOptions } from "../KerML/expression";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel";
-import { ActionUsageMeta, ActionUsageOptions } from "./action-usage";
+import { CalculationDefinition, CalculationUsage } from "../../generated/ast.js";
+import { ExpressionMeta, ExpressionOptions } from "../KerML/expression.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
 import { AstNode, LangiumDocument } from "langium";
-import { ElementParts } from "../KerML";
+import { ElementParts } from "../KerML/index.js";
 
 export interface CalculationUsageOptions extends ExpressionOptions, ActionUsageOptions {}
 
@@ -60,7 +60,7 @@ export class CalculationUsageMeta extends Mixin(ExpressionMeta, ActionUsageMeta)
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface CalculationUsage {
         $meta: CalculationUsageMeta;
     }

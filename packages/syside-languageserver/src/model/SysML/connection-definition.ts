@@ -15,11 +15,11 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConnectionDefinition } from "../../generated/ast";
-import { AssociationStructMeta, AssociationStructureOptions } from "../KerML/association-structure";
-import { metamodelOf } from "../metamodel";
-import { PartDefinitionMeta, PartDefinitionOptions } from "./part-definition";
-import { InheritanceMeta, TypeMeta } from "../KerML";
+import { ConnectionDefinition } from "../../generated/ast.js";
+import { AssociationStructMeta, AssociationStructureOptions } from "../KerML/association-structure.js";
+import { metamodelOf } from "../metamodel.js";
+import { PartDefinitionMeta, PartDefinitionOptions } from "./part-definition.js";
+import { InheritanceMeta, TypeMeta } from "../KerML/index.js";
 
 export interface ConnectionDefinitionOptions
     extends AssociationStructureOptions,
@@ -49,7 +49,7 @@ export class ConnectionDefinitionMeta extends Mixin(AssociationStructMeta, PartD
     }
 }
 
-declare module "../../generated/ast" {
+declare module "../../generated/ast.js" {
     interface ConnectionDefinition {
         $meta: ConnectionDefinitionMeta;
     }

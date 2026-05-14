@@ -15,15 +15,15 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { SubjectMembership } from "../../../generated/ast";
-import { RelationshipOptionsBody } from "../../KerML";
-import { ParameterMembershipMeta } from "../../KerML/relationships/parameter-membership";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ReferenceUsageMeta } from "../reference-usage";
-import { RequirementDefinitionMeta } from "../requirement-definition";
-import { RequirementUsageMeta } from "../requirement-usage";
-import { CaseDefinitionMeta } from "../case-definition";
-import { CaseUsageMeta } from "../case-usage";
+import { SubjectMembership } from "../../../generated/ast.js";
+import { RelationshipOptionsBody } from "../../KerML/index.js";
+import { ParameterMembershipMeta } from "../../KerML/relationships/parameter-membership.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ReferenceUsageMeta } from "../reference-usage.js";
+import { RequirementDefinitionMeta } from "../requirement-definition.js";
+import { RequirementUsageMeta } from "../requirement-usage.js";
+import { CaseDefinitionMeta } from "../case-definition.js";
+import { CaseUsageMeta } from "../case-usage.js";
 
 @metamodelOf(SubjectMembership)
 export class SubjectMembershipMeta<
@@ -46,7 +46,7 @@ export class SubjectMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface SubjectMembership {
         $meta: SubjectMembershipMeta;
     }

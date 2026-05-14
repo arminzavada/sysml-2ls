@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { NamespaceImport } from "../../../generated/ast";
-import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel";
-import { ImportMeta, ImportOptions, NamespaceMeta } from "../_internal";
+import { NamespaceImport } from "../../../generated/ast.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { ImportMeta, ImportOptions, NamespaceMeta } from "../_internal.js";
 
 @metamodelOf(NamespaceImport)
 export class NamespaceImportMeta<T extends NamespaceMeta = NamespaceMeta> extends ImportMeta<T> {
@@ -35,7 +35,7 @@ export class NamespaceImportMeta<T extends NamespaceMeta = NamespaceMeta> extend
     }
 }
 
-declare module "../../../generated/ast" {
+declare module "../../../generated/ast.js" {
     interface NamespaceImport {
         $meta: NamespaceImportMeta;
     }

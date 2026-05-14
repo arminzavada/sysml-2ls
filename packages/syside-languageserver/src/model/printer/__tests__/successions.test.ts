@@ -20,12 +20,12 @@ import {
     StateDefinition,
     SuccessionAsUsage,
     TransitionUsage,
-} from "../../../generated/ast";
-import { printDoc } from "../../../utils";
-import { StateUsageMeta } from "../../SysML";
-import { defaultSysMLPrinterContext, printModelElement } from "../print";
-import { PrinterTestContext, expectPrinted } from "./utils";
-import { parsedNode } from "../../../testing/utils";
+} from "../../../generated/ast.js";
+import { printDoc } from "../../../utils/index.js";
+import { StateUsageMeta } from "../../SysML/index.js";
+import { defaultSysMLPrinterContext, printModelElement } from "../print.js";
+import { PrinterTestContext, expectPrinted } from "./utils.js";
+import { parsedNode } from "../../../testing/utils.js";
 
 describe("successions", () => {
     it("should print regular successions", async () => {
