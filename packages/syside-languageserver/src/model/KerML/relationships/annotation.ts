@@ -62,7 +62,12 @@ export class AnnotationMeta<T extends ElementMeta = ElementMeta> extends Relatio
         document: LangiumDocument,
         options?: AnnotationOptions<P>
     ): T["$meta"] {
-        const self = ElementMeta.create.call(this, provider, document, options as RelationshipOptions<ElementMeta, P>) as AnnotationMeta;
+        const self = ElementMeta.create.call(
+            this,
+            provider,
+            document,
+            options as RelationshipOptions<ElementMeta, P>
+        ) as AnnotationMeta;
 
         if (options) {
             self._visibility = options.visibility;

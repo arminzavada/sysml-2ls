@@ -54,7 +54,9 @@ import { ElementContainer } from "../containers.js";
 const FeatureMembers = (e: ElementMeta): e is MembershipMeta<FeatureMeta> =>
     Boolean(
         // filters are feature members but not what we want, they serve a different purpose
-        e.nodeType() !== ElementFilterMembership.$type && e.is(Membership.$type) && e.element()?.is(Feature.$type)
+        e.nodeType() !== ElementFilterMembership.$type &&
+        e.is(Membership.$type) &&
+        e.element()?.is(Feature.$type)
     );
 const Filters = ElementFilterMembership.$type;
 const Imports = Import.$type;

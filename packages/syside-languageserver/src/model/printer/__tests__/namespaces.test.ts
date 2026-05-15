@@ -147,9 +147,9 @@ type a
     });
 
     it("should merge sequential feature chaining", async () => {
-        return expectPrinted("feature a chains a chains b {}", { node: Feature.$type }).resolves.toEqual(
-            "feature a chains a.b {}\n"
-        );
+        return expectPrinted("feature a chains a chains b {}", {
+            node: Feature.$type,
+        }).resolves.toEqual("feature a chains a.b {}\n");
     });
 
     it.each(["inverse of", "references"] as const)(

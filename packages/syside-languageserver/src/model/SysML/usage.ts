@@ -108,13 +108,15 @@ export class UsageMeta extends FeatureMeta {
     isActionOwnedComposite(): boolean {
         return Boolean(
             this.isComposite &&
-                !this.isEntryExitAction() &&
-                this.owner()?.isAny(ActionDefinition.$type, ActionUsage.$type)
+            !this.isEntryExitAction() &&
+            this.owner()?.isAny(ActionDefinition.$type, ActionUsage.$type)
         );
     }
 
     isPartOwnedComposite(): boolean {
-        return Boolean(this.isComposite && this.owner()?.isAny(PartDefinition.$type, PartUsage.$type));
+        return Boolean(
+            this.isComposite && this.owner()?.isAny(PartDefinition.$type, PartUsage.$type)
+        );
     }
 
     isEntryExitAction(): boolean {

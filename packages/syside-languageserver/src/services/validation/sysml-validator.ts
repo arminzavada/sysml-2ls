@@ -92,7 +92,11 @@ import {
 import { KeysMatching } from "../../utils/index.js";
 import { SubtypeKeys, SysMLType } from "../sysml-ast-reflection.js";
 import { KerMLValidator } from "./kerml-validator.js";
-import { ModelDiagnosticInfo, ModelValidationAcceptor, validateSysML } from "./validation-registry.js";
+import {
+    ModelDiagnosticInfo,
+    ModelValidationAcceptor,
+    validateSysML,
+} from "./validation-registry.js";
 
 /**
  * Implementation of custom validations.
@@ -119,7 +123,10 @@ export class SysMLValidator extends KerMLValidator {
                 node
                     .ownedElements()
                     .filter(BasicMetamodel.is(ast.FeatureMembership.$type))
-                    .filter((m) => !m.isAny(ast.ParameterMembership.$type, ast.ObjectiveMembership.$type)),
+                    .filter(
+                        (m) =>
+                            !m.isAny(ast.ParameterMembership.$type, ast.ObjectiveMembership.$type)
+                    ),
                 `All ownedMemberships of variation ${type} must be VariantMemberships.`,
                 accept,
                 { code }
@@ -136,7 +143,11 @@ export class SysMLValidator extends KerMLValidator {
         if (node.isVariation) {
             const [type, code, sup] = node.is(ast.Usage.$type)
                 ? [ast.Usage.$type, "validateUsageVariationSpecialization", "Definition or Usage"]
-                : [ast.Definition.$type, "validateDefinitionVariationSpecialization", ast.Definition.$type];
+                : [
+                      ast.Definition.$type,
+                      "validateDefinitionVariationSpecialization",
+                      ast.Definition.$type,
+                  ];
             this.apply(
                 "error",
                 node.specializations().filter((s) => {
@@ -251,7 +262,11 @@ export class SysMLValidator extends KerMLValidator {
         }
     }
 
-    @validateSysML(ast.OccurrenceUsage.$type, [ast.ItemUsage.$type, ast.PortUsage.$type, ast.Step.$type])
+    @validateSysML(ast.OccurrenceUsage.$type, [
+        ast.ItemUsage.$type,
+        ast.PortUsage.$type,
+        ast.Step.$type,
+    ])
     validateOccurrenceUsageTyping(
         node: OccurrenceUsageMeta,
         accept: ModelValidationAcceptor
@@ -289,7 +304,11 @@ export class SysMLValidator extends KerMLValidator {
         }
     }
 
-    @validateSysML(ast.ItemUsage.$type, [ast.PartUsage.$type, ast.PortUsage.$type, ast.MetadataUsage.$type])
+    @validateSysML(ast.ItemUsage.$type, [
+        ast.PartUsage.$type,
+        ast.PortUsage.$type,
+        ast.MetadataUsage.$type,
+    ])
     validateItemUsageTyping(node: ItemUsageMeta, accept: ModelValidationAcceptor): void {
         this.validateAllTypings(
             node,
@@ -374,7 +393,11 @@ export class SysMLValidator extends KerMLValidator {
             .filter((u) => !u.is(ast.PortUsage.$type) && u.isComposite);
 
         const [type, member, code] = node.is(ast.PortDefinition.$type)
-            ? [ast.PortDefinition.$type, "ownedUsages", "validatePortDefinitionOwnedUsagesNotComposite"]
+            ? [
+                  ast.PortDefinition.$type,
+                  "ownedUsages",
+                  "validatePortDefinitionOwnedUsagesNotComposite",
+              ]
             : [ast.PortUsage.$type, "nestedUsages", "validatePortUsageNestedUsagesNotComposite"];
         this.apply(
             "error",
@@ -496,7 +519,11 @@ export class SysMLValidator extends KerMLValidator {
         });
     }
 
-    @validateSysML(ast.ActionUsage.$type, [ast.StateUsage.$type, ast.CalculationUsage.$type, ast.FlowConnectionUsage.$type])
+    @validateSysML(ast.ActionUsage.$type, [
+        ast.StateUsage.$type,
+        ast.CalculationUsage.$type,
+        ast.FlowConnectionUsage.$type,
+    ])
     validateActionUsageTyping(node: ActionUsageMeta, accept: ModelValidationAcceptor): void {
         this.validateAllTypings(
             node,
@@ -616,7 +643,10 @@ export class SysMLValidator extends KerMLValidator {
     // TODO: validateMergeNodeIncomingSuccessions (not in pilot)
     // TODO: validateMergeNodeOutgoingSuccessions (not in pilot)
 
-    @validateSysML(ast.PerformActionUsage.$type, [ast.ExhibitStateUsage.$type, ast.IncludeUseCaseUsage.$type])
+    @validateSysML(ast.PerformActionUsage.$type, [
+        ast.ExhibitStateUsage.$type,
+        ast.IncludeUseCaseUsage.$type,
+    ])
     validatePerformActionUsageReference(
         node: PerformActionUsageMeta,
         accept: ModelValidationAcceptor
@@ -695,7 +725,11 @@ export class SysMLValidator extends KerMLValidator {
         const owner = node.owningType;
         if (owner?.isAny(ast.StateDefinition.$type, ast.StateUsage.$type) && owner.isParallel) {
             const [type, member, code] = owner.is(ast.StateDefinition.$type)
-                ? [ast.StateDefinition.$type, "ownedActions", "validateStateDefinitionParallelSubactions"]
+                ? [
+                      ast.StateDefinition.$type,
+                      "ownedActions",
+                      "validateStateDefinitionParallelSubactions",
+                  ]
                 : [ast.StateUsage.$type, "nestedActions", "validateStateUsageParallelSubactions"];
             accept(
                 "error",
@@ -984,7 +1018,10 @@ export class SysMLValidator extends KerMLValidator {
         accept: ModelValidationAcceptor
     ): void {
         const [type, code] = node.is(ast.RequirementDefinition.$type)
-            ? [ast.RequirementDefinition.$type, "validateRequirementDefinitionSubjectParameterPosition"]
+            ? [
+                  ast.RequirementDefinition.$type,
+                  "validateRequirementDefinitionSubjectParameterPosition",
+              ]
             : [ast.RequirementUsage.$type, "validateRequirementUsageSubjectParameterPosition"];
 
         this.checkFirstInput(

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 /* eslint-disable unused-imports/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {
     ElementReference,
     Expression,
@@ -142,7 +142,7 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
         if (target.is(Feature.$type)) return target;
 
         // feature created only for evaluation, parent errors are not useful here
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         const feature = FeatureMeta.create(this.util.idProvider, target.document);
         if (target.is(Type.$type)) {
             const typing = FeatureTypingMeta.create(this.util.idProvider, target.document, {
@@ -305,7 +305,9 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
 
         // readonly arrays can't be reversed...
         const types =
-            type.is(Feature.$type) && type.chainings.length > 0 ? [...type.chainingFeatures] : [type];
+            type.is(Feature.$type) && type.chainings.length > 0
+                ? [...type.chainingFeatures]
+                : [type];
 
         for (const t of types.reverse()) {
             if (

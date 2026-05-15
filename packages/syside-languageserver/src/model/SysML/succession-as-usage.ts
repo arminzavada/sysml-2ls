@@ -83,7 +83,8 @@ export class SuccessionAsUsageMeta extends Mixin(SuccessionMeta, ConnectorAsUsag
                 !element.isParameter &&
                 !element.is(TransitionUsage.$type) &&
                 (!element.is(Connector.$type) ||
-                    (!owner.isAny(ActionDefinition.$type, ActionUsage.$type) && element.is(ItemFlow.$type)))
+                    (!owner.isAny(ActionDefinition.$type, ActionUsage.$type) &&
+                        element.is(ItemFlow.$type)))
             )
                 return membership;
         }

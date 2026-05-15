@@ -24,14 +24,15 @@ import { ImportOptions } from "../../KerML/index.js";
 import { ViewUsageMeta } from "../view-usage.js";
 
 export interface MembershipExposeMeta<T extends MembershipMeta = MembershipMeta>
-    extends ExposeMeta<T>,
+    extends
+        ExposeMeta<T>,
         Omit<MembershipImportMeta<T>, "visibility" | "clearVisibility" | "setMetaclass"> {
     get importsAll(): boolean;
 }
 
 @metamodelOf(MembershipExpose.$type)
 @mix(ExposeMeta, MembershipImportMeta)
-// eslint-disable-next-line unused-imports/no-unused-vars
+// eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unsafe-declaration-merging
 export class MembershipExposeMeta<T extends MembershipMeta = MembershipMeta> {
     // eslint-disable-next-line unused-imports/no-unused-vars
     protected constructor(id: ElementID) {

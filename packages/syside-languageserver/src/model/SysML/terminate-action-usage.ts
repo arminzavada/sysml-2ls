@@ -17,7 +17,13 @@
 import { AstNode, LangiumDocument } from "langium";
 import { TerminateActionUsage } from "../../generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
-import { Edge, ElementParts, FeatureMeta, MembershipMeta, ParameterMembershipMeta } from "../KerML/index.js";
+import {
+    Edge,
+    ElementParts,
+    FeatureMeta,
+    MembershipMeta,
+    ParameterMembershipMeta,
+} from "../KerML/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
 import { ReferenceUsageMeta } from "./reference-usage.js";

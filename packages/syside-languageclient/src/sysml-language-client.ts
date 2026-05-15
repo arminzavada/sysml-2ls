@@ -166,12 +166,10 @@ export abstract class SysMLClientExtender {
             (config.version
                 ? config.version !== STDLIB.version
                 : // checking for backwards compatibility
-                  // eslint-disable-next-line deprecation/deprecation
                   config.stdlibUrl !== this.stdlibRepoZipUrl)
         ) {
             await this.maybeUpdateDownloadedStdlib();
             if (config) {
-                // eslint-disable-next-line deprecation/deprecation
                 if (config.stdlibUrl) config.stdlibUrl = undefined;
                 config.version = STDLIB.version;
             }

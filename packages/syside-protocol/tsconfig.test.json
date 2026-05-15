@@ -3,16 +3,8 @@
     "compilerOptions": {
         "noEmit": true,
         "rootDir": "src",
-        "types": [
-            "vitest/globals"
-        ]
+        "types": ["vitest/globals"]
     },
-    "references": [
-        {
-            "path": "tsconfig.json"
-        }
-    ],
-    "include": [
-        "src/*.ts",
-    ]
+    "references": [{ "path": "tsconfig.json" }],
+    "include": ["src/**/__tests__/**/*.ts"]
 }

@@ -58,17 +58,14 @@ describe("Element factories", () => {
         ["data type", DataTypeMeta, TypeClassifier.DataType],
         ["class", ClassMeta, TypeClassifier.Class],
         ["struct", StructureMeta, TypeClassifier.Structure],
-    ])(
-        "should construct %1 with the correct classifier flag",
-        (_, proto, classifier) => {
-            // TS 5.8 enforces strict assignability between the per-meta-class
-            // `create` static signatures; the test only cares about the
-            // runtime return value, so erase to a callable.
-            expect(
-                (proto.create as unknown as (...args: unknown[]) => object)(id, document)
-            ).toMatchObject({ classifier });
-        }
-    );
+    ])("should construct %1 with the correct classifier flag", (_, proto, classifier) => {
+        // TS 5.8 enforces strict assignability between the per-meta-class
+        // `create` static signatures; the test only cares about the
+        // runtime return value, so erase to a callable.
+        expect(
+            (proto.create as unknown as (...args: unknown[]) => object)(id, document)
+        ).toMatchObject({ classifier });
+    });
 
     it("should construct relationships", () => {
         const target = TypeMeta.create(id, document);

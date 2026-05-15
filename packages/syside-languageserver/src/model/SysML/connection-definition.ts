@@ -16,14 +16,16 @@
 
 import { Mixin } from "ts-mixer";
 import { ConnectionDefinition } from "../../generated/ast.js";
-import { AssociationStructMeta, AssociationStructureOptions } from "../KerML/association-structure.js";
+import {
+    AssociationStructMeta,
+    AssociationStructureOptions,
+} from "../KerML/association-structure.js";
 import { metamodelOf } from "../metamodel.js";
 import { PartDefinitionMeta, PartDefinitionOptions } from "./part-definition.js";
 import { InheritanceMeta, TypeMeta } from "../KerML/index.js";
 
 export interface ConnectionDefinitionOptions
-    extends AssociationStructureOptions,
-        PartDefinitionOptions {}
+    extends AssociationStructureOptions, PartDefinitionOptions {}
 
 @metamodelOf(ConnectionDefinition.$type, {
     base: "Connections::Connection",

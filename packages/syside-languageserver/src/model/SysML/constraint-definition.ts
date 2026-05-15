@@ -22,8 +22,7 @@ import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurre
 import { AstNode, LangiumDocument } from "langium";
 
 export interface ConstraintDefinitionOptions
-    extends PredicateOptions,
-        OccurrenceDefinitionOptions {}
+    extends PredicateOptions, OccurrenceDefinitionOptions {}
 
 @metamodelOf(ConstraintDefinition.$type, {
     base: "Constraints::ConstraintCheck",

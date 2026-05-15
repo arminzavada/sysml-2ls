@@ -15,7 +15,6 @@
  ********************************************************************************/
 
 /* eslint-disable unused-imports/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { AstNode, CstNode, LangiumDocument } from "langium";
 import { typeIndex, TypeMap } from "./types.js";
@@ -108,7 +107,9 @@ export function metamodelOf<K extends SysMLType>(
         const supertypes = new Set(typeIndex.getInheritanceChain(type));
         supertypes.add(type);
         const check: (t: SysMLType) => boolean =
-            supertypes.size > 1 ? (t) => supertypes.has(t) : (t) => type === t;
+            supertypes.size > 1
+                ? (t: SysMLType): boolean => supertypes.has(t)
+                : (t: SysMLType): boolean => type === t;
         target.prototype.is = check as typeof target.prototype.is;
     };
 

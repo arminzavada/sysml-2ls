@@ -44,7 +44,8 @@ export class RequirementUsageMeta extends ConstraintUsageMeta {
     isSubrequirement(): boolean {
         if (this.requirementConstraintKind() === "assumption") return false;
         return Boolean(
-            this.isComposite && this.owner()?.isAny(RequirementUsage.$type, RequirementDefinition.$type)
+            this.isComposite &&
+            this.owner()?.isAny(RequirementUsage.$type, RequirementDefinition.$type)
         );
     }
 

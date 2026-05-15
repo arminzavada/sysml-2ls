@@ -28,8 +28,7 @@ import { UseCaseUsageMeta, UseCaseUsageOptions } from "./use-case-usage.js";
 import { enumerable } from "../../utils/index.js";
 
 export interface IncludeUseCaseUsageOptions
-    extends PerformActionUsageOptions,
-        UseCaseUsageOptions {}
+    extends PerformActionUsageOptions, UseCaseUsageOptions {}
 
 @metamodelOf(IncludeUseCaseUsage.$type, {
     base: "UseCases::useCases",

@@ -32,7 +32,7 @@ describe.each([URI.file(currentDir), URI.file(currentFile)])(
         });
 
         it(`${path} exists async`, async () => {
-            expect(fs.exists(path)).resolves.toBeTruthy();
+            await expect(fs.exists(path)).resolves.toBeTruthy();
         });
 
         const bad = Utils.joinPath(path, ".Hello, world!");
@@ -40,8 +40,8 @@ describe.each([URI.file(currentDir), URI.file(currentFile)])(
             expect(fs.existsSync(bad)).toBeFalsy();
         });
 
-        it(`${bad} does not exist async`, () => {
-            expect(fs.exists(bad)).resolves.toBeFalsy();
+        it(`${bad} does not exist async`, async () => {
+            await expect(fs.exists(bad)).resolves.toBeFalsy();
         });
     }
 );

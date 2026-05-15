@@ -658,10 +658,30 @@ describe.each([
     [ast.ItemUsage.$type, "item", ast.Structure.$type, "validateItemUsageTyping"],
     [ast.PartUsage.$type, "part", ast.Structure.$type, "validatePartUsageTyping"],
     [ast.ActionUsage.$type, "action", ast.Behavior.$type, "validateActionUsageTyping"],
-    [ast.ConnectionUsage.$type, "connection", ast.Association.$type, "validateConnectionUsageTyping"],
-    [ast.FlowConnectionUsage.$type, "flow", ast.Interaction.$type, "validateFlowConnectionUsageTyping"],
-    [ast.InterfaceUsage.$type, "interface", ast.InterfaceDefinition.$type, "validateInterfaceUsageTyping"],
-    [ast.AllocationUsage.$type, "allocation", ast.AllocationDefinition.$type, "validateAllocationUsageTyping"],
+    [
+        ast.ConnectionUsage.$type,
+        "connection",
+        ast.Association.$type,
+        "validateConnectionUsageTyping",
+    ],
+    [
+        ast.FlowConnectionUsage.$type,
+        "flow",
+        ast.Interaction.$type,
+        "validateFlowConnectionUsageTyping",
+    ],
+    [
+        ast.InterfaceUsage.$type,
+        "interface",
+        ast.InterfaceDefinition.$type,
+        "validateInterfaceUsageTyping",
+    ],
+    [
+        ast.AllocationUsage.$type,
+        "allocation",
+        ast.AllocationDefinition.$type,
+        "validateAllocationUsageTyping",
+    ],
     [ast.PortUsage.$type, "port", ast.PortDefinition.$type, "validatePortUsageTyping"],
     [ast.StateUsage.$type, "state", ast.Behavior.$type, "validateStateUsageTyping"],
 ])("%s validation", (_, kw, supertype, code) => {
@@ -759,8 +779,18 @@ describe.each([
         "validateRequirementUsageTyping",
     ],
     [ast.ViewUsage.$type, "view", ast.ViewDefinition.$type, "validateViewUsageTyping"],
-    [ast.ViewpointUsage.$type, "viewpoint", ast.ViewpointDefinition.$type, "validateViewpointUsageTyping"],
-    [ast.RenderingUsage.$type, "rendering", ast.RenderingDefinition.$type, "validateRenderingUsageTyping"],
+    [
+        ast.ViewpointUsage.$type,
+        "viewpoint",
+        ast.ViewpointDefinition.$type,
+        "validateViewpointUsageTyping",
+    ],
+    [
+        ast.RenderingUsage.$type,
+        "rendering",
+        ast.RenderingDefinition.$type,
+        "validateRenderingUsageTyping",
+    ],
 ])("%s validation", (_, kw, supertype, code) => {
     test(`usages typed by non-${supertype} trigger validation`, async () => {
         return expectValidations(`attribute def C; ${kw} p : C;`, code).resolves.toHaveLength(1);
@@ -800,7 +830,13 @@ describe.each([
         ast.RenderingUsage.$type,
         "validateViewDefinitionOnlyOneViewRendering",
     ],
-    [ast.ViewUsage.$type, "view", "render", ast.RenderingUsage.$type, "validateViewUsageOnlyOneViewRendering"],
+    [
+        ast.ViewUsage.$type,
+        "view",
+        "render",
+        ast.RenderingUsage.$type,
+        "validateViewUsageOnlyOneViewRendering",
+    ],
     [
         ast.CaseDefinition.$type,
         "case def",
@@ -808,7 +844,13 @@ describe.each([
         ast.SubjectMembership.$type,
         "validateCaseDefinitionOnlyOneSubject",
     ],
-    [ast.CaseUsage.$type, "case", "subject", ast.SubjectMembership.$type, "validateCaseUsageOnlyOneSubject"],
+    [
+        ast.CaseUsage.$type,
+        "case",
+        "subject",
+        ast.SubjectMembership.$type,
+        "validateCaseUsageOnlyOneSubject",
+    ],
     [
         ast.CaseDefinition.$type,
         "case def",
@@ -823,7 +865,13 @@ describe.each([
         ast.ObjectiveMembership.$type,
         "validateCaseUsageOnlyOneObjective",
     ],
-    [ast.StateUsage.$type, "state", "do action", "do subaction", "validateStateUsageStateSubactionKind"],
+    [
+        ast.StateUsage.$type,
+        "state",
+        "do action",
+        "do subaction",
+        "validateStateUsageStateSubactionKind",
+    ],
     [
         ast.StateUsage.$type,
         "state",

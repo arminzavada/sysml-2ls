@@ -25,8 +25,8 @@
     ],
     "main": "./lib/index.js",
     "scripts": {
-        "lint": "eslint src --ext ts --max-warnings 0",
-        "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
+        "lint": "eslint src --max-warnings 0",
+        "clean": "shx rm -rf lib coverage *.tsbuildinfo",
         "build": "tsc",
         "watch": "tsc --watch",
         "test": "vitest run --passWithNoTests",

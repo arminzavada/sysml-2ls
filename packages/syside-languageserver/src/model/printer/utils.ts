@@ -58,7 +58,15 @@ import {
     printElementIgnored,
     printModelElement,
 } from "./print.js";
-import { AstUtils, CstNode, DocumentSegment, Grammar, GrammarAST, GrammarUtils, stream } from "langium";
+import {
+    AstUtils,
+    CstNode,
+    DocumentSegment,
+    Grammar,
+    GrammarAST,
+    GrammarUtils,
+    stream,
+} from "langium";
 const { findNodeForKeyword } = GrammarUtils;
 const { streamAst } = AstUtils;
 const { isKeyword } = GrammarAST;
@@ -381,12 +389,12 @@ export function formatPreserved<T extends string, R>(
 export function hasFeatureDeclaration(node: FeatureMeta): boolean {
     return Boolean(
         node.specializations().some((s) => !s.isImplied) ||
-            node.typeRelationships.some((r) => !r.isImplied) ||
-            node.declaredName ||
-            node.declaredShortName ||
-            node.multiplicity ||
-            node.isOrdered ||
-            node.isNonUnique
+        node.typeRelationships.some((r) => !r.isImplied) ||
+        node.declaredName ||
+        node.declaredShortName ||
+        node.multiplicity ||
+        node.isOrdered ||
+        node.isNonUnique
     );
 }
 
@@ -426,10 +434,9 @@ export function hasFormatIgnore(node: BasicMetamodel): boolean {
     // otherwise information would be lost
     return Boolean(
         node.cst() &&
-            node.notes.some(
-                (note) =>
-                    note.localPlacement === "leading" && /syside-format ignore/.test(note.text)
-            )
+        node.notes.some(
+            (note) => note.localPlacement === "leading" && /syside-format ignore/.test(note.text)
+        )
     );
 }
 

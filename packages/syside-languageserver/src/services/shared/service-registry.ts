@@ -22,7 +22,7 @@ export class SysMLServiceRegistry extends DefaultServiceRegistry {
     override getServices(uri: URI): SysMLDefaultServices {
         try {
             return super.getServices(uri) as SysMLDefaultServices;
-        } catch (_) {
+        } catch {
             // 4.x removed `singleton`; fall back to the only registered language
             // when present (matches the previous behavior) or to the
             // SysML extension when multiple languages are registered.

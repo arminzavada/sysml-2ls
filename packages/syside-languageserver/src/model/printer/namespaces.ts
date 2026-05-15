@@ -822,11 +822,10 @@ export interface NamespacePrinterParts {
     crossFeature?: Doc;
 }
 
-export interface TypePrinterOptions<T extends TypeMeta = TypeMeta>
-    extends Pick<
-        NamespacePrinterParts,
-        "forceBrackets" | "appendToDeclaration" | "skipChildren" | "join" | "forceBreakChildren"
-    > {
+export interface TypePrinterOptions<T extends TypeMeta = TypeMeta> extends Pick<
+    NamespacePrinterParts,
+    "forceBrackets" | "appendToDeclaration" | "skipChildren" | "join" | "forceBreakChildren"
+> {
     skipFirstSpecializationKeyword?: boolean;
     specializations?: SpecializationGrouper<T>;
 }
@@ -963,8 +962,10 @@ export function kermlFeatureModifiers(node: FeatureMeta): Doc[] {
     return kermlBasicFeatureModifiers(node);
 }
 
-export interface FeaturePrinterOptions<T extends FeatureMeta = FeatureMeta>
-    extends Omit<TypePrinterOptions<T>, "appendToDeclaration"> {
+export interface FeaturePrinterOptions<T extends FeatureMeta = FeatureMeta> extends Omit<
+    TypePrinterOptions<T>,
+    "appendToDeclaration"
+> {
     appendToDeclaration: ((declaration: Doc[]) => void) | undefined | "default";
 }
 

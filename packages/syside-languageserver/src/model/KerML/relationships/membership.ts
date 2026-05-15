@@ -28,8 +28,8 @@ import {
 export interface MembershipOptions<
     Target extends ElementMeta = ElementMeta,
     Parent extends NamespaceMeta | undefined = NamespaceMeta,
-> extends RelationshipOptionsBody<Target, Parent>,
-        ElementOptions<Parent> {
+>
+    extends RelationshipOptionsBody<Target, Parent>, ElementOptions<Parent> {
     isAlias?: boolean;
 }
 

@@ -46,7 +46,8 @@ export class RequirementVerificationMembershipMeta<
 
     isLegalVerification(): boolean {
         let owner = this.owner();
-        if (!owner?.is(RequirementUsage.$type) || !owner.parent()?.is(ObjectiveMembership.$type)) return false;
+        if (!owner?.is(RequirementUsage.$type) || !owner.parent()?.is(ObjectiveMembership.$type))
+            return false;
         owner = owner.owner();
         return Boolean(owner?.isAny(VerificationCaseDefinition.$type, VerificationCaseUsage.$type));
     }

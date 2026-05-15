@@ -46,27 +46,28 @@ export class PartUsageMeta extends ItemUsageMeta {
     protected isRequirementActor(): boolean {
         return Boolean(
             this.parent()?.is(ActorMembership.$type) &&
-                this.owner()?.isAny(RequirementDefinition.$type, RequirementUsage.$type)
+            this.owner()?.isAny(RequirementDefinition.$type, RequirementUsage.$type)
         );
     }
 
     protected isRequirementStakeholder(): boolean {
         return Boolean(
             this.parent()?.is(StakeholderMembership.$type) &&
-                this.owner()?.isAny(RequirementDefinition.$type, RequirementUsage.$type)
+            this.owner()?.isAny(RequirementDefinition.$type, RequirementUsage.$type)
         );
     }
 
     protected isCaseActor(): boolean {
         return Boolean(
-            this.parent()?.is(ActorMembership.$type) && this.owner()?.isAny(CaseDefinition.$type, CaseUsage.$type)
+            this.parent()?.is(ActorMembership.$type) &&
+            this.owner()?.isAny(CaseDefinition.$type, CaseUsage.$type)
         );
     }
 
     override isIgnoredParameter(): boolean {
         return Boolean(
             super.isIgnoredParameter() ||
-                this.parent()?.isAny(ActorMembership.$type, StakeholderMembership.$type)
+            this.parent()?.isAny(ActorMembership.$type, StakeholderMembership.$type)
         );
     }
 

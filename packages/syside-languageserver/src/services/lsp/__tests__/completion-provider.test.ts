@@ -30,7 +30,6 @@ import {
     CompletionList,
 } from "vscode-languageserver";
 
-//eslint-disable-next-line @typescript-eslint/ban-types
 export type DeepPartial<T> = T extends object | undefined
     ? {
           [P in keyof T]?: DeepPartial<T[P]>;

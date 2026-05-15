@@ -16,7 +16,10 @@
 
 import { CaseDefinition } from "../../generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
-import { CalculationDefinitionMeta, CalculationDefinitionOptions } from "./calculation-definition.js";
+import {
+    CalculationDefinitionMeta,
+    CalculationDefinitionOptions,
+} from "./calculation-definition.js";
 
 export type CaseDefinitionOptions = CalculationDefinitionOptions;
 

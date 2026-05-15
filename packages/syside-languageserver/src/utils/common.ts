@@ -509,14 +509,14 @@ export async function asyncWaitWhile(
     });
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export type DeepReadonly<T> = T extends Function
     ? T
     : {
           readonly [P in keyof T]: DeepReadonly<T[P]>;
       };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export type DeepRequired<T> = T extends Function
     ? T
     : {

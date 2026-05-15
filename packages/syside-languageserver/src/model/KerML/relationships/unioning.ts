@@ -32,7 +32,11 @@ export class UnioningMeta<T extends TypeMeta = TypeMeta> extends RelationshipMet
         document: LangiumDocument,
         options?: RelationshipOptions<TypeMeta, TypeMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
+        return super.create(
+            provider,
+            document,
+            options as RelationshipOptions<ElementMeta, ElementMeta | undefined>
+        );
     }
 }
 

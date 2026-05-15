@@ -19,7 +19,13 @@ import { ConnectionUsage } from "../../generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
 import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
-import { FeatureMeta, InheritanceMeta, MembershipMeta, TypeMeta, ElementParts } from "../KerML/index.js";
+import {
+    FeatureMeta,
+    InheritanceMeta,
+    MembershipMeta,
+    TypeMeta,
+    ElementParts,
+} from "../KerML/index.js";
 import { enumerable } from "../../utils/index.js";
 
 export interface ConnectionUsageOptions extends PartUsageOptions, ConnectorAsUsageOptions {}

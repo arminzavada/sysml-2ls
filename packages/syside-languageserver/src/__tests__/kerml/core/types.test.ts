@@ -44,7 +44,10 @@ test("types can be disjoint", async () => {
                 target: {
                     ...withQualifiedName("A"),
                     heritage: [
-                        { $type: Subclassification.$type, targetRef: qualifiedTypeReference("Anything") },
+                        {
+                            $type: Subclassification.$type,
+                            targetRef: qualifiedTypeReference("Anything"),
+                        },
                     ],
                     typeRelationships: [
                         { $type: Disjoining.$type, targetRef: qualifiedTypeReference("B") },
@@ -64,7 +67,9 @@ test("types can conjugate", async () => {
             {
                 target: {
                     ...withQualifiedName("C"),
-                    heritage: [{ $type: Conjugation.$type, targetRef: qualifiedTypeReference("A") }],
+                    heritage: [
+                        { $type: Conjugation.$type, targetRef: qualifiedTypeReference("A") },
+                    ],
                 },
             },
         ],

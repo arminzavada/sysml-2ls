@@ -215,7 +215,7 @@ export class SysMLLinker extends DefaultLinker {
         // `AstNode.$container` is now `AstNode | undefined`. Coerce; this code
         // path is only hit when the referenced element has been linked, in
         // which case it always has a container.
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
         const container = value.ref.$container!;
         const error: LinkingError = {
             message: message,
@@ -424,8 +424,8 @@ export class SysMLLinker extends DefaultLinker {
         if (extra === "types") {
             const context =
                 refInfo.index === 0
-                    ? this.scopeProvider["getContext"](refInfo.container.$meta) ??
-                      refInfo.container.$meta.owner()
+                    ? (this.scopeProvider["getContext"](refInfo.container.$meta) ??
+                      refInfo.container.$meta.owner())
                     : refInfo.container.$meta.found[refInfo.index - 1];
 
             if (!context || context === "error") return error;

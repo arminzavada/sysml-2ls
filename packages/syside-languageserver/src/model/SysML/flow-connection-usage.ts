@@ -33,9 +33,7 @@ import { EventOccurrenceUsageMeta } from "./event-occurrence-usage.js";
 import { enumerable } from "../../utils/index.js";
 
 export interface FlowConnectionUsageOptions
-    extends ConnectorAsUsageOptions,
-        ActionUsageOptions,
-        ItemFlowOptions {
+    extends ConnectorAsUsageOptions, ActionUsageOptions, ItemFlowOptions {
     // can't override ends alone to allow only either ends or messages
     ends?: readonly Edge<EndFeatureMembershipMeta, ItemFlowEndMeta>[];
     /**

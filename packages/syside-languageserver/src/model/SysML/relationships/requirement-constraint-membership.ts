@@ -24,11 +24,10 @@ import { ConstraintUsageMeta } from "../constraint-usage.js";
 import { RequirementDefinitionMeta } from "../requirement-definition.js";
 import { RequirementUsageMeta } from "../requirement-usage.js";
 
-export interface RequirementConstraintMembershipOptions
-    extends RelationshipOptionsBody<
-        ConstraintUsageMeta,
-        RequirementDefinitionMeta | RequirementUsageMeta
-    > {
+export interface RequirementConstraintMembershipOptions extends RelationshipOptionsBody<
+    ConstraintUsageMeta,
+    RequirementDefinitionMeta | RequirementUsageMeta
+> {
     kind?: RequirementConstraintKind;
 }
 

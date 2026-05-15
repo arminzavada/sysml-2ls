@@ -69,7 +69,7 @@ export class SysMLConfigurationProvider extends DefaultConfigurationProvider {
         return section?.[configuration];
     }
 
-    private readonly sysmlReady = (() => {
+    private readonly sysmlReady = ((): { promise: Promise<void>; resolve: () => void } => {
         let resolve!: () => void;
         const promise = new Promise<void>((r) => (resolve = r));
         return { promise, resolve };

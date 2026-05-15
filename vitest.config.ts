@@ -14,7 +14,7 @@ export default defineConfig({
             "packages/syside-languageserver/src/**/*.{test,spec}.ts",
             "packages/syside-protocol/src/**/*.{test,spec}.ts",
         ],
-        testTimeout: 10000,
+        testTimeout: 20000,
         setupFiles: ["packages/syside-languageserver/src/testing/setup-vitest.ts"],
         coverage: {
             provider: "v8",

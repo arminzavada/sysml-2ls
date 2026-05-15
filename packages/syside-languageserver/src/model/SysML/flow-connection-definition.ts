@@ -22,8 +22,7 @@ import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definiti
 import { AstNode, LangiumDocument } from "langium";
 
 export interface FlowConnectionDefinitionOptions
-    extends InteractionOptions,
-        ActionDefinitionOptions {}
+    extends InteractionOptions, ActionDefinitionOptions {}
 
 @metamodelOf(FlowConnectionDefinition.$type, {
     base: "FlowConnections::MessageConnection",

@@ -242,5 +242,4 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
         this.indexManager.invalidate(changed.concat(deleted));
         return super.update(changed, deleted, cancelToken);
     }
-
 }

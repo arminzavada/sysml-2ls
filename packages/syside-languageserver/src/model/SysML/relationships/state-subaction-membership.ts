@@ -23,8 +23,10 @@ import { ActionUsageMeta } from "../action-usage.js";
 import { StateDefinitionMeta } from "../state-definition.js";
 import { StateUsageMeta } from "../state-usage.js";
 
-export interface StateSubactionMembershipOptions
-    extends RelationshipOptionsBody<ActionUsageMeta, StateDefinitionMeta | StateUsageMeta> {
+export interface StateSubactionMembershipOptions extends RelationshipOptionsBody<
+    ActionUsageMeta,
+    StateDefinitionMeta | StateUsageMeta
+> {
     kind?: StateSubactionKind;
 }
 

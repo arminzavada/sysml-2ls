@@ -396,7 +396,6 @@ describe("indent", () => {
 
         it("should not indent items if group fits", () => {
             expect(print(doc)).toMatchInlineSnapshot(
-                // eslint-disable-next-line quotes
                 '"[item0, item1, item2, item3, item4, item5, item6, item7, item8, item9]"'
             );
         });

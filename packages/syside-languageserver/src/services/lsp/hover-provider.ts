@@ -14,12 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import {
-    AstNode,
-    AstUtils,
-    LangiumDocument,
-    MaybePromise,
-} from "langium";
+import { AstNode, AstUtils, LangiumDocument, MaybePromise } from "langium";
 import { AstNodeHoverProvider } from "langium/lsp";
 import { Hover, HoverParams } from "vscode-languageserver";
 import { Utils } from "vscode-uri";

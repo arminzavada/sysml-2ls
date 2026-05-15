@@ -43,14 +43,14 @@
     ],
     "type": "module",
     "files": [
-        "out",
+        "dist",
         "src"
     ],
     "main": "./dist/node/extension.cjs",
     "browser": "./dist/browser/extension.cjs",
     "scripts": {
-        "lint": "eslint src --ext ts --max-warnings 0",
-        "clean": "shx rm -rf out dist *.tsbuildinfo",
+        "lint": "eslint src --max-warnings 0",
+        "clean": "shx rm -rf dist *.tsbuildinfo",
         "build": "pnpm run typecheck && pnpm run esbuild",
         "watch": "concurrently -n tsc,esbuild -c blue,yellow \"pnpm run typecheck -w\" \"pnpm run esbuild:watch\"",
         "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -67,7 +67,7 @@
         "generate:schema": "node ./scripts/generate-schemas.mjs"
     },
     "dependencies": {
-        "fs-extra": "^11.1.0",
+        "fs-extra": "^11.3.5",
         "node-fetch": "^3.3.2",
         "syside-languageclient": "workspace:*",
         "syside-languageserver": "workspace:*",
@@ -75,14 +75,14 @@
         "syside-protocol": "workspace:*",
         "vscode-languageclient": "~9.0.1",
         "vscode-languageserver": "~9.0.1",
-        "vscode-uri": "~3.0.8"
+        "vscode-uri": "~3.1.0"
     },
     "devDependencies": {
-        "@types/fs-extra": "^11.0.1",
-        "@types/vscode": "^1.56.0",
-        "@vscode/vsce": "^2.20.0",
-        "ovsx": "^0.8.0",
-        "typescript-json-schema": "^0.59.0"
+        "@types/fs-extra": "^11.0.4",
+        "@types/vscode": "^1.91.0",
+        "@vscode/vsce": "^3.9.1",
+        "ovsx": "^0.10.12",
+        "typescript-json-schema": "^0.67.2"
     },
     "vsce": {
         "dependencies": false,

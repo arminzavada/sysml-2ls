@@ -17,7 +17,10 @@
 import { Mixin } from "ts-mixer";
 import { SatisfyRequirementUsage } from "../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
-import { AssertConstraintUsageMeta, AssertConstraintUsageOptions } from "./assert-constraint-usage.js";
+import {
+    AssertConstraintUsageMeta,
+    AssertConstraintUsageOptions,
+} from "./assert-constraint-usage.js";
 import { RequirementUsageMeta, RequirementUsageOptions } from "./requirement-usage.js";
 import { SubjectMembershipMeta } from "./relationships/index.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
@@ -26,8 +29,7 @@ import { OccurrenceUsageMeta } from "./occurrence-usage.js";
 import { AstNode, LangiumDocument } from "langium";
 
 export interface SatisfyRequirementUsageOptions
-    extends RequirementUsageOptions,
-        AssertConstraintUsageOptions {
+    extends RequirementUsageOptions, AssertConstraintUsageOptions {
     satisfactionSubject?: Edge<SubjectMembershipMeta>;
 }
 

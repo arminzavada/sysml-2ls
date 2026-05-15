@@ -55,7 +55,9 @@ export async function extractDocument<T extends AstNode>(
     };
     await services.shared.workspace.DocumentBuilder.build([document], buildOptions);
 
-    const validationErrors = (document.diagnostics ?? []).filter((e: Diagnostic) => e.severity === 1);
+    const validationErrors = (document.diagnostics ?? []).filter(
+        (e: Diagnostic) => e.severity === 1
+    );
     if (validationErrors.length > 0) {
         console.error(chalk.red("There are validation errors:"));
         for (const validationError of validationErrors) {

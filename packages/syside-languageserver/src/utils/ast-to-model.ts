@@ -101,7 +101,10 @@ const AstToModel: {
     [ast.Import.$type](model, node) {
         model.isRecursive = !!node.isRecursive;
         model["_importsAll"] = node.importsAll;
-        if (model.parent()?.is(ast.Package.$type) && model.parent()?.parent()?.is(ast.Import.$type)) {
+        if (
+            model.parent()?.is(ast.Package.$type) &&
+            model.parent()?.parent()?.is(ast.Import.$type)
+        ) {
             model.visibility = Visibility.public;
         }
     },

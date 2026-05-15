@@ -85,6 +85,7 @@ describe("document commands can be executed", () => {
     afterAll(() => (builder.update = update));
 
     test("syside.editor.updateDocument triggers document update", async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(handler?.executeCommand("syside.editor.updateDocument", [uri?.toJSON()])).resolves;
         expect(mock).toHaveBeenCalledTimes(1);
         expect(mock).toHaveBeenCalledWith(

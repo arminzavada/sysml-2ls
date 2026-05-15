@@ -25,10 +25,10 @@
         "lib",
         "src"
     ],
-    "main": "./out/index.js",
+    "main": "./lib/index.js",
     "scripts": {
         "prebuild": "cd src && node -p \"'export const Version = ' + JSON.stringify(require('../package.json').version) + ';'\" > version.ts",
-        "lint": "eslint src --ext ts --max-warnings 0",
+        "lint": "eslint src --max-warnings 0",
         "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
         "build": "pnpm run prebuild && tsc",
         "watch": "tsc --watch",
@@ -40,10 +40,10 @@
         "esbuild:watch": "pnpm run esbuild-base --sourcemap --watch"
     },
     "dependencies": {
-        "chalk": "^5.2.0",
-        "commander": "^10.0.1",
+        "chalk": "^5.6.2",
+        "commander": "^14.0.3",
         "syside-languageserver": "workspace:*",
-        "vscode-uri": "~3.0.8"
+        "vscode-uri": "~3.1.0"
     },
     "devDependencies": {
         "langium": "~4.2.4",

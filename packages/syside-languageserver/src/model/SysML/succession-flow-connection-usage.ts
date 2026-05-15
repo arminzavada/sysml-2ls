@@ -16,14 +16,16 @@
 
 import { Mixin } from "ts-mixer";
 import { SuccessionFlowConnectionUsage } from "../../generated/ast.js";
-import { SuccessionItemFlowMeta, SuccessionItemFlowOptions } from "../KerML/succession-item-flow.js";
+import {
+    SuccessionItemFlowMeta,
+    SuccessionItemFlowOptions,
+} from "../KerML/succession-item-flow.js";
 import { metamodelOf } from "../metamodel.js";
 import { FlowConnectionUsageMeta, FlowConnectionUsageOptions } from "./flow-connection-usage.js";
 import { Edge, EndFeatureMembershipMeta, ItemFlowEndMeta } from "../KerML/index.js";
 
 export interface SuccessionFlowConnectionUsageOptions
-    extends SuccessionItemFlowOptions,
-        FlowConnectionUsageOptions {
+    extends SuccessionItemFlowOptions, FlowConnectionUsageOptions {
     ends?: readonly Edge<EndFeatureMembershipMeta, ItemFlowEndMeta>[];
 }
 

@@ -18,7 +18,12 @@ import { Assertion } from "vitest";
 import { LangiumDocument, AstNode, DeepPartial } from "langium";
 import { SubtypeKeys } from "../../../services/index.js";
 import { emptyDocument, getRange, parseKerML, parseSysML } from "../../../testing/index.js";
-import { PrinterConfig, mergeWithPartial, DefaultPrinterConfig, print } from "../../../utils/index.js";
+import {
+    PrinterConfig,
+    mergeWithPartial,
+    DefaultPrinterConfig,
+    print,
+} from "../../../utils/index.js";
 import { ElementMeta, NamespaceMeta } from "../../KerML/index.js";
 import { ElementIDProvider, basicIdProvider, MetatypeProto, Metatype } from "../../metamodel.js";
 import {

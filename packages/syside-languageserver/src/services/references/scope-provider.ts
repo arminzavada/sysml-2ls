@@ -212,7 +212,9 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             const chaining = owner;
             const parentFeature = chaining.parent();
             const chainings = (parentFeature as FeatureMeta | undefined)?.chainings;
-            const index = chainings ? chainings.indexOf(chaining as FeatureMeta["chainings"][number]) : -1;
+            const index = chainings
+                ? chainings.indexOf(chaining as FeatureMeta["chainings"][number])
+                : -1;
             if (index > 0 && chainings) {
                 const previous = chainings[index - 1].element();
                 if (previous) {
@@ -281,7 +283,9 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         // node has the same name as the reference
         document ??= owner.document;
 
-        const parent = owner.is(Element.$type) ? owner : (owner.parent() as ElementMeta | undefined);
+        const parent = owner.is(Element.$type)
+            ? owner
+            : (owner.parent() as ElementMeta | undefined);
         if (parent) this.initializeParents(parent, document);
 
         return makeLinkingScope(

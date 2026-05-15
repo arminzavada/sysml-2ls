@@ -54,7 +54,11 @@ export class DisjoiningMeta<T extends TypeMeta = TypeMeta> extends RelationshipM
         document: LangiumDocument,
         options?: RelationshipOptions<TypeMeta, Parent, TypeMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
+        return super.create(
+            provider,
+            document,
+            options as RelationshipOptions<ElementMeta, ElementMeta | undefined>
+        );
     }
 }
 

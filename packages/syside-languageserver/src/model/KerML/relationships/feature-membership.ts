@@ -25,14 +25,13 @@ import { RelationshipOptionsBody } from "../relationship.js";
 import { ElementMeta } from "../_internal.js";
 
 export interface FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta>
-    extends OwningMembershipMeta<T>,
-        FeaturingMeta<T> {
+    extends OwningMembershipMeta<T>, FeaturingMeta<T> {
     element(): T;
 }
 
 @metamodelOf(FeatureMembership.$type)
 @mix(FeaturingMeta, OwningMembershipMeta)
-// eslint-disable-next-line unused-imports/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta> {
     // eslint-disable-next-line unused-imports/no-unused-vars
     protected constructor(id: ElementID) {

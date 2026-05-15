@@ -67,7 +67,9 @@ describe("imports", () => {
         });
 
         it("should print recursive imports without children", async () => {
-            const node = await parsedNode("private import M ::**;", { node: MembershipImport.$type });
+            const node = await parsedNode("private import M ::**;", {
+                node: MembershipImport.$type,
+            });
             expect(printKerMLElement(node.$meta)).toEqual("private import M::**;\n");
         });
 
@@ -90,7 +92,9 @@ describe("imports", () => {
         });
 
         it("should print recursive imports without children", async () => {
-            const node = await parsedNode("private import M ::* ::**;", { node: NamespaceImport.$type });
+            const node = await parsedNode("private import M ::* ::**;", {
+                node: NamespaceImport.$type,
+            });
             expect(printKerMLElement(node.$meta)).toEqual("private import M::*::**;\n");
         });
 
@@ -358,7 +362,14 @@ describe("dependencies", () => {
 
 describe.each([
     ["", "private ", "import", Import.$type, "kerml", (text: string): string => text],
-    ["protected ", "", "expose", Expose.$type, "sysml", (text: string): string => `view { ${text} }`],
+    [
+        "protected ",
+        "",
+        "expose",
+        Expose.$type,
+        "sysml",
+        (text: string): string => `view { ${text} }`,
+    ],
 ] as const)("%s", (bad, vis, kw, type, lang, transform) => {
     it("should print appropriate visibility indicators", async () => {
         return expectPrinted(transform(`${bad}${kw} M { /* comment */ }`), {
@@ -451,7 +462,12 @@ describe("membership", () => {
 
     describe.each([
         ["framed concern", "frame", "concern", FramedConcernMembership.$type],
-        ["requirement verification", "verify", "requirement", RequirementVerificationMembership.$type],
+        [
+            "requirement verification",
+            "verify",
+            "requirement",
+            RequirementVerificationMembership.$type,
+        ],
         [
             "requirement constraint assumption",
             "assume",

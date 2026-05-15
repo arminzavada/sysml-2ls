@@ -84,7 +84,10 @@ test("features can own type featurings", async () => {
                         { $type: FeatureTyping.$type, targetRef: qualifiedTypeReference("Engine") },
                     ],
                     typeRelationships: [
-                        { $type: TypeFeaturing.$type, targetRef: qualifiedTypeReference("Vehicle") },
+                        {
+                            $type: TypeFeaturing.$type,
+                            targetRef: qualifiedTypeReference("Vehicle"),
+                        },
                     ],
                 },
             },

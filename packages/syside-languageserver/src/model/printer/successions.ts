@@ -44,7 +44,11 @@ import {
     printCondition,
     printSubaction,
 } from "./actions.js";
-import { SourceFormatAlways, printConnectorAsUsage, printConnectorEndMember } from "./connectors.js";
+import {
+    SourceFormatAlways,
+    printConnectorAsUsage,
+    printConnectorEndMember,
+} from "./connectors.js";
 import { printAsTarget, printChaining } from "./edges.js";
 import {
     printChildrenBlock,

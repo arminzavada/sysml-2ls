@@ -20,7 +20,13 @@ import { ConnectorMeta, ConnectorOptions } from "../KerML/connector.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { UsageMeta, UsageOptions } from "./usage.js";
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureMeta, InheritanceMeta, MembershipMeta, TypeMeta, ElementParts } from "../KerML/index.js";
+import {
+    FeatureMeta,
+    InheritanceMeta,
+    MembershipMeta,
+    TypeMeta,
+    ElementParts,
+} from "../KerML/index.js";
 import { enumerable } from "../../utils/index.js";
 
 export interface ConnectorAsUsageOptions extends UsageOptions, ConnectorOptions {}

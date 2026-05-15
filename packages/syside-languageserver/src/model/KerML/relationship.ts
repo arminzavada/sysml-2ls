@@ -27,7 +27,12 @@ import {
 import { NonNullable, enumerable } from "../../utils/index.js";
 import { Visibility } from "../../utils/scope-util.js";
 import { ElementContainer } from "../containers.js";
-import { ElementIDProvider, MetatypeProto, ModelElementOptions, metamodelOf } from "../metamodel.js";
+import {
+    ElementIDProvider,
+    MetatypeProto,
+    ModelElementOptions,
+    metamodelOf,
+} from "../metamodel.js";
 import {
     CommentMeta,
     DocumentationMeta,

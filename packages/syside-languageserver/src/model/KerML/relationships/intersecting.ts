@@ -32,7 +32,11 @@ export class IntersectingMeta<T extends TypeMeta = TypeMeta> extends Relationshi
         document: LangiumDocument,
         options?: RelationshipOptions<TypeMeta, TypeMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
+        return super.create(
+            provider,
+            document,
+            options as RelationshipOptions<ElementMeta, ElementMeta | undefined>
+        );
     }
 }
 

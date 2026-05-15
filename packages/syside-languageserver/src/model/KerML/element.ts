@@ -60,8 +60,9 @@ export function namedMembership(
 
 export type LazyMetaclass = LazyGetter<MetadataFeatureMeta | undefined>;
 
-export interface ElementOptions<Parent extends ElementMeta | undefined = ElementMeta>
-    extends ModelElementOptions<Parent> {
+export interface ElementOptions<
+    Parent extends ElementMeta | undefined = ElementMeta,
+> extends ModelElementOptions<Parent> {
     declaredShortName?: string;
     declaredName?: string;
 }
@@ -254,7 +255,11 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
         const old = this.name;
         this.updateName(this._name, name);
         const parent = this.parent();
-        if (parent?.is(Membership.$type) && parent.name === old && parent.shortName === this.shortName)
+        if (
+            parent?.is(Membership.$type) &&
+            parent.name === old &&
+            parent.shortName === this.shortName
+        )
             parent.updateName(parent._name, name);
     }
 
@@ -423,7 +428,11 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
 
         if (name.sanitized && name.sanitized.length > 0) {
             const membership = this.parent();
-            if (owner && !owner._memberLookup.has(name.sanitized) && membership?.is(Membership.$type)) {
+            if (
+                owner &&
+                !owner._memberLookup.has(name.sanitized) &&
+                membership?.is(Membership.$type)
+            ) {
                 owner._memberLookup.set(name.sanitized, membership);
             }
         }

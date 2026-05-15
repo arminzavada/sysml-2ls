@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 /* eslint-disable unused-imports/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { ElementMeta, OPERATORS, OperatorExpressionMeta, RangeGenerator } from "../../index.js";
 import {
     BuiltinFunction,

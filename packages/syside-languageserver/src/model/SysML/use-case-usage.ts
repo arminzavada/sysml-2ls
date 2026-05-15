@@ -32,7 +32,8 @@ export class UseCaseUsageMeta extends CaseUsageMeta {
     isSubUseCase(): boolean {
         const parent = this.owner();
         return Boolean(
-            this.isNonEntryExitComposite() && parent?.isAny(UseCaseUsage.$type, UseCaseDefinition.$type)
+            this.isNonEntryExitComposite() &&
+            parent?.isAny(UseCaseUsage.$type, UseCaseDefinition.$type)
         );
     }
 

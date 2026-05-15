@@ -29,7 +29,9 @@ export type PortUsageOptions = OccurrenceUsageOptions;
 export class PortUsageMeta extends OccurrenceUsageMeta {
     @enumerable
     override get isComposite(): boolean {
-        return this.owningType?.isAny(PortDefinition.$type, PortUsage.$type) ? super.isComposite : false;
+        return this.owningType?.isAny(PortDefinition.$type, PortUsage.$type)
+            ? super.isComposite
+            : false;
     }
     override set isComposite(value) {
         super.isComposite = value;
@@ -42,11 +44,15 @@ export class PortUsageMeta extends OccurrenceUsageMeta {
     }
 
     isOwnedPort(): boolean {
-        return Boolean(this.isComposite && this.owner()?.isAny(PartDefinition.$type, PortUsage.$type));
+        return Boolean(
+            this.isComposite && this.owner()?.isAny(PartDefinition.$type, PortUsage.$type)
+        );
     }
 
     isSubport(): boolean {
-        return Boolean(this.isComposite && this.owner()?.isAny(PortDefinition.$type, PortUsage.$type));
+        return Boolean(
+            this.isComposite && this.owner()?.isAny(PortDefinition.$type, PortUsage.$type)
+        );
     }
 
     override ast(): PortUsage | undefined {

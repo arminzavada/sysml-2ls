@@ -14,8 +14,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-/* eslint-disable unused-imports/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     AstNode,
     CstUtils,
@@ -353,7 +351,11 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
             // expression scope and the previous reference is not a feature
             // chain
             const owner = node.astNode.$meta.owner();
-            if (token === "." && owner?.is(InlineExpression.$type) && !owner.is(FeatureChainExpression.$type)) {
+            if (
+                token === "." &&
+                owner?.is(InlineExpression.$type) &&
+                !owner.is(FeatureChainExpression.$type)
+            ) {
                 const item = this.fillCompletionItem(context, {
                     label: "metadata",
                     kind: CompletionItemKind.Operator,
@@ -491,9 +493,7 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
 
                     const item = this.createMemberCompletionItem(e, name);
                     // length 4 should be more than enough (10k numbers)
-                    (item as { sortText?: string }).sortText = index
-                        .toString()
-                        .padStart(4, "0");
+                    (item as { sortText?: string }).sortText = index.toString().padStart(4, "0");
                     acceptor(ctx, item);
                 });
             };

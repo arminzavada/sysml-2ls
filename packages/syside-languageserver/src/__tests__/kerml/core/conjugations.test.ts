@@ -52,6 +52,8 @@ test.each(["conjugates", "~"])(
     class Conjugate1 ${token} Original;`,
                 { node: Class.$type, index: 1 }
             )
-        ).resolves.toMatchObject({ heritage: [expect.objectContaining({ $type: Conjugation.$type })] });
+        ).resolves.toMatchObject({
+            heritage: [expect.objectContaining({ $type: Conjugation.$type })],
+        });
     }
 );

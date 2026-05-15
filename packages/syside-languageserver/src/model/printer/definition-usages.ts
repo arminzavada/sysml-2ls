@@ -103,8 +103,9 @@ export function occurrenceDefinitionModifiers(node: OccurrenceDefinitionMeta): D
     return modifiers;
 }
 
-export interface UsagePrinterOptions<T extends UsageMeta = UsageMeta>
-    extends TypePrinterOptions<T> {
+export interface UsagePrinterOptions<
+    T extends UsageMeta = UsageMeta,
+> extends TypePrinterOptions<T> {
     ignoreRef?: boolean;
 }
 
@@ -190,8 +191,10 @@ export function printGenericOccurrenceDefinition<T extends OccurrenceDefinitionM
     );
 }
 
-export interface OccurrenceUsageSubtypeOptions
-    extends Pick<TypePrinterOptions<OccurrenceUsageMeta>, "join"> {
+export interface OccurrenceUsageSubtypeOptions extends Pick<
+    TypePrinterOptions<OccurrenceUsageMeta>,
+    "join"
+> {
     format: PreservableFormatting<"always" | "as_needed">;
     suffix: Doc | undefined | "default";
     declarationOnly?: boolean;
@@ -227,7 +230,8 @@ export function printOccurrenceUsageSubtype(
             ?.nodeType() === ast.ReferenceSubsetting.$type
     ) {
         const kw = formatPreserved(node, options.format, "always", {
-            find: (node) => GrammarUtils.findNodeForKeyword(node, optionalKw.split(" ").at(-1) as string),
+            find: (node) =>
+                GrammarUtils.findNodeForKeyword(node, optionalKw.split(" ").at(-1) as string),
             choose: {
                 always: () => optionalKw,
                 as_needed: () => undefined,

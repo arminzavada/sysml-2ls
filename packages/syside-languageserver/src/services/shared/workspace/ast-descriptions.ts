@@ -14,12 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import {
-    AstNodeDescription,
-    AstNodeDescriptionProvider,
-    AstUtils,
-    LangiumDocument,
-} from "langium";
+import { AstNodeDescription, AstNodeDescriptionProvider, AstUtils, LangiumDocument } from "langium";
 import { AstNodeLocator } from "langium";
 import { Element } from "../../../generated/ast.js";
 import { SysMLSharedServices } from "../../services.js";

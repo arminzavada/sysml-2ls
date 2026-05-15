@@ -97,7 +97,7 @@ export const ValidationRules = {
 };
 
 // useless/long return type for decorator factory
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+
 function validate<K extends Elements>(
     type: K,
     kerml = true,
@@ -281,9 +281,7 @@ export class BaseValidationRegistry extends ValidationRegistry {
                                 if (!node) return;
                                 accept(severity, message, {
                                     node: node,
-                                    ...this.getSharedInfo(
-                                        info as ModelDiagnosticInfo<ElementMeta>
-                                    ),
+                                    ...this.getSharedInfo(info as ModelDiagnosticInfo<ElementMeta>),
                                 });
                             },
                             token

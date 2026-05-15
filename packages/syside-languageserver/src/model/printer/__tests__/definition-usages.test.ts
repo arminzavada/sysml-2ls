@@ -238,7 +238,12 @@ describe.each([
     ["exhibit", "state", ast.ExhibitStateUsage.$type, "exhibit_state_usage_keyword"],
     ["include", "use case", ast.IncludeUseCaseUsage.$type, "include_use_case_usage_keyword"],
     ["perform", "action", ast.PerformActionUsage.$type, "perform_action_usage_keyword"],
-    ["assert satisfy", "requirement", ast.SatisfyRequirementUsage.$type, "satisfy_requirement_keyword"],
+    [
+        "assert satisfy",
+        "requirement",
+        ast.SatisfyRequirementUsage.$type,
+        "satisfy_requirement_keyword",
+    ],
     [
         "assert not satisfy",
         "requirement",

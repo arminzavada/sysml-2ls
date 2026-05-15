@@ -332,7 +332,7 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
         // Langium 2.x tightened `AstNode.$container` from `AstNode` to
         // `AstNode | undefined`. An `ElementReference` is only ever encountered
         // here once linked, which implies a parent — assert via non-null.
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
         const owner = ref.$container!.$meta!;
         if (owner.is(MembershipImport.$type)) {
             // importing name only, no need to fully resolve yet
@@ -1047,7 +1047,10 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
     protected redefineObjective(node: RequirementUsageMeta, _document: LangiumDocument): void {
         if (!node.parent()?.is(ObjectiveMembership.$type)) return;
         this.redefineFirstIf(node, (member) => {
-            return member.is(ObjectiveMembership.$type) && !!member.element()?.is(RequirementUsage.$type);
+            return (
+                member.is(ObjectiveMembership.$type) &&
+                !!member.element()?.is(RequirementUsage.$type)
+            );
         });
     }
 
@@ -1504,7 +1507,7 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
         // element is imported by the name as it appears in text
         let name = ast
             ? ast.targetRef?.parts.at(-1)?.$refText
-            : node.element()?.name ?? node.element()?.shortName;
+            : (node.element()?.name ?? node.element()?.shortName);
         if (!name) return;
         name = sanitizeName(name);
 
@@ -1633,7 +1636,13 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
     ): TypeMeta | undefined {
         if (!type) return;
         if (typeof type !== "string") return type;
-        return this.findLibraryElement(node, type, document, Type.$type, "Could not find library type");
+        return this.findLibraryElement(
+            node,
+            type,
+            document,
+            Type.$type,
+            "Could not find library type"
+        );
     }
 
     /**

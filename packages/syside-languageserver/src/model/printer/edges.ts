@@ -159,7 +159,10 @@ export function printEdgeEnd<T extends RelationshipMeta>(
     const { target, astNode } = value;
 
     if (target?.parent() === edge) {
-        if (target.is(ast.Feature.$type) && edge.isAny(ast.Inheritance.$type, ast.FeatureRelationship.$type))
+        if (
+            target.is(ast.Feature.$type) &&
+            edge.isAny(ast.Inheritance.$type, ast.FeatureRelationship.$type)
+        )
             // only owned targets by inheritance relationships or by inline
             // expressions are feature chainings
             return printModelElement(target, context, {
@@ -236,9 +239,8 @@ export function printSource<T extends RelationshipMeta>(
 export function printWithVisibility(
     edge: RelationshipMeta,
     doc: Doc,
-    context: ModelPrinterContext
+    _context: ModelPrinterContext
 ): Doc {
-    const format = context.format.public_keyword;
     if (edge.is(ast.Expose.$type) || (!edge.is(ast.Import.$type) && !edge.hasExplicitVisibility)) {
         return doc;
     }

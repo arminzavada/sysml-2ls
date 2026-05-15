@@ -17,7 +17,12 @@
 import { AstNode, LangiumDocument } from "langium";
 import { OwningMembership } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
-import { ElementMeta, MembershipMeta, NamespaceMeta, RelationshipOptionsBody } from "../_internal.js";
+import {
+    ElementMeta,
+    MembershipMeta,
+    NamespaceMeta,
+    RelationshipOptionsBody,
+} from "../_internal.js";
 
 @metamodelOf(OwningMembership.$type)
 export class OwningMembershipMeta<T extends ElementMeta = ElementMeta> extends MembershipMeta<T> {

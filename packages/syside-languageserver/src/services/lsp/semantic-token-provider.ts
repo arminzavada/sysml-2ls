@@ -14,16 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import {
-    AstNode,
-    DocumentState,
-    LangiumDocument,
-    isOperationCancelled,
-} from "langium";
-import {
-    AbstractSemanticTokenProvider,
-    SemanticTokenAcceptor,
-} from "langium/lsp";
+import { AstNode, DocumentState, LangiumDocument, isOperationCancelled } from "langium";
+import { AbstractSemanticTokenProvider, SemanticTokenAcceptor } from "langium/lsp";
 import {
     Element,
     ElementReference,

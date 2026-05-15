@@ -282,8 +282,7 @@ export function printNaryEnds(
 }
 
 export interface ConnectorPrinterOptions
-    extends BinaryEndsPrinterOptions,
-        Pick<TypePrinterOptions, "join"> {
+    extends BinaryEndsPrinterOptions, Pick<TypePrinterOptions, "join"> {
     /**
      * Connector end member declaration format.
      */
@@ -321,6 +320,7 @@ export function printGenericConnector(
         if (!suffix) {
             return;
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         typeof suffix == "function" ? suffix(decl) : decl.push(suffix);
     };
 

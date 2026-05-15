@@ -23,8 +23,7 @@ import { EventOccurrenceUsageMeta, EventOccurrenceUsageOptions } from "./event-o
 import { enumerable } from "../../utils/index.js";
 
 export interface PerformActionUsageOptions
-    extends EventOccurrenceUsageOptions,
-        ActionUsageOptions {}
+    extends EventOccurrenceUsageOptions, ActionUsageOptions {}
 
 @metamodelOf(PerformActionUsage.$type, {
     performedAction: "Parts::Part::performedActions",

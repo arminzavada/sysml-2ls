@@ -187,7 +187,6 @@ class TypesIndex<S = SysMLTypeList> {
               };
 
         for (const type of this.base.getAllTypes()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const array = result.get(type)!;
             let value: T[] | undefined = registry[type as Keys<S>];
             if (value) push(array, value);

@@ -33,7 +33,7 @@ export class VerificationCaseUsageMeta extends CaseUsageMeta {
         const parent = this.owner();
         return Boolean(
             this.isNonEntryExitComposite() &&
-                parent?.isAny(VerificationCaseUsage.$type, VerificationCaseDefinition.$type)
+            parent?.isAny(VerificationCaseUsage.$type, VerificationCaseDefinition.$type)
         );
     }
 

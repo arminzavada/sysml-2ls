@@ -42,7 +42,11 @@ export class TypeFeaturingMeta<T extends TypeMeta = TypeMeta> extends FeaturingM
         document: LangiumDocument,
         options?: RelationshipOptions<TypeMeta, Parent, FeatureMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
+        return super.create(
+            provider,
+            document,
+            options as RelationshipOptions<ElementMeta, ElementMeta | undefined>
+        );
     }
 }
 

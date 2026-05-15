@@ -33,7 +33,11 @@ export class DifferencingMeta<T extends TypeMeta = TypeMeta> extends Relationshi
         // cannot have source
         options?: RelationshipOptions<TypeMeta, TypeMeta, TypeMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
+        return super.create(
+            provider,
+            document,
+            options as RelationshipOptions<ElementMeta, ElementMeta | undefined>
+        );
     }
 }
 

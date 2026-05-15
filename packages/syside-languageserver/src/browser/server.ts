@@ -25,10 +25,8 @@ import { startServer as _startServer } from "../launch/index.js";
 
 declare const self: DedicatedWorkerGlobalScope;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface BrowserLaunchOptions {
-    // empty
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface BrowserLaunchOptions {}
 
 export function startServer(options: BrowserLaunchOptions): ReturnType<typeof createSysMLServices> {
     /* browser specific setup code */

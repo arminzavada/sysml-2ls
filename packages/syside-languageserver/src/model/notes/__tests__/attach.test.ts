@@ -57,7 +57,9 @@ type TextCommentMatch = DeepPartial<Required<TextComment>>;
 
 describe("notes", () => {
     it("should attach inner ML note", async () => {
-        (await expectNotes("feature a = ( //* a note */ );", { node: NullExpression.$type })).toEqual([
+        (
+            await expectNotes("feature a = ( //* a note */ );", { node: NullExpression.$type })
+        ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -90,7 +92,9 @@ describe("notes", () => {
     });
 
     it("should attach EOL trailing note", async () => {
-        (await expectNotes("feature a = (); //* a note */", { node: OwningMembership.$type })).toEqual([
+        (
+            await expectNotes("feature a = (); //* a note */", { node: OwningMembership.$type })
+        ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -101,7 +105,9 @@ describe("notes", () => {
     });
 
     it("should attach EOL leading note", async () => {
-        (await expectNotes("feature a = //* a note */\n();\n", { node: NullExpression.$type })).toEqual([
+        (
+            await expectNotes("feature a = //* a note */\n();\n", { node: NullExpression.$type })
+        ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -112,7 +118,9 @@ describe("notes", () => {
     });
 
     it("should attach own line trailing note", async () => {
-        (await expectNotes("feature a = ();\n//* a note */", { node: OwningMembership.$type })).toEqual([
+        (
+            await expectNotes("feature a = ();\n//* a note */", { node: OwningMembership.$type })
+        ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -123,33 +131,35 @@ describe("notes", () => {
     });
 
     it("should attach own line leading note", async () => {
-        (await expectNotes("feature a = \n//* a note */\n();\n", { node: NullExpression.$type })).toEqual(
-            [
-                recursiveObjectContaining<TextCommentMatch>({
-                    kind: "block",
-                    text: " a note ",
-                    localPlacement: "leading",
-                    placement: "ownLine",
-                }),
-            ]
-        );
+        (
+            await expectNotes("feature a = \n//* a note */\n();\n", { node: NullExpression.$type })
+        ).toEqual([
+            recursiveObjectContaining<TextCommentMatch>({
+                kind: "block",
+                text: " a note ",
+                localPlacement: "leading",
+                placement: "ownLine",
+            }),
+        ]);
     });
 
     it("should attach own line inner note", async () => {
-        (await expectNotes("feature a = (\n//* a note */\n);\n", { node: NullExpression.$type })).toEqual(
-            [
-                recursiveObjectContaining<TextCommentMatch>({
-                    kind: "block",
-                    text: " a note ",
-                    localPlacement: "inner",
-                    placement: "ownLine",
-                }),
-            ]
-        );
+        (
+            await expectNotes("feature a = (\n//* a note */\n);\n", { node: NullExpression.$type })
+        ).toEqual([
+            recursiveObjectContaining<TextCommentMatch>({
+                kind: "block",
+                text: " a note ",
+                localPlacement: "inner",
+                placement: "ownLine",
+            }),
+        ]);
     });
 
     it("should attach remaining leading note 1", async () => {
-        (await expectNotes("feature a = //* a note */();\n", { node: NullExpression.$type })).toEqual([
+        (
+            await expectNotes("feature a = //* a note */();\n", { node: NullExpression.$type })
+        ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",

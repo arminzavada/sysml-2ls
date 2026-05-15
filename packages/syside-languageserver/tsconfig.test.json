@@ -3,24 +3,15 @@
     "compilerOptions": {
         "noEmit": true,
         "rootDir": "..",
-        "types": [
-            "vitest/globals"
-        ]
+        "types": ["vitest/globals"]
     },
     "references": [
-        {
-            "path": "tsconfig.json"
-        },
-        {
-            "path": "../syside-languageclient"
-        }
+        { "path": "tsconfig.json" },
+        { "path": "../syside-languageclient" }
     ],
     "files": [
         "../syside-vscode/package.json",
-        "scripts/expected-diagnostics.json",
+        "scripts/expected-diagnostics.json"
     ],
-    "include": [
-        "src/**/*.ts",
-        // "scripts/**/*.ts",
-    ]
+    "include": ["src/**/*.ts"]
 }

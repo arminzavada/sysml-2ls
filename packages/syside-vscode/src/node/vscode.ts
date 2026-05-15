@@ -81,7 +81,6 @@ export class SysMLVSCodeClientExtender extends BaseSysMLVSCodeClientExtender {
      */
     protected async findStdlibDir(): Promise<string | undefined> {
         const result = await vscode.window.showOpenDialog({
-            // eslint-disable-next-line quotes
             openLabel: 'Select "sysml.library" directory',
             canSelectFiles: false,
             canSelectFolders: true,

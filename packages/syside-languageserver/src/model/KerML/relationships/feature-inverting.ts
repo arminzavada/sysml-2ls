@@ -54,7 +54,11 @@ export class FeatureInvertingMeta<T extends FeatureMeta = FeatureMeta> extends R
         document: LangiumDocument,
         options?: RelationshipOptions<FeatureMeta, Parent, FeatureMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
+        return super.create(
+            provider,
+            document,
+            options as RelationshipOptions<ElementMeta, ElementMeta | undefined>
+        );
     }
 }
 

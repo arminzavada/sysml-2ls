@@ -187,7 +187,10 @@ export class KerMLValidator {
     ): void {
         if (node.isImplied) return;
         const specific = node.source();
-        if (specific?.is(ast.Type.$type) && specific.specializations(ast.Conjugation.$type).length > 0) {
+        if (
+            specific?.is(ast.Type.$type) &&
+            specific.specializations(ast.Conjugation.$type).length > 0
+        ) {
             const parsed = node.ast();
             accept("error", "Conjugated type cannot be a specialized type.", {
                 element: node,
@@ -717,7 +720,11 @@ export class KerMLValidator {
         if (!subsetting || !subsetted) return;
 
         // connectors have separate validation
-        if (subsetting.owner()?.is(ast.Connector.$type) || subsetted.owner()?.is(ast.Connector.$type)) return;
+        if (
+            subsetting.owner()?.is(ast.Connector.$type) ||
+            subsetted.owner()?.is(ast.Connector.$type)
+        )
+            return;
 
         this.validateSubsettingMultiplicityConformance(node, subsetting, subsetted, accept);
         this.validateSubsettingUniquenessConformance(node, subsetting, subsetted, accept);
@@ -737,7 +744,10 @@ export class KerMLValidator {
         );
     }
 
-    @validateKerML(ast.Class.$type, { sysml: false, bounds: [ast.AssociationStructure.$type, ast.Interaction.$type] })
+    @validateKerML(ast.Class.$type, {
+        sysml: false,
+        bounds: [ast.AssociationStructure.$type, ast.Interaction.$type],
+    })
     validateClassSpecialization(node: ClassMeta, accept: ModelValidationAcceptor): void {
         this.apply(
             "error",
@@ -754,7 +764,9 @@ export class KerMLValidator {
     validateStructSpecialization(node: StructureMeta, accept: ModelValidationAcceptor): void {
         this.apply(
             "error",
-            node.specializations(ast.Specialization.$type).filter((s) => s.element()?.is(ast.Behavior.$type)),
+            node
+                .specializations(ast.Specialization.$type)
+                .filter((s) => s.element()?.is(ast.Behavior.$type)),
             "A Structure must not specialize a Behavior.",
             accept,
             { code: "validateStructSpecialization", property: "targetRef" }
@@ -773,7 +785,9 @@ export class KerMLValidator {
                 .specializations(ast.Specialization.$type)
                 .filter((s) => s.element()?.isAny(ast.DataType.$type)),
             `An ${
-                node.is(ast.Interaction.$type) ? ast.Interaction.$type : ast.AssociationStructure.$type
+                node.is(ast.Interaction.$type)
+                    ? ast.Interaction.$type
+                    : ast.AssociationStructure.$type
             } must not specialize a DataType.`,
             accept,
             { code: "validateClassSpecialization", property: "targetRef" }
@@ -886,7 +900,8 @@ export class KerMLValidator {
         const featuringTypes = node.featuredBy;
 
         const ends = node.connectorEnds();
-        const skip = !node.owningType && node.is(ast.ItemFlow.$type) && node.owner()?.is(ast.Feature.$type);
+        const skip =
+            !node.owningType && node.is(ast.ItemFlow.$type) && node.owner()?.is(ast.Feature.$type);
         if (skip) return;
         ends.forEach((end, index) => {
             // no guarantee that the user has correctly used only a single
@@ -919,7 +934,9 @@ export class KerMLValidator {
     validateBehaviorSpecialization(node: BehaviorMeta, accept: ModelValidationAcceptor): void {
         this.apply(
             "error",
-            node.specializations(ast.Specialization.$type).filter((s) => s.element()?.is(ast.Structure.$type)),
+            node
+                .specializations(ast.Specialization.$type)
+                .filter((s) => s.element()?.is(ast.Structure.$type)),
             "A Behavior must not specialize a Structure.",
             accept,
             { code: "validateBehaviorSpecialization", property: "targetRef" }
@@ -949,7 +966,9 @@ export class KerMLValidator {
         accept: ModelValidationAcceptor
     ): void {
         const isFn = node.is(ast.SysMLFunction.$type);
-        const results = node.children.filter(BasicMetamodel.is(ast.ReturnParameterMembership.$type));
+        const results = node.children.filter(
+            BasicMetamodel.is(ast.ReturnParameterMembership.$type)
+        );
         if (results.length > 1)
             this.apply(
                 "error",
@@ -1103,7 +1122,11 @@ export class KerMLValidator {
 
     @validateKerML(ast.OperatorExpression.$type, {
         sysml: false,
-        bounds: [ast.CollectExpression.$type, ast.SelectExpression.$type, ast.FeatureChainExpression.$type],
+        bounds: [
+            ast.CollectExpression.$type,
+            ast.SelectExpression.$type,
+            ast.FeatureChainExpression.$type,
+        ],
     })
     validateOperatorExpressionBracketOperator(
         node: OperatorExpressionMeta,
@@ -1158,7 +1181,9 @@ export class KerMLValidator {
     @validateKerML(ast.ItemFlowEnd.$type)
     validateItemFlowEndSubsetting(node: ItemFlowEndMeta, accept: ModelValidationAcceptor): void {
         if (
-            !node.specializations(ast.Subsetting.$type).some((sub) => sub.nodeType() !== ast.Redefinition.$type)
+            !node
+                .specializations(ast.Subsetting.$type)
+                .some((sub) => sub.nodeType() !== ast.Redefinition.$type)
         ) {
             accept("error", "Cannot identify ItemFlowEnd (use dot notation).", {
                 element: node,
@@ -1454,7 +1479,10 @@ export class KerMLValidator {
             return true;
         }
 
-        if (expr.is(ast.OperatorExpression.$type) && this.ComparisonOperators.includes(expr.operator)) {
+        if (
+            expr.is(ast.OperatorExpression.$type) &&
+            this.ComparisonOperators.includes(expr.operator)
+        ) {
             return true;
         }
 

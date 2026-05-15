@@ -40,12 +40,15 @@ export class StateUsageMeta extends ActionUsageMeta {
 
     isExclusiveState(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(StateDefinition.$type, StateUsage.$type) && !parent.isParallel);
+        return Boolean(
+            parent?.isAny(StateDefinition.$type, StateUsage.$type) && !parent.isParallel
+        );
     }
 
     isSubstate(): boolean {
         return Boolean(
-            this.isNonEntryExitComposite() && this.owner()?.isAny(StateDefinition.$type, StateUsage.$type)
+            this.isNonEntryExitComposite() &&
+            this.owner()?.isAny(StateDefinition.$type, StateUsage.$type)
         );
     }
 

@@ -24,7 +24,7 @@ const EscapeChars = [
     ["\\r", "\r"],
     ["\\'", "'"],
     ["\\\\", "\\"],
-    // eslint-disable-next-line quotes
+
     ['\\"', '"'],
 ] as const;
 

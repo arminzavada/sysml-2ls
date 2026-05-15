@@ -126,7 +126,10 @@ test("types can declare owned disjoinings", async () => {
                     $type: Class.$type,
                     ...withQualifiedName("C"),
                     heritage: [
-                        { $type: Subclassification.$type, targetRef: qualifiedTypeReference("Anything") },
+                        {
+                            $type: Subclassification.$type,
+                            targetRef: qualifiedTypeReference("Anything"),
+                        },
                     ],
                     typeRelationships: [
                         { $type: Disjoining.$type, targetRef: qualifiedTypeReference("A") },
@@ -140,7 +143,10 @@ test("types can declare owned disjoinings", async () => {
                     $type: Class.$type,
                     ...withQualifiedName("Mammal2"),
                     heritage: [
-                        { $type: Subclassification.$type, targetRef: qualifiedTypeReference("Animal") },
+                        {
+                            $type: Subclassification.$type,
+                            targetRef: qualifiedTypeReference("Animal"),
+                        },
                     ],
                     typeRelationships: [
                         { $type: Disjoining.$type, targetRef: qualifiedTypeReference("Mineral") },

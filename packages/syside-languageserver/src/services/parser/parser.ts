@@ -107,7 +107,8 @@ function finalizeImport(node: Import, services: SysMLDefaultServices): void {
                 ? NamespaceReference.$type
                 : MembershipReference.$type;
         }
-        (node as Mutable<Import>).$type = type === Expose.$type ? NamespaceExpose.$type : NamespaceImport.$type;
+        (node as Mutable<Import>).$type =
+            type === Expose.$type ? NamespaceExpose.$type : NamespaceImport.$type;
         if (node.target && node.targetRef) {
             // need to reparent `node.reference`
             const pack = node.target as Package;
@@ -132,7 +133,8 @@ function finalizeImport(node: Import, services: SysMLDefaultServices): void {
         delete node.isNamespace;
     } else {
         if (node.targetRef) (node.targetRef as Mutable<AstNode>).$type = MembershipReference.$type;
-        (node as Mutable<Import>).$type = type === Expose.$type ? MembershipExpose.$type : MembershipImport.$type;
+        (node as Mutable<Import>).$type =
+            type === Expose.$type ? MembershipExpose.$type : MembershipImport.$type;
     }
 }
 
@@ -230,26 +232,18 @@ function buildPostprocessingMap(): Map<string, ProcessingFunction> {
         SuccessionAsUsage: createMissingEndsInSuccessionAsUsage,
     };
 
-    return typeIndex.expandToDerivedTypes(
-        map as TypeMap<SysMLTypeList, ProcessingFunction>
-    );
+    return typeIndex.expandToDerivedTypes(map as TypeMap<SysMLTypeList, ProcessingFunction>);
 }
 
 interface MutableLangiumParser extends Mutable<LangiumParser> {
     construct: (...args: unknown[]) => unknown;
 }
 
-/**
- * Create and finalize a SysML-flavoured Langium parser.
- *
- * Composes SysML behaviour onto the public parser instance returned by
- * `prepareLangiumParser` (before finalization). The `construct` wrapper runs
- * Langium's own construction (which finalises the CST, fills in mandatory
- * properties, etc.) first, then collects `$children` and applies
- * type-specific SysML postprocessing in the right order — `$children` and
- * other mandatory arrays must exist before postprocessors that splice into
- * them (e.g. `finalizeImport`) can run.
- */
+// SysML-specific postprocessing is composed onto the parser returned by
+// `prepareLangiumParser` by wrapping `construct`: Langium's construction (CST
+// finalisation, mandatory-property initialisation) runs first, then `$children`
+// is collected, then type-specific postprocessors can splice into the now-stable
+// node shape (e.g. `finalizeImport` reparenting children).
 export function createSysMLParser(services: SysMLDefaultServices): LangiumParser {
     const parser = prepareLangiumParser(services);
     const mutable = parser as unknown as MutableLangiumParser;
@@ -271,16 +265,6 @@ export function createSysMLParser(services: SysMLDefaultServices): LangiumParser
     return parser;
 }
 
-/**
- * Re-export of {@link createSysMLParser} preserved for backwards compatibility
- * with callers that historically expected a `SysMLParser`-typed return.
- *
- * @deprecated use {@link createSysMLParser}; this alias may be removed in a
- * future Langium upgrade.
- */
-export const SysMLParser = LangiumParser;
-export type SysMLParser = LangiumParser;
-
 declare module "../../generated/ast.js" {
     interface ElementReference {
         text?: string;
@@ -300,4 +284,3 @@ declare module "langium" {
         readonly $childIndex: number;
     }
 }
-

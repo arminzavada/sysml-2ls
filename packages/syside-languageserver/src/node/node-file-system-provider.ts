@@ -26,7 +26,7 @@ import { backtrackToDirname } from "../utils/index.js";
 // Falls back to `__dirname` because esbuild's CJS bundling leaves
 // `import.meta.url` empty but keeps the CJS `__dirname` global populated.
 declare const __dirname: string | undefined;
-const currentDir = (() => {
+const currentDir = ((): string => {
     try {
         return path.dirname(fileURLToPath(import.meta.url));
     } catch {

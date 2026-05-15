@@ -337,7 +337,8 @@ export class FeatureMeta extends TypeMeta {
         }
         return (
             this.isPortion &&
-            (owningType.is(Class.$type) || (owningType.is(Feature.$type) && owningType.hasClassType()))
+            (owningType.is(Class.$type) ||
+                (owningType.is(Feature.$type) && owningType.hasClassType()))
         );
     }
 
@@ -365,7 +366,13 @@ export class FeatureMeta extends TypeMeta {
         for (const child of this.children) {
             if (child.nodeType() !== OwningMembership.$type) continue;
             const f = child.element();
-            if (f && f.is(Feature.$type) && !f.is(MetadataFeature.$type) && !f.is(Multiplicity.$type)) return f;
+            if (
+                f &&
+                f.is(Feature.$type) &&
+                !f.is(MetadataFeature.$type) &&
+                !f.is(Multiplicity.$type)
+            )
+                return f;
         }
         return undefined;
     }
@@ -427,7 +434,9 @@ export class FeatureMeta extends TypeMeta {
     protected isSubobject(): boolean {
         if (!this.isComposite) return false;
         const owner = this.owner();
-        return Boolean(owner?.is(Structure.$type) || (owner?.is(Feature.$type) && owner.hasStructureType()));
+        return Boolean(
+            owner?.is(Structure.$type) || (owner?.is(Feature.$type) && owner.hasStructureType())
+        );
     }
 
     /**
@@ -444,7 +453,9 @@ export class FeatureMeta extends TypeMeta {
     protected isSuboccurrence(): boolean {
         if (!this.isComposite) return false;
         const owner = this.owner();
-        return Boolean(owner?.is(Class.$type) || (owner?.is(Feature.$type) && owner.hasClassType()));
+        return Boolean(
+            owner?.is(Class.$type) || (owner?.is(Feature.$type) && owner.hasClassType())
+        );
     }
 
     /**
@@ -527,7 +538,9 @@ export class FeatureMeta extends TypeMeta {
 
     get isParameter(): boolean {
         // parameter if direction was specified explicitly
-        return Boolean(this.direction !== "none" && this.owner()?.isAny(Behavior.$type, Step.$type));
+        return Boolean(
+            this.direction !== "none" && this.owner()?.isAny(Behavior.$type, Step.$type)
+        );
     }
 
     get isResultParameter(): boolean {

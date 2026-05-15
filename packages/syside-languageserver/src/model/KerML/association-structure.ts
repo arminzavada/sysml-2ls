@@ -18,7 +18,12 @@ import { Mixin } from "ts-mixer";
 import { AssociationStructure } from "../../generated/ast.js";
 import { TypeClassifier } from "../enums.js";
 import { metamodelOf } from "../metamodel.js";
-import { AssociationMeta, AssociationOptions, StructureMeta, StructureOptions } from "./_internal.js";
+import {
+    AssociationMeta,
+    AssociationOptions,
+    StructureMeta,
+    StructureOptions,
+} from "./_internal.js";
 
 export const ImplicitAssociationStructures = {
     base: "Objects::LinkObject",

@@ -141,7 +141,8 @@ export class TypeMeta extends Mixin(
         return this.addDeclaredRelationship(
             this._heritage,
             value.filter(
-                ([_, target]) => !target.is(Feature.$type) || target.basicFeature() !== (this as TypeMeta)
+                ([_, target]) =>
+                    !target.is(Feature.$type) || target.basicFeature() !== (this as TypeMeta)
             ),
             this.onHeritageAdded,
             this

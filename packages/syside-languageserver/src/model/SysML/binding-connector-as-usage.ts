@@ -21,8 +21,7 @@ import { metamodelOf } from "../metamodel.js";
 import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
 
 export interface BindingConnectorAsUsageOptions
-    extends BindingConnectorOptions,
-        ConnectorAsUsageOptions {}
+    extends BindingConnectorOptions, ConnectorAsUsageOptions {}
 
 @metamodelOf(BindingConnectorAsUsage.$type, {
     base: "Links::selfLinks",

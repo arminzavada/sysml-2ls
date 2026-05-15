@@ -128,13 +128,13 @@ function printPayloadParameter<
                     skipChildren: true,
                     skipFirstSpecializationKeyword: Boolean(
                         !param.declaredName &&
-                            !param.declaredShortName &&
-                            param.specializations().filter((s) => !s.isImplied).length === 1 &&
-                            param
-                                .specializations()
-                                .find((s) => !s.isImplied)
-                                ?.is(FeatureTyping.$type) &&
-                            !param.value
+                        !param.declaredShortName &&
+                        param.specializations().filter((s) => !s.isImplied).length === 1 &&
+                        param
+                            .specializations()
+                            .find((s) => !s.isImplied)
+                            ?.is(FeatureTyping.$type) &&
+                        !param.value
                     ),
                     appendToDeclaration: featureValueAppender(param, context),
                 });

@@ -16,7 +16,10 @@
 
 import { ConcernDefinition } from "../../generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
-import { RequirementDefinitionMeta, RequirementDefinitionOptions } from "./requirement-definition.js";
+import {
+    RequirementDefinitionMeta,
+    RequirementDefinitionOptions,
+} from "./requirement-definition.js";
 
 export type ConcernDefinitionOptions = RequirementDefinitionOptions;
 

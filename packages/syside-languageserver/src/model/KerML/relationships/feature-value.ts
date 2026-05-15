@@ -24,8 +24,11 @@ import {
     RelationshipOptions,
 } from "../_internal.js";
 
-export interface FeatureValueOptions
-    extends RelationshipOptions<ExpressionMeta, FeatureMeta, never> {
+export interface FeatureValueOptions extends RelationshipOptions<
+    ExpressionMeta,
+    FeatureMeta,
+    never
+> {
     isDefault?: boolean;
     isInitial?: boolean;
 }

@@ -44,9 +44,8 @@ export function sanitizeName(name?: string): string | undefined {
                 return "\r";
             case "'":
                 return "'";
-            // eslint-disable-next-line quotes
+
             case '"':
-                // eslint-disable-next-line quotes
                 return '"';
             case "\\":
                 return "\\";

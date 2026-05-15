@@ -14,7 +14,6 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-/* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from "vitest";
 import { getObjectSubset } from "@vitest/expect";
@@ -47,12 +46,7 @@ export const printExpected = (value: unknown): string =>
     EXPECTED_COLOR(replaceTrailingSpaces(stringify(value)));
 
 function printWithType(name: string, value: unknown, print: (v: unknown) => string): string {
-    const type =
-        value === null
-            ? "null"
-            : Array.isArray(value)
-              ? "array"
-              : typeof value;
+    const type = value === null ? "null" : Array.isArray(value) ? "array" : typeof value;
     return `${name} has type:  ${type}\n${name} has value: ${print(value)}`;
 }
 
@@ -249,7 +243,6 @@ async function parses(
 
     const message = pass
         ? (): string =>
-              // eslint-disable-next-line prefer-template
               context.utils.matcherHint(matcherName, undefined, undefined, options) +
               "\n\n" +
               `Expected: not ${printExpected(expected)}` +
@@ -262,7 +255,6 @@ async function parses(
                   context.utils.subsetEquality,
               ]);
               return (
-                  // eslint-disable-next-line prefer-template
                   context.utils.matcherHint(matcherName, undefined, undefined, options) +
                   "\n\n" +
                   (context.utils.printDiffOrStringify(expected, subset, {
@@ -321,7 +313,7 @@ interface CustomMatchResult {
     message(): string;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export type DeepPartial<T> = T[keyof T] extends Function
     ? T
     : {
@@ -334,7 +326,9 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module "vitest" {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface Assertion<T = any> extends CustomMatchers<T> {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface AsymmetricMatchersContaining extends CustomMatchers {}
 }
 

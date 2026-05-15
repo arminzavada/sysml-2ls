@@ -32,7 +32,11 @@ import { StateUsageMeta } from "../state-usage.js";
 import { TransitionUsageMeta } from "../transition-usage.js";
 import { ReferenceUsage } from "../../../generated/ast.js";
 import { FlowConnectionUsageMeta } from "../flow-connection-usage.js";
-import { EndFeatureMembershipMeta, ItemFlowEndMeta, ParameterMembershipMeta } from "../../KerML/index.js";
+import {
+    EndFeatureMembershipMeta,
+    ItemFlowEndMeta,
+    ParameterMembershipMeta,
+} from "../../KerML/index.js";
 import { EventOccurrenceUsageMeta } from "../event-occurrence-usage.js";
 
 describe("Element factories", () => {
