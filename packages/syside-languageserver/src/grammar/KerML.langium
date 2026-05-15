@@ -424,12 +424,12 @@ fragment BasicFeaturePrefix:
 ;
 
 fragment FeaturePrefix:
-    ( End (crossingFeature=OwnedCrossingFeatureMember)? | BasicFeaturePrefix )
+    ( (isConstant?='const')? End (crossingFeature=OwnedCrossingFeatureMember)? | BasicFeaturePrefix )
     PrefixMetadata?
 ;
 
 Feature returns Feature:
-    ( End EndFeatureDeclarationPart
+    ( (isConstant?='const')? End EndFeatureDeclarationPart
     | BasicFeaturePrefix FeatureDeclarationPart
     )
     ValuePart? TypeBody
