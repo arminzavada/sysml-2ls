@@ -62,7 +62,7 @@ Deferred until after the migration is complete.
 | **Hover documentation polish** | Same. |
 | **Print escape handling** ([`print.ts:207`](../../packages/syside-languageserver/src/model/printer/print.ts)) | Small, isolated; revisit when formatter work happens. |
 | **Test coverage of `syside-cli`, `syside-protocol`, `syside-languageclient`** (small packages, may be undertested) | Surface area is small; verify after migration. |
-| **GitLab issue migration / housekeeping** | The project has a [GitLab issue tracker](https://gitlab.com/sensmetry/public/sysml-2ls/-/issues) including the Heisenbug issues #19 and #15. Triage post-migration to close stale ones and reopen against the new state. |
+| **GitHub issue triage** | The fork is now on GitHub; the historical upstream GitLab issues (including the Heisenbug, #19 and #15) are not carried over. Reopen any still-relevant ones as fresh GitHub issues with reproducers against the post-cycle baseline. |
 | **Sensmetry mirror sync** ([github.com/sensmetry/sysml-2ls](https://github.com/sensmetry/sysml-2ls)) | Decide post-migration whether GitHub mirror is still primary or canonical moves elsewhere. |
 | **DCO / signed commits** | Existing process, not migration-blocking; verify any contributor docs are still correct. |
 

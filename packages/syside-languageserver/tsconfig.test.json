@@ -10,8 +10,7 @@
         { "path": "../syside-languageclient" }
     ],
     "files": [
-        "../syside-vscode/package.json",
-        "scripts/expected-diagnostics.json"
+        "../syside-vscode/package.json"
     ],
     "include": ["src/**/*.ts"]
 }

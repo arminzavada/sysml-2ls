@@ -1,6 +1,6 @@
 {
     "name": "syside-cli",
-    "displayName": "SysIDE-CLI Legacy",
+    "displayName": "SysIDE-CLI",
     "description": "CLI for SysIDE.",
     "publisher": "Sensmetry",
     "author": {
@@ -11,12 +11,12 @@
     "version": "0.9.1",
     "preview": true,
     "repository": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls",
+        "url": "https://github.com/arminzavada/sysml-2ls",
         "type": "git",
         "directory": "packages/syside-cli"
     },
     "bugs": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls/-/issues"
+        "url": "https://github.com/arminzavada/sysml-2ls/issues"
     },
     "type": "module",
     "files": [
@@ -28,16 +28,14 @@
     "main": "./lib/index.js",
     "scripts": {
         "prebuild": "cd src && node -p \"'export const Version = ' + JSON.stringify(require('../package.json').version) + ';'\" > version.ts",
-        "lint": "eslint src --max-warnings 0",
         "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
-        "build": "pnpm run prebuild && tsc",
+        "build": "pnpm prebuild && tsc",
         "watch": "tsc --watch",
+        "lint": "eslint src --max-warnings 0",
         "test": "vitest run --passWithNoTests",
-        "prepack": "pnpm clean && pnpm build && pnpm esbuild --minify",
         "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
-        "esbuild-base": "node ../../scripts/build.mjs node src/index.ts",
-        "esbuild": "pnpm run esbuild-base --sourcemap",
-        "esbuild:watch": "pnpm run esbuild-base --sourcemap --watch"
+        "esbuild": "node ../../scripts/build.mjs node src/index.ts --sourcemap",
+        "esbuild:watch": "pnpm esbuild --watch"
     },
     "dependencies": {
         "chalk": "^5.6.2",

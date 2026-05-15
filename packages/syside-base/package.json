@@ -11,12 +11,12 @@
     "version": "0.9.1",
     "preview": true,
     "repository": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls",
+        "url": "https://github.com/arminzavada/sysml-2ls",
         "type": "git",
         "directory": "packages/syside-base"
     },
     "bugs": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls/-/issues"
+        "url": "https://github.com/arminzavada/sysml-2ls/issues"
     },
     "type": "module",
     "files": [
@@ -25,12 +25,11 @@
     ],
     "main": "./lib/index.js",
     "scripts": {
-        "lint": "eslint src --max-warnings 0",
         "clean": "shx rm -rf lib coverage *.tsbuildinfo",
         "build": "tsc",
         "watch": "tsc --watch",
-        "test": "vitest run --passWithNoTests",
-        "prepack": "pnpm clean && pnpm build",
+        "lint": "eslint src --max-warnings 0",
+        "test": "vitest run",
         "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
         "index": "node ../../scripts/generate-index.mjs src"
     },

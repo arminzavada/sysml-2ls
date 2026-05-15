@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file no-duplicate-header -->
+<!-- markdownlint-disable-file MD024 -->
 
 # Changelog
 
@@ -6,11 +6,106 @@
 
 ## main
 
-## 0.9.1
+### Language / stdlib
 
-- Renamed from "SysIDE Editor" to "SysIDE Editor Legacy"
-- Updated README.md with deprecation status
-- Added notification on launch announcing deprecation
+- Standard library advanced from upstream `2024-12` to `2026-03`, released
+  release-by-release through `2025-02`, `2025-04`, `2025-06`, `2025-07`,
+  `2025-09`, `2025-10`, `2025-11`, `2025-12`, `2026-01`, `2026-02`, `2026-03`.
+- Switched the stdlib source from the `arminzavada/SysML-v2-Release` fork to
+  upstream `Systems-Modeling/SysML-v2-Release` via the clone script, with a
+  `scripts/patches/` directory for any fork-on-upstream patches needed. The
+  one fork-only patch (`Occurrences.kerml` `end`-keyword shape) retired
+  itself at `2026-01` when upstream emitted the same form; the patches
+  directory is currently empty.
+- 2025-02 grammar adopted: `var`/`const` (KerML) and `constant` (SysML)
+  replacing `readonly`; `new` constructor expressions; `$::` global-scope
+  qualifier; expanded `send`/`accept` body forms; `derived` keyword position
+  constraint; `const` permitted on end features (2025-11 grammar fix).
+- 2025-02 library renames adopted: `FlowConnectionDefinition` → `FlowDefinition`,
+  `FlowConnectionUsage` → `FlowUsage`, `SuccessionFlowConnectionUsage` →
+  `SuccessionFlowUsage`; `Transfer::item` → `Transfer::payload`. Three
+  dedicated model classes renamed to match.
+- 2025-04 grammar: control nodes (`fork`/`join`/`decide`/`merge`) accept
+  full action bodies with parameters; `isComposite` bound directly to
+  `fork`/`join` keywords.
+- Qualified-name redefinition-target resolution now routes the first
+  segment through the owning type's inherited members, matching the
+  pilot's 2025-11 fix (`KerMLScope.xtend`'s `isRedefinition` short-circuit).
+  See the probe test at
+  `packages/syside-languageserver/src/__tests__/kerml/core/probe-redef-target-resolution.test.ts`.
+- Implemented the 13 validators from the pilot's 2026-01 batch as real
+  validator functions (replacing "implicitly ensured by the model"
+  comments). Most fire only on programmatically-corrupted AST; see
+  [docs/known_limitations.md](docs/known_limitations.md).
+- Added `validateUsageOwningType` (and fixed it to walk through
+  KerML-Feature transparent owners like `ItemFlowEnd`, so flow endpoints
+  don't false-positive).
+- Added an integration test that loads the
+  [Semantifyr](https://github.com/ftsrg/semantifyr) `TestModels`
+  (9 SysML files at
+  `packages/syside-languageserver/src/__tests__/resources/semantifyr-models/`)
+  against the full stdlib, asserting zero parse / linking / validation errors.
+
+### Toolchain
+
+- **Langium**: `1.2.0` → `4.2.4` (via four major hops, each in its own commit).
+- **TypeScript**: `5.1.3` → `5.8.3`.
+- **Test runner**: Jest 29 → **Vitest 3** (drops the per-package
+  `jest.config.cjs` files and the `lodash-es` resolver workaround).
+- **ESLint**: 8 → 9 with the flat-config migration (`eslint.config.mjs`);
+  legacy `.eslintrc.json` and `tsconfig.eslint.json` retired.
+  `typescript-eslint` v8 meta-package.
+- **`@types/node`**: 14 (legacy pin) → 22 LTS.
+- **Module system**: workspace-wide ESM. Every package declares
+  `"type": "module"`; all relative imports include `.js` extensions;
+  no remaining `.cjs` shims (the patches script remains pure ESM).
+- **Other deps refreshed**: Prettier `3.3` → `3.8`, esbuild `0.17` → `0.25`,
+  chevrotain `9.1` → `12.0`, `vscode-languageserver` line aligned to `9.x`,
+  plus 20+ other deps brought current.
+- `@types/node` engines requirement raised to `>=20.11.0`.
+- Each Langium upgrade hop retired one or more workarounds: vendored
+  `parser-builder-base.ts` (1→2), `assignWithoutOverride` CST patch (2→3),
+  `documentPhaseListeners` shim (2→3). No new workarounds were introduced.
+
+### Fork
+
+- Forked from the archived upstream
+  [Sensmetry SysIDE Editor](https://gitlab.com/sensmetry/public/sysml-2ls) at
+  `0.9.1`. Continuing development under community maintenance.
+- Removed the upstream deprecation notice and the GitLab CI/mirroring
+  infrastructure; the repository is now GitHub-hosted.
+- Removed the upstream release/publishing pipeline (`gh-release.mjs`,
+  `prepare-release.mjs`, `publish.mjs`, marketplace publish scripts and
+  related devDeps). The fork is not currently published; local packaging
+  via `pnpm vscode:package` still works.
+- Cleaned up developer lifecycle scripts: dropped `prepare` (no more
+  full build on `pnpm install`), `prepack`/`postpack` (no `npm pack`
+  workflow), the `tstrace` debug helper, `build:clean` / `test:watch`
+  aliases, and the broken root `grammar` delegate. Consolidated the
+  `esbuild-base` / `esbuild` / `esbuild:watch` proliferation in
+  `syside-cli`, `syside-languageserver`, and `syside-vscode`.
+- Fixed a latent build bug where the `prebuild` step's
+  `cp -R syntaxes ../syside-vscode/syntaxes` would nest `syntaxes/syntaxes/`
+  when the destination already existed.
+- Replaced the bespoke `run-validation.ts` script and its
+  `expected-diagnostics.json` baseline with a vitest integration test
+  ([packages/syside-languageserver/src/__tests__/integration/stdlib-diagnostics.test.ts](packages/syside-languageserver/src/__tests__/integration/stdlib-diagnostics.test.ts))
+  that snapshots the diagnostics produced when validating the full stdlib.
+  Refresh the baseline with `pnpm vitest -u`. The legacy
+  `prepare-validation` npm script is now `clone-stdlib` (it only clones
+  the upstream `SysML-v2-Release` at the pinned tag; the validation runs
+  as part of `pnpm test`).
+- See [docs/maintenance/](docs/maintenance/) for the upgrade notes from the
+  2026-03 cycle, including the per-phase result docs.
+
+## 0.9.1 (upstream final)
+
+- Renamed from "SysIDE Editor" to "SysIDE Editor Legacy" upstream.
+- Upstream README updated with deprecation status.
+- Added notification on launch announcing upstream deprecation.
+
+  > This entry is preserved for history. The deprecation notice and launch
+  > banner have been removed in the fork.
 
 ## 0.9.0
 

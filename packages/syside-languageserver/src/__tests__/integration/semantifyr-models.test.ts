@@ -5,19 +5,14 @@
 
 import { describe, expect, it, beforeAll } from "vitest";
 import path from "node:path";
-import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { URI } from "vscode-uri";
 import type { Diagnostic } from "vscode-languageserver";
-import { createSysMLServices } from "../../sysml-module.js";
 import type { SysMLSharedServices } from "../../services/services.js";
 import type { SysMLBuildOptions } from "../../services/shared/workspace/document-builder.js";
-import { SysMLNodeFileSystem } from "../../node/node-file-system-provider.js";
-import { TEST_SERVER_OPTIONS } from "../../testing/index.js";
+import { setupServicesWithStdlib } from "./stdlib-fixture.js";
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(currentDir, "..", "..", "..", "..", "..");
-const stdlibPath = path.join(repoRoot, "SysML-v2-Release", "sysml.library");
 const modelsRoot = path.resolve(currentDir, "..", "resources", "semantifyr-models");
 
 const MODELS = [
@@ -32,52 +27,11 @@ const MODELS = [
     "spacecraft.sysml",
 ];
 
-async function collectStdlibFiles(dir: string): Promise<URI[]> {
-    const collected: URI[] = [];
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-    for (const entry of entries) {
-        const full = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-            collected.push(...(await collectStdlibFiles(full)));
-        } else if (entry.isFile() && (full.endsWith(".kerml") || full.endsWith(".sysml"))) {
-            collected.push(URI.file(full));
-        }
-    }
-    return collected;
-}
-
-async function setupServicesWithStdlib(): Promise<SysMLSharedServices> {
-    const services = createSysMLServices(SysMLNodeFileSystem, {
-        ...TEST_SERVER_OPTIONS,
-        standardLibrary: true,
-        standardLibraryPath: stdlibPath,
-        skipWorkspaceInit: true,
-        defaultBuildOptions: {
-            standalone: false,
-        },
-    });
-    services.shared.workspace.FileSystemProvider.updateStandardLibrary(stdlibPath);
-
-    const stdlibUris = await collectStdlibFiles(stdlibPath);
-    const stdDocs = await Promise.all(
-        stdlibUris.map((uri) => services.shared.workspace.LangiumDocuments.getOrCreateDocument(uri))
-    );
-    for (const d of stdDocs) {
-        (d as { isStandard?: boolean }).isStandard = true;
-    }
-    await services.shared.workspace.DocumentBuilder.build(stdDocs, <SysMLBuildOptions>{
-        validation: false,
-        standalone: false,
-    });
-
-    return services.shared;
-}
-
 describe("Semantifyr SysML test models", () => {
     let shared: SysMLSharedServices;
 
     beforeAll(async () => {
-        shared = await setupServicesWithStdlib();
+        ({ shared } = await setupServicesWithStdlib());
         const verificationUri = URI.file(path.join(modelsRoot, "Verification.sysml"));
         const verificationDoc =
             await shared.workspace.LangiumDocuments.getOrCreateDocument(verificationUri);

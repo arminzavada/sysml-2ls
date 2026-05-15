@@ -1,3 +1,8 @@
 # _SysIDE_ Base
 
-This package contains common LSP utilities shared by the _SysIDE_ language server and client.
+Common utilities and constants shared across all _SysIDE_ packages — the
+language server, language client, CLI, and VS Code extension. Holds the
+standard-library file registry, shared types, and small cross-package
+helpers.
+
+See the top-level [README](../../README.md) for the project overview.

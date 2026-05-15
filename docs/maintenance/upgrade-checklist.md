@@ -47,7 +47,7 @@ There is no SLA. Skipping months is fine; catching up on multiple at once is als
 
 5. **Update the standard-library pin**
    - [ ] Edit [`packages/syside-languageserver/scripts/clone-sysml-release.mjs`](../../packages/syside-languageserver/scripts/clone-sysml-release.mjs):
-     - The remote must be upstream `Systems-Modeling/SysML-v2-Release` (see [`upstream-sources.md`](upstream-sources.md) — the legacy `arminzavada/SysML-v2-Release` fork is deprecated and must not be reintroduced).
+     - The remote must be upstream `Systems-Modeling/SysML-v2-Release` (see [`upstream-sources.md`](upstream-sources.md)). The legacy `arminzavada/SysML-v2-Release` fork was retired in the 2026-03 cycle and must not be reintroduced.
      - The pinned commit must match the `SysML-v2-Release` tag corresponding to the target pilot tag.
    - [ ] Re-run the clone script; rebuild.
 

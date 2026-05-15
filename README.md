@@ -1,224 +1,140 @@
-# [Deprecated] SysIDE Editor Legacy
+# sysml-2ls
 
-> [!WARNING]
->
-> ## This SysIDE Editor Legacy extension has been deprecated and is no longer being maintained
->
-> **Please uninstall this extension and install the new**
-> **[Syside Editor](https://marketplace.visualstudio.com/items?itemName=sensmetry.syside-editor),**
-> **which has been migrated to a new software base. The new version is**
-> **significantly more performant, can handle larger SysML v2 models, and will**
-> **receive faster updates.**
->
-> **Read the**
-> **[announcement](https://sensmetry.com/syside-editor-rebirth-sysml-v2-0-50x-speed-up-license-change-free-as-before/).**
+A community-maintained fork of the
+[SysIDE Editor](https://gitlab.com/sensmetry/public/sysml-2ls) language server
+and VS Code extension for [SysML v2](https://www.omg.org/spec/SysML/2.0/Beta3),
+originally built by [Sensmetry](https://sensmetry.com/) and archived upstream
+when development moved to a closed-source successor.
 
-[![pipeline status](https://gitlab.com/sensmetry/public/sysml-2ls/badges/main/pipeline.svg)](https://gitlab.com/sensmetry/public/sysml-2ls/-/commits/main)
-[![coverage report](https://gitlab.com/sensmetry/public/sysml-2ls/badges/main/coverage.svg)](https://sensmetry.gitlab.io/public/sysml-2ls)
-[![Latest Release](https://gitlab.com/sensmetry/public/sysml-2ls/-/badges/release.svg)](https://gitlab.com/sensmetry/public/sysml-2ls/-/releases)
-[![VSCode Marketplace](https://img.shields.io/badge/Download-VS%20Code%20Marketplace-brightgreen?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=sensmetry.sysml-2ls)
-[![OpenVSX](https://img.shields.io/badge/Download-Open--VSX-brightgreen?logo=vscodium)](https://open-vsx.org/extension/sensmetry/sysml-2ls)
+This fork continues the open-source line: it keeps the Langium/TypeScript code
+base alive, tracks newer SysML v2 stdlib releases, and is open to community
+contributions.
 
-----
+## Status
 
-_SysIDE Editor Legacy_ is a free and open source SysML v2 textual editing and
-analysis tool, bringing rich SysML v2 language support to Visual Studio Code.
-_SysIDE Editor Legacy_ can also be integrated into other applications and
-automated workflows which need to interact with SysML v2 textual
-representations.
-
-The main enabling components of _SysIDE Editor Legacy_ are a parser and a
-language server for SysML v2 and KerML
-[2024-12 release](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2024-12)
-specifications.
-
-_SysIDE Editor Legacy_ provides features such as:
-
-- Semantic highlighting
-- Autocompletion
-- Code navigation
-- Formatting
-- Real-time syntax and semantic validation
-- Reference search
-- Folding
-- Document symbols
-- Renaming
-- Documentation on hover
-
-_SysIDE Editor Legacy_ is built and maintained by
-[**Sensmetry**](https://sensmetry.com/), a company focused on ensuring the
-safety and reliability of mission- & safety-critical automated systems.
-
-_SysIDE Editor Legacy_ is an open source project and Sensmetry is looking for
-community contributions from users and developers. For further information about
-the open source license, see [LICENSE](/LICENSE). To contribute, please see the
-[CONTRIBUTING.md](/CONTRIBUTING.md) document.
-
-## Syside tool suite
-
-_Syside_ tool suite is quickly growing. It includes:
-
-- [_**Syside Editor**_](https://marketplace.visualstudio.com/items?itemName=sensmetry.syside-editor) - free
-  VS Code extension, enabling modern 'as code' modeling for everyone. Available
-  to everyone.
-- [_**Sysand**_](https://sysand.org) - open-source SysML v2 package manager
-  and package index.
-- [_**Syside Modeler**_](https://marketplace.visualstudio.com/items?itemName=sensmetry.syside-modeler) - a
-  premium SysML v2 modeling environment. Please visit
-  [syside.sensmetry.com](https://syside.sensmetry.com) for more information.
-- [_**Syside Automator**_](https://docs.sensmetry.com/latest/automator/index.html) - analyse,
-  optimise, and automate your modeling workflows by using Python. Please visit
-  [syside.sensmetry.com](https://syside.sensmetry.com) for more information.
-
-If you want to get in touch regarding any edition of _Syside_, reach out to
-Sensmetry at [syside@sensmetry.com](mailto:syside@sensmetry.com)
-
-## Join the community
-
-Connect with other Syside and SysML v2 users to share your experiences and learn
-from others on our [community forum](https://forum.sensmetry.com).
-
-## Quick start
-
-### In a browser (without local VSCode)
-
-You can try out _SysIDE Editor Legacy_ without needing to instal it locally. To
-do so:
-
-1. Go to [Visual Studio Code for the Web](https://vscode.dev)
-2. Open the `Extensions` tab on the right of the screen
-3. Search for and install _SysIDE Editor Legacy_
-4. Open a folder or a `.sysml` file
-
-This is a good way to get a taste for how _SysIDE Editor Legacy_ works. But if
-you plan on using it for a longer term or for larger models, we suggest
-installing it locally.
-
-### Running locally
-
-0. Install [Visual Studio Code](https://code.visualstudio.com),
-  [VSCodium](https://vscodium.com), or [Cursor AI](https://www.cursor.com)
-1. Open the `Extensions` tab on the right of the screen
-2. Search for and install _SysIDE Editor Legacy_
-3. Open a SysML v2 (`.sysml`) file and the extension will activate.
-4. Link with the SysML v2 standard library:
-
-## Standard library
-
-_SysIDE Editor Legacy_ includes the standard library from
-[our fork](https://github.com/daumantas-kavolis-sensmetry/SysML-v2-Release/tree/fixes)
-of the
-[SysML-v2-Release](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2024-12/sysml.library)
-repository. The library is licensed under the LGPL v3.0, see
-[LICENSE](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2024-12/LICENSE).
-
-If you wish to use a different version of the standard library you can go to the
-_SysIDE Editor Legacy_ settings and enter the path to the directory with your
-preferred library.
-
-![Settings](./docs/images/library-settings.png)
+- The upstream project is archived; this fork is independently maintained.
+- The original Sensmetry releases (`0.9.x`) shipped support for the
+  [2024-12](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2024-12)
+  spec. This fork has advanced through every monthly release and now ships
+  on the
+  [2026-03](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2026-03)
+  release (see [CHANGELOG.md](CHANGELOG.md) and
+  [docs/maintenance/](docs/maintenance/) for the cycle's notes).
+- The goal is _authoring_ support — parser, language server, editor tooling —
+  not full runtime/semantic equivalence with the
+  [Eclipse SysML v2 pilot implementation](https://github.com/Systems-Modeling/SysML-v2-Pilot-Implementation).
 
 ## Features
 
-The extension provides basic features to support SysML v2 document editing:
+The extension provides editor features for SysML v2 and KerML source files:
 
-<!-- markdownlint-capture -->
-<!-- markdownlint-disable-file no-inline-html -->
+- Semantic and syntax checking
+- Semantic highlighting
+- Autocompletion
+- Hovers / documentation on hover
+- Code navigation (go to definition, references)
+- Folding
+- Auto-formatting (elements and comment bodies)
+- Renaming
+- Document symbols
 
-- **Semantic and syntax checking** identifies errors as they occur allowing to instantly correct mistakes and speed up workflow.  
-  ![Semantic and syntax checking](/docs/images/validation_dark.gif)
-  <br> <br>
+Demos of each feature are kept in [docs/images/](docs/images/).
 
-- **Semantic highlighting** increases readability and allows to distinguish different parts of the code quickly.  
-  ![Semantic highlighting](/docs/images/semantic-highlighting.png)
-  <br> <br>
+## Standard library
 
-- **Autocompletion** speeds up the workflow by reducing typing errors and minimizing manual input.  
-  ![Autocompletion](/docs/images/completion.gif)
-  <br> <br>
+The extension uses the SysML v2 standard library from
+[Systems-Modeling/SysML-v2-Release](https://github.com/Systems-Modeling/SysML-v2-Release)
+(LGPL v3.0). The library is cloned on demand into `SysML-v2-Release/` (this
+directory is gitignored) — see [Building from source](#building-from-source)
+below. To use a different version at runtime, point the
+`syside.editor.standardLibraryPath` setting at your own copy:
 
-- **Hovers** instantly display documentation allowing to quickly understand an element.  
-  ![Hovers](/docs/images/hover.gif)
-  <br> <br>
+![Settings](./docs/images/library-settings.png)
 
-- **Code navigation** speeds up development by enabling quick access to element definitions.  
-  ![Navigation](/docs/images/navigation.gif)
-  <br> <br>
+## Building from source
 
-- **Folding** improves readability and eases navigation by organizing code into collapsible sections.  
-  ![Folding](/docs/images/folding.gif)
+Requirements: Node.js ≥ 20.11 and [pnpm](https://pnpm.io/installation).
 
-- **Auto-formatting** enhances code readability and maintainability by ensuring consistent structure for:
+```bash
+pnpm install
+pnpm run clone-stdlib       # clone Systems-Modeling/SysML-v2-Release at the pinned tag
+pnpm run build              # compile all TypeScript and the VS Code bundle
+pnpm test                   # run vitest (unit + integration tests)
+```
 
-  - Comment bodies  
-  ![Comment bodies](/docs/images/comment-formatting.gif)
-  <br> <br>
+`clone-stdlib` is required for the integration test suite and for packaging
+the VS Code extension, since both load the stdlib from `SysML-v2-Release/`.
+The directory only needs to be (re)cloned when bumping to a new pinned tag.
 
-  - Elements  
-  ![Elements](/docs/images/formatting.gif)
-  <br> <br>
+The generated parser sources under
+`packages/syside-languageserver/src/generated/` are checked in, so a
+freshly-cloned repo builds without running `grammar:generate`. Regenerate
+them only when you edit the `.langium` grammar:
 
-- **Renaming** saves time and reduces errors by renaming all elements with the same name with one click.  
-  ![Renaming](/docs/images/renaming.gif)
-  <br> <br>
+```bash
+pnpm run grammar:generate   # regenerate parser from the Langium grammar
+pnpm run grammar:watch      # ...or watch the grammar
+```
 
-- **References** enable efficient navigation and code updating by identifying all instances of an element.  
-  ![References](/docs/images/references.gif)
-  <br> <br>
+For day-to-day development:
 
-- **Document symbols** provide rapid model overviews, enabling efficient comprehension and navigation.  
-  ![Symbols](/docs/images/symbols.gif)
-  <br> <br>
+```bash
+pnpm run watch              # rebuild TypeScript + esbuild bundles on change
+```
 
-<!-- markdownlint-restore -->
+To package the VS Code extension as a `.vsix`:
 
-## Known Limitations
+```bash
+pnpm run vscode:package
+```
+
+This fork is not published to the VS Code Marketplace or Open VSX. Install
+the resulting `.vsix` manually (`code --install-extension <file>.vsix`) or
+run the extension from the source tree using the launch configurations in
+[.vscode/](.vscode/).
+
+## Repository layout
+
+- [packages/syside-base/](packages/syside-base/) — shared utilities and constants
+- [packages/syside-languageserver/](packages/syside-languageserver/) — Langium-based parser, scoping, validation, formatting
+- [packages/syside-languageclient/](packages/syside-languageclient/) — LSP client glue
+- [packages/syside-vscode/](packages/syside-vscode/) — VS Code extension entry point
+- [packages/syside-cli/](packages/syside-cli/) — standalone CLI
+- [packages/syside-protocol/](packages/syside-protocol/) — custom LSP protocol extensions
+- `SysML-v2-Release/` — cloned by `pnpm run clone-stdlib` (gitignored)
+- [docs/maintenance/](docs/maintenance/) — notes from the revival/upgrade work
+
+## Known limitations
 
 See [docs/known_limitations.md](docs/known_limitations.md).
 
-## Developer instructions
-
-### Building from source code
-
-- [Install `pnpm`](https://pnpm.io/installation)
-- Run `pnpm install` to install dependencies.
-- Run `pnpm run grammar:generate` to generate TypeScript code from the grammar
-  definition.
-  <!-- Langium generator is broken until `addSuperPropertiesInternal`
-  is fixed (not using the set parameter). -->
-- Run `pnpm run build` to compile all TypeScript code.
-
-### Make changes
-
-- Run `pnpm run install-hooks` to install git hooks.
-- Run `pnpm run watch` to have the TypeScript compiler run automatically after
-  every change of the source files.
-- Run `pnpm run grammar:watch` to have the Langium generator run automatically
-  after every change of the grammar declaration.
-- You can relaunch the extension from the debug toolbar after making changes to
-  the files listed above.
-- You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your
-  extension to load your changes.
-
-### Packaging
-
-To package the extension for VS Code run:
-
-  ```bash
-  pnpm run vscode:package
-  ```
-
 ## Contributing
 
-We invite enthusiasts and developers to join the SysML v2 open-source community
-by contributing to and expanding the capabilities of the _SysIDE Editor Legacy_.
+Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are subject to the
+[Developer Certificate of Origin](DCO); please sign off commits with `git
+commit -s`.
 
-See [CONTRIBUTING.md](/CONTRIBUTING.md).
+## License
 
-## Disclaimer
+[Eclipse Public License v2.0](https://www.eclipse.org/legal/epl-2.0/), with
+the secondary [GPL v2 + Classpath Exception](https://www.gnu.org/software/classpath/license.html)
+option — see [LICENSE](LICENSE). The fork inherits the original license; do
+not relicense without consent from the original copyright holders. Copyright
+on the original code remains with [Sensmetry](https://sensmetry.com/) and the
+other contributors listed in the git history.
 
-_SysIDE Editor Legacy_ is developed for the language that carries the name of
-SysML which is a trademark of OMG. _SysIDE Editor Legacy_ has been started and
-continues to be maintained by [Sensmetry](https://sensmetry.com/).
+The SysML v2 standard library cloned into `SysML-v2-Release/` is distributed
+under LGPL v3.0 by its original authors at
+[Systems-Modeling/SysML-v2-Release](https://github.com/Systems-Modeling/SysML-v2-Release).
+When packaged into a `.vsix`, the relevant portions of that library are
+bundled alongside the extension under the same LGPL v3.0 terms.
 
-The project is open source. For further information, see [LICENSE](/LICENSE).
+SysML is a trademark of the Object Management Group (OMG).
+
+## Acknowledgements
+
+This project would not exist without the original
+[SysIDE Editor](https://gitlab.com/sensmetry/public/sysml-2ls) authors at
+[Sensmetry](https://sensmetry.com/). The upstream repository remains the
+canonical reference for the project's history through version `0.9.1`.

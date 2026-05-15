@@ -1,5 +1,15 @@
 # Langium
 
+> **Reference notes.** This page sketches Langium's service architecture as
+> understood when the repo was first written. It targets a Langium 1.x snapshot
+> of the API surface. The repo itself is now on Langium 4.x — the LSP services
+> were split out into the `langium/lsp` subpath, several service names changed
+> (`MutexLock` removed, `findDeclaration` → `findDeclarations`, `TextDocuments`
+> reshuffled), and the build pipeline went through several restructurings.
+> Treat this page as a conceptual orientation; for authoritative API details
+> consult <https://github.com/eclipse-langium/langium> at the version pinned
+> in [`packages/syside-languageserver/package.json`](../packages/syside-languageserver/package.json).
+
 Langium is implemented as a collection of services that can be customized. Shared services, shared between all registered languages:
 
 * `ServiceRegistry` - register language services and retrieve services for a given URI (file extension)

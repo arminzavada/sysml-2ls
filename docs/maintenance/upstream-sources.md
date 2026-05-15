@@ -15,7 +15,7 @@ This project follows three upstream sources from the OMG SysML v2 ecosystem. Any
 - **Cadence:** Monthly tags formatted `YYYY-MM` (occasionally `YYYY-MM.1` patches).
 - **Role:** De-facto reference for behavior. When the spec is ambiguous or silent, the pilot wins.
 - **Targeting policy:** always the latest available tag at the time of an upgrade. We do not pin to older tags.
-- **Currently targeting:** `2026-03` (commit `3a1be5b87`, tagged 2026-04-03). _Pending the next upgrade run; the repo is still on its pre-revival baseline._
+- **Currently at:** `2026-03` (commit `3a1be5b87`, tagged 2026-04-03). Reached as the target of the 2026-03 upgrade cycle (see [`upgrades/2026-03/CYCLE-COMPLETE.md`](upgrades/2026-03/CYCLE-COMPLETE.md)).
 
 ## 3. Standard library (SysML-v2-Release)
 
@@ -24,8 +24,9 @@ This project follows three upstream sources from the OMG SysML v2 ecosystem. Any
 - **What we use:** the `sysml.library/` content. The repo also ships spec PDFs, example models, and installers — those are not consumed here.
 - **Local pinning:** vendored via [`packages/syside-languageserver/scripts/clone-sysml-release.mjs`](../../packages/syside-languageserver/scripts/clone-sysml-release.mjs).
 - **Pinning rule:** the standard-library commit **tracks the pilot tag we are targeting**. They are intended to move together — never pin them independently.
-- **Source of truth:** upstream `Systems-Modeling/SysML-v2-Release`. The clone script currently fetches from `arminzavada/SysML-v2-Release`, which carries legacy customizations left by previous maintainers; that fork is deprecated and the script will be repointed to upstream as part of the next upgrade.
-- **Current pin:** commit `1888927c6930c0c7f5a483411b0187831a9a5d1c` (≈ tag `2024-12`, on the deprecated fork). Inherited from fork time; **to be advanced** to upstream `Systems-Modeling/SysML-v2-Release` at tag `2026-03` (commit `cd99f7ca70b96abb38f09dfd25725e3cf259baa3`) during the next upgrade.
+- **Source of truth:** upstream `Systems-Modeling/SysML-v2-Release`. The clone script fetches from there directly. The previous `arminzavada/SysML-v2-Release` fork (carrying legacy customizations from earlier maintainers) was retired during the 2026-03 upgrade cycle and must not be reintroduced.
+- **Current pin:** commit `cd99f7ca70b96abb38f09dfd25725e3cf259baa3` (upstream tag `2026-03`). Bump in [`packages/syside-languageserver/scripts/clone-sysml-release.mjs`](../../packages/syside-languageserver/scripts/clone-sysml-release.mjs) when advancing.
+- **Patches:** the clone script applies all files matching `scripts/patches/*.patch` after checkout. Currently the directory is empty — the one historical fork patch (`Occurrences.kerml` `end` shape) retired itself at upstream tag `2026-01` when upstream emitted the same form.
 
 ## Maintenance rule
 

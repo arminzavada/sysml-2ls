@@ -82,10 +82,10 @@ export function createArgParser<O extends NodeLauncherOptions = NodeLauncherOpti
 ): ArgParser<O> {
     const command = new Command()
         .version(Version)
-        .description("SysIDE Legacy")
+        .description("SysIDE")
         .showHelpAfterError(true)
         .allowExcessArguments(true)
-        .name("Launch SysIDE Legacy");
+        .name("Launch SysIDE");
 
     // need to sanitize args for leading `=` since that is what
     // vscode-languageclient passes

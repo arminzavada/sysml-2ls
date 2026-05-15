@@ -1,6 +1,6 @@
 {
     "name": "syside-languageserver",
-    "displayName": "SysIDE Legacy",
+    "displayName": "SysIDE",
     "description": "SysML v2 language server.",
     "publisher": "Sensmetry",
     "author": {
@@ -16,12 +16,12 @@
     ],
     "preview": true,
     "repository": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls",
+        "url": "https://github.com/arminzavada/sysml-2ls",
         "type": "git",
         "directory": "packages/syside-languageserver"
     },
     "bugs": {
-        "url": "https://gitlab.com/sensmetry/public/sysml-2ls/-/issues"
+        "url": "https://github.com/arminzavada/sysml-2ls/issues"
     },
     "type": "module",
     "files": [
@@ -35,26 +35,20 @@
     },
     "main": "./lib/index.js",
     "scripts": {
-        "prebuild": "shx cp -R ./syntaxes ../syside-vscode/syntaxes && cd src && node -p \"'export const Version = ' + JSON.stringify(require('../package.json').version) + ';'\" > version.ts",
-        "lint": "eslint src --max-warnings 0",
+        "prebuild": "shx rm -rf ../syside-vscode/syntaxes && shx cp -R ./syntaxes ../syside-vscode/syntaxes && cd src && node -p \"'export const Version = ' + JSON.stringify(require('../package.json').version) + ';'\" > version.ts",
         "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
-        "build": "pnpm run prebuild && tsc",
-        "watch": "pnpm run prebuild && tsc --watch",
+        "build": "pnpm prebuild && tsc",
+        "watch": "pnpm prebuild && tsc --watch",
+        "lint": "eslint src --max-warnings 0",
         "test": "vitest run",
         "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
         "index": "node ../../scripts/generate-index.mjs src/model src/testing src/node src/services src/utils src/launch src/browser",
-        "prepack": "pnpm clean && pnpm build && pnpm esbuild --minify && mv README.md .README && cp ../../README.md README.md",
-        "postpack": "mv .README README.md",
-        "langium:generate": "langium generate",
-        "langium:watch": "langium generate --watch",
-        "esbuild-base": "pnpm run prebuild && node ../../scripts/build.mjs node src/node/main.ts",
-        "esbuild": "pnpm run esbuild-base --sourcemap",
-        "build:browser": "pnpm run prebuild && node ../../scripts/build.mjs browser src/browser/main.ts",
-        "esbuild:watch": "pnpm run esbuild-base --sourcemap --watch",
-        "prepare-validation": "node ./scripts/clone-sysml-release.mjs",
-        "run-validation": "pnpx tsx ./scripts/run-validation.ts",
-        "grammar:generate": "langium generate && shx cp -R ./syntaxes ../syside-vscode/syntaxes",
-        "grammar:watch": "langium generate --watch"
+        "esbuild": "pnpm prebuild && node ../../scripts/build.mjs node src/node/main.ts --sourcemap",
+        "esbuild:watch": "pnpm esbuild --watch",
+        "esbuild:browser": "pnpm prebuild && node ../../scripts/build.mjs browser src/browser/main.ts",
+        "grammar:generate": "langium generate && shx rm -rf ../syside-vscode/syntaxes && shx cp -R ./syntaxes ../syside-vscode/syntaxes",
+        "grammar:watch": "langium generate --watch",
+        "clone-stdlib": "node ./scripts/clone-sysml-release.mjs"
     },
     "dependencies": {
         "chevrotain": "~12.0.0",
