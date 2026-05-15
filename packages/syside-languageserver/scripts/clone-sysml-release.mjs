@@ -25,7 +25,7 @@ const __dirname = path.dirname(__filename);
 const root = path.join(__dirname, "..", "..", "..");
 const dir = path.join(root, "SysML-v2-Release");
 
-const commit = "b48c37f3bc5702bc4dfce9ce2b7e454720c7c2fb";
+const commit = "0bd362302f23a3b7b5f169d49b0d49b938e00c0c";
 const patchesDir = path.join(__dirname, "patches");
 // const tag = "2024-12";
 
