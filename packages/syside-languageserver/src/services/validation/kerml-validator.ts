@@ -36,6 +36,7 @@ import {
     FeatureReferenceExpressionMeta,
     FeatureValueMeta,
     FunctionMeta,
+    IMPLICIT_OPERATORS,
     ImportMeta,
     InteractionMeta,
     InvocationExpressionMeta,
@@ -306,8 +307,21 @@ export class KerMLValidator {
         );
     }
 
-    // validateEndFeatureMembershipIsEnd - model implicitly ensures this, no
-    // need to check
+    @validateKerML(ast.EndFeatureMembership.$type)
+    validateEndFeatureMembership(
+        node: MembershipMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const feature = node.element();
+        /* istanbul ignore next */
+        if (!feature?.is(ast.Feature.$type)) return;
+        if (!feature.isEnd) {
+            accept("error", "The ownedMemberFeature of an EndFeatureMembership must have isEnd = true.", {
+                element: node,
+                code: "validateEndFeatureMembership",
+            });
+        }
+    }
 
     @validateKerML(ast.Multiplicity.$type, { sysml: false })
     validateMultiplicityDomain(node: MultiplicityMeta, accept: ModelValidationAcceptor): void {
@@ -958,6 +972,23 @@ export class KerMLValidator {
         }
     }
 
+    @validateKerML(ast.ParameterMembership.$type)
+    validateParameterMembership(
+        node: ParameterMembershipMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const feature = node.element();
+        /* istanbul ignore next */
+        if (!feature?.is(ast.Feature.$type)) return;
+        if (!feature.direction || feature.direction === "none") {
+            accept(
+                "error",
+                "The ownedMemberParameter of a ParameterMembership must have a direction (in, out, or inout).",
+                { element: node, code: "validateParameterMembership" }
+            );
+        }
+    }
+
     // implicitly ensured by the grammar but not the type system
     @validateKerML(ast.SysMLFunction.$type)
     @validateKerML(ast.Expression.$type)
@@ -1011,9 +1042,60 @@ export class KerMLValidator {
     // validateReturnParameterMembershipParameterHasDirectionOut - implicitly
     // ensured by the model
 
-    // validateCollectExpressionOperator - implicitly ensured by the model
+    /* istanbul ignore next (operator is hard-coded by CollectExpressionMeta;
+    fires only if the AST is constructed via a non-grammar path) */
+    @validateKerML(ast.CollectExpression.$type)
+    validateCollectExpressionOperator(
+        node: OperatorExpressionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (node.operator !== IMPLICIT_OPERATORS.COLLECT) {
+            accept("error", "The operator of a CollectExpression must be 'collect'.", {
+                element: node,
+                code: "validateCollectExpressionOperator",
+            });
+        }
+    }
 
-    // validateIndexExpressionOperator - implicitly ensured by the model
+    /* istanbul ignore next (operator is hard-coded by IndexExpressionMeta) */
+    @validateKerML(ast.IndexExpression.$type)
+    validateIndexExpressionOperator(
+        node: OperatorExpressionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (node.operator !== IMPLICIT_OPERATORS.INDEX) {
+            accept("error", "The operator of an IndexExpression must be '#'.", {
+                element: node,
+                code: "validateIndexExpressionOperator",
+            });
+        }
+    }
+
+    @validateKerML(ast.SelectExpression.$type)
+    validateSelectExpressionOperator(
+        node: OperatorExpressionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (node.getFunction() !== "ControlFunctions::select") {
+            accept("error", "The operator of a SelectExpression must be 'select'.", {
+                element: node,
+                code: "validateSelectExpressionOperator",
+            });
+        }
+    }
+
+    @validateKerML(ast.FeatureChainExpression.$type)
+    validateFeatureChainExpressionOperator(
+        node: FeatureChainExpressionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (node.getFunction() !== "ControlFunctions::'.'") {
+            accept("error", "The operator of a FeatureChainExpression must be '.'.", {
+                element: node,
+                code: "validateFeatureChainExpressionOperator",
+            });
+        }
+    }
 
     @validateKerML(ast.FeatureChainExpression.$type)
     validateFeatureChainExpressionFeatureConformance(
@@ -1153,7 +1235,18 @@ export class KerMLValidator {
         );
     }
 
-    // validateItemFlowEndIsEnd - implicitly ensured by the model
+    @validateKerML(ast.ItemFlow.$type)
+    validateFlowEndIsEnd(node: ItemFlowMeta, accept: ModelValidationAcceptor): void {
+        node.connectorEnds().forEach((end, index) => {
+            if (!end.isEnd) {
+                accept(
+                    "error",
+                    `End feature #${index} of an ItemFlow must have isEnd = true.`,
+                    { element: end, code: "validateFlowEndIsEnd" }
+                );
+            }
+        });
+    }
 
     // implicitly ensured by the grammar but not the type system
     @validateKerML(ast.ItemFlowEnd.$type)

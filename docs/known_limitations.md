@@ -22,3 +22,20 @@
   - SysML grammar is slightly relaxed for succession and transition usage elements
     so that they can appear anywhere in the body and are not constrained by the
     preceding and following elements
+- The 2026-01 validation batch — `validateEndFeatureMembership`,
+  `validateParameterMembership`, `validateCollectExpressionOperator`,
+  `validateIndexExpressionOperator`, `validateSelectExpressionOperator`,
+  `validateFeatureChainExpressionOperator`, `validateFlowEndIsEnd`,
+  `validateUsageIsReferential`, `validateReferenceUsageIsReferential`,
+  `validateAttributeUsageIsReferential`,
+  `validateEnumerationDefinitionIsVariation`,
+  `validateEventOccurrenceUsageIsReference`, and `validatePortUsageIsReference`
+  — is implemented for spec traceability, but most rules are also enforced
+  structurally by the metamodel's getter overrides (e.g. `EnumerationDefinition.isVariation`
+  always returns `true`). They therefore fire only on AST states the grammar
+  cannot produce — i.e. when nodes are constructed programmatically through
+  the API in a way that violates a subclass invariant. The pilot's 2026-01
+  release fires the same rules from EMF state; semantically the editor is
+  consistent with the pilot, with the only practical difference being that
+  our validators would not catch an *incorrectly-implemented metamodel*,
+  whereas the pilot's would.

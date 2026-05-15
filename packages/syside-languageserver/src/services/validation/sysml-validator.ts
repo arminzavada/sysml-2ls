@@ -161,8 +161,35 @@ export class SysMLValidator extends KerMLValidator {
         }
     }
 
-    // validateReferenceUsageIsReference - implicitly ensured by the model
     // validateUsageNonVariationMembership - duplicate with validateVariantMembershipOwningNamespace
+
+    @validateSysML(ast.Usage.$type)
+    validateUsageIsReferential(node: UsageMeta, accept: ModelValidationAcceptor): void {
+        /* istanbul ignore next (isReference and isComposite are derived getters
+        that the metamodel keeps mutually exclusive; fires only on programmatic
+        AST corruption) */
+        if (node.isReference && node.isComposite) {
+            accept(
+                "error",
+                "A Usage cannot be both isReference and isComposite.",
+                { element: node, code: "validateUsageIsReferential" }
+            );
+        }
+    }
+
+    /* istanbul ignore next (ReferenceUsageMeta forces isComposite=false) */
+    @validateSysML(ast.ReferenceUsage.$type)
+    validateReferenceUsageIsReferential(
+        node: UsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (!node.isReference) {
+            accept("error", "A ReferenceUsage must have isReference = true.", {
+                element: node,
+                code: "validateReferenceUsageIsReferential",
+            });
+        }
+    }
 
     @validateSysML(ast.Usage.$type)
     validateUsageOwningType(node: UsageMeta, accept: ModelValidationAcceptor): void {
@@ -208,8 +235,21 @@ export class SysMLValidator extends KerMLValidator {
     }
 
     // TODO: validateAttributeUsageFeatures - seems to be blocked by KERML-4
-    // validateAttributeUsageIsReference - implicitly ensured by the model
     // TODO: validateAttributeDefinitionFeatures - seems to be blocked by KERML-4
+
+    /* istanbul ignore next (AttributeUsageMeta forces isComposite=false) */
+    @validateSysML(ast.AttributeUsage.$type)
+    validateAttributeUsageIsReferential(
+        node: AttributeUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (!node.isReference) {
+            accept("error", "An AttributeUsage must have isReference = true.", {
+                element: node,
+                code: "validateAttributeUsageIsReferential",
+            });
+        }
+    }
 
     @validateSysML(ast.AttributeUsage.$type)
     validateAttributeUsageTyping(node: AttributeUsageMeta, accept: ModelValidationAcceptor): void {
@@ -222,7 +262,19 @@ export class SysMLValidator extends KerMLValidator {
         );
     }
 
-    // validateEnumerationDefinitionIsVariation - implicitly ensured by the model
+    /* istanbul ignore next (EnumerationDefinitionMeta forces isVariation=true) */
+    @validateSysML(ast.EnumerationDefinition.$type)
+    validateEnumerationDefinitionIsVariation(
+        node: DefinitionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (!node.isVariation) {
+            accept("error", "An EnumerationDefinition must have isVariation = true.", {
+                element: node,
+                code: "validateEnumerationDefinitionIsVariation",
+            });
+        }
+    }
 
     @validateSysML(ast.EnumerationUsage.$type)
     validateEnumerationUsageTyping(
@@ -239,7 +291,19 @@ export class SysMLValidator extends KerMLValidator {
         );
     }
 
-    // validateEventOccurrenceUsageIsReference - implicitly ensured by the model
+    /* istanbul ignore next (EventOccurrenceUsageMeta forces isComposite=false) */
+    @validateSysML(ast.EventOccurrenceUsage.$type)
+    validateEventOccurrenceUsageIsReference(
+        node: EventOccurrenceUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (!node.isReference) {
+            accept("error", "An EventOccurrenceUsage must have isReference = true.", {
+                element: node,
+                code: "validateEventOccurrenceUsageIsReference",
+            });
+        }
+    }
 
     @validateSysML(ast.EventOccurrenceUsage.$type)
     validateEventOccurrenceUsageReference(
@@ -443,7 +507,23 @@ export class SysMLValidator extends KerMLValidator {
         );
     }
 
-    // validatePortUsageIsReference - implicitly ensured by the model
+    @validateSysML(ast.PortUsage.$type)
+    validatePortUsageIsReference(
+        node: PortUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        // A PortUsage that is not a subport (i.e. not owned by a PortDefinition
+        // or PortUsage) must have isReference = true.
+        const owner = node.owningType;
+        const isSubport = owner?.isAny(ast.PortDefinition.$type, ast.PortUsage.$type);
+        if (!isSubport && !node.isReference) {
+            accept(
+                "error",
+                "A PortUsage that is not a subport must have isReference = true.",
+                { element: node, code: "validatePortUsageIsReference" }
+            );
+        }
+    }
 
     @validateSysML(ast.ConnectionUsage.$type, [
         ast.FlowUsage.$type,
