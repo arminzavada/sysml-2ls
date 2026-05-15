@@ -23,17 +23,11 @@ const modelsRoot = path.resolve(currentDir, "..", "resources", "semantifyr-model
 const MODELS = [
     "aircraft_engine.sysml",
     "autonomous_driving.sysml",
-    "door_access.sysml",
-    "power_subsystems.sysml",
-];
-
-// TODO: validateUsageOwningType rejects `flow from X to Y` endpoints in these
-// models (sysml-2ls bug, not a model error). Re-enable when the flow-end
-// owningType resolution is fixed.
-const KNOWN_FAILING_MODELS = [
     "compressedspacecraft.sysml",
     "crossroads.sysml",
+    "door_access.sysml",
     "orion_protocol.sysml",
+    "power_subsystems.sysml",
     "semanticstest.sysml",
     "spacecraft.sysml",
 ];
@@ -121,7 +115,4 @@ describe("Semantifyr SysML test models", () => {
         180_000
     );
 
-    it.skip.each(KNOWN_FAILING_MODELS)("parses and validates %s without errors", () => {
-        // see KNOWN_FAILING_MODELS TODO
-    });
 });
