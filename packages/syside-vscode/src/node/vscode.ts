@@ -29,10 +29,19 @@ type Options = keyof typeof CONFIG.contributes.configuration.properties;
  */
 export class SysMLVSCodeClientExtender extends BaseSysMLVSCodeClientExtender {
     protected async selectStdlibPath(): Promise<string | undefined> {
-        // Try to find the bundled library first
-        const extPath = vscode.extensions.getExtension("Sensmetry.sysml-2ls")?.extensionPath;
+        const extension = vscode.extensions.getExtension("Sensmetry.sysml-2ls");
+        const extPath = extension?.extensionPath;
+
         if (extPath !== undefined) {
-            return path.join(extPath, "sysml.library");
+            // Prefer the workspace's `SysML-v2-Release/sysml.library` over any
+            // stale bundle when running via `--extensionDevelopmentPath`.
+            const devRepoRoot = path.resolve(extPath, "..", "..");
+            const devStdlib = path.join(devRepoRoot, "SysML-v2-Release", "sysml.library");
+            const inDevWorkspace = path.basename(path.dirname(extPath)) === "packages";
+            if (inDevWorkspace && (await fs.exists(devStdlib))) return devStdlib;
+
+            const bundled = path.join(extPath, "sysml.library");
+            if (await fs.exists(bundled)) return bundled;
         }
 
         // Otherwise ask the user what to do

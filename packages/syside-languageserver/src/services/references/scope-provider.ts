@@ -37,20 +37,26 @@ import {
     Membership,
     Namespace,
     ParameterMembership,
+    Redefinition,
     Specialization,
     Subsetting,
     SysMLFunction,
+    Type,
 } from "../../generated/ast.js";
 import {
     CHILD_CONTENTS_OPTIONS,
     DEFAULT_ALIAS_RESOLVER,
+    fillContentOptions,
+    PARENT_CONTENTS_OPTIONS,
     ScopeOptions,
+    Visibility,
 } from "../../utils/scope-util.js";
 import {
     SysMLScope,
     makeScope,
     makeLinkingScope,
     FilteredScope,
+    InheritedTypeScope,
     ScopeStream,
 } from "../../utils/scopes.js";
 import { SysMLDefaultServices } from "../services.js";
@@ -64,6 +70,7 @@ import {
     FeatureChainExpressionMeta,
     FeatureMeta,
     Metamodel,
+    TypeMeta,
 } from "../../model/index.js";
 import { SysMLType } from "../sysml-ast-reflection.js";
 
@@ -153,32 +160,21 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
     ): SysMLScope | undefined {
         options ??= { aliasResolver: DEFAULT_ALIAS_RESOLVER };
 
-        // FeatureChainExpression `a.b` parses as
-        //   FeatureChainExpression {
-        //     operands: [<resolved-or-resolving expression for `a`>],
-        //     children: [Membership { targetRef: <reference to `b`> }]
-        //   }
-        // The reference for `b` therefore has `owner = FeatureChainExpression`
-        // directly (the Membership is NonOwnerType so it's unwrapped from
-        // the owner chain). Scope `b` in the localScope of whatever `a`
-        // resolved to. Nested chains like `a.b.c` recurse: the outer
-        // FeatureChainExpression's first operand is itself a
-        // FeatureChainExpression whose own resolution produced its
-        // `targetFeature()`.
+        // For `a.b`, the reference for `b` is owned directly by the
+        // FeatureChainExpression: scope it in the local scope of `a`.
         if (owner?.is(FeatureChainExpression.$type)) {
-            const target = (owner as FeatureChainExpressionMeta).targetFeature();
-            const previous = target ?? (owner as FeatureChainExpressionMeta).operands.at(0);
-            const resolvedPrevious =
-                previous && previous.is(FeatureReferenceExpression.$type)
-                    ? previous.expression?.element()
-                    : previous;
+            const previous = (owner as FeatureChainExpressionMeta).operands.at(0);
+            let resolvedPrevious: Metamodel | undefined;
+            if (previous?.is(FeatureReferenceExpression.$type)) {
+                resolvedPrevious = previous.expression?.element();
+            } else if (previous?.is(FeatureChainExpression.$type)) {
+                resolvedPrevious = (previous as FeatureChainExpressionMeta).targetFeature();
+            } else {
+                resolvedPrevious = previous;
+            }
             if (resolvedPrevious) {
                 return this.localScope(resolvedPrevious, document, options.aliasResolver);
             }
-            // fall through: if previous side hasn't been resolved yet, return
-            // no scope so the linker reports a diagnostic on `b` rather than
-            // silently falling back to the enclosing-feature scope (which
-            // would be wrong for chain semantics).
             return;
         }
 
@@ -187,28 +183,13 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             owner = owner.owner();
         }
 
-        // need to unwrap feature chaining
+        // FeatureChaining covers two cases:
+        //   * `f chains a.b.c` declarations
+        //   * `a.b.c` expressions, where `b.c` is parsed as an OwnedFeatureChain
+        // The first chaining looks up in the enclosing scope (or the FCE's
+        // left operand when nested in an expression); subsequent chainings
+        // look up in the scope of the previously-resolved chaining target.
         if (owner?.is(FeatureChaining.$type)) {
-            // For `f chains a.b.c` (and the equivalent FeatureChain fragment
-            // produced by `OwnedFeatureChain` for subsetting/typing
-            // declarations), the parent Feature carries the chainings in
-            // declaration order on its `chainings` array. Reference
-            // resolution for chaining `i` follows the SysML semantics:
-            //
-            //   i === 0: resolve in the enclosing scope of the owning
-            //            Feature (skipping the chaining wrapper plus the
-            //            owning feature itself, since the reference belongs
-            //            to the feature's declaration).
-            //   i  >  0: resolve in the scope of the previously-resolved
-            //            chaining target — `a.b` means "look up `b` as a
-            //            member of `a`".
-            //
-            // Under Langium 1.x the heuristic `owner.owner()?.owner()` (chain
-            // wrapper → feature → enclosing) happened to land on the
-            // enclosing namespace for index 0 but was incorrect for index >
-            // 0 (it looked in the enclosing namespace for `b` too). The
-            // explicit per-index logic below restores conformance with the
-            // pilot.
             const chaining = owner;
             const parentFeature = chaining.parent();
             const chainings = (parentFeature as FeatureMeta | undefined)?.chainings;
@@ -222,9 +203,38 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
                 }
                 return;
             }
-            // For the first chaining (or unknown index), continue with the
-            // historic outer-scope unwrap.
+            const chainOwner = parentFeature?.owner();
+            if (chainOwner?.is(FeatureChainExpression.$type)) {
+                const previous = (chainOwner as FeatureChainExpressionMeta).operands.at(0);
+                let resolvedPrevious: Metamodel | undefined;
+                if (previous?.is(FeatureReferenceExpression.$type)) {
+                    resolvedPrevious = previous.expression?.element();
+                } else if (previous?.is(FeatureChainExpression.$type)) {
+                    resolvedPrevious = (previous as FeatureChainExpressionMeta).targetFeature();
+                } else {
+                    resolvedPrevious = previous;
+                }
+                if (resolvedPrevious) {
+                    return this.localScope(resolvedPrevious, document, options.aliasResolver);
+                }
+                return;
+            }
             owner = chaining.owner()?.owner();
+        }
+
+        // Pilot conformance (`KerMLScope.xtend:213`): when resolving the first
+        // segment of a redefinition target (`:>> a::b`), look up `a` through
+        // the owning type's inherited members rather than its owned members,
+        // so a self-collision in the owning type doesn't shadow the inherited
+        // element. The remaining segments are resolved via the regular
+        // per-context scope walk in `getElementReferenceScope`.
+        let redefinitionOwningType: ElementMeta | undefined;
+        if (owner?.is(Redefinition.$type)) {
+            const redefiningFeature = owner.source();
+            const owningType = (redefiningFeature as FeatureMeta | undefined)?.owningType;
+            if (owningType?.is(Type.$type)) {
+                redefinitionOwningType = owningType;
+            }
         }
 
         // also skip the first scoping node as references are always a part
@@ -288,11 +298,32 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             : (owner.parent() as ElementMeta | undefined);
         if (parent) this.initializeParents(parent, document);
 
-        return makeLinkingScope(
+        const linkingScope = makeLinkingScope(
             owner,
             options,
             this.indexManager.getGlobalScope(document as LangiumDocument<Namespace> | undefined)
         );
+
+        if (redefinitionOwningType) {
+            const inheritedOpts = fillContentOptions({
+                ...PARENT_CONTENTS_OPTIONS,
+                aliasResolver: options.aliasResolver,
+                inherited: { visibility: Visibility.private, depth: 1 },
+                imported: { visibility: Visibility.private, depth: 1 },
+            });
+            const inheritedScope = new InheritedTypeScope(
+                redefinitionOwningType as TypeMeta,
+                inheritedOpts
+            );
+            return new ScopeStream(
+                (function* () {
+                    yield inheritedScope;
+                    yield linkingScope;
+                })()
+            );
+        }
+
+        return linkingScope;
     }
 
     /**

@@ -436,6 +436,22 @@ export class TypeScope extends NamespaceScope {
 }
 
 /**
+ * Type scope variant that hides the type's own owned members and only exposes
+ * elements reachable through its inherited (specialization) and imported
+ * scopes. Mirrors the pilot's `if (ns instanceof Type && isRedefinition)
+ * ns.gen(...)` short-circuit at `KerMLScope.xtend:213` used when resolving the
+ * first segment of a qualified-name redefinition target.
+ */
+export class InheritedTypeScope extends TypeScope {
+    protected override getLocalElement(_name: string): MembershipMeta | undefined {
+        return;
+    }
+    protected override getAllLocalElements(): Stream<ExportedMember> {
+        return EMPTY_STREAM;
+    }
+}
+
+/**
  * A scope wrapper for an iterable of {@link SysMLScope}
  */
 export class ScopeStream extends SysMLScope {

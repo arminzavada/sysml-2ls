@@ -84,6 +84,7 @@ export function createArgParser<O extends NodeLauncherOptions = NodeLauncherOpti
         .version(Version)
         .description("SysIDE Legacy")
         .showHelpAfterError(true)
+        .allowExcessArguments(true)
         .name("Launch SysIDE Legacy");
 
     // need to sanitize args for leading `=` since that is what

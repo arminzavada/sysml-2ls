@@ -158,11 +158,17 @@ export class SysMLDocumentFactory extends DefaultLangiumDocumentFactory {
         doc.progress = BuildProgress.Created;
         doc.exports = new Map();
         doc.namedElements = new Map();
-        doc.astNodes = streamAst(doc.parseResult.value).toArray();
         doc.modelDiagnostics = new MultiMap();
         doc.onInvalidated = new MultiMap();
         doc.commentsAttached = false;
 
+        // Skip `fromModel({$type:'INVALID'})` placeholders; real parse re-enters here.
+        if ((doc.parseResult.value as AstNode).$type === "INVALID") {
+            doc.astNodes = [];
+            return doc;
+        }
+
+        doc.astNodes = streamAst(doc.parseResult.value).toArray();
         this.metamodelBuilder.onParsed(doc);
         return doc;
     }

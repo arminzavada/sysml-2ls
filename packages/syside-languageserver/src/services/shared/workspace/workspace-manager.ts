@@ -101,7 +101,6 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
         let dir = this.fileSystemProvider.standardLibrary;
         if (!dir || !this.fileSystemProvider.existsSync(dir)) {
             if (dir) {
-                // path is set but it doesn't exist, maybe a user error?
                 this.connection?.sendRequest(ShowMessageRequest.type, {
                     type: MessageType.Error,
                     message: `Standard library path '${dir ? dir : ""}' does not exist`,
@@ -109,7 +108,6 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
                 return;
             }
 
-            // no path set so request client to find one
             const result = await this.requestClientStdlibDir();
             if (!result) return;
             dir = pathToURI(result);
@@ -130,40 +128,19 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
             if (node.isFile) {
                 collected.push(node.uri);
             } else {
-                content.push(...(await this.fileSystemProvider.readDirectory(node.uri)));
+                const children = await this.fileSystemProvider.readDirectory(node.uri);
+                content.push(...children);
             }
         }
 
-        // Preload all documents on the web asynchronously since
-        // `getOrCreatedDocument` would otherwise fail as it uses sync overload.
-        // Async here has great performance benefits as we are actually fetching
-        // documents from another site and browsers can easily parallelize it.
         await this.fileSystemProvider.preloadFiles(collected);
         for (const uri of collected) {
             const doc = await this.langiumDocuments.getOrCreateDocument(uri);
             doc.isStandard = true;
             collector(doc);
         }
-
-        console.log(
-            `Collected standard library:\n${JSON.stringify(
-                collected.map((uri) => uri.toString()),
-                undefined,
-                2
-            )}`
-        );
-
-        return;
     }
 
-    /**
-     * Filter a stdlib entry against registered language file extensions and
-     * file names. Directories are always traversed; files must match the
-     * language metadata.
-     *
-     * 4.x note: replaces the old `includeEntry(folder, entry, selector)` API
-     * which Langium retired (see PR #1784).
-     */
     protected shouldIncludeStdlibEntry(
         entry: FileSystemNode,
         fileExtensions: string[],
@@ -172,7 +149,8 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
         if (entry.isDirectory) return true;
         const path = entry.uri.path;
         const dot = path.lastIndexOf(".");
-        const ext = dot >= 0 ? path.slice(dot + 1) : "";
+        // `fileExtensions` entries include the leading dot.
+        const ext = dot >= 0 ? path.slice(dot) : "";
         if (ext && fileExtensions.includes(ext)) return true;
         const slash = path.lastIndexOf("/");
         const name = slash >= 0 ? path.slice(slash + 1) : path;

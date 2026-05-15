@@ -25,7 +25,7 @@ import {
     SysMLLanguageMetaData,
     mapSysMLNamespaceToSemantifyr,
 } from "syside-languageserver";
-import { SysMLNodeFileSystem } from "syside-languageserver/node";
+import { SysMLNodeFileSystem } from "syside-languageserver/node.js";
 
 interface CompileOptions extends CommandOptions {
     output?: string;

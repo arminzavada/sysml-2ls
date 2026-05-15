@@ -25,7 +25,7 @@ import { AssignableKeys } from "./common.js";
  * in the given root node. This does not include the root node itself.
  */
 export function streamAllContents(root: AstNode): TreeStream<AstNode> {
-    return new TreeStreamImpl(root, (node) => node.$children);
+    return new TreeStreamImpl(root, (node) => node.$children ?? []);
 }
 
 /**
@@ -33,7 +33,8 @@ export function streamAllContents(root: AstNode): TreeStream<AstNode> {
  * in the given root node, including the root node itself.
  */
 export function streamAst(root: AstNode): TreeStream<AstNode> {
-    return new TreeStreamImpl(root, (node) => node.$children, { includeRoot: true });
+    // `$children` is undefined on placeholders synthesized by `fromModel`.
+    return new TreeStreamImpl(root, (node) => node.$children ?? [], { includeRoot: true });
 }
 
 /**
