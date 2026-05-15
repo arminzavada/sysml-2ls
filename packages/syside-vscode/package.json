@@ -73,9 +73,9 @@
         "syside-languageserver": "workspace:*",
         "syside-base": "workspace:*",
         "syside-protocol": "workspace:*",
-        "vscode-languageclient": "~8.0.2",
-        "vscode-languageserver": "~8.0.2",
-        "vscode-uri": "3.0.7"
+        "vscode-languageclient": "~9.0.1",
+        "vscode-languageserver": "~9.0.1",
+        "vscode-uri": "~3.0.8"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.1",

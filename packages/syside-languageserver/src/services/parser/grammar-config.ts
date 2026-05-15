@@ -14,9 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { LangiumServices } from "langium";
-import { isRegexToken } from "langium/lib/grammar/generated/ast.js";
-import { createGrammarConfig, GrammarConfig } from "langium/lib/grammar/grammar-config.js";
+import { createGrammarConfig, GrammarAST, GrammarConfig, LangiumServices } from "langium";
+const { isRegexToken } = GrammarAST;
 
 // Cached grammar config since it is identical between KerML and SysML. May be
 // helpful when/if we decide to create services per test case.
@@ -38,7 +37,14 @@ export function createSysMLGrammarConfig(services: LangiumServices): GrammarConf
         // NB: this is not very robust to changes in the grammar files
         if (!rule || !isRegexToken(rule.definition)) continue;
 
-        const regex = `^${rule.definition.regex}$`;
+        // Langium 2.x's `RegexToken.regex` returns the delimited form
+        // `/pattern/`; Langium 1.x returned the bare `pattern`. Strip the
+        // delimiters so we can wrap with `^…$` for an anchored match.
+        let pattern = rule.definition.regex;
+        if (pattern.startsWith("/") && pattern.endsWith("/")) {
+            pattern = pattern.slice(1, -1);
+        }
+        const regex = `^${pattern}$`;
         if (name.length === 0) name = regex;
         else name += "|" + regex;
     }

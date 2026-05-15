@@ -329,7 +329,11 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
     }
 
     onLinkedReference(ref: ElementReference, _: LinkedReferenceInfo, __: LangiumDocument): void {
-        const owner = ref.$container.$meta;
+        // Langium 2.x tightened `AstNode.$container` from `AstNode` to
+        // `AstNode | undefined`. An `ElementReference` is only ever encountered
+        // here once linked, which implies a parent — assert via non-null.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const owner = ref.$container!.$meta!;
         if (owner.is(MembershipImport)) {
             // importing name only, no need to fully resolve yet
             if (!owner.isRecursive) return;

@@ -14,8 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AstNode, CstNode, DeepPartial, OperationCancelled } from "langium";
-import { isAbstractRule, isRuleCall } from "langium/lib/grammar/generated/ast.js";
+import { AstNode, CstNode, DeepPartial, GrammarAST, OperationCancelled } from "langium";
+const { isAbstractRule, isRuleCall } = GrammarAST;
 import { CancellationToken, Range } from "vscode-languageserver";
 import { Element, isElementReference } from "../generated/ast.js";
 import now from "performance-now";
@@ -24,9 +24,16 @@ import path from "path";
 
 /**
  * Sanitize range as returned by Langium parser such that it doesn't result in
- * errors later on
+ * errors later on.
  *
- * TODO: may have been fixed by https://github.com/langium/langium/pull/816
+ * Originally added to defend against `null` `line`/`character` values that
+ * Langium 1.x occasionally produced when ranges were rebuilt. Upstream
+ * https://github.com/langium/langium/pull/816 addressed the most common
+ * cause. Kept under Langium 2.x because the validation pipeline still calls
+ * into this defensively; removing it would require an empirical pass to
+ * confirm that 2.x's range construction is total. Retire alongside that
+ * verification.
+ *
  * @param range Range object
  * @returns Range object that doesn't contain null
  */

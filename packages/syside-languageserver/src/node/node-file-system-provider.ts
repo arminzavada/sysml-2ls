@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { NodeFileSystemProvider } from "langium/node.js";
+import { NodeFileSystemProvider } from "langium/node";
 import { SysMLFileSystemProvider } from "../services/shared/workspace/file-system-provider.js";
 import fs from "fs";
 import path from "node:path";

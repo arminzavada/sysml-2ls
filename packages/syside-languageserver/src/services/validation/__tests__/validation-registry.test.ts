@@ -35,15 +35,17 @@ describe("Validation registry", () => {
         });
 
         test("Custom checks are registered", () => {
+            // Langium 2.x changed `getChecks` to return a Stream rather than
+            // an array, so compare the materialized length.
             [Package, LibraryPackage].forEach((type) =>
-                expect(registry.getChecks(type)).toHaveLength(1)
+                expect(registry.getChecks(type).toArray()).toHaveLength(1)
             );
         });
 
         test("Custom checks can be unregistered", () => {
             unregister.dispose();
             [Package, LibraryPackage].forEach((type) =>
-                expect(registry.getChecks(type)).toHaveLength(0)
+                expect(registry.getChecks(type).toArray()).toHaveLength(0)
             );
         });
     });

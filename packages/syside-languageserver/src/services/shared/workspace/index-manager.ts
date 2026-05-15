@@ -45,7 +45,9 @@ export class SysMLIndexManager extends DefaultIndexManager {
     protected readonly globalElementsCache = new Map<string, ElementMeta | null>();
 
     protected override readonly simpleIndex = new Map<string, SysMLNodeDescription[]>();
-    protected override readonly globalScopeCache = new Map<string, SysMLNodeDescription[]>();
+    // Langium 2.x removed the `globalScopeCache` field from `DefaultIndexManager`;
+    // keep it here for local use by the SysML index but without the `override`.
+    protected readonly globalScopeCache = new Map<string, SysMLNodeDescription[]>();
 
     /**
      * Map of implicit model dependencies
@@ -241,13 +243,16 @@ export class SysMLIndexManager extends DefaultIndexManager {
         this.globalScope.invalidateDocuments(uris);
     }
 
-    protected override isAffected(document: LangiumDocument<AstNode>, changed: URI): boolean {
-        if (super.isAffected(document, changed)) return true;
+    override isAffected(document: LangiumDocument<AstNode>, changedUris: Set<string>): boolean {
+        if (super.isAffected(document, changedUris)) return true;
 
         // also take model dependencies into account
         const deps = this.modelDependencies.get(document.uri.toString());
         if (!deps) return false;
-        return deps.has(changed.toString());
+        for (const uri of changedUris) {
+            if (deps.has(uri)) return true;
+        }
+        return false;
     }
 
     conforms(left: string | TypeMeta, type: string | TypeMeta): boolean {

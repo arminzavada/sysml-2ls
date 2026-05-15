@@ -24,7 +24,7 @@ import {
     PartialLangiumSharedServices,
 } from "langium";
 import {
-    SysMlGeneratedSharedModule,
+    SysMLGeneratedSharedModule,
     KerMLGeneratedModule,
     SysMLGeneratedModule,
 } from "./generated/module.js";
@@ -50,7 +50,7 @@ import {
     SysMLDefaultServices,
 } from "./services/services.js";
 import { createSysMLParser } from "./services/parser/parser.js";
-import { DefaultAstNodeLocator } from "langium/lib/workspace/ast-node-locator.js";
+import { DefaultAstNodeLocator } from "langium";
 import { SysMLNodeDescriptionProvider } from "./services/shared/workspace/ast-descriptions.js";
 import { SysMLExecuteCommandHandler } from "./services/lsp/execute-command-handler.js";
 import { SysMLWorkspaceManager } from "./services/shared/workspace/workspace-manager.js";
@@ -190,7 +190,7 @@ export function createSysMLServices(
 
     const shared = inject(
         createDefaultSharedModule(context),
-        SysMlGeneratedSharedModule,
+        SysMLGeneratedSharedModule,
         sharedModule
     );
     const SysML = inject(

@@ -20,7 +20,7 @@ import {
     getDocument,
     LangiumDocument,
 } from "langium";
-import { AstNodeLocator } from "langium/lib/workspace/ast-node-locator.js";
+import { AstNodeLocator } from "langium";
 import { Element } from "../../../generated/ast.js";
 import { SysMLSharedServices } from "../../services.js";
 

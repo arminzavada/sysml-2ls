@@ -45,7 +45,7 @@ class TypesIndex<S = SysMLTypeList> {
     protected readonly types: Keys<S>[];
 
     constructor() {
-        this.base = new ast.SysMlAstReflection();
+        this.base = new ast.SysMLAstReflection();
         for (const type of this.base.getAllTypes()) {
             // have to split to real interfaces and unions to have a proper
             // supertype chain

@@ -21,9 +21,9 @@ import { AstContainer, AstParent, AstPropertiesFor } from "../utils/ast-util.js"
 import { SysMLReferenceInfo } from "./references/linker.js";
 
 export type SysMLType = {
-    [K in keyof ast.SysMlAstType]: ast.SysMlAstType[K] extends string ? never : K;
-}[keyof ast.SysMlAstType];
-export type SysMLTypeList = { [K in SysMLType]: ast.SysMlAstType[K] };
+    [K in keyof ast.SysMLAstType]: ast.SysMLAstType[K] extends string ? never : K;
+}[keyof ast.SysMLAstType];
+export type SysMLTypeList = { [K in SysMLType]: ast.SysMLAstType[K] };
 export type SysMLInterface<K extends SysMLType> = SysMLTypeList[K];
 
 export type SubtypeList<Bound extends AstNode> = {
@@ -34,7 +34,7 @@ export type SubtypeKeys<Bound extends AstNode> = {
 }[SysMLType];
 export type Subtypes<Bound extends AstNode> = SysMLTypeList[SubtypeKeys<Bound>];
 
-export class SysMLAstReflection extends ast.SysMlAstReflection {
+export class SysMLAstReflection extends ast.SysMLAstReflection {
     protected readonly metadata = new Map<string, TypeMetaData>();
 
     override getReferenceType(refInfo: SysMLReferenceInfo): string {
@@ -133,10 +133,12 @@ export class SysMLAstReflection extends ast.SysMlAstReflection {
     >(type: V, values: ConstructParams<SysMLInterface<V>, T, P>): SysMLInterface<V> {
         const partialNode = { $type: type, ...values };
 
-        // if there's a CST node, modify it to point to the created node
+        // if there's a CST node, modify it to point to the created node.
+        // Langium 2.x renamed the writable CST property to `astNode` and
+        // turned `element` into a read-only getter that delegates to it.
         if (values.$cstNode) {
             const cstNode = shallowClone(values.$cstNode);
-            (cstNode as Mutable<CstNode>).element = partialNode as AstNode;
+            (cstNode as unknown as { astNode: AstNode }).astNode = partialNode as AstNode;
             (partialNode as Mutable<AstNode>).$cstNode = cstNode;
             (cstNode as AutoCstNode).$implicit = true;
         }

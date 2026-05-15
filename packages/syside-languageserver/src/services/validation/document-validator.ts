@@ -100,11 +100,40 @@ export class SysMLDocumentValidator extends DefaultDocumentValidator {
         return validationItems;
     }
 
+    // Langium 2.x changed `validateAst(rootNode, document, cancelToken)` to
+    // `validateAst(rootNode, options, cancelToken)` and dropped the document
+    // argument. We need the document to gather/update `modelDiagnostics`, so
+    // thread it through a ThreadLocal-style instance field set by an override
+    // of `validateDocument`.
+    private _currentDocument: LangiumDocument | undefined;
+
+    override async validateDocument(
+        document: LangiumDocument,
+        ...rest: Parameters<DefaultDocumentValidator["validateDocument"]> extends [
+            unknown,
+            ...infer R,
+        ]
+            ? R
+            : never
+    ): Promise<Diagnostic[]> {
+        this._currentDocument = document;
+        try {
+            return await super.validateDocument(document, ...rest);
+        } finally {
+            this._currentDocument = undefined;
+        }
+    }
+
     protected override async validateAst(
         rootNode: AstNode,
-        document: LangiumDocument<AstNode>,
+        _options: unknown,
         cancelToken?: CancellationToken | undefined
     ): Promise<Diagnostic[]> {
+        const document = this._currentDocument;
+        if (!document) {
+            // shouldn't happen — only called via validateDocument above
+            return [];
+        }
         const diagnostics = await this.validateModel(
             rootNode.$meta as ElementMeta,
             document,

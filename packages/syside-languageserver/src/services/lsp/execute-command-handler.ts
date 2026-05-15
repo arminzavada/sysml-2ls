@@ -27,7 +27,17 @@ import {
 } from "langium";
 import { CancellationToken, Connection, Disposable, Position } from "vscode-languageserver";
 import { URI } from "vscode-uri";
-import { UriComponents } from "vscode-uri/lib/umd/uri.js";
+
+// `vscode-uri@3.x` no longer exposes the deep `lib/umd/uri.js` path through
+// its `package.json#exports` map. Re-declare the small subset we use locally
+// (matches the shape of the upstream interface).
+interface UriComponents {
+    readonly scheme: string;
+    readonly authority?: string;
+    readonly path?: string;
+    readonly query?: string;
+    readonly fragment?: string;
+}
 import {
     Element,
     Feature,

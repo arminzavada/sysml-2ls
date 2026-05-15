@@ -208,10 +208,16 @@ export class SysMLLinker extends DefaultLinker {
      */
     protected setLinkerError<T extends Element>(value: NonNullReference<T>, message: string): void {
         const ref = value as DefaultReference<T>;
+        // `LinkingError.container` is non-nullable in Langium 2.x but
+        // `AstNode.$container` is now `AstNode | undefined`. Coerce; this code
+        // path is only hit when the referenced element has been linked, in
+        // which case it always has a container.
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const container = value.ref.$container!;
         const error: LinkingError = {
             message: message,
             reference: value,
-            container: value.ref.$container,
+            container,
             property: value.ref.$containerProperty ?? "",
         };
         ref._ref = error;

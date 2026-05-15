@@ -76,7 +76,7 @@ export interface SysMLConfig {
     /**
      * Default build options used if specific ones are not provided
      */
-    defaultBuildOptions: DeepRequired<SysMLBuildOptions>;
+    defaultBuildOptions: DeepRequired<Omit<SysMLBuildOptions, "validation">>;
 
     /**
      * If true, build times will be reported
@@ -107,7 +107,12 @@ export const DefaultDebugConfig: Readonly<DebugConfig> = {
     linkingTrace: false,
 };
 
-export const DefaultBuildOptions: Readonly<Required<SysMLBuildOptions>> = {
+export const DefaultBuildOptions: Readonly<Required<Omit<SysMLBuildOptions, "validation">>> = {
+    // `validationChecks` carries the SysML-side semantic (Langium 1.x style).
+    // `SysMLDocumentBuilder` translates it onto Langium 2.x's `validation`
+    // field when handing options to the base builder. We deliberately leave
+    // `validation` out of the defaults so callers can set it explicitly when
+    // they have stricter requirements.
     validationChecks: "all",
     ignoreMetamodelErrors: false,
     standardLibrary: "standard",

@@ -14,8 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Type } from "langium/lib/grammar/generated/ast.js";
-import { Feature } from "../../../generated/ast.js";
+import { Feature, Type } from "../../../generated/ast.js";
 import {
     ElementMeta,
     FeatureMeta,

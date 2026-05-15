@@ -28,8 +28,10 @@ import {
     ElementReference,
     EndFeatureMembership,
     Expression,
+    FeatureChainExpression,
     FeatureChaining,
     FeatureInverting,
+    FeatureReferenceExpression,
     InlineExpression,
     InvocationExpression,
     Membership,
@@ -56,7 +58,13 @@ import { SysMLIndexManager } from "../shared/workspace/index-manager.js";
 import { MetamodelBuilder } from "../shared/workspace/metamodel-builder.js";
 import { CancellationToken } from "vscode-languageserver";
 import { getPreviousNode } from "../../utils/cst-util.js";
-import { ElementMeta, ElementReferenceMeta, FeatureMeta, Metamodel } from "../../model/index.js";
+import {
+    ElementMeta,
+    ElementReferenceMeta,
+    FeatureChainExpressionMeta,
+    FeatureMeta,
+    Metamodel,
+} from "../../model/index.js";
 import { SysMLType } from "../sysml-ast-reflection.js";
 
 export class SysMLScopeProvider extends DefaultScopeProvider {
@@ -144,6 +152,36 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         options?: ScopeOptions
     ): SysMLScope | undefined {
         options ??= { aliasResolver: DEFAULT_ALIAS_RESOLVER };
+
+        // FeatureChainExpression `a.b` parses as
+        //   FeatureChainExpression {
+        //     operands: [<resolved-or-resolving expression for `a`>],
+        //     children: [Membership { targetRef: <reference to `b`> }]
+        //   }
+        // The reference for `b` therefore has `owner = FeatureChainExpression`
+        // directly (the Membership is NonOwnerType so it's unwrapped from
+        // the owner chain). Scope `b` in the localScope of whatever `a`
+        // resolved to. Nested chains like `a.b.c` recurse: the outer
+        // FeatureChainExpression's first operand is itself a
+        // FeatureChainExpression whose own resolution produced its
+        // `targetFeature()`.
+        if (owner?.is(FeatureChainExpression)) {
+            const target = (owner as FeatureChainExpressionMeta).targetFeature();
+            const previous = target ?? (owner as FeatureChainExpressionMeta).operands.at(0);
+            const resolvedPrevious =
+                previous && previous.is(FeatureReferenceExpression)
+                    ? previous.expression?.element()
+                    : previous;
+            if (resolvedPrevious) {
+                return this.localScope(resolvedPrevious, document, options.aliasResolver);
+            }
+            // fall through: if previous side hasn't been resolved yet, return
+            // no scope so the linker reports a diagnostic on `b` rather than
+            // silently falling back to the enclosing-feature scope (which
+            // would be wrong for chain semantics).
+            return;
+        }
+
         while (owner?.is(InlineExpression)) {
             // unwrap all the expressions to get the real parent
             owner = owner.owner();
@@ -151,10 +189,40 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
 
         // need to unwrap feature chaining
         if (owner?.is(FeatureChaining)) {
-            // if using `chains` notation, two levels up will be the feature
-            // owner, otherwise 2 levels up is a type relationship which will be
-            // handled by the next statement
-            owner = owner.owner()?.owner();
+            // For `f chains a.b.c` (and the equivalent FeatureChain fragment
+            // produced by `OwnedFeatureChain` for subsetting/typing
+            // declarations), the parent Feature carries the chainings in
+            // declaration order on its `chainings` array. Reference
+            // resolution for chaining `i` follows the SysML semantics:
+            //
+            //   i === 0: resolve in the enclosing scope of the owning
+            //            Feature (skipping the chaining wrapper plus the
+            //            owning feature itself, since the reference belongs
+            //            to the feature's declaration).
+            //   i  >  0: resolve in the scope of the previously-resolved
+            //            chaining target — `a.b` means "look up `b` as a
+            //            member of `a`".
+            //
+            // Under Langium 1.x the heuristic `owner.owner()?.owner()` (chain
+            // wrapper → feature → enclosing) happened to land on the
+            // enclosing namespace for index 0 but was incorrect for index >
+            // 0 (it looked in the enclosing namespace for `b` too). The
+            // explicit per-index logic below restores conformance with the
+            // pilot.
+            const chaining = owner;
+            const parentFeature = chaining.parent();
+            const chainings = (parentFeature as FeatureMeta | undefined)?.chainings;
+            const index = chainings ? chainings.indexOf(chaining as FeatureMeta["chainings"][number]) : -1;
+            if (index > 0 && chainings) {
+                const previous = chainings[index - 1].element();
+                if (previous) {
+                    return this.localScope(previous, document, options.aliasResolver);
+                }
+                return;
+            }
+            // For the first chaining (or unknown index), continue with the
+            // historic outer-scope unwrap.
+            owner = chaining.owner()?.owner();
         }
 
         // also skip the first scoping node as references are always a part

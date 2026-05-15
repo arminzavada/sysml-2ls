@@ -103,13 +103,34 @@ export interface TimedParseResult<T> extends ParseResult<T> {
  * with additional properties used by other SysML services.
  */
 export class SysMLDocumentFactory extends DefaultLangiumDocumentFactory {
-    protected readonly metamodelBuilder: MetamodelBuilder;
+    // The full cycle is:
+    //
+    //   SysMLDocumentFactory (this)
+    //     → reads MetamodelBuilder
+    //     → reads IndexManager (DefaultIndexManager in Langium 2.x)
+    //     → reads LangiumDocuments (DefaultLangiumDocuments in Langium 2.x)
+    //     → reads LangiumDocumentFactory  (= SysMLDocumentFactory, the root)
+    //
+    // The DefaultIndexManager → LangiumDocuments and DefaultLangiumDocuments
+    // → LangiumDocumentFactory edges are imposed by Langium 2.x itself
+    // (they were lazy field reads in 1.x). Anyone wiring a MetamodelBuilder-
+    // like service into their DocumentFactory is therefore forced to break
+    // the cycle on their own edge. We defer the `MetamodelBuilder` lookup to
+    // first access (it's only used inside `onParsed`, which fires after DI is
+    // fully constructed), which is sufficient because the cycle is closed
+    // *during* injector construction — once everything is built, the lazy
+    // read returns the same instance as an eager one would have.
+    protected readonly services: SysMLSharedServices;
     protected readonly config: SysMLConfigurationProvider;
+
+    protected get metamodelBuilder(): MetamodelBuilder {
+        return this.services.workspace.MetamodelBuilder;
+    }
 
     constructor(services: SysMLSharedServices) {
         super(services);
 
-        this.metamodelBuilder = services.workspace.MetamodelBuilder;
+        this.services = services;
         this.config = services.workspace.ConfigurationProvider;
     }
 

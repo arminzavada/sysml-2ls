@@ -37,7 +37,7 @@
     "dependencies": {
         "syside-base": "workspace:*",
         "syside-protocol": "workspace:*",
-        "vscode-languageserver": "~8.0.2"
+        "vscode-languageserver": "~9.0.1"
     },
     "devDependencies": {}
 }

@@ -18,7 +18,8 @@ import * as vscode from "vscode";
 import { LanguageClient, ServerOptions, TransportKind } from "vscode-languageclient/node";
 import { SysMLVSCodeClientExtender } from "./vscode.js";
 import { Extension, initialize, runExtensions } from "../common/extension.js";
-import { uriToFsPath } from "vscode-uri/lib/umd/uri.js";
+// `uriToFsPath` is not exported from vscode-uri 3.x's published surface. The
+// equivalent on a `URI` instance is the `.fsPath` getter, which we use below.
 import { SETTINGS_KEY } from "syside-languageserver";
 
 let data: {
@@ -102,7 +103,7 @@ async function startLanguageClient(context: vscode.ExtensionContext): Promise<ty
 
     // If the extension is launched in debug mode then the debug server options
     // are used Otherwise the run options are used
-    const serverModule = uriToFsPath(serverUri, true);
+    const serverModule = serverUri.fsPath;
     const serverOptions: ServerOptions = {
         run: {
             module: serverModule,

@@ -25,8 +25,49 @@ module.exports = {
     transform: {
         "^.+\\.(t|j)sx?$": ["@swc/jest", swcConfig],
     },
-    transformIgnorePatterns: ["<rootDir>/node_modules/"],
+    // Langium 2.x and its parser-stack transitives (`chevrotain`,
+    // `chevrotain-allstar`, `@chevrotain/*`, `lodash-es`) ship as ESM. Jest's
+    // CommonJS test runtime needs them transformed to CJS at load time; the
+    // negative lookahead below makes them the only `node_modules` paths that
+    // @swc/jest is allowed to touch. The same allowlist also covers indirect
+    // ESM deps (`string-width`, `strip-ansi`, etc.).
+    transformIgnorePatterns: [
+        "/node_modules/(?!(?:\\.pnpm/)?(?:" +
+            [
+                // Langium core + parser stack
+                "langium",
+                "chevrotain",
+                "chevrotain-allstar",
+                "@chevrotain[+/][^/]+",
+                "lodash-es",
+                // SysIDE deps
+                "string-width",
+                "strip-ansi",
+                "ansi-regex",
+                "ansi-styles",
+                "chalk",
+                "eastasianwidth",
+                "emoji-regex",
+                "get-east-asian-width",
+                "node-fetch",
+                "data-uri-to-buffer",
+                "fetch-blob",
+                "formdata-polyfill",
+            ].join("|") +
+            ")(?:@|/|$))",
+    ],
     testEnvironment: "node",
+    // Custom resolver bridges Jest's CommonJS module loader to the ESM-only
+    // `package.json#exports` maps shipped by Langium 2.x and its parser
+    // stack. We can't lean on `testEnvironmentOptions.customExportConditions
+    // = ["import"]` here: synckit (a transitive of jest-snapshot) lists
+    // `import` *before* `require` in its exports map, so adding `import` as
+    // an active condition globally would force its ESM build, which the CJS
+    // loader can't `require()` even after @swc/jest transforms it (the
+    // async transform path emits ESM unconditionally). The resolver targets
+    // a small, named set of ESM-only packages and leaves the rest of the
+    // tree to Jest's default resolver.
+    resolver: require("path").resolve(__dirname, "jest.resolver.cjs"),
     testTimeout: 10000,
     collectCoverage: true,
     collectCoverageFrom: ["src/**/*.ts"],

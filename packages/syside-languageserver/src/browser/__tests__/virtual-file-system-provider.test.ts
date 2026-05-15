@@ -51,7 +51,7 @@ describe("Virtual FS provider", () => {
     });
 
     it("should throw on foreign urls", async () => {
-        return expect(fs.readFile(URI.parse("file://a"))).rejects.toThrowError();
+        return expect(fs.readFile(URI.parse("file://a"))).rejects.toThrow();
     });
 
     it("should not read foreign url directories", () => {

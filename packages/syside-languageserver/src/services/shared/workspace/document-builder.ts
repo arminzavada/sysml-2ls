@@ -31,6 +31,16 @@ import { SysMLConfigurationProvider } from "./configuration-provider.js";
 import { SysMLIndexManager } from "./index-manager.js";
 
 export type StandardLibrary = "none" | "standard" | "local";
+
+/**
+ * Legacy Langium 1.x-style validation toggle, preserved here for backwards
+ * compatibility with existing tests and call sites. Maps to Langium 2.x's
+ * `BuildOptions.validation` field at build time. Defined as a `string`-typed
+ * alias (rather than `"all" | "none"`) so that call sites can pass these as
+ * untyped string literals — matches the Langium 1.x signature.
+ */
+export type ValidationChecks = string;
+
 export interface SysMLBuildOptions extends BuildOptions {
     /**
      * Set type of standard library:
@@ -52,6 +62,13 @@ export interface SysMLBuildOptions extends BuildOptions {
      * influence other test results.
      */
     standalone?: boolean;
+
+    /**
+     * Langium 1.x-style validation toggle. `"all"` runs every check, `"none"`
+     * disables validation entirely. Translates to `BuildOptions.validation`
+     * (`true`/`false`) when the build runs. Kept for backwards compatibility.
+     */
+    validationChecks?: ValidationChecks;
 }
 
 declare module "langium" {
@@ -150,7 +167,17 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
             );
         }
 
-        await super.buildDocuments(documents, options, cancelToken);
+        // Bridge legacy `validationChecks` (Langium 1.x) to Langium 2.x's
+        // `validation` field. The base `buildDocuments` won't accept extra
+        // SysML-specific keys.
+        const { validationChecks, ...baseOptions } = options;
+        if (validationChecks !== undefined && baseOptions.validation === undefined) {
+            // Anything except `"none"` maps to "run all validations" (true);
+            // `"none"` disables (false). Matches the Langium 1.x behavior.
+            baseOptions.validation = validationChecks !== "none";
+        }
+
+        await super.buildDocuments(documents, baseOptions as BuildOptions, cancelToken);
 
         this.reportStats();
     }

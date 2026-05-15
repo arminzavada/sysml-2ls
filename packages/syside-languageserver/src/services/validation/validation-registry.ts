@@ -16,9 +16,12 @@
 
 import {
     DiagnosticInfo,
+    LangiumServices,
     MaybePromise,
     MultiMap,
     Properties,
+    stream,
+    Stream,
     ValidationAcceptor,
     ValidationCheck,
     ValidationRegistry,
@@ -37,7 +40,10 @@ import { Element } from "../../generated/ast.js";
 
 type ModelAst<T extends BasicMetamodel = BasicMetamodel> = NonNullable<ReturnType<T["ast"]>>;
 
-export type ModelDiagnosticInfo<M extends BasicMetamodel, P = Properties<ModelAst<M>>> = {
+export type ModelDiagnosticInfo<
+    M extends BasicMetamodel,
+    P extends string = Properties<ModelAst<M>>,
+> = {
     /**
      * Model element this diagnostic applies to
      */
@@ -47,7 +53,7 @@ export type ModelDiagnosticInfo<M extends BasicMetamodel, P = Properties<ModelAs
 export type Severity = "error" | "warning" | "info" | "hint";
 export interface TypedModelDiagnostic<
     T extends ElementMeta = ElementMeta,
-    P = Properties<ModelAst<T>>,
+    P extends string = Properties<ModelAst<T>>,
 > {
     element: ElementMeta;
     severity: Severity;
@@ -134,6 +140,14 @@ export function validateSysML<K extends Elements>(type: K, bounds: Elements[] = 
 
 export class BaseValidationRegistry extends ValidationRegistry {
     protected readonly checks = new MultiMap<string, ModelValidationCheck>();
+    // Langium 2.x made `reflection` private on `ValidationRegistry`; keep our
+    // own typed reference for `astReflection` getter use.
+    protected readonly _astReflection: SysMLAstReflection;
+
+    constructor(services: LangiumServices) {
+        super(services);
+        this._astReflection = services.shared.AstReflection as SysMLAstReflection;
+    }
 
     protected registerBoundRules(rules: Rules, thisObj: unknown): void {
         for (const [type, checks] of Object.entries(rules)) {
@@ -201,8 +215,14 @@ export class BaseValidationRegistry extends ValidationRegistry {
         });
     }
 
-    protected override doRegister(type: string, check: ValidationCheck): void {
-        const modelCheck = this.convertToModelCheck(check);
+    // Langium 2.x renamed `doRegister(type, check)` to `addEntry(type, entry)`
+    // and now passes a `{ check, category }` object. We translate back to the
+    // model-check form used internally.
+    protected override addEntry(
+        type: string,
+        entry: { check: ValidationCheck; category?: string }
+    ): void {
+        const modelCheck = this.convertToModelCheck(entry.check);
 
         this.checks.add(type, modelCheck);
         for (const subtype of this.astReflection.getSubtypes(type)) {
@@ -211,7 +231,7 @@ export class BaseValidationRegistry extends ValidationRegistry {
     }
 
     protected get astReflection(): SysMLAstReflection {
-        return this["reflection"];
+        return this._astReflection;
     }
 
     protected convertToModelCheck(check: ValidationCheck): ModelValidationCheck {
@@ -248,24 +268,28 @@ export class BaseValidationRegistry extends ValidationRegistry {
         };
     }
 
-    override getChecks(type: string): readonly ValidationCheck[] {
+    override getChecks(type: string): Stream<ValidationCheck> {
         // only for compatibility with langium
-        return this.getModelChecks(type).map(
-            (check): ValidationCheck =>
-                (node, accept, token) => {
-                    return check(
-                        node.$meta as ElementMeta,
-                        (severity, message, info) => {
-                            const node = info.element.ast();
-                            if (!node) return;
-                            accept(severity, message, {
-                                node: node,
-                                ...this.getSharedInfo(info as ModelDiagnosticInfo<ElementMeta>),
-                            });
-                        },
-                        token
-                    );
-                }
+        return stream(
+            this.getModelChecks(type).map(
+                (check): ValidationCheck =>
+                    (node, accept, token) => {
+                        return check(
+                            node.$meta as ElementMeta,
+                            (severity, message, info) => {
+                                const node = info.element.ast();
+                                if (!node) return;
+                                accept(severity, message, {
+                                    node: node,
+                                    ...this.getSharedInfo(
+                                        info as ModelDiagnosticInfo<ElementMeta>
+                                    ),
+                                });
+                            },
+                            token
+                        );
+                    }
+            )
         );
     }
 
@@ -273,7 +297,7 @@ export class BaseValidationRegistry extends ValidationRegistry {
         return this.checks.get(type);
     }
 
-    protected getSharedInfo<T extends Element, P>(
+    protected getSharedInfo<T extends Element, P extends string = Properties<T>>(
         info: ModelDiagnosticInfo<T["$meta"], P> | DiagnosticInfo<T, P>
     ): Omit<DiagnosticInfo<T, P>, "node"> {
         return {

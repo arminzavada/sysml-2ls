@@ -38,9 +38,10 @@ interface Options extends CommandOptions {
     stdlib: StandardLibrary;
 }
 
-export const Extensions = KerMLLanguageMetaData.fileExtensions.concat(
-    SysMLLanguageMetaData.fileExtensions
-);
+export const Extensions: string[] = [
+    ...KerMLLanguageMetaData.fileExtensions,
+    ...SysMLLanguageMetaData.fileExtensions,
+];
 
 export const evalAction = async (fileName: string, options: Options): Promise<void> => {
     const services = createSysMLServices(SysMLNodeFileSystem).KerML;

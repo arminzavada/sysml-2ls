@@ -24,6 +24,7 @@ import {
     DefaultCompletionProvider,
     DocumentState,
     findLeafNodeAtOffset,
+    GrammarAST,
     IndexManager,
     interruptAndCheck,
     LangiumDocument,
@@ -31,7 +32,8 @@ import {
     NextFeature,
     stream,
 } from "langium";
-import { CrossReference, Keyword } from "langium/lib/grammar/generated/ast.js";
+type CrossReference = GrammarAST.CrossReference;
+type Keyword = GrammarAST.Keyword;
 import { SysMLDefaultServices } from "../services.js";
 import {
     FeatureChainExpression,
@@ -47,6 +49,7 @@ import {
     CompletionList,
     CompletionParams,
     CompletionTriggerKind,
+    TextEdit,
 } from "vscode-languageserver";
 import { BuildProgress } from "../shared/workspace/documents.js";
 import { SysMLScopeProvider } from "../references/scope-provider.js";
@@ -58,6 +61,24 @@ import { ScopeOptions } from "../../utils/scope-util.js";
 const ALPHA_NUM = /[a-zA-z\d_]/;
 const NON_ALPHA_NUM = /[^a-zA-z\d_\s]/;
 const NODE_END_CHAR = /[{};]$/;
+
+/**
+ * Port of Langium 1.x's `backtrackToAnyToken(text, offset)`. Walks backwards
+ * from `offset` until a non-whitespace character is found. Used by the SysIDE
+ * completion flow to land on the offset of the most recent token, which
+ * Langium 2.x's new `backtrackToAnyToken` no longer returns directly (it
+ * returns a `CompletionBacktrackingInformation` with token start/end pairs
+ * that don't match the 1.x semantics at end-of-input).
+ */
+function backtrackToAnyTokenOffset(text: string, offset: number): number {
+    if (offset >= text.length) {
+        offset = text.length - 1;
+    }
+    while (offset > 0 && /\s/.test(text.charAt(offset))) {
+        offset--;
+    }
+    return offset;
+}
 
 // TODO: show docs in label details
 
@@ -178,7 +199,15 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
         if (params.context?.triggerCharacter) {
             tokenEnd = this.backtrackToToken(text, offset, params.context.triggerCharacter);
         } else {
-            tokenEnd = this.backtrackToAnyToken(text, offset);
+            // Langium 1.x's `backtrackToAnyToken(text, offset)` returned the
+            // offset of the last non-whitespace character at or before
+            // `offset`. Langium 2.x replaced it with one that returns a
+            // `CompletionBacktrackingInformation` describing the next *and*
+            // previous tokens — its `nextTokenEnd` is the cursor offset when
+            // the cursor sits past the last input character (the usual
+            // completion case), which is not what the original SysIDE
+            // completion flow expects. Reproduce the 1.x semantics manually.
+            tokenEnd = backtrackToAnyTokenOffset(text, offset);
             // skip the node end characters since it's not part of the trigger
             if (tokenEnd < text.length && NODE_END_CHAR.test(text.charAt(tokenEnd))) tokenEnd--;
         }
@@ -194,7 +223,7 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
             tokenStart = this.backtrackToAnyTriggerStart(text, tokenEnd);
 
             // -1 to leave the trigger token
-            const nodeOffset = this.backtrackToAnyToken(text, tokenStart - 1);
+            const nodeOffset = backtrackToAnyTokenOffset(text, tokenStart - 1);
             node = findLeafNodeAtOffset(cst, nodeOffset);
             if (node) token = text.substring(node.end, tokenEnd + 1).trim();
         } else {
@@ -214,23 +243,42 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
             // for '.', find the preceding CST node as it is also used a an
             // operator in expressions. The preceding reference node will be
             // used for scope resolution
-            const nodeOffset = this.backtrackToAnyToken(text, tokenStart - 1);
+            const nodeOffset = backtrackToAnyTokenOffset(text, tokenStart - 1);
             node = findLeafNodeAtOffset(cst, nodeOffset);
         }
 
         if (!node) return;
+
+        // if offset equals start, the cursor is before the quote
+        const startQuote = offset !== tokenStart! && token.startsWith("'");
+        const endQuote = (token.length > 1 || !startQuote) && token.endsWith("'");
+        const withQuotes = startQuote && endQuote;
+
+        // Synthesize a `CompletionContext` for the new 2.x `fillCompletionItem`
+        // / `buildCompletionTextEdit` signatures (they used to take
+        // `(textDocument, offset, ...)` directly).
+        const context: CompletionContext = {
+            node: node.astNode,
+            document,
+            textDocument,
+            features: [],
+            tokenOffset: tokenStart!,
+            tokenEndOffset: tokenEnd,
+            offset,
+            position: params.position,
+        };
 
         // wrapper over base `fillCompletionItem` to account for multi-words and
         // quotes
         const fillCompletionItem = (value: CompletionValueItem): CompletionItem | undefined => {
             // need at least a single quote to start multi-word matching
             if ((!startQuote && !endQuote) || value.textEdit)
-                return this.fillCompletionItem(textDocument, offset, value);
+                return this.fillCompletionItem(context, value);
 
-            const label = value.label;
+            const label = (value as { label?: string }).label;
             if (!label) return;
 
-            let start = tokenStart;
+            let start = tokenStart!;
             let end = tokenEnd;
             let identifier = token;
 
@@ -244,9 +292,9 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
                 identifier = identifier.substring(0, identifier.length - 1);
             }
 
-            if (!this.charactersFuzzyMatch(identifier, label)) return;
+            if (!this.fuzzyMatcher.match(identifier, label)) return;
 
-            value.textEdit = {
+            (value as { textEdit?: unknown }).textEdit = {
                 newText: label,
                 range: {
                     start: textDocument.positionAt(start),
@@ -256,18 +304,14 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
 
             // base method will not attempt to rebuild `textEdit` since one
             // already exists
-            return this.fillCompletionItem(textDocument, offset, value);
+            return this.fillCompletionItem(context, value);
         };
 
         const items: CompletionItem[] = [];
-        // if offset equals start, the cursor is before the quote
-        const startQuote = offset !== tokenStart && token.startsWith("'");
-        const endQuote = (token.length > 1 || !startQuote) && token.endsWith("'");
-        const withQuotes = startQuote && endQuote;
         // Enclosing quotes were removed for name resolution so if the name
         // clashes with a keyword or it doesn't match a regular ID rule, enclose
         // the new text in quotes if it doesn't already
-        const refAcceptor: CompletionAcceptor = (value) => {
+        const refAcceptor: CompletionAcceptor = (_ctx, value) => {
             const completionItem = fillCompletionItem(value);
             if (completionItem) {
                 if (
@@ -285,39 +329,34 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
 
         if (SCOPE_TOKENS.includes(token) || /^'.*'$/.test(token)) {
             // Special handling for scope separators
-            if (!isElementReference(node.element)) return;
+            if (!isElementReference(node.astNode)) return;
             // text surrounded by quotes is parsed as a reference part so have
             // to skip it as it is currently incomplete
             const end = withQuotes ? 1 : 0;
 
             // only feature elements can chained with "." tokens, if the last
             // element is not a feature, skip its scope completion
-            const lastRef = node.element.$meta.found.at(end - 1);
+            const lastRef = node.astNode.$meta.found.at(end - 1);
             if (token !== "." || !lastRef || isFeature(lastRef)) {
                 await this.computeScopeCompletion(
-                    node.element,
+                    node.astNode,
                     refAcceptor,
                     document,
                     cancelToken,
-                    { index: node.element.parts.length - end }
+                    { index: node.astNode.parts.length - end }
                 );
             }
 
             // only add .metadata completion if the cursor is in inline
             // expression scope and the previous reference is not a feature
             // chain
-            const owner = node.element.$meta.owner();
+            const owner = node.astNode.$meta.owner();
             if (token === "." && owner?.is(InlineExpression) && !owner.is(FeatureChainExpression)) {
-                const item = this.fillCompletionItem(textDocument, offset, {
+                const item = this.fillCompletionItem(context, {
                     label: "metadata",
                     kind: CompletionItemKind.Operator,
                     detail: MetadataAccessExpression,
-                    textEdit: super.buildCompletionTextEdit(
-                        textDocument,
-                        offset,
-                        "metadata",
-                        "metadata"
-                    ),
+                    textEdit: super.buildCompletionTextEdit(context, "metadata", "metadata"),
                     sortText: "1",
                 });
                 if (item) items.push(item);
@@ -327,17 +366,22 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
             if (/;|\{|\}/.test(node.text)) {
                 // the token starts the new element so we are already at the
                 // owning element
-                element = node.element;
+                element = node.astNode;
             } else {
                 // need to go back to the owning type
-                element = node.element.$container;
+                element = node.astNode.$container;
             }
             if (!element) return;
+            // The owning feature itself must always be skipped — it cannot
+            // specialize/subset/redefine itself. (Carrying the
+            // `isElementReference`-conditional from an intermediate refactor
+            // was wrong: at this point `node.astNode` is the LHS feature, not
+            // an `ElementReference`.)
             await this.computeScopeCompletion(element, refAcceptor, document, cancelToken, {
-                skip: node.element.$meta,
+                skip: node.astNode.$meta,
             });
-        } else if (TRIGGER_KEYWORDS.includes(token) || isElementReference(node.element)) {
-            await this.computeScopeCompletion(node.element, refAcceptor, document, cancelToken);
+        } else if (TRIGGER_KEYWORDS.includes(token) || isElementReference(node.astNode)) {
+            await this.computeScopeCompletion(node.astNode, refAcceptor, document, cancelToken);
         } else {
             return undefined;
         }
@@ -412,6 +456,7 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
 
                 // use scope from the reference parent container as fallback
                 if (!scope) {
+                    if (!node.$container) return;
                     node = node.$container;
                 }
             }
@@ -427,6 +472,16 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
             if (!scope) return;
 
             const visited = new Set<string>();
+            const ctx: CompletionContext = {
+                node,
+                document,
+                textDocument: document.textDocument,
+                features: [],
+                tokenOffset: 0,
+                tokenEndOffset: 0,
+                offset: 0,
+                position: { line: 0, character: 0 },
+            };
             const collect = (s: SysMLScope, index: number): void => {
                 s.getAllExportedElements().forEach(([name, e]) => {
                     if (visited.has(name)) return;
@@ -434,8 +489,10 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
 
                     const item = this.createMemberCompletionItem(e, name);
                     // length 4 should be more than enough (10k numbers)
-                    item.sortText = index.toString().padStart(4, "0");
-                    acceptor(item);
+                    (item as { sortText?: string }).sortText = index
+                        .toString()
+                        .padStart(4, "0");
+                    acceptor(ctx, item);
                 });
             };
 
@@ -507,24 +564,80 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
         return offset;
     }
 
-    // TODO: remove since buildCompletionTextEdit is no longer overridden
     protected override completionForKeyword(
         context: CompletionContext,
         keyword: Keyword,
         acceptor: CompletionAcceptor
     ): MaybePromise<void> {
-        return super.completionForKeyword(context, keyword, (value) => {
-            if (value.label) {
-                // skip overridden method so that quotes are not added
-                value.textEdit = super.buildCompletionTextEdit(
-                    context.document.textDocument,
-                    context.offset,
-                    value.label,
-                    value.label
+        return super.completionForKeyword(context, keyword, (ctx, value) => {
+            const label = (value as { label?: string }).label;
+            if (label) {
+                // skip overridden buildCompletionTextEdit so that quotes are
+                // not added around keywords
+                (value as { textEdit?: unknown }).textEdit = this.plainCompletionTextEdit(
+                    ctx,
+                    label,
+                    label
                 );
             }
-            acceptor(value);
+            acceptor(ctx, value);
         });
+    }
+
+    /**
+     * Build a `TextEdit` for a completion item where the inserted range starts
+     * at the most recent word boundary at or before the cursor — matching
+     * Langium 1.x's `buildCompletionTextEdit(document, offset, …)` semantics.
+     *
+     * Langium 2.x's default `buildCompletionTextEdit` consumes
+     * `context.tokenOffset` (set by the grammar-driven `buildContexts` flow)
+     * as the range start, which assumes the caller has positioned the context
+     * around a token; SysIDE's custom trigger-character flow synthesises a
+     * `CompletionContext` whose `tokenOffset` is the start of the trigger
+     * token (e.g. `:>`), so the 2.x default would fuzzy-match an empty label
+     * against the trigger characters and reject every candidate. Recomputing
+     * the word-boundary at the cursor here keeps the trigger-character
+     * branches working with the same insert semantics as before the upgrade.
+     */
+    protected plainCompletionTextEdit(
+        context: CompletionContext,
+        label: string,
+        newText: string
+    ): TextEdit | undefined {
+        const content = context.textDocument.getText();
+        const tokenStart = this.backtrackToWordBoundary(content, context.offset);
+        const identifier = content.substring(tokenStart, context.offset);
+        if (!this.fuzzyMatcher.match(identifier, label)) return undefined;
+        return {
+            newText,
+            range: {
+                start: context.textDocument.positionAt(tokenStart),
+                end: context.position,
+            },
+        };
+    }
+
+    /**
+     * Walk back from {@link offset} while the previous character is a valid
+     * identifier (word) character per the grammar's `nameRegexp`. The
+     * returned offset is the start of the partial identifier at the cursor
+     * (or the cursor itself if the previous character is a non-word
+     * character such as a trigger token).
+     */
+    protected backtrackToWordBoundary(content: string, offset: number): number {
+        const nameRegexp = this.grammarConfig.nameRegexp;
+        while (offset > 0 && nameRegexp.test(content.charAt(offset - 1))) {
+            offset--;
+        }
+        return offset;
+    }
+
+    protected override buildCompletionTextEdit(
+        context: CompletionContext,
+        label: string,
+        newText: string
+    ): TextEdit | undefined {
+        return this.plainCompletionTextEdit(context, label, newText);
     }
 
     protected createMemberCompletionItem(

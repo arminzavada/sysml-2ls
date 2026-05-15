@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { DeepPartial, LangiumServices, LangiumSharedServices } from "langium";
-import { AstNodeLocator } from "langium/lib/workspace/ast-node-locator.js";
+import { AstNodeLocator } from "langium";
 import { MetamodelBuilder } from "./shared/workspace/metamodel-builder.js";
 import { SysMLParser } from "./parser/parser.js";
 import { SysMLConfig } from "./config.js";
