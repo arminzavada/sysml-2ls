@@ -1,0 +1,31 @@
+# Patch: Occurrences.kerml end-keyword cross-feature participant
+#
+# Adds the `end` keyword to the `surroundedSpace` cross-feature
+# participant in `Occurrences::Occurrence::SurroundedSpacePerformances`
+# so that this LSP's `checkFeatureCrossingSpecialization` validator
+# does not fire falsely against an otherwise spec-conformant
+# declaration. Upstream omits the keyword because the pilot infers
+# end-ness from `crosses` semantics; this LSP does not yet.
+#
+# Source: bundled-fork divergence from upstream (sysml-2ls 2026-03
+# upgrade, Phase 1b). Identified as the only load-bearing fork patch
+# by P1a's empirical reclassification harness
+# (`scripts/reclassify-patches.ts`); see
+# `docs/maintenance/upgrades/2026-03/02-library-builtins-fork-patches.md`.
+#
+# Retirement criterion: when `checkFeatureCrossingSpecialization` no
+# longer reports a diagnostic for the un-patched upstream form (i.e.
+# the validator correctly accepts end-inference through `crosses`
+# semantics for cross-feature participants).
+#
+--- a/sysml.library/Kernel Libraries/Kernel Semantic Library/Occurrences.kerml
++++ b/sysml.library/Kernel Libraries/Kernel Semantic Library/Occurrences.kerml
+@@ -568,7 +568,7 @@
+ 			 * Occurrences that have inner spaces that completely include this occurrence.
+ 			 */
+
+-			feature surroundedSpace: Occurrence[1] subsets that;
++			end [1] feature surroundedSpace: Occurrence subsets that;
+ 			end [1] feature surroundingSpace: Occurrence subsets self;
+
+ 			connector :InsideOf

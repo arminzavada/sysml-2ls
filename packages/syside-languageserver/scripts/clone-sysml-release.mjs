@@ -25,7 +25,8 @@ const __dirname = path.dirname(__filename);
 const root = path.join(__dirname, "..", "..", "..");
 const dir = path.join(root, "SysML-v2-Release");
 
-const commit = "8743e9fe0a757316bc1b598fc47554333ecd7b95";
+const commit = "f49ea19a807a2aa45ad1afed0ed62afe41aabdf9";
+const patchesDir = path.join(__dirname, "patches");
 // const tag = "2024-12";
 
 function run(args, { cwd, allowFailure = false } = {}) {
@@ -44,9 +45,16 @@ function run(args, { cwd, allowFailure = false } = {}) {
 
 await fs.mkdir(dir, { recursive: true });
 await run(["init"], { cwd: dir });
-await run(["remote", "add", "origin", "https://github.com/arminzavada/SysML-v2-Release.git"], { cwd: dir, allowFailure: true });
+await run(["remote", "add", "origin", "https://github.com/Systems-Modeling/SysML-v2-Release.git"], { cwd: dir, allowFailure: true });
 await run(["fetch", "--progress", "--depth=1", "origin", commit], { cwd: dir });
 await run(["checkout", "FETCH_HEAD"], { cwd: dir });
+
+const patchEntries = (await fs.readdir(patchesDir).catch(() => []))
+    .filter((name) => name.endsWith(".patch"))
+    .sort();
+for (const name of patchEntries) {
+    await run(["apply", "--whitespace=nowarn", path.join(patchesDir, name)], { cwd: dir });
+}
 
 export const SYSMLRELEASE = dir
 ;
