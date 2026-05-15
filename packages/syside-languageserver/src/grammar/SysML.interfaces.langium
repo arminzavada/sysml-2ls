@@ -159,12 +159,12 @@ interface UseCaseUsage extends CaseUsage {
 }
 interface IncludeUseCaseUsage extends UseCaseUsage, PerformActionUsage {
 }
-interface FlowConnectionDefinition extends ActionDefinition, Interaction {
+interface FlowDefinition extends ActionDefinition, Interaction {
 }
-interface FlowConnectionUsage extends ConnectorAsUsage, ActionUsage, ItemFlow {
+interface FlowUsage extends ConnectorAsUsage, ActionUsage, ItemFlow {
     messages: ParameterMembership[];
 }
-interface SuccessionFlowConnectionUsage extends FlowConnectionUsage, SuccessionItemFlow {
+interface SuccessionFlowUsage extends FlowUsage, SuccessionItemFlow {
 }
 interface AssignmentActionUsage extends ActionUsage {
     targetMember: Membership;

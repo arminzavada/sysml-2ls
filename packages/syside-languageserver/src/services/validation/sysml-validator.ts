@@ -44,8 +44,8 @@ import {
     ExposeMeta,
     ExpressionMeta,
     FeatureMeta,
-    FlowConnectionDefinitionMeta,
-    FlowConnectionUsageMeta,
+    FlowDefinitionMeta,
+    FlowUsageMeta,
     IncludeUseCaseUsageMeta,
     InteractionMeta,
     InterfaceDefinitionMeta,
@@ -168,7 +168,7 @@ export class SysMLValidator extends KerMLValidator {
     validateUsageOwningType(node: UsageMeta, accept: ModelValidationAcceptor): void {
         const owningType = node.owningType;
         if (!owningType) return;
-        // KerML Features (e.g. synthetic ItemFlowEnd ends on a FlowConnectionUsage)
+        // KerML Features (e.g. synthetic ItemFlowEnd ends on a FlowUsage)
         // can legitimately own Usages. Walk up the KerML-Feature chain to find
         // the enclosing SysML Definition/Usage that the spec's owningType refers
         // to (see SysML 2026-03 §8.3.6.4: owningType = owningDefinition ∪ owningUsage).
@@ -446,7 +446,7 @@ export class SysMLValidator extends KerMLValidator {
     // validatePortUsageIsReference - implicitly ensured by the model
 
     @validateSysML(ast.ConnectionUsage.$type, [
-        ast.FlowConnectionUsage.$type,
+        ast.FlowUsage.$type,
         ast.InterfaceUsage.$type,
         ast.AllocationUsage.$type,
     ])
@@ -463,29 +463,23 @@ export class SysMLValidator extends KerMLValidator {
         );
     }
 
-    @validateSysML(ast.FlowConnectionDefinition.$type)
-    validateFlowConnectionEnd(
-        node: FlowConnectionDefinitionMeta,
-        accept: ModelValidationAcceptor
-    ): void {
+    @validateSysML(ast.FlowDefinition.$type)
+    validateFlowEnd(node: FlowDefinitionMeta, accept: ModelValidationAcceptor): void {
         const ends = node.ownedEnds();
         if (ends.length <= 2) return;
-        this.apply("error", ends, "FlowConnectionDefinition can have at most 2 ends.", accept, {
-            code: "validateFlowConnectionEnd",
+        this.apply("error", ends, "FlowDefinition can have at most 2 ends.", accept, {
+            code: "validateFlowEnd",
         });
     }
 
-    @validateSysML(ast.FlowConnectionUsage.$type)
-    validateFlowConnectionUsageTyping(
-        node: FlowConnectionUsageMeta,
-        accept: ModelValidationAcceptor
-    ): void {
+    @validateSysML(ast.FlowUsage.$type)
+    validateFlowUsageTyping(node: FlowUsageMeta, accept: ModelValidationAcceptor): void {
         this.validateAllTypings(
             node,
             ast.Interaction.$type,
             accept,
-            "FlowConnectionUsages must be typed by Interactions only.",
-            { code: "validateFlowConnectionUsageTyping" }
+            "FlowUsages must be typed by Interactions only.",
+            { code: "validateFlowUsageTyping" }
         );
     }
 
@@ -546,7 +540,7 @@ export class SysMLValidator extends KerMLValidator {
     @validateSysML(ast.ActionUsage.$type, [
         ast.StateUsage.$type,
         ast.CalculationUsage.$type,
-        ast.FlowConnectionUsage.$type,
+        ast.FlowUsage.$type,
     ])
     validateActionUsageTyping(node: ActionUsageMeta, accept: ModelValidationAcceptor): void {
         this.validateAllTypings(

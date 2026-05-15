@@ -76,7 +76,7 @@ import {
     BindingConnectorAsUsageMeta,
     ConnectionUsageMeta,
     ConnectorAsUsageMeta,
-    FlowConnectionUsageMeta,
+    FlowUsageMeta,
     InterfaceUsageMeta,
 } from "../SysML/index.js";
 import { actionBodyJoiner } from "./actions.js";
@@ -483,9 +483,9 @@ export function printItemFlow(
     );
 }
 
-export function printGenericFlowConnectionUsage(
+export function printGenericFlowUsage(
     kw: string,
-    node: FlowConnectionUsageMeta,
+    node: FlowUsageMeta,
     context: ModelPrinterContext,
     options: {
         sourceFormat: PreservableFormatting<"always" | "as_needed">;
@@ -509,10 +509,7 @@ export function printGenericFlowConnectionUsage(
     );
 }
 
-export function printFlowConnectionUsage(
-    node: FlowConnectionUsageMeta,
-    context: ModelPrinterContext
-): Doc {
+export function printFlowUsage(node: FlowUsageMeta, context: ModelPrinterContext): Doc {
     // can't actually infer if meant message or flow without any ends so
     // have to check CST
     const cst = node.cst();
@@ -520,7 +517,7 @@ export function printFlowConnectionUsage(
         node.isMessageConnection ||
         (node.ends.length === 0 && cst && GrammarUtils.findNodeForKeyword(cst, "message"));
     if (isMessage)
-        return printGenericFlowConnectionUsage("message", node, context, {
+        return printGenericFlowUsage("message", node, context, {
             printer(node, context) {
                 return printEndReferenceSubsetting(node, context).doc;
             },
@@ -528,7 +525,7 @@ export function printFlowConnectionUsage(
             sourceFormat: context.format.flow_connection_usage_from_keyword,
         });
 
-    return printGenericFlowConnectionUsage("flow", node, context, {
+    return printGenericFlowUsage("flow", node, context, {
         sourceFormat: context.format.flow_connection_usage_from_keyword,
     });
 }

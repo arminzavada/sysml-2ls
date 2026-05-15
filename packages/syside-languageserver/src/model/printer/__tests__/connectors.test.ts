@@ -27,8 +27,8 @@ import {
     SuccessionItemFlow,
     BindingConnectorAsUsage,
     ConnectionUsage,
-    FlowConnectionUsage,
-    SuccessionFlowConnectionUsage,
+    FlowUsage,
+    SuccessionFlowUsage,
     AllocationUsage,
     InterfaceUsage,
 } from "../../../generated/ast.js";
@@ -118,7 +118,7 @@ describe("connectors", () => {
 
 describe.each([
     ["kerml", ItemFlow.$type, SuccessionItemFlow.$type],
-    ["sysml", FlowConnectionUsage.$type, SuccessionFlowConnectionUsage.$type],
+    ["sysml", FlowUsage.$type, SuccessionFlowUsage.$type],
 ] as const)("%s item flows", (lang, flowType, successionType) => {
     const expectPrinted = (
         text: string,
@@ -215,7 +215,7 @@ describe("messages", () => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
-            node: context?.node ?? FlowConnectionUsage.$type,
+            node: context?.node ?? FlowUsage.$type,
         });
     };
 

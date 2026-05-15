@@ -137,7 +137,7 @@ describe.each([
     ["viewpoint", ast.ViewpointDefinition.$type, ast.ViewpointUsage.$type],
     ["connection", ast.ConnectionDefinition.$type, undefined],
     ["interface", ast.InterfaceDefinition.$type, undefined],
-    ["flow", ast.FlowConnectionDefinition.$type, undefined],
+    ["flow", ast.FlowDefinition.$type, undefined],
 ] as const)("%s", (kw, def, usage) => {
     it("should print definitions", async () => {
         return expectPrinted(`${kw} def E;`, {

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { FlowConnectionUsage } from "../../generated/ast.js";
+import { FlowUsage } from "../../generated/ast.js";
 import { ItemFlowMeta, ItemFlowOptions } from "../KerML/item-flow.js";
 import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
@@ -32,7 +32,7 @@ import {
 import { EventOccurrenceUsageMeta } from "./event-occurrence-usage.js";
 import { enumerable } from "../../utils/index.js";
 
-export interface FlowConnectionUsageOptions
+export interface FlowUsageOptions
     extends ConnectorAsUsageOptions, ActionUsageOptions, ItemFlowOptions {
     // can't override ends alone to allow only either ends or messages
     ends?: readonly Edge<EndFeatureMembershipMeta, ItemFlowEndMeta>[];
@@ -42,9 +42,9 @@ export interface FlowConnectionUsageOptions
     messages?: readonly Edge<ParameterMembershipMeta, EventOccurrenceUsageMeta>[];
 }
 
-@metamodelOf(FlowConnectionUsage.$type, {
-    base: "FlowConnections::flowConnections",
-    message: "FlowConnections::messageConnections",
+@metamodelOf(FlowUsage.$type, {
+    base: "Flows::flows",
+    message: "Flows::messages",
     enclosedPerformance: "Performances::Performance::enclosedPerformances",
     subperformance: "Performances::Performance::subperformances",
     ownedPerformance: "Objects::Object::ownedPerformances",
@@ -59,11 +59,7 @@ export interface FlowConnectionUsageOptions
     timeslice: "Occurrences::Occurrence::timeSlices",
     snapshot: "Occurrences::Occurrence::snapshots",
 })
-export class FlowConnectionUsageMeta extends Mixin(
-    ActionUsageMeta,
-    ItemFlowMeta,
-    ConnectorAsUsageMeta
-) {
+export class FlowUsageMeta extends Mixin(ActionUsageMeta, ItemFlowMeta, ConnectorAsUsageMeta) {
     // this ideally would be mutually exclusive with `ends`
     private _messages: ParameterMembershipMeta<EventOccurrenceUsageMeta>[] = [];
 
@@ -114,8 +110,8 @@ export class FlowConnectionUsageMeta extends Mixin(
         return this.isMessageConnection ? "message" : "base";
     }
 
-    override ast(): FlowConnectionUsage | undefined {
-        return this._ast as FlowConnectionUsage;
+    override ast(): FlowUsage | undefined {
+        return this._ast as FlowUsage;
     }
 
     protected override collectDeclaration(parts: ElementParts): void {
@@ -129,14 +125,14 @@ export class FlowConnectionUsageMeta extends Mixin(
         this: MetatypeProto<T>,
         provider: ElementIDProvider,
         document: LangiumDocument,
-        options?: FlowConnectionUsageOptions
+        options?: FlowUsageOptions
     ): T["$meta"] {
         const model = ActionUsageMeta.create.call(
             this,
             provider,
             document,
             options
-        ) as FlowConnectionUsageMeta;
+        ) as FlowUsageMeta;
         if (options) {
             ConnectorAsUsageMeta.applyConnectorOptions(model, options);
             ItemFlowMeta.applyItemFlowOptions(model, options);
@@ -147,7 +143,7 @@ export class FlowConnectionUsageMeta extends Mixin(
 }
 
 declare module "../../generated/ast.js" {
-    interface FlowConnectionUsage {
-        $meta: FlowConnectionUsageMeta;
+    interface FlowUsage {
+        $meta: FlowUsageMeta;
     }
 }

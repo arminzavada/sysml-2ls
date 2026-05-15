@@ -326,7 +326,7 @@ const AstToModel: {
         model.kind = node.kind;
     },
 
-    [ast.FlowConnectionUsage.$type](model, node) {
+    [ast.FlowUsage.$type](model, node) {
         model["_messages"] = node.messages.map(
             (m) => m.$meta as ParameterMembershipMeta<EventOccurrenceUsageMeta>
         );

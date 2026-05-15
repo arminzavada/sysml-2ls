@@ -15,35 +15,31 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SuccessionFlowConnectionUsage } from "../../generated/ast.js";
+import { SuccessionFlowUsage } from "../../generated/ast.js";
 import {
     SuccessionItemFlowMeta,
     SuccessionItemFlowOptions,
 } from "../KerML/succession-item-flow.js";
 import { metamodelOf } from "../metamodel.js";
-import { FlowConnectionUsageMeta, FlowConnectionUsageOptions } from "./flow-connection-usage.js";
+import { FlowUsageMeta, FlowUsageOptions } from "./flow-usage.js";
 import { Edge, EndFeatureMembershipMeta, ItemFlowEndMeta } from "../KerML/index.js";
 
-export interface SuccessionFlowConnectionUsageOptions
-    extends SuccessionItemFlowOptions, FlowConnectionUsageOptions {
+export interface SuccessionFlowUsageOptions extends SuccessionItemFlowOptions, FlowUsageOptions {
     ends?: readonly Edge<EndFeatureMembershipMeta, ItemFlowEndMeta>[];
 }
 
-@metamodelOf(SuccessionFlowConnectionUsage.$type, {
-    base: "FlowConnections::successionFlowConnections",
-    message: "FlowConnections::successionFlowConnections",
+@metamodelOf(SuccessionFlowUsage.$type, {
+    base: "Flows::successionFlows",
+    message: "Flows::successionFlows",
 })
-export class SuccessionFlowConnectionUsageMeta extends Mixin(
-    SuccessionItemFlowMeta,
-    FlowConnectionUsageMeta
-) {
-    override ast(): SuccessionFlowConnectionUsage | undefined {
-        return this._ast as SuccessionFlowConnectionUsage;
+export class SuccessionFlowUsageMeta extends Mixin(SuccessionItemFlowMeta, FlowUsageMeta) {
+    override ast(): SuccessionFlowUsage | undefined {
+        return this._ast as SuccessionFlowUsage;
     }
 }
 
 declare module "../../generated/ast.js" {
-    interface SuccessionFlowConnectionUsage {
-        $meta: SuccessionFlowConnectionUsageMeta;
+    interface SuccessionFlowUsage {
+        $meta: SuccessionFlowUsageMeta;
     }
 }

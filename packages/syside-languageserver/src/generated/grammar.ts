@@ -19862,7 +19862,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
     },
     {
       "$type": "ParserRule",
-      "name": "FlowConnectionDefinition",
+      "name": "FlowDefinition",
       "returnType": {
         "$ref": "#/interfaces@148"
       },
@@ -20109,7 +20109,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
     },
     {
       "$type": "ParserRule",
-      "name": "FlowConnectionUsage",
+      "name": "FlowUsage",
       "returnType": {
         "$ref": "#/interfaces@149"
       },
@@ -20149,7 +20149,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
     },
     {
       "$type": "ParserRule",
-      "name": "SuccessionFlowConnectionUsage",
+      "name": "SuccessionFlowUsage",
       "returnType": {
         "$ref": "#/interfaces@150"
       },
@@ -20194,7 +20194,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
     {
       "$type": "ParserRule",
       "fragment": true,
-      "name": "FlowConnectionDeclaration",
+      "name": "FlowDeclaration",
       "definition": {
         "$type": "Alternatives",
         "elements": [
@@ -35295,7 +35295,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
     },
     {
       "$type": "Interface",
-      "name": "FlowConnectionDefinition",
+      "name": "FlowDefinition",
       "superTypes": [
         {
           "$ref": "#/interfaces@105"
@@ -35308,7 +35308,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
     },
     {
       "$type": "Interface",
-      "name": "FlowConnectionUsage",
+      "name": "FlowUsage",
       "superTypes": [
         {
           "$ref": "#/interfaces@127"
@@ -35339,7 +35339,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
     },
     {
       "$type": "Interface",
-      "name": "SuccessionFlowConnectionUsage",
+      "name": "SuccessionFlowUsage",
       "superTypes": [
         {
           "$ref": "#/interfaces@149"

@@ -347,8 +347,8 @@ const ModelPrinter: Omit<
     [ast.Connector.$type](node, context) {
         return connectors.printConnector(node, context);
     },
-    [ast.FlowConnectionUsage.$type](node, context) {
-        return connectors.printFlowConnectionUsage(node, context);
+    [ast.FlowUsage.$type](node, context) {
+        return connectors.printFlowUsage(node, context);
     },
     [ast.ItemFlow.$type](node, context) {
         return connectors.printItemFlow("flow", node, context, {
@@ -367,8 +367,8 @@ const ModelPrinter: Omit<
     [ast.SuccessionAsUsage.$type](node, context, previousSibling) {
         return successions.printSuccessionAsUsage(node, context, previousSibling);
     },
-    [ast.SuccessionFlowConnectionUsage.$type](node, context) {
-        return connectors.printGenericFlowConnectionUsage("succession flow", node, context, {
+    [ast.SuccessionFlowUsage.$type](node, context) {
+        return connectors.printGenericFlowUsage("succession flow", node, context, {
             sourceFormat: context.format.succession_flow_connection_usage_from_keyword,
         });
     },
@@ -549,7 +549,7 @@ const ModelPrinter: Omit<
     [ast.ExhibitStateUsage.$type](node, context) {
         return sysml.printExhibitState(node, context);
     },
-    [ast.FlowConnectionDefinition.$type](node, context) {
+    [ast.FlowDefinition.$type](node, context) {
         return sysml.printGenericOccurrenceDefinition("auto", "flow def", node, context);
     },
     [ast.IncludeUseCaseUsage.$type](node, context) {

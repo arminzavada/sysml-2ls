@@ -73,7 +73,7 @@ import {
     FeatureRelationship,
     TypeFeaturing,
     ItemFlow,
-    FlowConnectionUsage,
+    FlowUsage,
     CrossSubsetting,
 } from "../../../generated/ast.js";
 import {
@@ -123,7 +123,7 @@ import {
     GeneralType,
     ItemFlowMeta,
     EndFeatureMembershipMeta,
-    FlowConnectionUsageMeta,
+    FlowUsageMeta,
     CrossSubsettingMeta,
     FeatureChainingMeta,
     FeatureMembershipMeta,
@@ -1573,9 +1573,9 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
         (src as TypeMeta)["_typeRelationships"].push(node);
     }
 
-    @builder([ItemFlow.$type, FlowConnectionUsage.$type], 1000)
+    @builder([ItemFlow.$type, FlowUsage.$type], 1000)
     protected setFlowEndDirections(
-        node: ItemFlowMeta | FlowConnectionUsageMeta,
+        node: ItemFlowMeta | FlowUsageMeta,
         _document: LangiumDocument
     ): void {
         const ends = node.ends;

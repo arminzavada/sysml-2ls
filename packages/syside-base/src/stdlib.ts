@@ -27,7 +27,7 @@ export const STDLIB = {
         "Systems Library/Cases.sysml",
         "Systems Library/Connections.sysml",
         "Systems Library/Constraints.sysml",
-        "Systems Library/FlowConnections.sysml",
+        "Systems Library/Flows.sysml",
         "Systems Library/Interfaces.sysml",
         "Systems Library/Items.sysml",
         "Systems Library/Metadata.sysml",

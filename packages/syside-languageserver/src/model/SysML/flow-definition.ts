@@ -15,43 +15,42 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { FlowConnectionDefinition } from "../../generated/ast.js";
+import { FlowDefinition } from "../../generated/ast.js";
 import { InteractionMeta, InteractionOptions } from "../KerML/interaction.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition.js";
 import { AstNode, LangiumDocument } from "langium";
 
-export interface FlowConnectionDefinitionOptions
-    extends InteractionOptions, ActionDefinitionOptions {}
+export interface FlowDefinitionOptions extends InteractionOptions, ActionDefinitionOptions {}
 
-@metamodelOf(FlowConnectionDefinition.$type, {
-    base: "FlowConnections::MessageConnection",
-    binary: "FlowConnections::MessageTransferConnection",
+@metamodelOf(FlowDefinition.$type, {
+    base: "Flows::Message",
+    binary: "Flows::Message",
 })
 // @ts-expect-error ignoring static inheritance error
-export class FlowConnectionDefinitionMeta extends Mixin(InteractionMeta, ActionDefinitionMeta) {
-    override ast(): FlowConnectionDefinition | undefined {
-        return this._ast as FlowConnectionDefinition;
+export class FlowDefinitionMeta extends Mixin(InteractionMeta, ActionDefinitionMeta) {
+    override ast(): FlowDefinition | undefined {
+        return this._ast as FlowDefinition;
     }
 
     static override create<T extends AstNode>(
         this: MetatypeProto<T>,
         provider: ElementIDProvider,
         document: LangiumDocument,
-        options?: FlowConnectionDefinitionOptions
+        options?: FlowDefinitionOptions
     ): T["$meta"] {
         const model = ActionDefinitionMeta.create.call(
             this,
             provider,
             document,
             options
-        ) as FlowConnectionDefinitionMeta;
+        ) as FlowDefinitionMeta;
         return model;
     }
 }
 
 declare module "../../generated/ast.js" {
-    interface FlowConnectionDefinition {
-        $meta: FlowConnectionDefinitionMeta;
+    interface FlowDefinition {
+        $meta: FlowDefinitionMeta;
     }
 }

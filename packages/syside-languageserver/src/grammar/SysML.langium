@@ -220,7 +220,7 @@ DefinitionElement returns Namespace:
     | MetadataDefinition
     | PartDefinition
     | ConnectionDefinition
-    | FlowConnectionDefinition
+    | FlowDefinition
     | InterfaceDefinition
     | AllocationDefinition
     | PortDefinition
@@ -540,8 +540,8 @@ StructureUsageElement returns Usage:
     | InterfaceUsage
     | AllocationUsage
     | Message
-    | FlowConnectionUsage
-    | SuccessionFlowConnectionUsage
+    | FlowUsage
+    | SuccessionFlowUsage
 ;
 
 BehaviorUsageElement returns Usage:
@@ -582,8 +582,8 @@ VariantUsageElement returns Usage:
     | InterfaceUsage
     | AllocationUsage
     | Message
-    | FlowConnectionUsage
-    | SuccessionFlowConnectionUsage
+    | FlowUsage
+    | SuccessionFlowUsage
     | BehaviorUsageElement
 ;
 
@@ -859,13 +859,13 @@ fragment NaryConnectorPart:
 
 // Flow Connection Definitions
 
-FlowConnectionDefinition returns FlowConnectionDefinition:
+FlowDefinition returns FlowDefinition:
     OccurrenceDefinitionPrefix 'flow' 'def' DefinitionSuffix
 ;
 
 // Messages
 
-Message returns FlowConnectionUsage:
+Message returns FlowUsage:
     OccurrenceUsagePrefix 'message' MessageDeclaration DefinitionBody
 ;
 
@@ -885,15 +885,15 @@ MessageEvent returns EventOccurrenceUsage:
 
 // Flow Connection Usages
 
-FlowConnectionUsage returns FlowConnectionUsage:
-    OccurrenceUsagePrefix 'flow' FlowConnectionDeclaration DefinitionBody
+FlowUsage returns FlowUsage:
+    OccurrenceUsagePrefix 'flow' FlowDeclaration DefinitionBody
 ;
 
-SuccessionFlowConnectionUsage returns SuccessionFlowConnectionUsage:
-    OccurrenceUsagePrefix 'succession' 'flow' FlowConnectionDeclaration DefinitionBody
+SuccessionFlowUsage returns SuccessionFlowUsage:
+    OccurrenceUsagePrefix 'succession' 'flow' FlowDeclaration DefinitionBody
 ;
 
-fragment FlowConnectionDeclaration:
+fragment FlowDeclaration:
     UsageDeclaration? ValuePart? ( 'of'  item=ItemFeatureMember )?
         ( 'from' ends+=FlowEndMember 'to' ends+=FlowEndMember )?
     | ends+=FlowEndMember 'to' ends+=FlowEndMember

@@ -31,7 +31,7 @@ import { StateDefinitionMeta } from "../state-definition.js";
 import { StateUsageMeta } from "../state-usage.js";
 import { TransitionUsageMeta } from "../transition-usage.js";
 import { ReferenceUsage } from "../../../generated/ast.js";
-import { FlowConnectionUsageMeta } from "../flow-connection-usage.js";
+import { FlowUsageMeta } from "../flow-usage.js";
 import {
     EndFeatureMembershipMeta,
     ItemFlowEndMeta,
@@ -135,7 +135,7 @@ describe("Element factories", () => {
     });
 
     it("should add ends to flow connection usage", () => {
-        const fc = FlowConnectionUsageMeta.create(id, document, {
+        const fc = FlowUsageMeta.create(id, document, {
             ends: [
                 [
                     EndFeatureMembershipMeta.create(id, document),
@@ -148,7 +148,7 @@ describe("Element factories", () => {
     });
 
     it("should add messages to flow connection usage", () => {
-        const fc = FlowConnectionUsageMeta.create(id, document, {
+        const fc = FlowUsageMeta.create(id, document, {
             messages: [
                 [
                     ParameterMembershipMeta.create(id, document),

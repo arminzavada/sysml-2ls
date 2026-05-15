@@ -20,7 +20,7 @@ import { metamodelOf } from "../metamodel.js";
 import { FeatureMeta, FeatureOptions } from "./_internal.js";
 
 export const ItemFeatureImplicits = {
-    payload: "Transfers::Transfer::item",
+    payload: "Transfers::Transfer::payload",
 };
 
 export type ItemFeatureOptions = FeatureOptions;

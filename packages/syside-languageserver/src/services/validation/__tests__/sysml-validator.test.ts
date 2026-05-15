@@ -299,14 +299,14 @@ describe("Flow connection definition ends", () => {
     test("more than 2 ends trigger validation", async () => {
         return expectValidations(
             "flow def F { end item a; end item b; end item c; }",
-            "validateFlowConnectionEnd"
+            "validateFlowEnd"
         ).resolves.toHaveLength(3);
     });
 
     test("2 ends don't trigger validation", async () => {
         return expectValidations(
             "flow def F { end item a; end item b; }",
-            "validateFlowConnectionEnd"
+            "validateFlowEnd"
         ).resolves.toHaveLength(0);
     });
 });
@@ -664,12 +664,7 @@ describe.each([
         ast.Association.$type,
         "validateConnectionUsageTyping",
     ],
-    [
-        ast.FlowConnectionUsage.$type,
-        "flow",
-        ast.Interaction.$type,
-        "validateFlowConnectionUsageTyping",
-    ],
+    [ast.FlowUsage.$type, "flow", ast.Interaction.$type, "validateFlowUsageTyping"],
     [
         ast.InterfaceUsage.$type,
         "interface",
