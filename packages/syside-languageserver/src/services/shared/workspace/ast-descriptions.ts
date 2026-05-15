@@ -17,7 +17,7 @@
 import {
     AstNodeDescription,
     AstNodeDescriptionProvider,
-    getDocument,
+    AstUtils,
     LangiumDocument,
 } from "langium";
 import { AstNodeLocator } from "langium";
@@ -49,7 +49,7 @@ export class SysMLNodeDescriptionProvider implements AstNodeDescriptionProvider 
     createDescription<T extends Element>(
         node: T,
         name: string,
-        document: LangiumDocument = getDocument(node)
+        document: LangiumDocument = AstUtils.getDocument(node)
     ): SysMLNodeDescription<T> {
         return {
             node,

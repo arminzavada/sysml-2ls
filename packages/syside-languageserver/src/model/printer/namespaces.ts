@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { findNodeForKeyword } from "langium";
+import { GrammarUtils } from "langium";
 import * as ast from "../../generated/ast.js";
 import {
     Doc,
@@ -294,6 +294,12 @@ function selectDeclaredRelationshipToken(
 
     const token = info.token;
     const fallback = info.format.fallback || "token";
+    // Multi-word keywords (e.g. "typed by") parse into multiple CST tokens,
+    // so the immediate previous CST node text is the *last* word of the
+    // keyword (e.g. "by"). Match against either the full keyword string or
+    // its last whitespace-separated word.
+    const keywordWords = info.keyword.contents.split(/\s+/);
+    const keywordLastWord = keywordWords[keywordWords.length - 1];
     return formatPreserved(current, info.format, fallback, {
         // have to look at the previous node since type declarations may have
         // multiple keywords/tokens
@@ -302,15 +308,12 @@ function selectDeclaredRelationshipToken(
             keyword: () => info.keyword,
             token: () => token,
             preserve: (found) => {
-                switch (found?.text) {
-                    case token.contents:
-                        return "token";
-                    case info.keyword.contents:
-                        return "keyword";
-                    default:
-                        // most likely a separator
-                        return fallback;
-                }
+                const text = found?.text;
+                if (text === undefined) return fallback;
+                if (text === token.contents) return "token";
+                if (text === info.keyword.contents || text === keywordLastWord) return "keyword";
+                // most likely a separator
+                return fallback;
             },
         },
     });
@@ -465,7 +468,7 @@ export function printChildrenBlock(
 
         if (options?.forceEmptyBrackets) return asBrackets();
         return formatPreserved(node, context.format.empty_namespace_brackets, "always", {
-            find: (node) => findNodeForKeyword(node, "{"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "{"),
             choose: {
                 always: asBrackets,
                 never: asSemi,
@@ -596,8 +599,8 @@ export function printMultiplicityPart(
         if (props.length > 1) {
             suffix = formatPreserved(node, context.format.ordered_nonunique_priority, "ordered", {
                 find: (cst) => {
-                    const ordered = findNodeForKeyword(cst, "ordered");
-                    const nonunique = findNodeForKeyword(cst, "nonunique");
+                    const ordered = GrammarUtils.findNodeForKeyword(cst, "ordered");
+                    const nonunique = GrammarUtils.findNodeForKeyword(cst, "nonunique");
                     /* istanbul ignore next */
                     if (!ordered) return nonunique;
                     /* istanbul ignore next */
@@ -1059,7 +1062,7 @@ export function printFeature(node: FeatureMeta, context: ModelPrinterContext): D
     }
 
     const kw = formatPreserved(node, context.format.feature_keyword, "always", {
-        find: (node) => findNodeForKeyword(node, "feature"),
+        find: (node) => GrammarUtils.findNodeForKeyword(node, "feature"),
         choose: {
             always: () => "feature",
             as_needed: () => {
@@ -1088,7 +1091,7 @@ export function printInvariant(node: InvariantMeta, context: ModelPrinterContext
     const kw = node.isNegated
         ? literals.false
         : formatPreserved(node, context.format.invariant_true_keyword, "always", {
-              find: (node) => findNodeForKeyword(node, "true"),
+              find: (node) => GrammarUtils.findNodeForKeyword(node, "true"),
               choose: {
                   always: () => literals.true,
                   never: () => literals.emptytext,

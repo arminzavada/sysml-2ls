@@ -81,7 +81,7 @@ import {
     printGenericFeature,
     printPrefixes,
 } from "./namespaces.js";
-import { findNodeForKeyword } from "langium";
+import { GrammarUtils } from "langium";
 import {
     ActorMembershipMeta,
     FramedConcernMembershipMeta,
@@ -334,7 +334,7 @@ export function printSourceTargetRelationship(
     const declaration: Doc[] = [];
     const prefix = options.format
         ? formatPreserved(node, options.format, "always", {
-              find: (node) => findNodeForKeyword(node, kw),
+              find: (node) => GrammarUtils.findNodeForKeyword(node, kw),
               choose: {
                   always: () => keyword(kw),
                   as_needed: () =>
@@ -380,7 +380,7 @@ export function selectToken(
     option: DeclaredRelationshipFormat
 ): Text {
     return formatPreserved(node, option, "token", {
-        find: (node) => findNodeForKeyword(node, token.contents),
+        find: (node) => GrammarUtils.findNodeForKeyword(node, token.contents),
         choose: {
             keyword: () => kw,
             token: () => token,
@@ -414,7 +414,7 @@ export function printDependency(node: DependencyMeta, context: ModelPrinterConte
         from.push(keyword("from"), line);
     } else {
         const kw = formatPreserved(node, context.format.dependency_from_keyword, "always", {
-            find: (node) => findNodeForKeyword(node, "from"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "from"),
             choose: {
                 always: () => keyword("from"),
                 as_needed: () => literals.emptytext,
@@ -651,7 +651,7 @@ export function printFeatureValue(node: FeatureValueMeta, context: ModelPrinterC
             prefix.push(text(":="));
         } else {
             const equals = formatPreserved(node, context.format.feature_value_equals, "always", {
-                find: (node) => findNodeForKeyword(node, "="),
+                find: (node) => GrammarUtils.findNodeForKeyword(node, "="),
                 choose: {
                     as_needed: () => undefined,
                     always: () => text("="),
@@ -736,7 +736,7 @@ export function printTypeFeaturing(node: TypeFeaturingMeta, context: ModelPrinte
     assertKerML(context, node.nodeType());
     return printSourceTargetRelationship("featuring", node, context, {
         sourceKw: formatPreserved(node, context.format.featuring_of_keyword, "always", {
-            find: (node) => findNodeForKeyword(node, "of"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "of"),
             choose: {
                 always: () => keyword("of"),
                 as_needed: () =>
@@ -837,7 +837,7 @@ function printSpecialRequirementMember(
             const allowShorthand = canPrintShorthandUsage(node, ast.ReferenceSubsetting);
 
             const kw = formatPreserved(node, context.format.framed_concern_keyword, "always", {
-                find: (node) => findNodeForKeyword(node, options.targetKeyword),
+                find: (node) => GrammarUtils.findNodeForKeyword(node, options.targetKeyword),
                 choose: {
                     always: () => options.targetKeyword,
                     as_needed: () =>

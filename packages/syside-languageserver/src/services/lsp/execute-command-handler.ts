@@ -15,16 +15,18 @@
  ********************************************************************************/
 
 import {
-    AbstractExecuteCommandHandler,
     AstNode,
+    CstUtils,
     DocumentBuilder,
-    ExecuteCommandAcceptor,
-    ExecuteCommandFunction,
-    findDeclarationNodeAtOffset,
     LangiumDocuments,
     ServiceRegistry,
     stream,
 } from "langium";
+import {
+    AbstractExecuteCommandHandler,
+    ExecuteCommandAcceptor,
+    ExecuteCommandFunction,
+} from "langium/lsp";
 import { CancellationToken, Connection, Disposable, Position } from "vscode-languageserver";
 import { URI } from "vscode-uri";
 
@@ -531,13 +533,12 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
         }
 
         const uri = URI.parse(editor.document.uri);
-        if (!this.documents.hasDocument(uri)) return;
-
-        const document = this.documents.getOrCreateDocument(uri);
+        const document = this.documents.getDocument(uri);
+        if (!document) return;
         const rootNode = document.parseResult.value.$cstNode;
         if (!rootNode) return;
 
-        const leaf = findDeclarationNodeAtOffset(
+        const leaf = CstUtils.findDeclarationNodeAtOffset(
             rootNode,
             document.textDocument.offsetAt(activePosition)
         );

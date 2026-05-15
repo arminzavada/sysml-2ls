@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { findNodeForKeyword } from "langium";
+import { GrammarUtils } from "langium";
 import * as ast from "../../generated/ast.js";
 import { Doc, group, indent, keyword, line, literals } from "../../utils/index.js";
 import { FeatureMeta, ResultExpressionMembershipMeta } from "../KerML/index.js";
@@ -227,7 +227,7 @@ export function printOccurrenceUsageSubtype(
             ?.nodeType() === ast.ReferenceSubsetting
     ) {
         const kw = formatPreserved(node, options.format, "always", {
-            find: (node) => findNodeForKeyword(node, optionalKw.split(" ").at(-1) as string),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, optionalKw.split(" ").at(-1) as string),
             choose: {
                 always: () => optionalKw,
                 as_needed: () => undefined,
@@ -361,7 +361,7 @@ export function printSatisfyRequirement(
         context.format.satisfy_requirement_assert_keyword,
         "always",
         {
-            find: (node) => findNodeForKeyword(node, "assert"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "assert"),
             choose: {
                 always: () => "assert ",
                 never: () => "",
@@ -393,7 +393,7 @@ export function printEnumerationUsage(
         });
 
     const kw = formatPreserved(node, context.format.enum_member_keyword, "always", {
-        find: (node) => findNodeForKeyword(node, "enum"),
+        find: (node) => GrammarUtils.findNodeForKeyword(node, "enum"),
         choose: {
             always: () => keyword("enum"),
             never: () => literals.emptytext,
@@ -416,7 +416,7 @@ export function printOccurrenceDefinition(
     let kw: string;
     if (node.isIndividual)
         kw = formatPreserved(node, context.format.occurrence_keyword, "always", {
-            find: (node) => findNodeForKeyword(node, "occurrence"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "occurrence"),
             choose: {
                 always: () => "occurrence def",
                 as_needed: () => "def",
@@ -431,7 +431,7 @@ export function printOccurrenceUsage(node: OccurrenceUsageMeta, context: ModelPr
     let kw: string | undefined;
     if (node.isIndividual || node.portionKind)
         kw = formatPreserved(node, context.format.occurrence_keyword, "always", {
-            find: (node) => findNodeForKeyword(node, "occurrence"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "occurrence"),
             choose: {
                 always: () => "occurrence",
                 as_needed: () => undefined,
@@ -448,7 +448,7 @@ export function printPortUsage(node: PortUsageMeta, context: ModelPrinterContext
         node.parent()?.is(ast.FeatureMembership) &&
         node.owner()?.isAny(ast.InterfaceDefinition, ast.InterfaceUsage) &&
         formatPreserved(node, context.format.interface_port_keyword, "always", {
-            find: (node) => findNodeForKeyword(node, "port"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "port"),
             choose: {
                 always: () => keyword("port"),
                 never: () => literals.emptytext,
@@ -472,7 +472,7 @@ export function printReferenceUsage(node: ReferenceUsageMeta, context: ModelPrin
     const getKw = (): "ref" | undefined => {
         if (refKw === undefined) {
             refKw = formatPreserved(node, context.format.reference_usage_keyword, "always", {
-                find: (node) => findNodeForKeyword(node, "ref"),
+                find: (node) => GrammarUtils.findNodeForKeyword(node, "ref"),
                 choose: {
                     always: (): "ref" => "ref",
                     as_needed: (): "missing" => "missing",

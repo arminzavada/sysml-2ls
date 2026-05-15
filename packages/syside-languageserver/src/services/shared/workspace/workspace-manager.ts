@@ -115,8 +115,12 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
         const fileExtensions = this.serviceRegistry.all.flatMap(
             (e) => e.LanguageMetaData.fileExtensions
         );
+        const fileNames = this.serviceRegistry.all.flatMap(
+            (e) => (e.LanguageMetaData as { fileNames?: string[] }).fileNames ?? []
+        );
+        const selector = { fileExtensions, fileNames };
         for (const node of content) {
-            if (!this.includeEntry(folders[0], node, fileExtensions)) continue;
+            if (!this.includeEntry(folders[0], node, selector)) continue;
 
             if (node.isFile) {
                 collected.push(node.uri);
@@ -131,7 +135,7 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
         // documents from another site and browsers can easily parallelize it.
         await this.fileSystemProvider.preloadFiles(collected);
         for (const uri of collected) {
-            const doc = this.langiumDocuments.getOrCreateDocument(uri);
+            const doc = await this.langiumDocuments.getOrCreateDocument(uri);
             doc.isStandard = true;
             collector(doc);
         }

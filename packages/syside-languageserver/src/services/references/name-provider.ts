@@ -14,7 +14,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AstNode, CstNode, DefaultNameProvider, findNodeForProperty } from "langium";
+import {
+    AstNode,
+    CstNode,
+    DefaultNameProvider,
+    GrammarUtils,
+} from "langium";
 import { isElement } from "../../generated/ast.js";
 import { getName } from "../../model/naming.js";
 
@@ -31,8 +36,8 @@ export class SysMLNameProvider extends DefaultNameProvider {
 
     override getNameNode(node: AstNode): CstNode | undefined {
         return (
-            findNodeForProperty(node.$cstNode, "declaredName") ??
-            findNodeForProperty(node.$cstNode, "declaredShortName")
+            GrammarUtils.findNodeForProperty(node.$cstNode, "declaredName") ??
+            GrammarUtils.findNodeForProperty(node.$cstNode, "declaredShortName")
         );
     }
 }

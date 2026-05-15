@@ -18,20 +18,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     AstNode,
-    CompletionAcceptor,
-    CompletionContext,
-    CompletionValueItem,
-    DefaultCompletionProvider,
+    CstUtils,
     DocumentState,
-    findLeafNodeAtOffset,
     GrammarAST,
     IndexManager,
     interruptAndCheck,
     LangiumDocument,
     MaybePromise,
-    NextFeature,
     stream,
 } from "langium";
+import {
+    CompletionAcceptor,
+    CompletionContext,
+    CompletionValueItem,
+    DefaultCompletionProvider,
+    NextFeature,
+} from "langium/lsp";
 type CrossReference = GrammarAST.CrossReference;
 type Keyword = GrammarAST.Keyword;
 import { SysMLDefaultServices } from "../services.js";
@@ -213,7 +215,7 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
         }
 
         // try finding the node at the token
-        let node = findLeafNodeAtOffset(cst, tokenEnd);
+        let node = CstUtils.findLeafNodeAtOffset(cst, tokenEnd);
 
         let token = "";
         let tokenStart: number;
@@ -224,7 +226,7 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
 
             // -1 to leave the trigger token
             const nodeOffset = backtrackToAnyTokenOffset(text, tokenStart - 1);
-            node = findLeafNodeAtOffset(cst, nodeOffset);
+            node = CstUtils.findLeafNodeAtOffset(cst, nodeOffset);
             if (node) token = text.substring(node.end, tokenEnd + 1).trim();
         } else {
             // Langium 1.1.0 may no longer parse token keywords into CST nodes,
@@ -244,7 +246,7 @@ export class SysMLCompletionProvider extends DefaultCompletionProvider {
             // operator in expressions. The preceding reference node will be
             // used for scope resolution
             const nodeOffset = backtrackToAnyTokenOffset(text, tokenStart - 1);
-            node = findLeafNodeAtOffset(cst, nodeOffset);
+            node = CstUtils.findLeafNodeAtOffset(cst, nodeOffset);
         }
 
         if (!node) return;

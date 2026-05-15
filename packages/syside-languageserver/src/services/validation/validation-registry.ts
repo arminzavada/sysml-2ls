@@ -16,7 +16,7 @@
 
 import {
     DiagnosticInfo,
-    LangiumServices,
+    LangiumCoreServices,
     MaybePromise,
     MultiMap,
     Properties,
@@ -144,7 +144,7 @@ export class BaseValidationRegistry extends ValidationRegistry {
     // own typed reference for `astReflection` getter use.
     protected readonly _astReflection: SysMLAstReflection;
 
-    constructor(services: LangiumServices) {
+    constructor(services: LangiumCoreServices) {
         super(services);
         this._astReflection = services.shared.AstReflection as SysMLAstReflection;
     }

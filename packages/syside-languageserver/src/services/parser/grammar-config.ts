@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { createGrammarConfig, GrammarAST, GrammarConfig, LangiumServices } from "langium";
+import { createGrammarConfig, GrammarAST, GrammarConfig, LangiumCoreServices } from "langium";
 const { isRegexToken } = GrammarAST;
 
 // Cached grammar config since it is identical between KerML and SysML. May be
@@ -24,7 +24,7 @@ let SysMLGrammarConfig: GrammarConfig | undefined;
 // Terminal rules used for names
 const NAME_TERMINALS = ["ID", "UNRESTRICTED_NAME"] as const;
 
-export function createSysMLGrammarConfig(services: LangiumServices): GrammarConfig {
+export function createSysMLGrammarConfig(services: LangiumCoreServices): GrammarConfig {
     if (SysMLGrammarConfig) return SysMLGrammarConfig;
 
     const config = createGrammarConfig(services);
@@ -37,9 +37,8 @@ export function createSysMLGrammarConfig(services: LangiumServices): GrammarConf
         // NB: this is not very robust to changes in the grammar files
         if (!rule || !isRegexToken(rule.definition)) continue;
 
-        // Langium 2.x's `RegexToken.regex` returns the delimited form
-        // `/pattern/`; Langium 1.x returned the bare `pattern`. Strip the
-        // delimiters so we can wrap with `^…$` for an anchored match.
+        // `RegexToken.regex` is emitted in the delimited form `/pattern/`;
+        // strip the delimiters so we can wrap with `^…$` for an anchored match.
         let pattern = rule.definition.regex;
         if (pattern.startsWith("/") && pattern.endsWith("/")) {
             pattern = pattern.slice(1, -1);

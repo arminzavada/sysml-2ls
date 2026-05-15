@@ -19,9 +19,11 @@ import {
     DefaultLangiumDocumentFactory,
     DefaultLangiumDocuments,
     LangiumDocument,
+    Mutable,
     MultiMap,
     ParseResult,
 } from "langium";
+import { CancellationToken } from "vscode-languageserver";
 import type { TextDocument } from "vscode-languageserver-textdocument";
 import { URI } from "vscode-uri";
 import { streamAst } from "../../../utils/index.js";
@@ -107,19 +109,17 @@ export class SysMLDocumentFactory extends DefaultLangiumDocumentFactory {
     //
     //   SysMLDocumentFactory (this)
     //     → reads MetamodelBuilder
-    //     → reads IndexManager (DefaultIndexManager in Langium 2.x)
-    //     → reads LangiumDocuments (DefaultLangiumDocuments in Langium 2.x)
+    //     → reads IndexManager
+    //     → reads LangiumDocuments
     //     → reads LangiumDocumentFactory  (= SysMLDocumentFactory, the root)
     //
-    // The DefaultIndexManager → LangiumDocuments and DefaultLangiumDocuments
-    // → LangiumDocumentFactory edges are imposed by Langium 2.x itself
-    // (they were lazy field reads in 1.x). Anyone wiring a MetamodelBuilder-
-    // like service into their DocumentFactory is therefore forced to break
-    // the cycle on their own edge. We defer the `MetamodelBuilder` lookup to
-    // first access (it's only used inside `onParsed`, which fires after DI is
-    // fully constructed), which is sufficient because the cycle is closed
-    // *during* injector construction — once everything is built, the lazy
-    // read returns the same instance as an eager one would have.
+    // The IndexManager → LangiumDocuments and LangiumDocuments →
+    // LangiumDocumentFactory edges are imposed by Langium itself (eager
+    // constructor reads). Anyone wiring a MetamodelBuilder-like service into
+    // their DocumentFactory is forced to break the cycle on their own edge.
+    // We defer the `MetamodelBuilder` lookup to first access (it's only used
+    // inside `onParsed`, which fires after DI is fully constructed); the
+    // cycle is closed only *during* injector construction.
     protected readonly services: SysMLSharedServices;
     protected readonly config: SysMLConfigurationProvider;
 
@@ -134,8 +134,11 @@ export class SysMLDocumentFactory extends DefaultLangiumDocumentFactory {
         this.config = services.workspace.ConfigurationProvider;
     }
 
-    override update<T extends AstNode = AstNode>(document: LangiumDocument<T>): LangiumDocument<T> {
-        const doc = super.update(document);
+    override async update<T extends AstNode = AstNode>(
+        document: Mutable<LangiumDocument<T>>,
+        cancellationToken: CancellationToken
+    ): Promise<LangiumDocument<T>> {
+        const doc = await super.update(document, cancellationToken);
         return this.onCreated(doc);
     }
 

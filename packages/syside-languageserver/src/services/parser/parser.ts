@@ -16,16 +16,11 @@
 
 import {
     AstNode,
-    assignMandatoryAstProperties,
-    CstNode,
-    CstNodeBuilder,
-    GrammarAST,
+    AstUtils,
     isAstNode,
     LangiumParser,
     Mutable,
     prepareLangiumParser,
-    streamContents,
-    streamCst,
 } from "langium";
 import {
     EndFeatureMembership,
@@ -54,7 +49,6 @@ import { SysMLDefaultServices } from "../services.js";
 import { compareRanges } from "../../utils/ast-util.js";
 import { SysMLType, SysMLTypeList } from "../sysml-ast-reflection.js";
 
-const { isRuleCall } = GrammarAST;
 import { erase } from "../../utils/common.js";
 
 const ClassificationTestOperator = ["istype", "hastype", "@", "as"];
@@ -222,82 +216,56 @@ type ProcessingMap = { [K in SysMLType]?: ProcessingFunction<SysMLTypeList[K]> }
  */
 function collectChildren(node: AstNode): void {
     node.$children.length = 0;
-    node.$children.push(...streamContents(node).toArray());
+    node.$children.push(...AstUtils.streamContents(node).toArray());
     node.$children.sort((a, b) => compareRanges(a.$cstNode?.range, b.$cstNode?.range));
     node.$children.forEach((child, index) => ((child as Mutable<AstNode>).$childIndex = index));
 }
 
-/**
- * Extension of Langium CST node builder that performs some postprocessing on
- * the parsed AST nodes.
- */
-export class SysMLCstNodeBuilder extends CstNodeBuilder {
-    protected readonly postprocessingMap;
-    protected readonly services: SysMLDefaultServices;
+function buildPostprocessingMap(): Map<string, ProcessingFunction> {
+    const map: ProcessingMap = {
+        OperatorExpression: fixOperatorExpression,
+        WhileLoopActionUsage: addLoopMember,
+        Import: finalizeImport,
+        TransitionUsage: createEmptyParametersInTransitionUsage,
+        SuccessionAsUsage: createMissingEndsInSuccessionAsUsage,
+    };
 
-    constructor(services: SysMLDefaultServices) {
-        super();
-
-        this.services = services;
-
-        // map to postprocess specific AST node types after parsing
-        const map: ProcessingMap = {
-            OperatorExpression: fixOperatorExpression,
-            WhileLoopActionUsage: addLoopMember,
-            Import: finalizeImport,
-            TransitionUsage: createEmptyParametersInTransitionUsage,
-            SuccessionAsUsage: createMissingEndsInSuccessionAsUsage,
-        };
-
-        this.postprocessingMap = typeIndex.expandToDerivedTypes(
-            map as TypeMap<SysMLTypeList, ProcessingFunction>
-        );
-    }
-
-    override construct(item: { $type: string | symbol | undefined; $cstNode: CstNode }): void {
-        super.construct(item);
-        if (typeof item.$type === "string") {
-            this.postprocessingMap.get(item.$type)?.call(undefined, item as AstNode, this.services);
-        }
-    }
+    return typeIndex.expandToDerivedTypes(
+        map as TypeMap<SysMLTypeList, ProcessingFunction>
+    );
 }
 
 interface MutableLangiumParser extends Mutable<LangiumParser> {
-    nodeBuilder: CstNodeBuilder;
+    construct: (...args: unknown[]) => unknown;
 }
 
 /**
  * Create and finalize a SysML-flavoured Langium parser.
  *
- * Langium 2.x does not expose its grammar-walker (`createParser` in
- * `parser-builder-base`) on the public surface, so the historic shape of
- * subclassing `LangiumParser` cannot reach upstream's parser builder anymore.
- * Instead we lean on the public extension point that Langium 2.x does
- * provide: the DI module returns the parser instance, and the builder
- * `prepareLangiumParser` exposes the instance before finalization. We compose
- * SysML behaviour onto that instance:
- *
- * - Swap the CST node builder with {@link SysMLCstNodeBuilder} so postprocessing
- *   runs after each AST node is constructed.
- * - Wrap `construct` so children are collected after Langium's mandatory-
- *   property assignment runs (order matters: mandatory arrays must exist
- *   before `streamContents` reads them).
- *
- * The prototype patch for `assignWithoutOverride` (defined later in this file)
- * still applies to the same `LangiumParser` instance via the prototype chain,
- * so SysML's CST-repointing behaviour during subrule merges is preserved.
+ * Composes SysML behaviour onto the public parser instance returned by
+ * `prepareLangiumParser` (before finalization). The `construct` wrapper runs
+ * Langium's own construction (which finalises the CST, fills in mandatory
+ * properties, etc.) first, then collects `$children` and applies
+ * type-specific SysML postprocessing in the right order — `$children` and
+ * other mandatory arrays must exist before postprocessors that splice into
+ * them (e.g. `finalizeImport`) can run.
  */
 export function createSysMLParser(services: SysMLDefaultServices): LangiumParser {
     const parser = prepareLangiumParser(services);
     const mutable = parser as unknown as MutableLangiumParser;
-    mutable.nodeBuilder = new SysMLCstNodeBuilder(services);
 
-    const originalConstruct = parser.construct.bind(parser);
-    mutable.construct = function (pop?: boolean): unknown {
-        const value = originalConstruct(pop);
-        if (isAstNode(value)) collectChildren(value);
+    const postprocessingMap = buildPostprocessingMap();
+    const originalConstruct = mutable.construct.bind(mutable);
+    mutable.construct = function (...args: unknown[]): unknown {
+        const value = originalConstruct(...args);
+        if (isAstNode(value)) {
+            collectChildren(value);
+            if (typeof value.$type === "string") {
+                postprocessingMap.get(value.$type)?.call(undefined, value, services);
+            }
+        }
         return value;
-    } as LangiumParser["construct"];
+    };
 
     parser.finalize();
     return parser;
@@ -333,74 +301,3 @@ declare module "langium" {
     }
 }
 
-// CST-repointing patch: when a non-fragment subrule's result merges into a
-// wrapping AST node, Langium's default `assignWithoutOverride` doesn't update
-// CST→AST links on the merged subrule's CST subtree to point at the new
-// target. SysML reuses those `cstNode.astNode` links in downstream services
-// (scope provider, linker, …), so we patch in the repointing here.
-//
-// TODO: retire when https://github.com/langium/langium/pull/898 (or an
-// equivalent fix) lands upstream. Verified still needed against
-// langium@2.1.3: `LangiumParser.prototype.assignWithoutOverride` does not
-// perform CST repointing.
-LangiumParser.prototype["assignWithoutOverride"] = function (
-    target: Record<string, unknown> & { $cstNode: CstNode },
-    source: object & { $type?: string; $cstNode?: CstNode }
-): Record<string, unknown> {
-    const hasType = target.$type !== undefined;
-
-    for (const [name, existingValue] of Object.entries(source)) {
-        const newValue = target[name];
-        if (newValue === undefined) {
-            target[name] = existingValue;
-        } else if (Array.isArray(newValue) && Array.isArray(existingValue)) {
-            existingValue.push(...newValue);
-            target[name] = existingValue;
-        }
-    }
-
-    if (!hasType && source.$type) {
-        // there seems to be a parser bug where very rarely the target won't
-        // have mandatory properties assigned after setting $type
-        const reflection = (this as unknown as { astReflection: import("langium").AstReflection })
-            .astReflection;
-        assignMandatoryAstProperties(reflection, target as unknown as AstNode);
-        collectChildren(target as unknown as AstNode);
-    }
-
-    if (source.$cstNode) {
-        // Langium 2.x renamed the grammar-source pointer from `feature` to
-        // `grammarSource` (keeping `feature` as a deprecated alias).
-        const feature = (source.$cstNode as unknown as { grammarSource?: unknown })
-            .grammarSource as Parameters<typeof isRuleCall>[0] | undefined;
-        if (feature && isRuleCall(feature) && feature.rule.ref && !feature.rule.ref.fragment) {
-            // Merging `source` from a subrule into target; need to update the
-            // source and its children CST nodes to point to the merged AST
-            // node instead. Use the public `astNode` setter rather than
-            // poking at `_astNode` directly.
-            const iterator = streamCst(source.$cstNode).iterator();
-            let current = iterator.next();
-            while (!current.done) {
-                const node = current.value;
-                let matches = false;
-                try {
-                    matches = (node as unknown as { astNode: AstNode }).astNode === source;
-                } catch {
-                    matches = false;
-                }
-                if (matches) {
-                    // Repoint to the merged target. We resolve target via a
-                    // late getter so further merges that replace `target`
-                    // continue to be reflected.
-                    (node as unknown as { astNode: AstNode }).astNode = target as unknown as AstNode;
-                } else {
-                    iterator.prune();
-                }
-
-                current = iterator.next();
-            }
-        }
-    }
-
-    return target;
-};

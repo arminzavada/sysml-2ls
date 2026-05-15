@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { DefaultLanguageServer } from "langium";
+import { DefaultLanguageServer } from "langium/lsp";
 import { InitializeParams, InitializeResult } from "vscode-languageserver";
 import { SUPPORTED_TRIGGER_CHARACTERS } from "./completion-provider.js";
 import { DefaultSysMLSemanticTokenOptions } from "../../model/semantic-tokens.js";

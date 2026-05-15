@@ -17,7 +17,9 @@
 import fs from "fs";
 import path from "path";
 import chalk from "chalk";
-import type { AstNode, LangiumDocument, LangiumServices } from "langium";
+import type { AstNode, LangiumDocument } from "langium";
+import type { LangiumServices } from "langium/lsp";
+import type { Diagnostic } from "vscode-languageserver";
 import { URI } from "vscode-uri";
 import type { WorkspaceFolder } from "vscode-languageserver";
 import type { SysMLBuildOptions } from "syside-languageserver";
@@ -44,7 +46,7 @@ export async function extractDocument<T extends AstNode>(
         process.exit(1);
     }
 
-    const document = services.shared.workspace.LangiumDocuments.getOrCreateDocument(
+    const document = await services.shared.workspace.LangiumDocuments.getOrCreateDocument(
         URI.file(path.resolve(fileName))
     );
     const buildOptions: SysMLBuildOptions = {
@@ -53,7 +55,7 @@ export async function extractDocument<T extends AstNode>(
     };
     await services.shared.workspace.DocumentBuilder.build([document], buildOptions);
 
-    const validationErrors = (document.diagnostics ?? []).filter((e) => e.severity === 1);
+    const validationErrors = (document.diagnostics ?? []).filter((e: Diagnostic) => e.severity === 1);
     if (validationErrors.length > 0) {
         console.error(chalk.red("There are validation errors:"));
         for (const validationError of validationErrors) {

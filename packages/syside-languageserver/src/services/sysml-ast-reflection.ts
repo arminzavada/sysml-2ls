@@ -75,8 +75,8 @@ export class SysMLAstReflection extends ast.SysMLAstReflection {
         if (meta) return meta;
 
         // using map since there are a lot of duplicated properties
-        const properties = new Map(
-            super.getTypeMetaData(type).mandatory.map((p) => [p.name, p.type])
+        const properties = new Map<string, unknown>(
+            super.getTypeMetaData(type).properties.map((p) => [p.name, p.defaultValue])
         );
 
         // the default langium implementation doesn't care about hierarchy
@@ -84,23 +84,25 @@ export class SysMLAstReflection extends ast.SysMLAstReflection {
         // that here
         for (const base of typeIndex.getInheritanceChain(type)) {
             const baseMeta = super.getTypeMetaData(base);
-            for (const { name, type } of baseMeta.mandatory) {
+            for (const { name, defaultValue } of baseMeta.properties) {
                 if (properties.has(name)) continue;
-                properties.set(name, type);
+                properties.set(name, defaultValue);
             }
         }
 
         meta = {
             name: type,
-            mandatory: stream(properties.entries())
-                .map(([name, type]) => {
-                    return { name, type };
+            properties: stream(properties.entries())
+                .map(([name, defaultValue]) => {
+                    const property: { name: string; defaultValue?: unknown } = { name };
+                    if (defaultValue !== undefined) property.defaultValue = defaultValue;
+                    return property as TypeMetaData["properties"][number];
                 })
                 .toArray(),
         };
 
         // also make sure all nodes have $children member
-        meta.mandatory.push({ name: "$children", type: "array" });
+        meta.properties.push({ name: "$children", defaultValue: [] });
         this.metadata.set(type, meta);
         return meta;
     }
@@ -108,12 +110,13 @@ export class SysMLAstReflection extends ast.SysMLAstReflection {
     private assignMandatoryProperties(obj: { $type: string }): void {
         const typeMetaData = this.getTypeMetaData(obj.$type);
         const out = obj as Record<string, unknown>;
-        for (const mandatoryProperty of typeMetaData.mandatory) {
-            const value = out[mandatoryProperty.name];
-            if (mandatoryProperty.type === "array" && !Array.isArray(value)) {
-                out[mandatoryProperty.name] = [];
-            } else if (mandatoryProperty.type === "boolean" && value === undefined) {
-                out[mandatoryProperty.name] = false;
+        for (const property of typeMetaData.properties) {
+            if (property.defaultValue === undefined) continue;
+            const value = out[property.name];
+            if (Array.isArray(property.defaultValue) && !Array.isArray(value)) {
+                out[property.name] = [];
+            } else if (typeof property.defaultValue === "boolean" && value === undefined) {
+                out[property.name] = property.defaultValue;
             }
         }
 
@@ -134,8 +137,6 @@ export class SysMLAstReflection extends ast.SysMLAstReflection {
         const partialNode = { $type: type, ...values };
 
         // if there's a CST node, modify it to point to the created node.
-        // Langium 2.x renamed the writable CST property to `astNode` and
-        // turned `element` into a read-only getter that delegates to it.
         if (values.$cstNode) {
             const cstNode = shallowClone(values.$cstNode);
             (cstNode as unknown as { astNode: AstNode }).astNode = partialNode as AstNode;

@@ -20,7 +20,7 @@ import {
     AllSemanticTokenTypes,
     AllSemanticTokenModifiers,
     DefaultSemanticTokenOptions,
-} from "langium";
+} from "langium/lsp";
 import {
     SemanticTokenTypes,
     SemanticTokenModifiers,

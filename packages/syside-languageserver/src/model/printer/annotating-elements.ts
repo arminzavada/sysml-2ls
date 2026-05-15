@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { findNodeForKeyword } from "langium";
+import { GrammarUtils } from "langium";
 import { FeatureMembership, FeatureTyping, Redefinition } from "../../generated/ast.js";
 import {
     Doc,
@@ -240,7 +240,7 @@ export function printMetadataFeature(node: MetadataFeatureMeta, context: ModelPr
 
     const prefix: Doc[] = [
         formatPreserved(node, context.format.metadata_feature_keyword, "@", {
-            find: (node) => findNodeForKeyword(node, "metadata"),
+            find: (node) => GrammarUtils.findNodeForKeyword(node, "metadata"),
             choose: {
                 "@": () => text("@"),
                 metadata: () => keyword("metadata "),
@@ -255,7 +255,7 @@ export function printMetadataFeature(node: MetadataFeatureMeta, context: ModelPr
         prefix.push(...identifier);
         heritage.push(
             formatPreserved(node, context.format.declaration_feature_typing, "token", {
-                find: (node) => findNodeForKeyword(node, ":"),
+                find: (node) => GrammarUtils.findNodeForKeyword(node, ":"),
                 choose: {
                     keyword: () => keyword(context.mode === "kerml" ? "typed by " : "defined by "),
                     token: () => text(": "),
@@ -336,7 +336,7 @@ const MetadataBodyElementPrinter: ElementPrinter = (node, context) => {
     return [
         group([
             formatPreserved(target, context.format.metadata_body_feature_keyword, "always", {
-                find: (node) => findNodeForKeyword(node, kw),
+                find: (node) => GrammarUtils.findNodeForKeyword(node, kw),
                 choose: {
                     always: (): Doc => [keyword(kw), literals.space],
                     never: () => literals.emptytext,

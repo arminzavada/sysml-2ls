@@ -15,13 +15,15 @@
  ********************************************************************************/
 
 import {
-    AbstractSemanticTokenProvider,
     AstNode,
     DocumentState,
     LangiumDocument,
-    SemanticTokenAcceptor,
     isOperationCancelled,
 } from "langium";
+import {
+    AbstractSemanticTokenProvider,
+    SemanticTokenAcceptor,
+} from "langium/lsp";
 import {
     Element,
     ElementReference,
@@ -125,7 +127,7 @@ export class SysMLSemanticTokenProvider extends AbstractSemanticTokenProvider {
             disposable.dispose();
         });
 
-        this.builder.onDocumentPhase(DocumentState.Linked, (doc) => {
+        this.builder.onDocumentPhase(DocumentState.Linked, (doc: LangiumDocument) => {
             if (this.inBuild.has(doc.uriString)) {
                 this.built++;
                 if (this.inBuild.size === this.built) {

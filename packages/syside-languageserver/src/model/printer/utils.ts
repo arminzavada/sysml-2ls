@@ -58,7 +58,9 @@ import {
     printElementIgnored,
     printModelElement,
 } from "./print.js";
-import { CstNode, DocumentSegment, Grammar, GrammarAST, findNodeForKeyword, stream, streamAst } from "langium";
+import { AstUtils, CstNode, DocumentSegment, Grammar, GrammarAST, GrammarUtils, stream } from "langium";
+const { findNodeForKeyword } = GrammarUtils;
+const { streamAst } = AstUtils;
 const { isKeyword } = GrammarAST;
 import { KerMLGrammar, SysMLGrammar } from "../../generated/grammar.js";
 import { PreservableFormatting } from "./format-options.js";

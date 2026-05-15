@@ -117,6 +117,7 @@ export const DefaultBuildOptions: Readonly<Required<Omit<SysMLBuildOptions, "val
     ignoreMetamodelErrors: false,
     standardLibrary: "standard",
     standalone: false,
+    eagerLinking: true,
 };
 
 export const DefaultTraceConfig: Readonly<TraceConfig> = {

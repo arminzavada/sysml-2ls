@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { startLanguageServer } from "langium";
+import { startLanguageServer } from "langium/lsp";
 import type { Connection } from "vscode-languageserver";
 import { createSysMLServices, SharedModuleContext } from "../sysml-module.js";
 

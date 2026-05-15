@@ -17,7 +17,7 @@
 import { parseKerML, parseSysML } from "../../../testing/index.js";
 import { services } from "../../../testing/index.js";
 import { TextDocumentIdentifier, SemanticTokens } from "vscode-languageserver";
-import { AllSemanticTokenTypes, AllSemanticTokenModifiers } from "langium";
+import { AllSemanticTokenTypes, AllSemanticTokenModifiers } from "langium/lsp";
 import { flagNames } from "../../../utils/common.js";
 
 interface Case {
@@ -250,8 +250,8 @@ interface HighlightElement {
 }
 
 const INTS_PER_TOKEN = 5;
-const Flags = new Map(
-    Object.entries(AllSemanticTokenModifiers).map(([name, flag]) => [flag, name])
+const Flags = new Map<number, string>(
+    Object.entries(AllSemanticTokenModifiers).map(([name, flag]) => [flag as number, name])
 );
 const TypeNames = Object.keys(AllSemanticTokenTypes);
 

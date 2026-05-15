@@ -18,8 +18,7 @@ import {
     AstNode,
     CstNode,
     DefaultDocumentValidator,
-    findNodeForKeyword,
-    findNodeForProperty,
+    GrammarUtils,
     interruptAndCheck,
     LangiumDocument,
     toDiagnosticSeverity,
@@ -177,9 +176,9 @@ function getDiagnosticRangeImpl(
     let cstNode: CstNode | undefined;
     if (info.range) return info.range;
     if (typeof info.property === "string") {
-        cstNode = findNodeForProperty(node.$cstNode, info.property, info.index);
+        cstNode = GrammarUtils.findNodeForProperty(node.$cstNode, info.property, info.index);
     } else if (typeof info.keyword === "string") {
-        cstNode = findNodeForKeyword(node.$cstNode, info.keyword, info.index);
+        cstNode = GrammarUtils.findNodeForKeyword(node.$cstNode, info.keyword, info.index);
     }
     cstNode ??= node.$cstNode;
     if (!cstNode) {

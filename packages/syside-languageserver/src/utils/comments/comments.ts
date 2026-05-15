@@ -19,12 +19,12 @@
 import {
     AstNode,
     CstNode,
+    CstUtils,
     DocumentSegment,
     LeafCstNode,
     Mutable,
     assertUnreachable,
     isLeafCstNode,
-    streamCst,
 } from "langium";
 import { distance, newLineCount } from "../cst-util.js";
 import {
@@ -137,7 +137,7 @@ export interface CommentVisitor {
 }
 
 export function visitComments(root: CstNode, visitor: CommentVisitor): void {
-    const iterator = streamCst(root).iterator();
+    const iterator = CstUtils.streamCst(root).iterator();
 
     let previous: LeafCstNode | undefined;
     let stack: {

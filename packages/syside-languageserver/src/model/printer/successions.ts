@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { findNodeForKeyword } from "langium";
+import { GrammarUtils } from "langium";
 import {
     Membership,
     StateDefinition,
@@ -429,7 +429,7 @@ function printDefaultTransitionUsage(node: TransitionUsageMeta, context: ModelPr
         node.effect && !node.guard && !node.accepter
             ? "transition"
             : formatPreserved(node, context.format.transition_usage_keyword, "always", {
-                  find: (node) => findNodeForKeyword(node, "transition"),
+                  find: (node) => GrammarUtils.findNodeForKeyword(node, "transition"),
                   choose: {
                       always: () => "transition",
                       as_needed: () => undefined,

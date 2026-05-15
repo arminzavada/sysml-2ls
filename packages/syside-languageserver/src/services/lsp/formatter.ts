@@ -14,7 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AstNode, Formatter, LangiumDocument, MaybePromise } from "langium";
+import { AstNode, LangiumDocument, MaybePromise } from "langium";
+import { Formatter } from "langium/lsp";
 import {
     CancellationToken,
     DocumentFormattingParams,

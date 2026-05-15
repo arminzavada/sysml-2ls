@@ -15,6 +15,7 @@
  ********************************************************************************/
 
 import { DeepPartial, DefaultConfigurationProvider } from "langium";
+import type { ConfigurationInitializedParams } from "langium";
 import { DidChangeConfigurationNotification } from "vscode-languageserver";
 import { mergeWithPartial } from "../../../utils/common.js";
 import { SysMLConfig } from "../../config.js";
@@ -55,20 +56,47 @@ export class SysMLConfigurationProvider extends DefaultConfigurationProvider {
         });
     }
 
-    protected override async initialize(): Promise<void> {
-        await super.initialize();
+    // In Langium 3.x `DefaultConfigurationProvider.getConfiguration` awaits
+    // `ready`, which only resolves once `initialized()` runs. Tests and CLI
+    // callers don't drive the LSP `initialized` notification, so they would
+    // hang here. Settings for SysML are populated synchronously in the
+    // constructor; override to read them directly.
+    override async getConfiguration(language: string, configuration: string): Promise<unknown> {
+        const sectionName = this.toSectionName(language);
+        const section = (this.settings as Record<string, Record<string, unknown> | undefined>)[
+            sectionName
+        ];
+        return section?.[configuration];
+    }
 
-        // als initialize the language server config
-        if (this.workspaceConfig && this.connection) {
-            const config = await this.connection.workspace.getConfiguration({
-                section: SETTINGS_KEY,
-            });
-            this.updateSectionConfiguration(SETTINGS_KEY, config);
+    private readonly sysmlReady = (() => {
+        let resolve!: () => void;
+        const promise = new Promise<void>((r) => (resolve = r));
+        return { promise, resolve };
+    })();
+
+    override async initialized(params: ConfigurationInitializedParams): Promise<void> {
+        try {
+            await super.initialized(params);
+            await this.fetchSysmlConfig(params);
+        } finally {
+            this.sysmlReady.resolve();
         }
     }
 
+    protected async fetchSysmlConfig(params?: ConfigurationInitializedParams): Promise<void> {
+        if (!this.workspaceConfig || !params?.fetchConfiguration) return;
+        const [config] = await params.fetchConfiguration([{ section: SETTINGS_KEY }]);
+        this.updateSectionConfiguration(SETTINGS_KEY, config);
+    }
+
+    // Called from `SysMLWorkspaceManager.initializeWorkspace` to ensure the
+    // LSP-driven config fetch (including the SysML-specific section) has
+    // completed before reading workspace settings. In non-LSP contexts the
+    // promise never resolves on its own, so callers must invoke this only
+    // when the LSP host runs `initialized()`.
     async firstTimeSetup(): Promise<void> {
-        if (!this.initialized) await this.initialize();
+        await this.sysmlReady.promise;
     }
 
     /**

@@ -15,14 +15,16 @@
  ********************************************************************************/
 
 import {
-    createDefaultModule,
-    createDefaultSharedModule,
     DeepPartial,
-    DefaultSharedModuleContext,
     inject,
     Module,
-    PartialLangiumSharedServices,
 } from "langium";
+import {
+    createDefaultModule,
+    createDefaultSharedModule,
+    DefaultSharedModuleContext,
+    PartialLangiumSharedServices,
+} from "langium/lsp";
 import {
     SysMLGeneratedSharedModule,
     KerMLGeneratedModule,

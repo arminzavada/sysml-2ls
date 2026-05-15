@@ -53,7 +53,7 @@ import {
     throwError,
 } from "./utils.js";
 import * as ast from "../../generated/ast.js";
-import { findNodeForKeyword } from "langium";
+import { GrammarUtils } from "langium";
 import { printTarget } from "./edges.js";
 import {
     printSpecializationPart,
@@ -129,7 +129,7 @@ export function printConnectorEndMember(node: EndMember, context: ModelPrinterCo
         heritage.push(
             line,
             formatPreserved(target, context.format.declaration_reference_subsetting, "token", {
-                find: (node) => findNodeForKeyword(node, "::>"),
+                find: (node) => GrammarUtils.findNodeForKeyword(node, "::>"),
                 choose: {
                     keyword: () => keyword("references "),
                     token: () => text("::> "),
@@ -246,7 +246,7 @@ export function printBinaryEnds(
     const kw = options.source.keyword;
     const sourceKeyword = format
         ? formatPreserved(node, format, "always", {
-              find: (node) => findNodeForKeyword(node, kw),
+              find: (node) => GrammarUtils.findNodeForKeyword(node, kw),
               choose: {
                   always: () => [keyword(kw), literals.space],
                   as_needed: () =>
@@ -370,7 +370,7 @@ export function printGenericConnector(
     if (ends.length > 2) return printNary();
 
     return formatPreserved(node, options.format, "always", {
-        find: (node) => findNodeForKeyword(node, "("),
+        find: (node) => GrammarUtils.findNodeForKeyword(node, "("),
         choose: {
             always: printBinary,
             never: printNary,
@@ -518,7 +518,7 @@ export function printFlowConnectionUsage(
     const cst = node.cst();
     const isMessage =
         node.isMessageConnection ||
-        (node.ends.length === 0 && cst && findNodeForKeyword(cst, "message"));
+        (node.ends.length === 0 && cst && GrammarUtils.findNodeForKeyword(cst, "message"));
     if (isMessage)
         return printGenericFlowConnectionUsage("message", node, context, {
             printer(node, context) {

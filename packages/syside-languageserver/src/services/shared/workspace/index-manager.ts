@@ -44,7 +44,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
      */
     protected readonly globalElementsCache = new Map<string, ElementMeta | null>();
 
-    protected override readonly simpleIndex = new Map<string, SysMLNodeDescription[]>();
+    protected override readonly symbolIndex = new Map<string, SysMLNodeDescription[]>();
     // Langium 2.x removed the `globalScopeCache` field from `DefaultIndexManager`;
     // keep it here for local use by the SysML index but without the `override`.
     protected readonly globalScopeCache = new Map<string, SysMLNodeDescription[]>();
@@ -56,7 +56,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
 
     protected readonly globalScope = new GlobalScope();
 
-    override allElements(nodeType = ""): Stream<SysMLNodeDescription> {
+    override allElements(nodeType = "", _uris?: Set<string>): Stream<SysMLNodeDescription> {
         // cannot cache global elements as they may have import statements which
         // are being resolved currently
         if (nodeType.length === 0) return this.globalScope.getAllElements();
@@ -108,7 +108,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
 
         if (!document.buildOptions?.standalone) {
             // only exporting to global scope if the document is not standalone
-            this.simpleIndex.set(uri, exports);
+            this.symbolIndex.set(uri, exports);
             this.globalScope.collectDocument(document as LangiumDocument<Namespace>);
         }
 
@@ -225,14 +225,12 @@ export class SysMLIndexManager extends DefaultIndexManager {
         return;
     }
 
-    override remove(uris: URI[]): void {
+    override remove(uri: URI): void {
         // clear out caches associated with the document uri
-        for (const uri of uris) {
-            const uriString = uri.toString();
-            this.simpleIndex.delete(uriString);
-            this.referenceIndex.delete(uriString);
-            this.modelDependencies.delete(uriString);
-        }
+        const uriString = uri.toString();
+        this.symbolIndex.delete(uriString);
+        this.referenceIndex.delete(uriString);
+        this.modelDependencies.delete(uriString);
     }
 
     /**

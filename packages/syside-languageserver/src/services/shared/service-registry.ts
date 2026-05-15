@@ -23,7 +23,7 @@ export class SysMLServiceRegistry extends DefaultServiceRegistry {
         try {
             return super.getServices(uri) as SysMLDefaultServices;
         } catch (_) {
-            const services = this.singleton ?? this.map?.[".sysml"];
+            const services = this.singleton ?? this.fileExtensionMap?.get(".sysml");
             if (!services) throw new Error("No services registered!");
             return services as SysMLDefaultServices;
         }

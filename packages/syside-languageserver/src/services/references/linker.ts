@@ -620,12 +620,12 @@ export class SysMLLinker extends DefaultLinker {
 
     protected override loadAstNode(nodeDescription: AstNodeDescription): AstNode | undefined {
         const node = super.loadAstNode(nodeDescription);
-        if (node && !nodeDescription.node)
-            this.metamodelBuilder.preLink(
-                node,
-                this.langiumDocuments().getOrCreateDocument(nodeDescription.documentUri),
-                CancellationToken.None
-            );
+        if (node && !nodeDescription.node) {
+            const document = this.langiumDocuments().getDocument(nodeDescription.documentUri);
+            if (document) {
+                this.metamodelBuilder.preLink(node, document, CancellationToken.None);
+            }
+        }
         return node;
     }
 }

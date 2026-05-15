@@ -21,9 +21,9 @@ import {
     DocumentState,
     LangiumDocument,
 } from "langium";
-import { CancellationToken, Disposable } from "vscode-languageserver";
+import { CancellationToken } from "vscode-languageserver";
 import { SysMLSharedServices } from "../../services.js";
-import { erase, mergeWithPartial, Statistics, Timer } from "../../../utils/common.js";
+import { mergeWithPartial, Statistics, Timer } from "../../../utils/common.js";
 import { URI } from "vscode-uri";
 import now from "performance-now";
 import { BuildProgress } from "./documents.js";
@@ -80,8 +80,6 @@ declare module "langium" {
     }
 }
 
-export type DocumentPhaseListener = (document: LangiumDocument) => void;
-
 export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
     protected readonly statistics: Statistics;
     protected readonly config: SysMLConfigurationProvider;
@@ -90,19 +88,6 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
      * Map of document URIs to times they were opened in ms
      */
     protected readonly openDocuments = new Map<string, number>();
-
-    /**
-     * Listeners for one-by-one document updates
-     */
-    protected readonly documentPhaseListeners: Record<DocumentState, DocumentPhaseListener[]> = {
-        [DocumentState.Changed]: [],
-        [DocumentState.Parsed]: [],
-        [DocumentState.IndexedContent]: [],
-        [DocumentState.ComputedScopes]: [],
-        [DocumentState.Linked]: [],
-        [DocumentState.IndexedReferences]: [],
-        [DocumentState.Validated]: [],
-    };
 
     constructor(services: SysMLSharedServices) {
         super(services);
@@ -206,10 +191,7 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
     ): Promise<void> {
         const timer = new Timer();
 
-        await super.runCancelable(documents, targetState, cancelToken, async (doc) => {
-            await callback(doc);
-            this.notifyEarlyBuildPhase(doc, targetState);
-        });
+        await super.runCancelable(documents, targetState, cancelToken, callback);
 
         if (!this.config.get().logStatistics) return;
 
@@ -224,15 +206,6 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
             const bytes = docs.reduce((total, doc) => total + doc.textDocument.getText().length, 0);
             const duration = docs.reduce((total, doc) => total + doc.parseDuration, 0);
             console.log("   Average parse speed:", (bytes / duration).toFixed(0), "bytes/ms");
-        }
-    }
-
-    /**
-     * Notify listeners that {@link document} has reached {@link state}
-     */
-    protected notifyEarlyBuildPhase(document: LangiumDocument, state: DocumentState): void {
-        for (const listener of this.documentPhaseListeners[state]) {
-            listener(document);
         }
     }
 
@@ -259,9 +232,9 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
             if (!openingTime) return true;
             // update if the document has been open for a while
             if (now() - openingTime > 10) return true;
-            const document = this.langiumDocuments.getOrCreateDocument(uri);
+            const document = this.langiumDocuments.getDocument(uri);
             // update if the document hasn't been fully built yet
-            return document.state < DocumentState.Validated;
+            return !document || document.state < DocumentState.Validated;
         });
 
         if (changed.length === 0 && deleted.length === 0) return;
@@ -270,19 +243,4 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
         return super.update(changed, deleted, cancelToken);
     }
 
-    /**
-     * Register a listener on each built document reaching {@link targetState}.
-     * Since listeners will be called after once for *each* document reaching
-     * {@link targetState}, {@link callback} should not perform any long-running
-     * tasks.
-     * @param targetState State on which {@link callback} will be executed
-     * @param callback
-     * @returns Disposable that unregisters this callback
-     */
-    onDocumentPhase(targetState: DocumentState, callback: DocumentPhaseListener): Disposable {
-        this.documentPhaseListeners[targetState].push(callback);
-        return Disposable.create(() => {
-            erase(this.documentPhaseListeners[targetState], callback);
-        });
-    }
 }

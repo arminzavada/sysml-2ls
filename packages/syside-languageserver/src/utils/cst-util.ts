@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { CstNode, DocumentSegment, streamCst } from "langium";
+import { CstNode, CstUtils, DocumentSegment } from "langium";
 import { Range } from "vscode-languageserver";
 
 export function getPreviousNode(node: CstNode, hidden = true): CstNode | undefined {
@@ -60,7 +60,7 @@ function isOverlapping(a: Range, b: Range): boolean {
 export function findChildren(node: CstNode, range: Range = node.range): CstNode[] {
     const children: CstNode[] = [];
 
-    const it = streamCst(node).iterator();
+    const it = CstUtils.streamCst(node).iterator();
     let next = it.next();
 
     const owner = node.element;

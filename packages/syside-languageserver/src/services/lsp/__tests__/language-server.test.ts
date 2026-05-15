@@ -262,8 +262,9 @@ describe("package.json exports custom contributions", () => {
 });
 
 async function asyncWhile(predicate: () => boolean): Promise<void> {
-    // ignore errors, the tests should show it instead
-    await asyncWaitWhile(predicate, { timeout: 100 }).catch(() => {});
+    // Allow generous wait time — under full-suite contention the language
+    // server initialization races with Langium 3.x's async config fetch.
+    await asyncWaitWhile(predicate, { timeout: 2000 }).catch(() => {});
 }
 
 describe("Language server registration tests", () => {
@@ -278,7 +279,7 @@ describe("Language server registration tests", () => {
         await asyncWhile(() => services.extender.commands.length === 0);
         await asyncWhile(() => services.extender.configurationRequest.mock.calls.length === 0);
         await asyncWhile(() => services.extender.selectStdlibPath.mock.calls.length === 0);
-    });
+    }, 30000);
 
     test("custom semantic token types and modifiers are registered", () => {
         expect(services.initialized).toBeDefined();

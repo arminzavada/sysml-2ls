@@ -15,8 +15,8 @@
  ********************************************************************************/
 
 import {
+    CstUtils,
     DefaultScopeProvider,
-    findLeafNodeAtOffset,
     isLeafCstNode,
     LangiumDocument,
     ReferenceInfo,
@@ -345,7 +345,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         // check if the previous CST node is a scope token (`::` or `.`)
         let previous = getPreviousNode(cst, false);
         if (previous && !isLeafCstNode(previous)) {
-            previous = findLeafNodeAtOffset(previous, previous.end);
+            previous = CstUtils.findLeafNodeAtOffset(previous, previous.end);
         }
         if (!previous || ![".", "::"].includes(previous.text)) {
             return;
@@ -357,7 +357,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         // need to use leaf in case the found node is composite and only
         // contains the single reference node inside
         if (!isLeafCstNode(contextCst)) {
-            contextCst = findLeafNodeAtOffset(contextCst, contextCst.end);
+            contextCst = CstUtils.findLeafNodeAtOffset(contextCst, contextCst.end);
         }
         const element = contextCst?.element;
         if (!element?.$meta) return;

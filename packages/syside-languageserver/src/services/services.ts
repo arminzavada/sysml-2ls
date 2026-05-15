@@ -14,7 +14,8 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { DeepPartial, LangiumServices, LangiumSharedServices } from "langium";
+import { DeepPartial } from "langium";
+import { LangiumServices, LangiumSharedServices } from "langium/lsp";
 import { AstNodeLocator } from "langium";
 import { MetamodelBuilder } from "./shared/workspace/metamodel-builder.js";
 import { SysMLParser } from "./parser/parser.js";

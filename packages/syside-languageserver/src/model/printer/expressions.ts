@@ -65,7 +65,7 @@ import {
 } from "./utils.js";
 import { printAssignmentExpression, printChaining, printTarget } from "./edges.js";
 import { BasicMetamodel } from "../metamodel.js";
-import { findNodeForKeyword } from "langium";
+import { GrammarUtils } from "langium";
 import { printChildrenBlock, printKerMLFeature } from "./namespaces.js";
 import { TriggerInvocationExpressionMeta } from "../SysML/index.js";
 
@@ -790,7 +790,7 @@ export function printNullExpression(node: NullExpressionMeta, context: ModelPrin
     }
 
     return formatPreserved(node, context.format.null_expression, "null", {
-        find: (node) => findNodeForKeyword(node, "null"),
+        find: (node) => GrammarUtils.findNodeForKeyword(node, "null"),
         choose: {
             null: (): Doc => group([keyword("null"), inner]),
             brackets: (): Doc => group([brackets.round.open, brackets.round.close, inner]),
