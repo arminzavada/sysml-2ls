@@ -2498,7 +2498,7 @@ export interface Feature extends Type {
     readonly $type: 'AcceptActionUsage' | 'ActionUsage' | 'AllocationUsage' | 'AnalysisCaseUsage' | 'AssertConstraintUsage' | 'AssignmentActionUsage' | 'AttributeUsage' | 'BindingConnector' | 'BindingConnectorAsUsage' | 'BooleanExpression' | 'CalculationUsage' | 'CaseUsage' | 'CollectExpression' | 'ConcernUsage' | 'ConnectionUsage' | 'Connector' | 'ConnectorAsUsage' | 'ConstraintUsage' | 'ConstructorExpression' | 'ControlNode' | 'DecisionNode' | 'EnumerationUsage' | 'EventOccurrenceUsage' | 'ExhibitStateUsage' | 'Expression' | 'Feature' | 'FeatureChainExpression' | 'FeatureReferenceExpression' | 'FlowUsage' | 'ForLoopActionUsage' | 'ForkNode' | 'IfActionUsage' | 'IncludeUseCaseUsage' | 'IndexExpression' | 'InterfaceUsage' | 'Invariant' | 'InvocationExpression' | 'ItemFeature' | 'ItemFlow' | 'ItemFlowEnd' | 'ItemUsage' | 'JoinNode' | 'LiteralBoolean' | 'LiteralExpression' | 'LiteralInfinity' | 'LiteralNumber' | 'LiteralString' | 'LoopActionUsage' | 'MergeNode' | 'MetadataAccessExpression' | 'MetadataFeature' | 'MetadataUsage' | 'Multiplicity' | 'MultiplicityRange' | 'NullExpression' | 'OccurrenceUsage' | 'OperatorExpression' | 'PartUsage' | 'PerformActionUsage' | 'PortUsage' | 'ReferenceUsage' | 'RenderingUsage' | 'RequirementUsage' | 'SatisfyRequirementUsage' | 'SelectExpression' | 'SendActionUsage' | 'StateUsage' | 'Step' | 'Succession' | 'SuccessionAsUsage' | 'SuccessionFlowUsage' | 'SuccessionItemFlow' | 'TerminateActionUsage' | 'TransitionUsage' | 'TriggerInvocationExpression' | 'Usage' | 'UseCaseUsage' | 'VerificationCaseUsage' | 'ViewUsage' | 'ViewpointUsage' | 'WhileLoopActionUsage';
     crossingFeature?: OwningMembership;
     direction?: FeatureDirectionKind;
-    isComposite?: 'composite';
+    isComposite?: 'composite' | boolean;
     isConstant: boolean;
     isDerived?: 'derived';
     isEnd?: 'end';
@@ -6333,7 +6333,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: AcceptActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: AcceptActionUsage.isComposite
+                    name: AcceptActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: AcceptActionUsage.isConstant,
@@ -6478,7 +6479,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: ActionUsage.isComposite
+                    name: ActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ActionUsage.isConstant,
@@ -6691,7 +6693,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: AllocationUsage.isAbstract
                 },
                 isComposite: {
-                    name: AllocationUsage.isComposite
+                    name: AllocationUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: AllocationUsage.isConstant,
@@ -6854,7 +6857,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: AnalysisCaseUsage.isAbstract
                 },
                 isComposite: {
-                    name: AnalysisCaseUsage.isComposite
+                    name: AnalysisCaseUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: AnalysisCaseUsage.isConstant,
@@ -7003,7 +7007,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: AssertConstraintUsage.isAbstract
                 },
                 isComposite: {
-                    name: AssertConstraintUsage.isComposite
+                    name: AssertConstraintUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: AssertConstraintUsage.isConstant,
@@ -7106,7 +7111,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: AssignmentActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: AssignmentActionUsage.isComposite
+                    name: AssignmentActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: AssignmentActionUsage.isConstant,
@@ -7374,7 +7380,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: AttributeUsage.isAbstract
                 },
                 isComposite: {
-                    name: AttributeUsage.isComposite
+                    name: AttributeUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: AttributeUsage.isConstant,
@@ -7513,7 +7520,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: BindingConnector.isAbstract
                 },
                 isComposite: {
-                    name: BindingConnector.isComposite
+                    name: BindingConnector.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: BindingConnector.isConstant,
@@ -7620,7 +7628,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: BindingConnectorAsUsage.isAbstract
                 },
                 isComposite: {
-                    name: BindingConnectorAsUsage.isComposite
+                    name: BindingConnectorAsUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: BindingConnectorAsUsage.isConstant,
@@ -7734,7 +7743,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: BooleanExpression.isAbstract
                 },
                 isComposite: {
-                    name: BooleanExpression.isComposite
+                    name: BooleanExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: BooleanExpression.isConstant,
@@ -7864,7 +7874,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: CalculationUsage.isAbstract
                 },
                 isComposite: {
-                    name: CalculationUsage.isComposite
+                    name: CalculationUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: CalculationUsage.isConstant,
@@ -8009,7 +8020,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: CaseUsage.isAbstract
                 },
                 isComposite: {
-                    name: CaseUsage.isComposite
+                    name: CaseUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: CaseUsage.isConstant,
@@ -8196,7 +8208,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: CollectExpression.isAbstract
                 },
                 isComposite: {
-                    name: CollectExpression.isComposite
+                    name: CollectExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: CollectExpression.isConstant,
@@ -8355,7 +8368,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ConcernUsage.isAbstract
                 },
                 isComposite: {
-                    name: ConcernUsage.isComposite
+                    name: ConcernUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ConcernUsage.isConstant,
@@ -8665,7 +8679,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ConnectionUsage.isAbstract
                 },
                 isComposite: {
-                    name: ConnectionUsage.isComposite
+                    name: ConnectionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ConnectionUsage.isConstant,
@@ -8787,7 +8802,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Connector.isAbstract
                 },
                 isComposite: {
-                    name: Connector.isComposite
+                    name: Connector.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Connector.isConstant,
@@ -8894,7 +8910,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ConnectorAsUsage.isAbstract
                 },
                 isComposite: {
-                    name: ConnectorAsUsage.isComposite
+                    name: ConnectorAsUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ConnectorAsUsage.isConstant,
@@ -9057,7 +9074,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ConstraintUsage.isAbstract
                 },
                 isComposite: {
-                    name: ConstraintUsage.isComposite
+                    name: ConstraintUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ConstraintUsage.isConstant,
@@ -9153,7 +9171,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ConstructorExpression.isAbstract
                 },
                 isComposite: {
-                    name: ConstructorExpression.isComposite
+                    name: ConstructorExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ConstructorExpression.isConstant,
@@ -9238,7 +9257,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ControlNode.isAbstract
                 },
                 isComposite: {
-                    name: ControlNode.isComposite
+                    name: ControlNode.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ControlNode.isConstant,
@@ -9406,7 +9426,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: DecisionNode.isAbstract
                 },
                 isComposite: {
-                    name: DecisionNode.isComposite
+                    name: DecisionNode.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: DecisionNode.isConstant,
@@ -9845,7 +9866,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: EnumerationUsage.isAbstract
                 },
                 isComposite: {
-                    name: EnumerationUsage.isComposite
+                    name: EnumerationUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: EnumerationUsage.isConstant,
@@ -9938,7 +9960,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: EventOccurrenceUsage.isAbstract
                 },
                 isComposite: {
-                    name: EventOccurrenceUsage.isComposite
+                    name: EventOccurrenceUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: EventOccurrenceUsage.isConstant,
@@ -10031,7 +10054,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ExhibitStateUsage.isAbstract
                 },
                 isComposite: {
-                    name: ExhibitStateUsage.isComposite
+                    name: ExhibitStateUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ExhibitStateUsage.isConstant,
@@ -10176,7 +10200,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Expression.isAbstract
                 },
                 isComposite: {
-                    name: Expression.isComposite
+                    name: Expression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Expression.isConstant,
@@ -10257,7 +10282,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Feature.isAbstract
                 },
                 isComposite: {
-                    name: Feature.isComposite
+                    name: Feature.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Feature.isConstant,
@@ -10335,7 +10361,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: FeatureChainExpression.isAbstract
                 },
                 isComposite: {
-                    name: FeatureChainExpression.isComposite
+                    name: FeatureChainExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: FeatureChainExpression.isConstant,
@@ -10556,7 +10583,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: FeatureReferenceExpression.isAbstract
                 },
                 isComposite: {
-                    name: FeatureReferenceExpression.isComposite
+                    name: FeatureReferenceExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: FeatureReferenceExpression.isConstant,
@@ -10845,7 +10873,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: FlowUsage.isAbstract
                 },
                 isComposite: {
-                    name: FlowUsage.isComposite
+                    name: FlowUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: FlowUsage.isConstant,
@@ -10969,7 +10998,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ForLoopActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: ForLoopActionUsage.isComposite
+                    name: ForLoopActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ForLoopActionUsage.isConstant,
@@ -11068,7 +11098,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ForkNode.isAbstract
                 },
                 isComposite: {
-                    name: ForkNode.isComposite
+                    name: ForkNode.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ForkNode.isConstant,
@@ -11211,7 +11242,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: IfActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: IfActionUsage.isComposite
+                    name: IfActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: IfActionUsage.isConstant,
@@ -11355,7 +11387,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: IncludeUseCaseUsage.isAbstract
                 },
                 isComposite: {
-                    name: IncludeUseCaseUsage.isComposite
+                    name: IncludeUseCaseUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: IncludeUseCaseUsage.isConstant,
@@ -11451,7 +11484,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: IndexExpression.isAbstract
                 },
                 isComposite: {
-                    name: IndexExpression.isComposite
+                    name: IndexExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: IndexExpression.isConstant,
@@ -11724,7 +11758,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: InterfaceUsage.isAbstract
                 },
                 isComposite: {
-                    name: InterfaceUsage.isComposite
+                    name: InterfaceUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: InterfaceUsage.isConstant,
@@ -11875,7 +11910,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Invariant.isAbstract
                 },
                 isComposite: {
-                    name: Invariant.isComposite
+                    name: Invariant.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Invariant.isConstant,
@@ -11960,7 +11996,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: InvocationExpression.isAbstract
                 },
                 isComposite: {
-                    name: InvocationExpression.isComposite
+                    name: InvocationExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: InvocationExpression.isConstant,
@@ -12091,7 +12128,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ItemFeature.isAbstract
                 },
                 isComposite: {
-                    name: ItemFeature.isComposite
+                    name: ItemFeature.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ItemFeature.isConstant,
@@ -12177,7 +12215,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ItemFlow.isAbstract
                 },
                 isComposite: {
-                    name: ItemFlow.isComposite
+                    name: ItemFlow.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ItemFlow.isConstant,
@@ -12279,7 +12318,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ItemFlowEnd.isAbstract
                 },
                 isComposite: {
-                    name: ItemFlowEnd.isComposite
+                    name: ItemFlowEnd.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ItemFlowEnd.isConstant,
@@ -12357,7 +12397,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ItemUsage.isAbstract
                 },
                 isComposite: {
-                    name: ItemUsage.isComposite
+                    name: ItemUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ItemUsage.isConstant,
@@ -12450,7 +12491,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: JoinNode.isAbstract
                 },
                 isComposite: {
-                    name: JoinNode.isComposite
+                    name: JoinNode.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: JoinNode.isConstant,
@@ -12605,7 +12647,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: LiteralBoolean.isAbstract
                 },
                 isComposite: {
-                    name: LiteralBoolean.isComposite
+                    name: LiteralBoolean.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: LiteralBoolean.isConstant,
@@ -12690,7 +12733,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: LiteralExpression.isAbstract
                 },
                 isComposite: {
-                    name: LiteralExpression.isComposite
+                    name: LiteralExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: LiteralExpression.isConstant,
@@ -12771,7 +12815,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: LiteralInfinity.isAbstract
                 },
                 isComposite: {
-                    name: LiteralInfinity.isComposite
+                    name: LiteralInfinity.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: LiteralInfinity.isConstant,
@@ -12852,7 +12897,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: LiteralNumber.isAbstract
                 },
                 isComposite: {
-                    name: LiteralNumber.isComposite
+                    name: LiteralNumber.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: LiteralNumber.isConstant,
@@ -12936,7 +12982,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: LiteralString.isAbstract
                 },
                 isComposite: {
-                    name: LiteralString.isComposite
+                    name: LiteralString.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: LiteralString.isConstant,
@@ -13020,7 +13067,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: LoopActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: LoopActionUsage.isComposite
+                    name: LoopActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: LoopActionUsage.isConstant,
@@ -13265,7 +13313,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: MergeNode.isAbstract
                 },
                 isComposite: {
-                    name: MergeNode.isComposite
+                    name: MergeNode.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: MergeNode.isConstant,
@@ -13411,7 +13460,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: MetadataAccessExpression.isAbstract
                 },
                 isComposite: {
-                    name: MetadataAccessExpression.isComposite
+                    name: MetadataAccessExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: MetadataAccessExpression.isConstant,
@@ -13545,7 +13595,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: MetadataFeature.isAbstract
                 },
                 isComposite: {
-                    name: MetadataFeature.isComposite
+                    name: MetadataFeature.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: MetadataFeature.isConstant,
@@ -13627,7 +13678,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: MetadataUsage.isAbstract
                 },
                 isComposite: {
-                    name: MetadataUsage.isComposite
+                    name: MetadataUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: MetadataUsage.isConstant,
@@ -13720,7 +13772,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Multiplicity.isAbstract
                 },
                 isComposite: {
-                    name: Multiplicity.isComposite
+                    name: Multiplicity.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Multiplicity.isConstant,
@@ -13798,7 +13851,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: MultiplicityRange.isAbstract
                 },
                 isComposite: {
-                    name: MultiplicityRange.isComposite
+                    name: MultiplicityRange.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: MultiplicityRange.isConstant,
@@ -14016,7 +14070,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: NullExpression.isAbstract
                 },
                 isComposite: {
-                    name: NullExpression.isComposite
+                    name: NullExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: NullExpression.isConstant,
@@ -14184,7 +14239,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: OccurrenceUsage.isAbstract
                 },
                 isComposite: {
-                    name: OccurrenceUsage.isComposite
+                    name: OccurrenceUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: OccurrenceUsage.isConstant,
@@ -14277,7 +14333,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: OperatorExpression.isAbstract
                 },
                 isComposite: {
-                    name: OperatorExpression.isComposite
+                    name: OperatorExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: OperatorExpression.isConstant,
@@ -14513,7 +14570,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: PartUsage.isAbstract
                 },
                 isComposite: {
-                    name: PartUsage.isComposite
+                    name: PartUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: PartUsage.isConstant,
@@ -14606,7 +14664,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: PerformActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: PerformActionUsage.isComposite
+                    name: PerformActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: PerformActionUsage.isConstant,
@@ -14782,7 +14841,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: PortUsage.isAbstract
                 },
                 isComposite: {
-                    name: PortUsage.isComposite
+                    name: PortUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: PortUsage.isConstant,
@@ -14990,7 +15050,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ReferenceUsage.isAbstract
                 },
                 isComposite: {
-                    name: ReferenceUsage.isComposite
+                    name: ReferenceUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ReferenceUsage.isConstant,
@@ -15166,7 +15227,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: RenderingUsage.isAbstract
                 },
                 isComposite: {
-                    name: RenderingUsage.isComposite
+                    name: RenderingUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: RenderingUsage.isConstant,
@@ -15352,7 +15414,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: RequirementUsage.isAbstract
                 },
                 isComposite: {
-                    name: RequirementUsage.isComposite
+                    name: RequirementUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: RequirementUsage.isConstant,
@@ -15574,7 +15637,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: SatisfyRequirementUsage.isAbstract
                 },
                 isComposite: {
-                    name: SatisfyRequirementUsage.isComposite
+                    name: SatisfyRequirementUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: SatisfyRequirementUsage.isConstant,
@@ -15677,7 +15741,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: SelectExpression.isAbstract
                 },
                 isComposite: {
-                    name: SelectExpression.isComposite
+                    name: SelectExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: SelectExpression.isConstant,
@@ -15765,7 +15830,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: SendActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: SendActionUsage.isComposite
+                    name: SendActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: SendActionUsage.isConstant,
@@ -16039,7 +16105,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: StateUsage.isAbstract
                 },
                 isComposite: {
-                    name: StateUsage.isComposite
+                    name: StateUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: StateUsage.isConstant,
@@ -16136,7 +16203,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Step.isAbstract
                 },
                 isComposite: {
-                    name: Step.isComposite
+                    name: Step.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Step.isConstant,
@@ -16375,7 +16443,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Succession.isAbstract
                 },
                 isComposite: {
-                    name: Succession.isComposite
+                    name: Succession.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Succession.isConstant,
@@ -16482,7 +16551,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: SuccessionAsUsage.isAbstract
                 },
                 isComposite: {
-                    name: SuccessionAsUsage.isComposite
+                    name: SuccessionAsUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: SuccessionAsUsage.isConstant,
@@ -16604,7 +16674,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: SuccessionFlowUsage.isAbstract
                 },
                 isComposite: {
-                    name: SuccessionFlowUsage.isComposite
+                    name: SuccessionFlowUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: SuccessionFlowUsage.isConstant,
@@ -16733,7 +16804,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: SuccessionItemFlow.isAbstract
                 },
                 isComposite: {
-                    name: SuccessionItemFlow.isComposite
+                    name: SuccessionItemFlow.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: SuccessionItemFlow.isConstant,
@@ -16876,7 +16948,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: TerminateActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: TerminateActionUsage.isComposite
+                    name: TerminateActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: TerminateActionUsage.isConstant,
@@ -17069,7 +17142,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: TransitionUsage.isAbstract
                 },
                 isComposite: {
-                    name: TransitionUsage.isComposite
+                    name: TransitionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: TransitionUsage.isConstant,
@@ -17180,7 +17254,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: TriggerInvocationExpression.isAbstract
                 },
                 isComposite: {
-                    name: TriggerInvocationExpression.isComposite
+                    name: TriggerInvocationExpression.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: TriggerInvocationExpression.isConstant,
@@ -17401,7 +17476,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: Usage.isAbstract
                 },
                 isComposite: {
-                    name: Usage.isComposite
+                    name: Usage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: Usage.isConstant,
@@ -17543,7 +17619,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: UseCaseUsage.isAbstract
                 },
                 isComposite: {
-                    name: UseCaseUsage.isComposite
+                    name: UseCaseUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: UseCaseUsage.isConstant,
@@ -17729,7 +17806,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: VerificationCaseUsage.isAbstract
                 },
                 isComposite: {
-                    name: VerificationCaseUsage.isComposite
+                    name: VerificationCaseUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: VerificationCaseUsage.isConstant,
@@ -17912,7 +17990,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ViewUsage.isAbstract
                 },
                 isComposite: {
-                    name: ViewUsage.isComposite
+                    name: ViewUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ViewUsage.isConstant,
@@ -18054,7 +18133,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: ViewpointUsage.isAbstract
                 },
                 isComposite: {
-                    name: ViewpointUsage.isComposite
+                    name: ViewpointUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: ViewpointUsage.isConstant,
@@ -18156,7 +18236,8 @@ export class SysMLAstReflection extends langium.AbstractAstReflection {
                     name: WhileLoopActionUsage.isAbstract
                 },
                 isComposite: {
-                    name: WhileLoopActionUsage.isComposite
+                    name: WhileLoopActionUsage.isComposite,
+                    defaultValue: false
                 },
                 isConstant: {
                     name: WhileLoopActionUsage.isConstant,

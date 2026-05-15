@@ -12550,8 +12550,17 @@ export const KerMLGrammar = (): Grammar => loadedKerMLGrammar ?? (loadedKerMLGra
           "name": "isComposite",
           "isOptional": true,
           "type": {
-            "$type": "SimpleType",
-            "stringType": "composite"
+            "$type": "UnionType",
+            "types": [
+              {
+                "$type": "SimpleType",
+                "stringType": "composite"
+              },
+              {
+                "$type": "SimpleType",
+                "primitiveType": "boolean"
+              }
+            ]
           }
         },
         {
@@ -14233,7 +14242,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -14252,7 +14261,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@425"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -14271,7 +14280,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@425"
+                    "$ref": "#/rules@423"
                   },
                   "arguments": []
                 }
@@ -14290,7 +14299,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@425"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -14309,7 +14318,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@425"
+                    "$ref": "#/rules@423"
                   },
                   "arguments": []
                 }
@@ -14386,21 +14395,21 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
+              "$ref": "#/rules@419"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@420"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
               "$ref": "#/rules@421"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@422"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@423"
             },
             "arguments": []
           },
@@ -14485,7 +14494,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@410"
+              "$ref": "#/rules@408"
             },
             "arguments": [],
             "cardinality": "?"
@@ -14603,7 +14612,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@436"
+                "$ref": "#/rules@434"
               },
               "arguments": []
             }
@@ -14665,7 +14674,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@419"
+                    "$ref": "#/rules@417"
                   },
                   "arguments": []
                 }
@@ -14684,7 +14693,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@419"
+                        "$ref": "#/rules@417"
                       },
                       "arguments": []
                     }
@@ -14721,7 +14730,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -14743,7 +14752,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@436"
+                "$ref": "#/rules@434"
               },
               "arguments": []
             }
@@ -14913,7 +14922,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@406"
+              "$ref": "#/rules@404"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15008,7 +15017,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@416"
+              "$ref": "#/rules@414"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15059,7 +15068,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@401"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15228,7 +15237,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15263,7 +15272,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15298,7 +15307,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15314,7 +15323,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@338"
+                "$ref": "#/rules@336"
               },
               "arguments": []
             }
@@ -15341,7 +15350,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15358,7 +15367,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@401"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15374,7 +15383,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@425"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -15402,7 +15411,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15414,7 +15423,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@417"
+              "$ref": "#/rules@415"
             },
             "arguments": [],
             "cardinality": "?"
@@ -15438,7 +15447,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@425"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -15560,7 +15569,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@338"
+                "$ref": "#/rules@336"
               },
               "arguments": []
             }
@@ -15692,28 +15701,35 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@271"
+              "$ref": "#/rules@269"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@237"
+              "$ref": "#/rules@235"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@278"
+              "$ref": "#/rules@276"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@282"
+              "$ref": "#/rules@280"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@300"
             },
             "arguments": []
           },
@@ -15727,7 +15743,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@304"
+              "$ref": "#/rules@309"
             },
             "arguments": []
           },
@@ -15741,21 +15757,21 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@313"
+              "$ref": "#/rules@315"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@317"
+              "$ref": "#/rules@318"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@320"
+              "$ref": "#/rules@330"
             },
             "arguments": []
           },
@@ -15763,13 +15779,6 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@332"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@334"
             },
             "arguments": []
           },
@@ -15825,7 +15834,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@402"
+              "$ref": "#/rules@400"
             },
             "arguments": []
           },
@@ -15881,7 +15890,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@428"
+            "$ref": "#/rules@426"
           },
           "arguments": []
         }
@@ -15903,7 +15912,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": []
               },
@@ -16022,7 +16031,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@418"
+                  "$ref": "#/rules@416"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -16032,7 +16041,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@418"
+              "$ref": "#/rules@416"
             },
             "arguments": []
           }
@@ -16211,7 +16220,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@403"
+              "$ref": "#/rules@401"
             },
             "arguments": []
           },
@@ -16242,7 +16251,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@404"
+              "$ref": "#/rules@402"
             },
             "arguments": []
           },
@@ -16273,7 +16282,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@405"
+              "$ref": "#/rules@403"
             },
             "arguments": []
           },
@@ -16345,7 +16354,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@406"
+              "$ref": "#/rules@404"
             },
             "arguments": []
           },
@@ -16378,7 +16387,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@437"
+              "$ref": "#/rules@435"
             },
             "arguments": []
           },
@@ -16412,7 +16421,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@429"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -16424,7 +16433,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@448"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -16451,7 +16460,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@429"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -16463,7 +16472,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@448"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -16490,7 +16499,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@429"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -16502,7 +16511,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@448"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -16529,7 +16538,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@429"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -16541,7 +16550,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@448"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -16622,7 +16631,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@338"
+            "$ref": "#/rules@336"
           },
           "arguments": []
         }
@@ -16641,7 +16650,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@410"
+              "$ref": "#/rules@408"
             },
             "arguments": []
           },
@@ -16740,7 +16749,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@401"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -16947,7 +16956,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -16982,7 +16991,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17017,7 +17026,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17056,7 +17065,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17091,7 +17100,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17126,7 +17135,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17161,7 +17170,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17198,7 +17207,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@407"
+                "$ref": "#/rules@405"
               },
               "arguments": []
             },
@@ -17207,7 +17216,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@413"
+              "$ref": "#/rules@411"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17288,7 +17297,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@414"
+              "$ref": "#/rules@412"
             },
             "arguments": []
           },
@@ -17602,7 +17611,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@338"
+                "$ref": "#/rules@336"
               },
               "arguments": []
             }
@@ -17625,7 +17634,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@414"
+              "$ref": "#/rules@412"
             },
             "arguments": [],
             "cardinality": "?"
@@ -17884,14 +17893,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@326"
+              "$ref": "#/rules@324"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@335"
+              "$ref": "#/rules@333"
             },
             "arguments": []
           },
@@ -17969,6 +17978,20 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
+              "$ref": "#/rules@275"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@251"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
               "$ref": "#/rules@277"
             },
             "arguments": []
@@ -17976,28 +17999,21 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@253"
+              "$ref": "#/rules@294"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@279"
+              "$ref": "#/rules@301"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@296"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@303"
+              "$ref": "#/rules@308"
             },
             "arguments": []
           },
@@ -18018,21 +18034,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@314"
+              "$ref": "#/rules@316"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@318"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@333"
+              "$ref": "#/rules@331"
             },
             "arguments": []
           },
@@ -18046,28 +18055,28 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@254"
+              "$ref": "#/rules@252"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@319"
+              "$ref": "#/rules@317"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@280"
+              "$ref": "#/rules@278"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@297"
+              "$ref": "#/rules@295"
             },
             "arguments": []
           }
@@ -18166,14 +18175,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@326"
+              "$ref": "#/rules@324"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@335"
+              "$ref": "#/rules@333"
             },
             "arguments": []
           },
@@ -18518,7 +18527,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -19330,7 +19339,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -19421,14 +19430,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@400"
+                  "$ref": "#/rules@398"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@404"
+                  "$ref": "#/rules@402"
                 },
                 "arguments": []
               }
@@ -20369,7 +20378,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -20397,7 +20406,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -20421,7 +20430,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@437"
+                    "$ref": "#/rules@435"
                   },
                   "arguments": []
                 }
@@ -20463,7 +20472,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@437"
+                    "$ref": "#/rules@435"
                   },
                   "arguments": []
                 }
@@ -20622,7 +20631,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@429"
+                    "$ref": "#/rules@427"
                   },
                   "arguments": []
                 }
@@ -20640,7 +20649,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@450"
+                "$ref": "#/rules@448"
               },
               "arguments": []
             }
@@ -20708,7 +20717,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@429"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -20944,7 +20953,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -21029,7 +21038,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -21100,7 +21109,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@414"
+              "$ref": "#/rules@412"
             },
             "arguments": []
           },
@@ -21376,14 +21385,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@400"
+                  "$ref": "#/rules@398"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@404"
+                  "$ref": "#/rules@402"
                 },
                 "arguments": []
               }
@@ -21874,7 +21883,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -21890,7 +21899,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@429"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -21920,7 +21929,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -21955,7 +21964,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -21967,7 +21976,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@232"
+                "$ref": "#/rules@230"
               },
               "arguments": []
             }
@@ -21991,7 +22000,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@236"
+            "$ref": "#/rules@234"
           },
           "arguments": []
         }
@@ -22454,7 +22463,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -22560,7 +22569,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@373"
+                    "$ref": "#/rules@371"
                   },
                   "arguments": []
                 }
@@ -22656,7 +22665,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@339"
+            "$ref": "#/rules@337"
           },
           "arguments": []
         }
@@ -22910,7 +22919,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@338"
+            "$ref": "#/rules@336"
           },
           "arguments": []
         }
@@ -22981,7 +22990,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@447"
+                "$ref": "#/rules@445"
               },
               "arguments": []
             }
@@ -23067,7 +23076,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@338"
+            "$ref": "#/rules@336"
           },
           "arguments": []
         }
@@ -23550,8 +23559,13 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "arguments": []
           },
           {
-            "$type": "Keyword",
-            "value": "merge"
+            "$type": "Assignment",
+            "feature": "isComposite",
+            "operator": "?=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "merge"
+            }
           },
           {
             "$type": "RuleCall",
@@ -23564,7 +23578,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@230"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -23591,8 +23605,13 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "arguments": []
           },
           {
-            "$type": "Keyword",
-            "value": "decide"
+            "$type": "Assignment",
+            "feature": "isComposite",
+            "operator": "?=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "decide"
+            }
           },
           {
             "$type": "RuleCall",
@@ -23605,7 +23624,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@230"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -23632,8 +23651,13 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "arguments": []
           },
           {
-            "$type": "Keyword",
-            "value": "join"
+            "$type": "Assignment",
+            "feature": "isComposite",
+            "operator": "?=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "join"
+            }
           },
           {
             "$type": "RuleCall",
@@ -23646,7 +23670,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@230"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -23673,8 +23697,13 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "arguments": []
           },
           {
-            "$type": "Keyword",
-            "value": "fork"
+            "$type": "Assignment",
+            "feature": "isComposite",
+            "operator": "?=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "fork"
+            }
           },
           {
             "$type": "RuleCall",
@@ -23687,7 +23716,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@230"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -23695,62 +23724,6 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       },
       "entry": false,
       "fragment": false,
-      "parameters": []
-    },
-    {
-      "$type": "ParserRule",
-      "fragment": true,
-      "name": "ActionNodeBody",
-      "definition": {
-        "$type": "Alternatives",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": ";"
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": "{"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@231"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "}"
-              }
-            ]
-          }
-        ]
-      },
-      "entry": false,
-      "parameters": []
-    },
-    {
-      "$type": "ParserRule",
-      "fragment": true,
-      "name": "ActionNodeItems",
-      "definition": {
-        "$type": "Assignment",
-        "feature": "children",
-        "operator": "+=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@9"
-          },
-          "arguments": []
-        },
-        "cardinality": "*"
-      },
-      "entry": false,
       "parameters": []
     },
     {
@@ -23768,21 +23741,21 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
+                  "$ref": "#/rules@231"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@232"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
                   "$ref": "#/rules@233"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@234"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@235"
                 },
                 "arguments": []
               }
@@ -23862,7 +23835,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@260"
+                "$ref": "#/rules@258"
               },
               "arguments": []
             },
@@ -23879,7 +23852,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@269"
+                "$ref": "#/rules@267"
               },
               "arguments": []
             }
@@ -23912,7 +23885,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@269"
+                "$ref": "#/rules@267"
               },
               "arguments": []
             }
@@ -23961,7 +23934,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@257"
+                "$ref": "#/rules@255"
               },
               "arguments": []
             }
@@ -23973,7 +23946,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@260"
+                "$ref": "#/rules@258"
               },
               "arguments": []
             },
@@ -23990,7 +23963,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@269"
+                "$ref": "#/rules@267"
               },
               "arguments": []
             }
@@ -24042,7 +24015,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@238"
+              "$ref": "#/rules@236"
             },
             "arguments": []
           }
@@ -24083,7 +24056,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@239"
+                  "$ref": "#/rules@237"
                 },
                 "arguments": []
               },
@@ -24105,7 +24078,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@240"
+          "$ref": "#/rules@238"
         },
         "arguments": [],
         "cardinality": "*"
@@ -24247,7 +24220,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@252"
+                "$ref": "#/rules@250"
               },
               "arguments": []
             }
@@ -24259,7 +24232,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@251"
+                "$ref": "#/rules@249"
               },
               "arguments": []
             }
@@ -24271,19 +24244,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@241"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@239"
               },
               "arguments": []
             }
@@ -24307,7 +24268,19 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@243"
+                "$ref": "#/rules@240"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@241"
               },
               "arguments": []
             }
@@ -24329,7 +24302,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -24350,7 +24323,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@250"
+                "$ref": "#/rules@248"
               },
               "arguments": []
             }
@@ -24373,7 +24346,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -24394,7 +24367,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@250"
+                "$ref": "#/rules@248"
               },
               "arguments": []
             }
@@ -24417,7 +24390,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -24438,7 +24411,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@250"
+                "$ref": "#/rules@248"
               },
               "arguments": []
             }
@@ -24461,7 +24434,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -24476,7 +24449,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@234"
+                    "$ref": "#/rules@232"
                   },
                   "arguments": []
                 }
@@ -24495,7 +24468,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@270"
+                        "$ref": "#/rules@268"
                       },
                       "arguments": []
                     }
@@ -24667,6 +24640,20 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
+              "$ref": "#/rules@243"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@244"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
               "$ref": "#/rules@245"
             },
             "arguments": []
@@ -24682,20 +24669,6 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@247"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@248"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@249"
             },
             "arguments": []
           }
@@ -24717,7 +24690,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -24729,7 +24702,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@255"
+                "$ref": "#/rules@253"
               },
               "arguments": []
             }
@@ -24752,7 +24725,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -24764,7 +24737,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@256"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -24805,7 +24778,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@238"
+              "$ref": "#/rules@236"
             },
             "arguments": []
           }
@@ -24893,7 +24866,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@238"
+              "$ref": "#/rules@236"
             },
             "arguments": []
           }
@@ -24941,7 +24914,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@257"
+                "$ref": "#/rules@255"
               },
               "arguments": []
             }
@@ -24953,7 +24926,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@258"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             },
@@ -24967,7 +24940,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@260"
+                "$ref": "#/rules@258"
               },
               "arguments": []
             },
@@ -24980,7 +24953,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@261"
+                "$ref": "#/rules@259"
               },
               "arguments": []
             },
@@ -24997,7 +24970,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@269"
+                "$ref": "#/rules@267"
               },
               "arguments": []
             }
@@ -25041,7 +25014,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@258"
+                        "$ref": "#/rules@256"
                       },
                       "arguments": []
                     },
@@ -25054,7 +25027,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@260"
+                        "$ref": "#/rules@258"
                       },
                       "arguments": []
                     },
@@ -25067,7 +25040,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@261"
+                        "$ref": "#/rules@259"
                       },
                       "arguments": []
                     },
@@ -25085,7 +25058,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@258"
+                        "$ref": "#/rules@256"
                       },
                       "arguments": []
                     },
@@ -25098,7 +25071,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@260"
+                        "$ref": "#/rules@258"
                       },
                       "arguments": []
                     },
@@ -25111,7 +25084,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@261"
+                        "$ref": "#/rules@259"
                       },
                       "arguments": []
                     },
@@ -25130,7 +25103,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@260"
+                        "$ref": "#/rules@258"
                       },
                       "arguments": []
                     }
@@ -25142,7 +25115,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@261"
+                        "$ref": "#/rules@259"
                       },
                       "arguments": []
                     },
@@ -25165,7 +25138,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@269"
+                "$ref": "#/rules@267"
               },
               "arguments": []
             }
@@ -25200,7 +25173,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@429"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -25221,7 +25194,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@448"
+                    "$ref": "#/rules@446"
                   },
                   "arguments": []
                 }
@@ -25259,7 +25232,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@259"
+                "$ref": "#/rules@257"
               },
               "arguments": []
             }
@@ -25312,7 +25285,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@338"
+                "$ref": "#/rules@336"
               },
               "arguments": []
             }
@@ -25348,7 +25321,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@268"
+                "$ref": "#/rules@266"
               },
               "arguments": []
             }
@@ -25405,7 +25378,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@260"
             },
             "arguments": []
           }
@@ -25434,7 +25407,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@260"
             },
             "arguments": []
           }
@@ -25463,7 +25436,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@260"
             },
             "arguments": []
           }
@@ -25492,7 +25465,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@260"
             },
             "arguments": []
           }
@@ -25521,7 +25494,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@260"
             },
             "arguments": []
           }
@@ -25543,6 +25516,20 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
+              "$ref": "#/rules@261"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@262"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
               "$ref": "#/rules@263"
             },
             "arguments": []
@@ -25558,20 +25545,6 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@265"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@266"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@267"
             },
             "arguments": []
           }
@@ -25594,7 +25567,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@270"
+            "$ref": "#/rules@268"
           },
           "arguments": []
         }
@@ -25659,7 +25632,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@272"
+              "$ref": "#/rules@270"
             },
             "arguments": []
           }
@@ -25690,7 +25663,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@273"
+                  "$ref": "#/rules@271"
                 },
                 "arguments": []
               },
@@ -25715,7 +25688,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@274"
+              "$ref": "#/rules@272"
             },
             "arguments": [],
             "cardinality": "*"
@@ -25727,7 +25700,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@276"
+                "$ref": "#/rules@274"
               },
               "arguments": []
             },
@@ -25759,7 +25732,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@275"
+                "$ref": "#/rules@273"
               },
               "arguments": []
             }
@@ -25781,7 +25754,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -25820,7 +25793,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -25832,7 +25805,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@338"
+                "$ref": "#/rules@336"
               },
               "arguments": []
             }
@@ -25873,7 +25846,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@272"
+              "$ref": "#/rules@270"
             },
             "arguments": []
           }
@@ -25917,7 +25890,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@272"
+              "$ref": "#/rules@270"
             },
             "arguments": []
           }
@@ -25950,14 +25923,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@281"
+              "$ref": "#/rules@279"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@272"
+              "$ref": "#/rules@270"
             },
             "arguments": []
           }
@@ -26035,7 +26008,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@281"
+                      "$ref": "#/rules@279"
                     },
                     "arguments": []
                   }
@@ -26046,7 +26019,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@272"
+              "$ref": "#/rules@270"
             },
             "arguments": []
           }
@@ -26118,7 +26091,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -26149,7 +26122,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@284"
+                  "$ref": "#/rules@282"
                 },
                 "arguments": []
               },
@@ -26171,7 +26144,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@285"
+          "$ref": "#/rules@283"
         },
         "arguments": [],
         "cardinality": "*"
@@ -26192,6 +26165,18 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               "$ref": "#/rules@70"
             },
             "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@284"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Assignment",
@@ -26224,6 +26209,18 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
+                "$ref": "#/rules@313"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
                 "$ref": "#/rules@290"
               },
               "arguments": []
@@ -26236,31 +26233,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@315"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
                 "$ref": "#/rules@292"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@294"
               },
               "arguments": []
             }
@@ -26282,7 +26255,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -26298,7 +26271,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@287"
+                "$ref": "#/rules@285"
               },
               "arguments": []
             }
@@ -26351,7 +26324,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -26375,7 +26348,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@289"
+                "$ref": "#/rules@287"
               },
               "arguments": []
             }
@@ -26421,7 +26394,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@272"
+                  "$ref": "#/rules@270"
                 },
                 "arguments": []
               }
@@ -26463,14 +26436,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@281"
+                  "$ref": "#/rules@279"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@272"
+                  "$ref": "#/rules@270"
                 },
                 "arguments": []
               }
@@ -26494,7 +26467,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -26510,7 +26483,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@291"
+                "$ref": "#/rules@289"
               },
               "arguments": []
             }
@@ -26556,7 +26529,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@283"
+                  "$ref": "#/rules@281"
                 },
                 "arguments": []
               }
@@ -26598,14 +26571,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@281"
+                  "$ref": "#/rules@279"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@272"
+                  "$ref": "#/rules@270"
                 },
                 "arguments": []
               }
@@ -26629,7 +26602,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -26645,7 +26618,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@293"
+                "$ref": "#/rules@291"
               },
               "arguments": []
             }
@@ -26698,7 +26671,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -26714,7 +26687,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@295"
+                "$ref": "#/rules@293"
               },
               "arguments": []
             }
@@ -26778,14 +26751,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@281"
+              "$ref": "#/rules@279"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -26899,7 +26872,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@298"
+                    "$ref": "#/rules@296"
                   },
                   "arguments": []
                 }
@@ -26910,7 +26883,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -26933,7 +26906,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@299"
+            "$ref": "#/rules@297"
           },
           "arguments": []
         }
@@ -26955,7 +26928,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@300"
+            "$ref": "#/rules@298"
           },
           "arguments": []
         }
@@ -26977,7 +26950,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@301"
+            "$ref": "#/rules@299"
           },
           "arguments": []
         }
@@ -26999,7 +26972,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@447"
+            "$ref": "#/rules@445"
           },
           "arguments": []
         }
@@ -27042,7 +27015,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -27075,14 +27048,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@281"
+              "$ref": "#/rules@279"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -27126,7 +27099,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27157,7 +27130,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@306"
+                  "$ref": "#/rules@304"
                 },
                 "arguments": []
               },
@@ -27182,7 +27155,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@307"
+              "$ref": "#/rules@305"
             },
             "arguments": [],
             "cardinality": "*"
@@ -27194,7 +27167,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@276"
+                "$ref": "#/rules@274"
               },
               "arguments": []
             },
@@ -27215,7 +27188,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@274"
+              "$ref": "#/rules@272"
             },
             "arguments": []
           },
@@ -27226,7 +27199,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@286"
+                "$ref": "#/rules@284"
               },
               "arguments": []
             }
@@ -27238,7 +27211,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@292"
+                "$ref": "#/rules@290"
               },
               "arguments": []
             }
@@ -27250,7 +27223,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@308"
+                "$ref": "#/rules@306"
               },
               "arguments": []
             }
@@ -27272,7 +27245,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -27288,7 +27261,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@309"
+                "$ref": "#/rules@307"
               },
               "arguments": []
             }
@@ -27319,14 +27292,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@281"
+              "$ref": "#/rules@279"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -27366,7 +27339,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27410,7 +27383,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27450,7 +27423,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27494,7 +27467,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27534,7 +27507,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27556,7 +27529,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -27572,7 +27545,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@316"
+                "$ref": "#/rules@314"
               },
               "arguments": []
             }
@@ -27618,7 +27591,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@283"
+                  "$ref": "#/rules@281"
                 },
                 "arguments": []
               }
@@ -27660,14 +27633,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@281"
+                  "$ref": "#/rules@279"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@283"
+                  "$ref": "#/rules@281"
                 },
                 "arguments": []
               }
@@ -27717,7 +27690,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27761,7 +27734,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27853,7 +27826,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@305"
+              "$ref": "#/rules@303"
             },
             "arguments": []
           }
@@ -27897,7 +27870,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@321"
+              "$ref": "#/rules@319"
             },
             "arguments": []
           }
@@ -27928,7 +27901,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@322"
+                  "$ref": "#/rules@320"
                 },
                 "arguments": []
               },
@@ -27950,7 +27923,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@323"
+          "$ref": "#/rules@321"
         },
         "arguments": [],
         "cardinality": "*"
@@ -27991,7 +27964,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@324"
+                "$ref": "#/rules@322"
               },
               "arguments": []
             }
@@ -28013,7 +27986,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -28029,7 +28002,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@325"
+                "$ref": "#/rules@323"
               },
               "arguments": []
             }
@@ -28167,7 +28140,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@327"
+              "$ref": "#/rules@325"
             },
             "arguments": []
           }
@@ -28198,7 +28171,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@328"
+                  "$ref": "#/rules@326"
                 },
                 "arguments": []
               },
@@ -28220,7 +28193,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@329"
+          "$ref": "#/rules@327"
         },
         "arguments": [],
         "cardinality": "*"
@@ -28261,7 +28234,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@331"
+                "$ref": "#/rules@329"
               },
               "arguments": []
             }
@@ -28273,7 +28246,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@324"
+                "$ref": "#/rules@322"
               },
               "arguments": []
             }
@@ -28293,7 +28266,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -28319,7 +28292,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@330"
+              "$ref": "#/rules@328"
             },
             "arguments": []
           },
@@ -28390,7 +28363,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -28423,14 +28396,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@281"
+              "$ref": "#/rules@279"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@283"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           }
@@ -28519,7 +28492,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@272"
+          "$ref": "#/rules@270"
         },
         "arguments": []
       },
@@ -28540,7 +28513,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@338"
+            "$ref": "#/rules@336"
           },
           "arguments": []
         }
@@ -28558,7 +28531,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@341"
+          "$ref": "#/rules@339"
         },
         "arguments": []
       },
@@ -28579,7 +28552,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@337"
+            "$ref": "#/rules@335"
           },
           "arguments": []
         }
@@ -28613,7 +28586,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@342"
+                "$ref": "#/rules@340"
               },
               "arguments": []
             }
@@ -28629,7 +28602,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@339"
+                "$ref": "#/rules@337"
               },
               "arguments": []
             }
@@ -28645,7 +28618,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@339"
+                "$ref": "#/rules@337"
               },
               "arguments": []
             }
@@ -28668,14 +28641,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@342"
+              "$ref": "#/rules@340"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@340"
+              "$ref": "#/rules@338"
             },
             "arguments": []
           }
@@ -28697,7 +28670,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@345"
+              "$ref": "#/rules@343"
             },
             "arguments": []
           },
@@ -28728,7 +28701,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@343"
+                    "$ref": "#/rules@341"
                   },
                   "arguments": []
                 }
@@ -28755,7 +28728,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@344"
+            "$ref": "#/rules@342"
           },
           "arguments": []
         }
@@ -28777,7 +28750,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@345"
+            "$ref": "#/rules@343"
           },
           "arguments": []
         }
@@ -28798,7 +28771,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@348"
+              "$ref": "#/rules@346"
             },
             "arguments": []
           },
@@ -28829,7 +28802,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@346"
+                    "$ref": "#/rules@344"
                   },
                   "arguments": []
                 }
@@ -28856,7 +28829,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@347"
+            "$ref": "#/rules@345"
           },
           "arguments": []
         }
@@ -28878,7 +28851,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@348"
+            "$ref": "#/rules@346"
           },
           "arguments": []
         }
@@ -28899,7 +28872,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@351"
+              "$ref": "#/rules@349"
             },
             "arguments": []
           },
@@ -28936,7 +28909,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@351"
+                            "$ref": "#/rules@349"
                           },
                           "arguments": []
                         }
@@ -28962,7 +28935,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@349"
+                            "$ref": "#/rules@347"
                           },
                           "arguments": []
                         }
@@ -28993,7 +28966,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@350"
+            "$ref": "#/rules@348"
           },
           "arguments": []
         }
@@ -29015,7 +28988,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@351"
+            "$ref": "#/rules@349"
           },
           "arguments": []
         }
@@ -29036,7 +29009,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@352"
+              "$ref": "#/rules@350"
             },
             "arguments": []
           },
@@ -29067,7 +29040,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@352"
+                    "$ref": "#/rules@350"
                   },
                   "arguments": []
                 }
@@ -29093,7 +29066,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@355"
+              "$ref": "#/rules@353"
             },
             "arguments": []
           },
@@ -29130,7 +29103,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@355"
+                            "$ref": "#/rules@353"
                           },
                           "arguments": []
                         }
@@ -29156,7 +29129,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@353"
+                            "$ref": "#/rules@351"
                           },
                           "arguments": []
                         }
@@ -29187,7 +29160,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@354"
+            "$ref": "#/rules@352"
           },
           "arguments": []
         }
@@ -29209,7 +29182,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@355"
+            "$ref": "#/rules@353"
           },
           "arguments": []
         }
@@ -29230,7 +29203,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@356"
+              "$ref": "#/rules@354"
             },
             "arguments": []
           },
@@ -29252,7 +29225,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@435"
+                    "$ref": "#/rules@433"
                   },
                   "arguments": []
                 }
@@ -29264,7 +29237,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@356"
+                    "$ref": "#/rules@354"
                   },
                   "arguments": []
                 }
@@ -29293,7 +29266,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@357"
+                  "$ref": "#/rules@355"
                 },
                 "arguments": []
               },
@@ -29321,7 +29294,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@433"
+                                "$ref": "#/rules@431"
                               },
                               "arguments": []
                             }
@@ -29333,7 +29306,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@440"
+                                "$ref": "#/rules@438"
                               },
                               "arguments": []
                             }
@@ -29359,7 +29332,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@441"
+                                "$ref": "#/rules@439"
                               },
                               "arguments": []
                             }
@@ -29389,7 +29362,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@433"
+                    "$ref": "#/rules@431"
                   },
                   "arguments": []
                 },
@@ -29402,7 +29375,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@440"
+                    "$ref": "#/rules@438"
                   },
                   "arguments": []
                 }
@@ -29425,7 +29398,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@439"
+                    "$ref": "#/rules@437"
                   },
                   "arguments": []
                 }
@@ -29446,7 +29419,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@440"
+                    "$ref": "#/rules@438"
                   },
                   "arguments": []
                 }
@@ -29479,7 +29452,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@441"
+                    "$ref": "#/rules@439"
                   },
                   "arguments": []
                 }
@@ -29502,7 +29475,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@439"
+                    "$ref": "#/rules@437"
                   },
                   "arguments": []
                 }
@@ -29523,7 +29496,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@441"
+                    "$ref": "#/rules@439"
                   },
                   "arguments": []
                 }
@@ -29548,7 +29521,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@358"
+              "$ref": "#/rules@356"
             },
             "arguments": []
           },
@@ -29570,7 +29543,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@434"
+                    "$ref": "#/rules@432"
                   },
                   "arguments": []
                 }
@@ -29582,7 +29555,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@358"
+                    "$ref": "#/rules@356"
                   },
                   "arguments": []
                 }
@@ -29608,7 +29581,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@359"
+              "$ref": "#/rules@357"
             },
             "arguments": []
           },
@@ -29639,7 +29612,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@359"
+                    "$ref": "#/rules@357"
                   },
                   "arguments": []
                 }
@@ -29665,7 +29638,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@360"
+              "$ref": "#/rules@358"
             },
             "arguments": []
           },
@@ -29705,7 +29678,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@360"
+                    "$ref": "#/rules@358"
                   },
                   "arguments": []
                 }
@@ -29731,7 +29704,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@361"
+              "$ref": "#/rules@359"
             },
             "arguments": []
           },
@@ -29775,7 +29748,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@361"
+                    "$ref": "#/rules@359"
                   },
                   "arguments": []
                 }
@@ -29801,7 +29774,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@362"
+              "$ref": "#/rules@360"
             },
             "arguments": []
           },
@@ -29841,7 +29814,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@361"
+                    "$ref": "#/rules@359"
                   },
                   "arguments": []
                 }
@@ -29880,7 +29853,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@432"
+                    "$ref": "#/rules@430"
                   },
                   "arguments": []
                 }
@@ -29892,7 +29865,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@363"
+                    "$ref": "#/rules@361"
                   },
                   "arguments": []
                 }
@@ -29902,7 +29875,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@363"
+              "$ref": "#/rules@361"
             },
             "arguments": []
           }
@@ -29946,7 +29919,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@441"
+                    "$ref": "#/rules@439"
                   },
                   "arguments": []
                 }
@@ -29956,7 +29929,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@364"
+              "$ref": "#/rules@362"
             },
             "arguments": []
           }
@@ -29978,7 +29951,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@365"
+              "$ref": "#/rules@363"
             },
             "arguments": []
           },
@@ -30004,7 +29977,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@447"
+                    "$ref": "#/rules@445"
                   },
                   "arguments": []
                 }
@@ -30044,7 +30017,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@369"
+                            "$ref": "#/rules@367"
                           },
                           "arguments": []
                         }
@@ -30082,7 +30055,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@369"
+                            "$ref": "#/rules@367"
                           },
                           "arguments": []
                         }
@@ -30115,7 +30088,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@443"
+                            "$ref": "#/rules@441"
                           },
                           "arguments": []
                         }
@@ -30130,7 +30103,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@368"
+                                "$ref": "#/rules@366"
                               },
                               "arguments": []
                             }
@@ -30142,7 +30115,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@445"
+                                "$ref": "#/rules@443"
                               },
                               "arguments": []
                             }
@@ -30150,7 +30123,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                           {
                             "$type": "RuleCall",
                             "rule": {
-                              "$ref": "#/rules@371"
+                              "$ref": "#/rules@369"
                             },
                             "arguments": []
                           }
@@ -30180,7 +30153,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@368"
+                            "$ref": "#/rules@366"
                           },
                           "arguments": []
                         }
@@ -30209,7 +30182,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@368"
+                            "$ref": "#/rules@366"
                           },
                           "arguments": []
                         }
@@ -30240,7 +30213,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@447"
+                        "$ref": "#/rules@445"
                       },
                       "arguments": []
                     }
@@ -30269,14 +30242,21 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@398"
+              "$ref": "#/rules@396"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@397"
+              "$ref": "#/rules@395"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@450"
             },
             "arguments": []
           },
@@ -30290,28 +30270,21 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@454"
+              "$ref": "#/rules@364"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@366"
+              "$ref": "#/rules@368"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@370"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@367"
+              "$ref": "#/rules@365"
             },
             "arguments": []
           },
@@ -30325,7 +30298,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@369"
+                  "$ref": "#/rules@367"
                 },
                 "arguments": []
               },
@@ -30361,7 +30334,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@437"
+                "$ref": "#/rules@435"
               },
               "arguments": []
             }
@@ -30369,7 +30342,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@371"
+              "$ref": "#/rules@369"
             },
             "arguments": []
           }
@@ -30392,7 +30365,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@368"
+            "$ref": "#/rules@366"
           },
           "arguments": []
         }
@@ -30414,7 +30387,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@336"
+            "$ref": "#/rules@334"
           },
           "arguments": []
         }
@@ -30435,7 +30408,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@338"
+              "$ref": "#/rules@336"
             },
             "arguments": []
           },
@@ -30473,7 +30446,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@369"
+                        "$ref": "#/rules@367"
                       },
                       "arguments": []
                     }
@@ -30505,7 +30478,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@437"
+                "$ref": "#/rules@435"
               },
               "arguments": []
             }
@@ -30513,7 +30486,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@371"
+              "$ref": "#/rules@369"
             },
             "arguments": []
           }
@@ -30540,14 +30513,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@372"
+                  "$ref": "#/rules@370"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@375"
+                  "$ref": "#/rules@373"
                 },
                 "arguments": []
               }
@@ -30577,7 +30550,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@373"
+                "$ref": "#/rules@371"
               },
               "arguments": []
             }
@@ -30596,7 +30569,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@373"
+                    "$ref": "#/rules@371"
                   },
                   "arguments": []
                 }
@@ -30622,7 +30595,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@374"
+            "$ref": "#/rules@372"
           },
           "arguments": []
         }
@@ -30644,7 +30617,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@379"
+            "$ref": "#/rules@377"
           },
           "arguments": []
         }
@@ -30667,7 +30640,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@376"
+                "$ref": "#/rules@374"
               },
               "arguments": []
             }
@@ -30686,7 +30659,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@376"
+                    "$ref": "#/rules@374"
                   },
                   "arguments": []
                 }
@@ -30712,7 +30685,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@377"
+            "$ref": "#/rules@375"
           },
           "arguments": []
         }
@@ -30737,7 +30710,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@378"
+                "$ref": "#/rules@376"
               },
               "arguments": []
             }
@@ -30753,7 +30726,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@379"
+                "$ref": "#/rules@377"
               },
               "arguments": []
             }
@@ -30777,7 +30750,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@429"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -30799,7 +30772,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@338"
+            "$ref": "#/rules@336"
           },
           "arguments": []
         }
@@ -30837,7 +30810,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@380"
+              "$ref": "#/rules@378"
             },
             "parenthesized": false
           }
@@ -30859,14 +30832,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@380"
+                  "$ref": "#/rules@378"
                 },
                 "parenthesized": false
               },
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@381"
+                  "$ref": "#/rules@379"
                 },
                 "parenthesized": false,
                 "cardinality": "?"
@@ -30877,7 +30850,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@381"
+              "$ref": "#/rules@379"
             },
             "parenthesized": false
           }
@@ -30901,7 +30874,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@380"
+              "$ref": "#/rules@378"
             },
             "parenthesized": false
           }
@@ -30923,14 +30896,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@382"
+              "$ref": "#/rules@380"
             },
             "parenthesized": false
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@383"
+              "$ref": "#/rules@381"
             },
             "parenthesized": false,
             "cardinality": "?"
@@ -31040,14 +31013,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@385"
+              "$ref": "#/rules@383"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@386"
+              "$ref": "#/rules@384"
             },
             "arguments": []
           }
@@ -31098,7 +31071,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@387"
+            "$ref": "#/rules@385"
           },
           "arguments": []
         }
@@ -31120,7 +31093,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@384"
+            "$ref": "#/rules@382"
           },
           "arguments": []
         }
@@ -31166,6 +31139,20 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
+              "$ref": "#/rules@391"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@392"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
               "$ref": "#/rules@393"
             },
             "arguments": []
@@ -31174,20 +31161,6 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@394"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@395"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@396"
             },
             "arguments": []
           }
@@ -31258,7 +31231,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@392"
+                "$ref": "#/rules@390"
               },
               "arguments": []
             }
@@ -31283,7 +31256,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@392"
+            "$ref": "#/rules@390"
           },
           "arguments": []
         }
@@ -31304,14 +31277,14 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@399"
+                  "$ref": "#/rules@397"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@400"
+                  "$ref": "#/rules@398"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -31321,7 +31294,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@400"
+              "$ref": "#/rules@398"
             },
             "arguments": []
           }
@@ -31537,7 +31510,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@408"
+            "$ref": "#/rules@406"
           },
           "arguments": []
         }
@@ -31728,7 +31701,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@425"
+            "$ref": "#/rules@423"
           },
           "arguments": []
         }
@@ -31748,7 +31721,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@388"
+            "$ref": "#/rules@386"
           },
           "arguments": []
         }
@@ -31775,7 +31748,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -31794,7 +31767,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@419"
+                        "$ref": "#/rules@417"
                       },
                       "arguments": []
                     }
@@ -31813,7 +31786,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@419"
+                            "$ref": "#/rules@417"
                           },
                           "arguments": []
                         }
@@ -31841,7 +31814,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@387"
+                    "$ref": "#/rules@385"
                   },
                   "arguments": []
                 }
@@ -31852,7 +31825,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@420"
+              "$ref": "#/rules@418"
             },
             "arguments": []
           }
@@ -31878,7 +31851,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@401"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -31897,7 +31870,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@387"
+                    "$ref": "#/rules@385"
                   },
                   "arguments": []
                 }
@@ -31908,7 +31881,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@420"
+              "$ref": "#/rules@418"
             },
             "arguments": []
           }
@@ -31937,7 +31910,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@401"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -31956,7 +31929,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@387"
+                "$ref": "#/rules@385"
               },
               "arguments": []
             }
@@ -31964,7 +31937,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@420"
+              "$ref": "#/rules@418"
             },
             "arguments": []
           }
@@ -32012,7 +31985,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
               "terminal": {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@392"
+                  "$ref": "#/rules@390"
                 },
                 "arguments": []
               },
@@ -32039,7 +32012,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                   "terminal": {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@392"
+                      "$ref": "#/rules@390"
                     },
                     "arguments": []
                   },
@@ -32064,7 +32037,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -32081,7 +32054,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -32098,7 +32071,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -32115,7 +32088,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -32132,7 +32105,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -32149,7 +32122,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -32166,7 +32139,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@424"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -32299,7 +32272,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@430"
+            "$ref": "#/rules@428"
           },
           "arguments": []
         }
@@ -32317,7 +32290,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@438"
+          "$ref": "#/rules@436"
         },
         "arguments": []
       },
@@ -32339,7 +32312,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@427"
+                "$ref": "#/rules@425"
               },
               "arguments": []
             }
@@ -32351,7 +32324,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@448"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -32374,7 +32347,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@425"
+            "$ref": "#/rules@423"
           },
           "arguments": []
         }
@@ -32396,7 +32369,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@442"
+            "$ref": "#/rules@440"
           },
           "arguments": []
         }
@@ -32418,7 +32391,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@442"
+            "$ref": "#/rules@440"
           },
           "arguments": []
         }
@@ -32440,7 +32413,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@443"
+            "$ref": "#/rules@441"
           },
           "arguments": []
         }
@@ -32462,7 +32435,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@427"
+            "$ref": "#/rules@425"
           },
           "arguments": []
         }
@@ -32484,7 +32457,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@445"
+            "$ref": "#/rules@443"
           },
           "arguments": []
         }
@@ -32506,7 +32479,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@446"
+            "$ref": "#/rules@444"
           },
           "arguments": []
         }
@@ -32528,7 +32501,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@443"
+            "$ref": "#/rules@441"
           },
           "arguments": []
         }
@@ -32553,7 +32526,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@429"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -32574,7 +32547,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@448"
+                    "$ref": "#/rules@446"
                   },
                   "arguments": []
                 }
@@ -32596,7 +32569,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@449"
+          "$ref": "#/rules@447"
         },
         "arguments": []
       },
@@ -32618,7 +32591,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@451"
+                "$ref": "#/rules@449"
               },
               "arguments": []
             }
@@ -32637,7 +32610,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@451"
+                    "$ref": "#/rules@449"
                   },
                   "arguments": []
                 }
@@ -32669,7 +32642,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@451"
+                    "$ref": "#/rules@449"
                   },
                   "arguments": []
                 }
@@ -32688,7 +32661,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@451"
+                "$ref": "#/rules@449"
               },
               "arguments": []
             }
@@ -32716,7 +32689,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@429"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -32738,7 +32711,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@453"
+            "$ref": "#/rules@451"
           },
           "arguments": []
         }
@@ -32760,7 +32733,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@429"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -32785,7 +32758,7 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@425"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -33239,8 +33212,17 @@ export const SysMLGrammar = (): Grammar => loadedSysMLGrammar ?? (loadedSysMLGra
           "name": "isComposite",
           "isOptional": true,
           "type": {
-            "$type": "SimpleType",
-            "stringType": "composite"
+            "$type": "UnionType",
+            "types": [
+              {
+                "$type": "SimpleType",
+                "stringType": "composite"
+              },
+              {
+                "$type": "SimpleType",
+                "primitiveType": "boolean"
+              }
+            ]
           }
         },
         {

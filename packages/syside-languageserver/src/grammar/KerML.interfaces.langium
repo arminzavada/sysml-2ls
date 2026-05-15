@@ -109,7 +109,7 @@ interface Feature extends Type {
     isNonunique: boolean;
     isOrdered: boolean;
     direction?: FeatureDirectionKind;
-    isComposite?: 'composite';
+    isComposite?: 'composite' | boolean;
     isDerived?: 'derived';
     isEnd?: 'end';
     isPortion?: 'portion';

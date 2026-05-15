@@ -1345,27 +1345,19 @@ fragment ControlNodePrefix:
 ;
 
 MergeNode returns MergeNode:
-    ControlNodePrefix 'merge' UsageDeclaration? ActionNodeBody
+    ControlNodePrefix isComposite?='merge' UsageDeclaration? ActionBody
 ;
 
 DecisionNode returns DecisionNode:
-    ControlNodePrefix 'decide' UsageDeclaration? ActionNodeBody
+    ControlNodePrefix isComposite?='decide' UsageDeclaration? ActionBody
 ;
 
 JoinNode returns JoinNode:
-    ControlNodePrefix 'join' UsageDeclaration? ActionNodeBody
+    ControlNodePrefix isComposite?='join' UsageDeclaration? ActionBody
 ;
 
 ForkNode returns ForkNode:
-    ControlNodePrefix 'fork' UsageDeclaration? ActionNodeBody
-;
-
-fragment ActionNodeBody:
-    ';' | '{' ActionNodeItems '}'
-;
-
-fragment ActionNodeItems:
-    ( children+=AnnotatingMember )*
+    ControlNodePrefix isComposite?='fork' UsageDeclaration? ActionBody
 ;
 
 // EmptyParameterMember returns ParameterMembership:
