@@ -194,7 +194,7 @@ interface ForLoopActionUsage extends LoopActionUsage {
 }
 
 interface SendActionUsage extends ActionUsage {
-    payload: ParameterMembership;
+    payload?: ParameterMembership;
     sender?: ParameterMembership;
     receiver?: ParameterMembership;
 }

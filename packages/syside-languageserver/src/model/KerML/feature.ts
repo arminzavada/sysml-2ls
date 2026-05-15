@@ -105,7 +105,8 @@ export type FeatureOptions = Omit<TypeOptions, "heritage" | "typeRelationships">
     direction?: FeatureDirectionKind;
     isComposite?: boolean;
     isPortion?: boolean;
-    isReadonly?: boolean;
+    isConstant?: boolean;
+    isVariable?: boolean;
     isDerived?: boolean;
     isEnd?: boolean;
     isOrdered?: boolean;
@@ -169,9 +170,14 @@ export class FeatureMeta extends TypeMeta {
     isPortion = false;
 
     /**
-     * Whether this feature is readonly
+     * Whether this feature is declared with the `const` (KerML) / `constant` (SysML) keyword.
      */
-    isReadonly = false;
+    isConstant = false;
+
+    /**
+     * Whether this feature is declared with the `var` keyword (KerML only).
+     */
+    isVariable = false;
 
     /**
      * Whether this feature is derived
@@ -720,7 +726,8 @@ export class FeatureMeta extends TypeMeta {
         model._direction = options.direction ?? "none";
         model._isComposite = Boolean(options.isComposite);
         model.isPortion = Boolean(options.isPortion);
-        model.isReadonly = Boolean(options.isReadonly);
+        model.isConstant = Boolean(options.isConstant);
+        model.isVariable = Boolean(options.isVariable);
         model.isDerived = Boolean(options.isDerived);
         model._isEnd = Boolean(options.isEnd);
         model.isOrdered = Boolean(options.isOrdered);

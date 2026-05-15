@@ -14,6 +14,7 @@ type InlineExpression =
     FeatureChainExpression
     | IndexExpression
     | InvocationExpression
+    | ConstructorExpression
     | LiteralExpression
     | MetadataAccessExpression
     | NullExpression
@@ -112,7 +113,8 @@ interface Feature extends Type {
     isDerived?: 'derived';
     isEnd?: 'end';
     isPortion?: 'portion';
-    isReadOnly?: 'readonly';
+    isConstant?: boolean;
+    isVariable?: boolean;
     value?: FeatureValue;
     write?: Membership;
     crossingFeature?: OwningMembership;
@@ -264,6 +266,7 @@ interface ReturnParameterMembership extends ParameterMembership {
 // References
 
 interface ElementReference {
+    isGlobal?: boolean;
     parts: @Element[];
 }
 
@@ -301,6 +304,8 @@ interface IndexExpression extends OperatorExpression {
 }
 interface InvocationExpression extends Expression {
     operands?: Expression[];
+}
+interface ConstructorExpression extends InvocationExpression {
 }
 interface OperatorExpression extends InvocationExpression {
     operator?: string;

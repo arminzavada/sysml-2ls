@@ -230,7 +230,7 @@ part def Engine {
     assoc struct AssocStruct;
 
     feature Value = "some string";
-    readonly feature Number = 1.0;
+    const feature Number = 1.0;
 
     abstract function Function {}
     abstract expr Expression {}

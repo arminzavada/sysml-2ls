@@ -215,6 +215,8 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         sendAction: ast.SendActionUsage,
         kind: FeatureKind
     ): Generated {
+        // TODO(phase-2a+): handle empty-payload `send to` and bodied `send { … }` forms
+        if (!sendAction.payload) return undefined;
         const payloadTarget = sendAction.payload.target as ReferenceUsage;
         const payloadTargetValue = payloadTarget.value as FeatureValue;
         const invocationExpression = payloadTargetValue.target as InvocationExpression;

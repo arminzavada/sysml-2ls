@@ -33,10 +33,10 @@ describe("definition-usage", () => {
     });
 
     it("should print extended usages", async () => {
-        return expectPrinted("inout abstract readonly derived #prefix a :> b {}", {
+        return expectPrinted("inout derived abstract constant #prefix a :> b {}", {
             lang: "sysml",
             node: ast.Usage.$type,
-        }).resolves.toEqual("inout abstract readonly derived #prefix a :> b {}\n");
+        }).resolves.toEqual("inout derived abstract constant #prefix a :> b {}\n");
     });
 
     it("should print end usages", async () => {

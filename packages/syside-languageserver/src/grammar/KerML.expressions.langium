@@ -102,8 +102,8 @@ fragment Abstract:
 fragment Visibility:
     visibility=VisibilityKind
 ;
-fragment Readonly:
-    isReadOnly='readonly'
+fragment ConstantOrVariable:
+    isVariable?='var' | isConstant?='const'
 ;
 fragment Derived:
     isDerived='derived'
@@ -160,6 +160,8 @@ TextualRepresentation returns TextualRepresentation:
 // References
 
 fragment QualifiedReferenceChain:
+    // TODO(phase-2b+): scope-resolution for $:: global qualifier; currently parsed but ignored
+    ( isGlobal?='$' '::' )?
     parts+=[Element:Name] ('::' parts+=[Element:Name])*;
 
 ElementReference returns ElementReference:

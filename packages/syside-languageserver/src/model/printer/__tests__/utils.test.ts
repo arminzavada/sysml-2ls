@@ -117,6 +117,7 @@ describe("references", () => {
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         $meta: { notes: [], nodeType: () => ElementReference.$type } as any,
                         $type: ElementReference.$type,
+                        isGlobal: false,
                         parts: [
                             { $refText: "'first element'", ref: undefined },
                             { $refText: "'second element'", ref: undefined },

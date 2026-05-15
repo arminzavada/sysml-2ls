@@ -137,7 +137,8 @@ const AstToModel: {
         model.direction = getFeatureDirectionKind(node.direction);
         model.isPortion = !!node.isPortion;
         model.isComposite = !!node.isComposite || model.isPortion;
-        model.isReadonly = !!node.isReadOnly;
+        model.isConstant = !!node.isConstant;
+        model.isVariable = !!node.isVariable;
         model.isDerived = !!node.isDerived;
         model.isEnd = !!node.isEnd;
 
@@ -262,7 +263,7 @@ const AstToModel: {
     },
 
     [ast.SendActionUsage.$type](model, node) {
-        (model["_payload"] as RelationshipMeta | undefined) = node.payload.$meta;
+        (model["_payload"] as RelationshipMeta | undefined) = node.payload?.$meta;
         (model["_sender"] as RelationshipMeta | undefined) = node.sender?.$meta;
         (model["_receiver"] as RelationshipMeta | undefined) = node.receiver?.$meta;
     },

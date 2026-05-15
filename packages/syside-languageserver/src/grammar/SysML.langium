@@ -431,7 +431,9 @@ BehaviorUsageMember returns FeatureMembership:
 
 fragment RefPrefix:
     ( direction=FeatureDirectionKind )?
-    BasicDefinitionPrefix? Readonly? Derived?
+    Derived?
+    BasicDefinitionPrefix?
+    ( isConstant?='constant' )?
 ;
 
 fragment Reference:
@@ -1199,9 +1201,15 @@ SendNode returns SendActionUsage:
 ;
 
 fragment SendNodeDeclaration:
-    ActionNodeUsageDeclaration? 'send' payload=NodeParameterMember 
-    ( 'via' sender=NodeParameterMember  )?
-    ( 'to' receiver=NodeParameterMember )?
+    ActionNodeUsageDeclaration? 'send'
+    ( payload=NodeParameterMember SenderReceiverPart?
+    | 'to' receiver=NodeParameterMember
+    )?
+;
+
+fragment SenderReceiverPart:
+    'via' sender=NodeParameterMember ( 'to' receiver=NodeParameterMember )?
+    | 'to' receiver=NodeParameterMember
 ;
 
 NodeParameterMember returns ParameterMembership:
@@ -2104,12 +2112,17 @@ PrimaryExpression returns Expression:
 
 BaseExpression returns Expression:
     NullExpression
-    | LiteralExpression 
-    | FeatureReferenceExpression 
+    | LiteralExpression
+    | FeatureReferenceExpression
     | MetadataAccessExpression
-    | InvocationExpression 
+    | ConstructorExpression
+    | InvocationExpression
     | BodyExpression
     | '(' SequenceExpression ')'
+;
+
+ConstructorExpression returns ConstructorExpression:
+    'new' heritage+=OwnedFeatureTyping ArgumentList
 ;
 
 // Expression Bodies

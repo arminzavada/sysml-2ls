@@ -182,6 +182,10 @@ const ModelPrinter: Omit<
     [ast.InvocationExpression.$type](node, context) {
         return expr.printInvocationExpr(node, context);
     },
+    [ast.ConstructorExpression.$type](node, context) {
+        // TODO(phase-2a+): dedicated printing for `new T(args)`; currently shares InvocationExpression layout
+        return expr.printInvocationExpr(node, context);
+    },
     [ast.MetadataAccessExpression.$type](node, context) {
         return expr.printMetadataAccessExpression(node, context);
     },

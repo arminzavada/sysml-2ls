@@ -417,8 +417,10 @@ ClassifierConjugation returns Conjugation:
 
 fragment BasicFeaturePrefix:
     ( direction=FeatureDirectionKind )?
-    Abstract? ( isComposite='composite' | isPortion='portion' )? 
-    Readonly? Derived?
+    Derived?
+    Abstract?
+    ( isComposite='composite' | isPortion='portion' )?
+    ConstantOrVariable?
 ;
 
 fragment FeaturePrefix:
@@ -1127,12 +1129,17 @@ PrimaryExpression returns Expression:
 
 BaseExpression returns Expression:
     NullExpression
-    | LiteralExpression 
-    | FeatureReferenceExpression 
+    | LiteralExpression
+    | FeatureReferenceExpression
     | MetadataAccessExpression
-    | InvocationExpression 
+    | ConstructorExpression
+    | InvocationExpression
     | BodyExpression
     | '(' SequenceExpression ')'
+;
+
+ConstructorExpression returns ConstructorExpression:
+    'new' heritage+=OwnedFeatureTyping ArgumentList
 ;
 
 // Expression Bodies

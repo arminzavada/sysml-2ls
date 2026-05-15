@@ -75,6 +75,7 @@ export * from "./relationships/feature-typing.js";
 export * from "./relationships/conjugation.js";
 
 export * from "./expressions/invocation-expression.js";
+export * from "./expressions/constructor-expression.js";
 export * from "./expressions/operator-expression.js";
 export * from "./expressions/collect-expression.js";
 export * from "./expressions/select-expression.js";

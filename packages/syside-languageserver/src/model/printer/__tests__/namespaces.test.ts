@@ -235,9 +235,9 @@ type a
 
 describe("kerml feature formatting", () => {
     it("should print feature modifiers", async () => {
-        return expectPrinted("out abstract composite readonly derived feature c;", {
+        return expectPrinted("out derived abstract composite const feature c;", {
             node: Feature.$type,
-        }).resolves.toEqual("out abstract composite readonly derived feature c;\n");
+        }).resolves.toEqual("out derived abstract composite const feature c;\n");
     });
 
     it("should print end features", async () => {

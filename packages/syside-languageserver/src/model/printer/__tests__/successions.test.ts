@@ -30,10 +30,10 @@ import { parsedNode } from "../../../testing/utils.js";
 
 describe("successions", () => {
     it("should print regular successions", async () => {
-        return expectPrinted("readonly succession first a then b;", {
+        return expectPrinted("constant succession first a then b;", {
             lang: "sysml",
             node: SuccessionAsUsage.$type,
-        }).resolves.toEqual("readonly succession first a then b;\n");
+        }).resolves.toEqual("constant succession first a then b;\n");
     });
 
     it("should print empty successions", async () => {

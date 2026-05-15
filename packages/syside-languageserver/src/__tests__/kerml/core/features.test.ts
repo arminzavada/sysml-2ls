@@ -112,7 +112,8 @@ test.concurrent.each([
     ["abstract", "isAbstract", true],
     ["composite", "isComposite", true],
     ["portion", "isPortion", true],
-    ["readonly", "isReadonly", true],
+    ["const", "isConstant", true],
+    ["var", "isVariable", true],
     ["derived", "isDerived", true],
     ["end", "isEnd", true],
 ])("feature prefix '%s' is parsed", async (prefix: string, property: string, value: unknown) => {

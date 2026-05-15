@@ -14,18 +14,21 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * from "./collect-expression.js";
-export * from "./constructor-expression.js";
-export * from "./feature-chain-expression.js";
-export * from "./feature-reference-expression.js";
-export * from "./index-expression.js";
-export * from "./invocation-expression.js";
-export * from "./literal-boolean.js";
-export * from "./literal-expression.js";
-export * from "./literal-infinity.js";
-export * from "./literal-number.js";
-export * from "./literal-string.js";
-export * from "./metadata-access-expression.js";
-export * from "./null-expression.js";
-export * from "./operator-expression.js";
-export * from "./select-expression.js";
+import { ConstructorExpression } from "../../../generated/ast.js";
+import { metamodelOf } from "../../metamodel.js";
+import { InvocationExpressionMeta, InvocationExpressionOptions } from "./invocation-expression.js";
+
+export type ConstructorExpressionOptions = InvocationExpressionOptions;
+
+@metamodelOf(ConstructorExpression.$type)
+export class ConstructorExpressionMeta extends InvocationExpressionMeta {
+    override ast(): ConstructorExpression | undefined {
+        return this._ast as ConstructorExpression;
+    }
+}
+
+declare module "../../../generated/ast.js" {
+    interface ConstructorExpression {
+        $meta: ConstructorExpressionMeta;
+    }
+}

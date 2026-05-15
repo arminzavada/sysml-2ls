@@ -166,7 +166,7 @@ export function tokenModifiers(node: ElementMeta): string[] {
     if (node.isStandardElement) {
         mods.push(SysMLSemanticTokenModifiers.defaultLibrary);
     }
-    if (node.is(Feature.$type) && node.isReadonly) {
+    if (node.is(Feature.$type) && node.isConstant) {
         mods.push(SysMLSemanticTokenModifiers.readonly);
     }
 

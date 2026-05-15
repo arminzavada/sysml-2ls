@@ -944,13 +944,14 @@ export function kermlBasicFeatureModifiers(node: FeatureMeta): Doc[] {
     const modifiers: Doc[] = [];
 
     if (node.explicitDirection !== "none") modifiers.push(keyword(node.explicitDirection));
+    if (node.isDerived) modifiers.push(keyword("derived"));
     if (node.isAbstract) modifiers.push(keyword("abstract"));
 
     // portion implies composite so print it first
     if (node.isPortion) modifiers.push(keyword("portion"));
     else if (node.isComposite) modifiers.push(keyword("composite"));
-    if (node.isReadonly) modifiers.push(keyword("readonly"));
-    if (node.isDerived) modifiers.push(keyword("derived"));
+    if (node.isVariable) modifiers.push(keyword("var"));
+    else if (node.isConstant) modifiers.push(keyword("const"));
 
     return modifiers;
 }

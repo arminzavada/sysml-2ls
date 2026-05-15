@@ -255,27 +255,27 @@ describe("binding connectors as usage", () => {
     };
 
     it("should preserve binding keyword", async () => {
-        return expectPrinted("readonly binding B bind one = two {}").resolves.toEqual(
-            "readonly binding B bind one = two {}\n"
+        return expectPrinted("constant binding B bind one = two {}").resolves.toEqual(
+            "constant binding B bind one = two {}\n"
         );
     });
 
     it("should preserve missing binding keyword", async () => {
-        return expectPrinted("readonly bind one = two {}").resolves.toEqual(
-            "readonly bind one = two {}\n"
+        return expectPrinted("constant bind one = two {}").resolves.toEqual(
+            "constant bind one = two {}\n"
         );
     });
 
     it("should add binding keyword if needed", async () => {
-        return expectPrinted("readonly binding B bind one = two {}", {
+        return expectPrinted("constant binding B bind one = two {}", {
             format: { binding_connector_as_usage_keyword: { default: "as_needed" } },
-        }).resolves.toEqual("readonly binding B bind one = two {}\n");
+        }).resolves.toEqual("constant binding B bind one = two {}\n");
     });
 
     it("should not add binding keyword if not needed", async () => {
-        return expectPrinted("readonly binding bind one = two {}", {
+        return expectPrinted("constant binding bind one = two {}", {
             format: { binding_connector_as_usage_keyword: { default: "as_needed" } },
-        }).resolves.toEqual("readonly bind one = two {}\n");
+        }).resolves.toEqual("constant bind one = two {}\n");
     });
 });
 
@@ -314,8 +314,8 @@ describe.each([
     };
 
     it(`should preserve ${kw} keyword`, async () => {
-        return expectPrinted(`readonly ${kw} B ${src} one to two { end b; }`).resolves.toEqual(
-            `readonly ${kw} B ${src} one to two {
+        return expectPrinted(`constant ${kw} B ${src} one to two { end b; }`).resolves.toEqual(
+            `constant ${kw} B ${src} one to two {
     end b;
 }\n`
         );
@@ -323,21 +323,21 @@ describe.each([
 
     if (optional) {
         it(`should preserve missing ${kw} keyword`, async () => {
-            return expectPrinted(`readonly ${src} one to two {}`).resolves.toEqual(
-                `readonly ${src} one to two {}\n`
+            return expectPrinted(`constant ${src} one to two {}`).resolves.toEqual(
+                `constant ${src} one to two {}\n`
             );
         });
 
         it(`should add ${kw} keyword if needed`, async () => {
-            return expectPrinted(`readonly ${kw} B ${src} one to two {}`, {
+            return expectPrinted(`constant ${kw} B ${src} one to two {}`, {
                 format: { [optional]: { default: `as_needed` } },
-            }).resolves.toEqual(`readonly ${kw} B ${src} one to two {}\n`);
+            }).resolves.toEqual(`constant ${kw} B ${src} one to two {}\n`);
         });
 
         it(`should not add ${kw} keyword if not needed`, async () => {
-            return expectPrinted(`readonly ${kw} ${src} one to two {}`, {
+            return expectPrinted(`constant ${kw} ${src} one to two {}`, {
                 format: { [optional]: { default: `as_needed` } },
-            }).resolves.toEqual(`readonly ${src} one to two {}\n`);
+            }).resolves.toEqual(`constant ${src} one to two {}\n`);
         });
 
         it(`should not add an extra leading space without ${kw}`, async () => {

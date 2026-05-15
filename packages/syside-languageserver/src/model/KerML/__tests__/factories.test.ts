@@ -184,7 +184,8 @@ describe("Element factories", () => {
             isNonUnique: true,
             isOrdered: true,
             isPortion: true,
-            isReadonly: true,
+            isConstant: true,
+            isVariable: false,
         };
         expect(SuccessionItemFlowMeta.create(id, document, options)).toMatchObject(options);
     });

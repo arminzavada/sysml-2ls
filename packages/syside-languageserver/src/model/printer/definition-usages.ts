@@ -55,13 +55,13 @@ function usageBasicModifiers(node: UsageMeta, ignoreRef = false): Doc[] {
     const modifiers: Doc[] = [];
 
     if (node.explicitDirection !== "none") modifiers.push(keyword(node.explicitDirection));
+    if (node.isDerived) modifiers.push(keyword("derived"));
 
     // variation implies abstract so print it first
     if (node.isVariation) modifiers.push(keyword("variation"));
     else if (node.isAbstract) modifiers.push(keyword("abstract"));
 
-    if (node.isReadonly) modifiers.push(keyword("readonly"));
-    if (node.isDerived) modifiers.push(keyword("derived"));
+    if (node.isConstant) modifiers.push(keyword("constant"));
     if (node.isEndExplicitly) modifiers.push(keyword("end"));
 
     if (!ignoreRef && node.isReferenceExplicitly && node.nodeType() !== ast.ReferenceUsage.$type)

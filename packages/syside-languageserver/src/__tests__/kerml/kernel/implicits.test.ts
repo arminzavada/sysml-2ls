@@ -166,11 +166,11 @@ test("Implicitly redefined features are hidden in the scope", async () => {
         library package Links {
             private import Base::Anything;
             abstract assoc Link specializes Anything {
-                readonly feature participant: Anything[2..*] nonunique ordered;
+                const feature participant: Anything[2..*] nonunique ordered;
             }
             assoc all BinaryLink specializes Link {
-                readonly end feature source: Anything[0..*] subsets participant;
-                readonly end feature target: Anything[0..*] subsets participant;
+                end feature source: Anything[0..*] subsets participant;
+                end feature target: Anything[0..*] subsets participant;
             }
         }
 
