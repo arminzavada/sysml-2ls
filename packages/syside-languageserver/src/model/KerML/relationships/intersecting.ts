@@ -17,9 +17,10 @@
 import { AstNode, LangiumDocument } from "langium";
 import { Intersecting } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
-import { RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
+import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
-@metamodelOf(Intersecting)
+@metamodelOf(Intersecting.$type)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class IntersectingMeta<T extends TypeMeta = TypeMeta> extends RelationshipMeta<T> {
     override ast(): Intersecting | undefined {
         return this._ast as Intersecting;
@@ -31,7 +32,7 @@ export class IntersectingMeta<T extends TypeMeta = TypeMeta> extends Relationshi
         document: LangiumDocument,
         options?: RelationshipOptions<TypeMeta, TypeMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options);
+        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
     }
 }
 

@@ -151,7 +151,7 @@ export function followAlias(node: Metamodel | undefined): Metamodel | undefined;
  * @returns
  */
 export function followAlias(node: Metamodel | undefined): Metamodel | undefined {
-    if (node?.is(Membership)) {
+    if (node?.is(Membership.$type)) {
         return node.element();
     }
     return node;

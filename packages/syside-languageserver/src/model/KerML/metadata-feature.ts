@@ -35,7 +35,7 @@ export const ImplicitMetadataFeatures = {
 
 export interface MetadataFeatureOptions extends FeatureOptions, AnnotatingElementOptions {}
 
-@metamodelOf(MetadataFeature, ImplicitMetadataFeatures)
+@metamodelOf(MetadataFeature.$type, ImplicitMetadataFeatures)
 export class MetadataFeatureMeta extends Mixin(
     AnnotatingElementMeta as Class<
         [ElementID],

@@ -25,7 +25,7 @@ export const ImplicitDataTypes = {
 
 export type DataTypeOptions = ClassifierOptions;
 
-@metamodelOf(DataType, ImplicitDataTypes)
+@metamodelOf(DataType.$type, ImplicitDataTypes)
 export class DataTypeMeta extends ClassifierMeta {
     protected override _classifier = TypeClassifier.DataType;
 

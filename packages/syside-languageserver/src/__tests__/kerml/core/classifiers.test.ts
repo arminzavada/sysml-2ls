@@ -34,7 +34,7 @@ test("classifiers can specialize multiple other classifiers", async () => {
     classifier A;
     classifier B;
     classifier C specializes A, B;`,
-            { node: Classifier, index: 2 }
+            { node: Classifier.$type, index: 2 }
         )
     ).resolves.toMatchObject({ heritage: anything(2) });
 });

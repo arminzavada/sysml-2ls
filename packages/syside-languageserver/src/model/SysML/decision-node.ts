@@ -20,7 +20,7 @@ import { ControlNodeMeta, ControlNodeOptions } from "./control-node.js";
 
 export type DecisionNodeOptions = ControlNodeOptions;
 
-@metamodelOf(DecisionNode, {
+@metamodelOf(DecisionNode.$type, {
     subaction: "Actions::Action::decisions",
 })
 export class DecisionNodeMeta extends ControlNodeMeta {

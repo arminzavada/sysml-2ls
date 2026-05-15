@@ -27,7 +27,7 @@ test("features can be parsed and aliased", async () => {
         feature age[1]: Integer;
         alias personAlias for person;
     }`,
-            { node: Membership, build: true }
+            { node: Membership.$type, build: true }
         )
     ).resolves.toMatchObject({ isAlias: true, targetRef: qualifiedTarget("person") });
 });
@@ -41,9 +41,9 @@ test("member features can be parsed", async () => {
         feature f;
         member feature g featured by A;
     }`,
-            { node: OwningMembership, index: 2 }
+            { node: OwningMembership.$type, index: 2 }
         )
     ).resolves.toMatchObject({
-        target: { $type: Feature },
+        target: { $type: Feature.$type },
     });
 });

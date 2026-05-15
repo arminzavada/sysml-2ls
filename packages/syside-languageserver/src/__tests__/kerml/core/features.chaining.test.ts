@@ -33,7 +33,7 @@ test("feature chains allow qualified feature names in between chain parts", asyn
             ...anything(1),
             {
                 target: {
-                    $type: Feature,
+                    $type: Feature.$type,
                     ...withQualifiedName("c"),
                 },
             },

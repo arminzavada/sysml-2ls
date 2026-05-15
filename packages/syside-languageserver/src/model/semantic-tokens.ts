@@ -157,16 +157,16 @@ export function tokenType(element: ElementMeta): string | undefined {
 export function tokenModifiers(node: ElementMeta): string[] {
     const mods: string[] = [];
 
-    if (node.is(Type) && node.isAbstract) {
+    if (node.is(Type.$type) && node.isAbstract) {
         mods.push(SysMLSemanticTokenModifiers.abstract);
     }
-    if (node.is(Classifier)) {
+    if (node.is(Classifier.$type)) {
         mods.push(SysMLSemanticTokenModifiers.definition);
     }
     if (node.isStandardElement) {
         mods.push(SysMLSemanticTokenModifiers.defaultLibrary);
     }
-    if (node.is(Feature) && node.isReadonly) {
+    if (node.is(Feature.$type) && node.isReadonly) {
         mods.push(SysMLSemanticTokenModifiers.readonly);
     }
 

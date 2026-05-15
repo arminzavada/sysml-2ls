@@ -55,25 +55,25 @@ const expectPrinted: typeof expectPrintedAs = (text, context?) => {
     return expectPrintedAs(text, {
         ...context,
         lang: context?.lang ?? "kerml",
-        node: context?.node ?? Type,
+        node: context?.node ?? Type.$type,
     });
 };
 
 describe("imports", () => {
     describe("membership imports", () => {
         it("should print non-recursive imports without children", async () => {
-            const node = await parsedNode("private import M;", { node: MembershipImport });
+            const node = await parsedNode("private import M;", { node: MembershipImport.$type });
             expect(printKerMLElement(node.$meta)).toEqual("private import M;\n");
         });
 
         it("should print recursive imports without children", async () => {
-            const node = await parsedNode("private import M ::**;", { node: MembershipImport });
+            const node = await parsedNode("private import M ::**;", { node: MembershipImport.$type });
             expect(printKerMLElement(node.$meta)).toEqual("private import M::**;\n");
         });
 
         it("should print imports with children", async () => {
             const node = await parsedNode("private import all M { /* comment */ }", {
-                node: MembershipImport,
+                node: MembershipImport.$type,
             });
             expect(printKerMLElement(node.$meta)).toEqual(`private import all M {
     /*
@@ -85,25 +85,25 @@ describe("imports", () => {
 
     describe("namespace imports", () => {
         it("should print non-recursive imports without children", async () => {
-            const node = await parsedNode("private import M::*;", { node: NamespaceImport });
+            const node = await parsedNode("private import M::*;", { node: NamespaceImport.$type });
             expect(printKerMLElement(node.$meta)).toEqual("private import M::*;\n");
         });
 
         it("should print recursive imports without children", async () => {
-            const node = await parsedNode("private import M ::* ::**;", { node: NamespaceImport });
+            const node = await parsedNode("private import M ::* ::**;", { node: NamespaceImport.$type });
             expect(printKerMLElement(node.$meta)).toEqual("private import M::*::**;\n");
         });
 
         it("should print recursive membership imports with filters", async () => {
             const node = await parsedNode("private import M ::**[true];", {
-                node: NamespaceImport,
+                node: NamespaceImport.$type,
             });
             expect(printKerMLElement(node.$meta)).toEqual("private import M::**[true];\n");
         });
 
         it("should print imports with children", async () => {
             const node = await parsedNode("private import all M::* { /* comment */ }", {
-                node: NamespaceImport,
+                node: NamespaceImport.$type,
             });
             expect(printKerMLElement(node.$meta)).toEqual(`private import all M::* {
     /*
@@ -114,7 +114,7 @@ describe("imports", () => {
 
         it("should print filtered imports", async () => {
             const node = await parsedNode("private import M ::* ::** [@Safety][hastype T];", {
-                node: NamespaceImport,
+                node: NamespaceImport.$type,
             });
             expect(printKerMLElement(node.$meta)).toEqual(
                 "private import M::*::**[@ Safety][hastype T];\n"
@@ -123,7 +123,7 @@ describe("imports", () => {
 
         it("should break filtered imports", async () => {
             const node = await parsedNode("private import M ::* ::** [@Safety][hastype T];", {
-                node: NamespaceImport,
+                node: NamespaceImport.$type,
             });
             expect(printKerMLElement(node.$meta, { options: { lineWidth: 20 } })).toEqual(
                 `private import M::*::**[
@@ -137,7 +137,7 @@ describe("imports", () => {
 describe("member relationships", () => {
     describe.each([
         [
-            Specialization,
+            Specialization.$type,
             "specialization",
             "subtype",
             "specializes",
@@ -145,18 +145,18 @@ describe("member relationships", () => {
             "specialization_keyword_specialization",
         ],
         [
-            Subclassification,
+            Subclassification.$type,
             "specialization",
             "subclassifier",
             "specializes",
             ":>",
             "specialization_keyword_subclassification",
         ],
-        [Conjugation, "conjugation", "conjugate", "conjugates", "~", "conjugation_keyword"],
-        [Disjoining, "disjoining", "disjoint", "from", "", "disjoining_keyword"],
-        [FeatureInverting, "inverting", "inverse", "of", "", "inverting_keyword"],
+        [Conjugation.$type, "conjugation", "conjugate", "conjugates", "~", "conjugation_keyword"],
+        [Disjoining.$type, "disjoining", "disjoint", "from", "", "disjoining_keyword"],
+        [FeatureInverting.$type, "inverting", "inverse", "of", "", "inverting_keyword"],
         [
-            FeatureTyping,
+            FeatureTyping.$type,
             "specialization",
             "typing",
             "typed by",
@@ -164,7 +164,7 @@ describe("member relationships", () => {
             "specialization_keyword_feature_typing",
         ],
         [
-            Redefinition,
+            Redefinition.$type,
             "specialization",
             "redefinition",
             "redefines",
@@ -172,7 +172,7 @@ describe("member relationships", () => {
             "specialization_keyword_redefinition",
         ],
         [
-            Subsetting,
+            Subsetting.$type,
             "specialization",
             "subset",
             "subsets",
@@ -261,12 +261,12 @@ describe("member relationships", () => {
     });
 
     it.each([
-        ["specialization", "subtype", "specializes", Specialization],
-        ["specialization", "subset", "subsets", Subsetting],
-        ["specialization", "redefinition", "redefines", Redefinition],
-        ["inverting", "inverse", "of", FeatureInverting],
-        ["conjugation", "conjugate", "conjugates", Conjugation],
-        ["disjoining", "disjoint", "from", Disjoining],
+        ["specialization", "subtype", "specializes", Specialization.$type],
+        ["specialization", "subset", "subsets", Subsetting.$type],
+        ["specialization", "redefinition", "redefines", Redefinition.$type],
+        ["inverting", "inverse", "of", FeatureInverting.$type],
+        ["conjugation", "conjugate", "conjugates", Conjugation.$type],
+        ["disjoining", "disjoint", "from", Disjoining.$type],
     ] as const)("should print %s %s chained features", async (left, mid, right, type) => {
         return expectPrinted(`${left} a ${mid} b.c.d ${right} e.f.g {}`, {
             node: type,
@@ -277,7 +277,7 @@ describe("member relationships", () => {
         "should print %s chained features",
         async (token) => {
             return expectPrinted(`feature a ${token} b.c.d {}`, {
-                node: Feature,
+                node: Feature.$type,
             }).resolves.toEqual(`feature a ${token} b.c.d {}\n`);
         }
     );
@@ -285,7 +285,7 @@ describe("member relationships", () => {
     describe("TypeFeaturing", () => {
         it("should remove keyword if it is not required and option is set", async () => {
             return expectPrinted(`featuring of a by b {}`, {
-                node: TypeFeaturing,
+                node: TypeFeaturing.$type,
                 format: {
                     featuring_of_keyword: {
                         default: "as_needed",
@@ -296,7 +296,7 @@ describe("member relationships", () => {
 
         it("should add keyword if it is not required and option is set", async () => {
             return expectPrinted(`featuring a by b {}`, {
-                node: TypeFeaturing,
+                node: TypeFeaturing.$type,
                 format: {
                     featuring_of_keyword: {
                         default: "always",
@@ -307,7 +307,7 @@ describe("member relationships", () => {
 
         it("should retain leading keyword if it is required", async () => {
             return expectPrinted(`featuring f of a by b {}`, {
-                node: TypeFeaturing,
+                node: TypeFeaturing.$type,
                 format: {
                     featuring_of_keyword: {
                         default: "as_needed",
@@ -321,13 +321,13 @@ describe("member relationships", () => {
 describe("dependencies", () => {
     it("should print fitting dependencies on one line", async () => {
         return expectPrinted("#dep dependency dep from a to b {}", {
-            node: Dependency,
+            node: Dependency.$type,
         }).resolves.toEqual("#dep dependency dep from a to b {}\n");
     });
 
     it("should break references", async () => {
         return expectPrinted("#dep dependency 'some long id' from a to b {}", {
-            node: Dependency,
+            node: Dependency.$type,
             options: { lineWidth: 35 },
         }).resolves.toEqual(`#dep dependency 'some long id'
     from a
@@ -336,29 +336,29 @@ describe("dependencies", () => {
 
     it("should not print 'from' if it is not required and option is set", async () => {
         return expectPrinted("dependency from a to b {}", {
-            node: Dependency,
+            node: Dependency.$type,
             format: { dependency_from_keyword: { default: "as_needed" } },
         }).resolves.toEqual("dependency a to b {}\n");
     });
 
     it("should print 'from' if it is required", async () => {
         return expectPrinted("dependency dep from a to b {}", {
-            node: Dependency,
+            node: Dependency.$type,
             format: { dependency_from_keyword: { default: "as_needed" } },
         }).resolves.toEqual("dependency dep from a to b {}\n");
     });
 
     it("should preserve 'from' if it is not required and option is set", async () => {
         return expectPrinted("dependency from a to b {}", {
-            node: Dependency,
+            node: Dependency.$type,
             format: { dependency_from_keyword: { default: "preserve" } },
         }).resolves.toEqual("dependency from a to b {}\n");
     });
 });
 
 describe.each([
-    ["", "private ", "import", Import, "kerml", (text: string): string => text],
-    ["protected ", "", "expose", Expose, "sysml", (text: string): string => `view { ${text} }`],
+    ["", "private ", "import", Import.$type, "kerml", (text: string): string => text],
+    ["protected ", "", "expose", Expose.$type, "sysml", (text: string): string => `view { ${text} }`],
 ] as const)("%s", (bad, vis, kw, type, lang, transform) => {
     it("should print appropriate visibility indicators", async () => {
         return expectPrinted(transform(`${bad}${kw} M { /* comment */ }`), {
@@ -432,9 +432,9 @@ describe.each([
 
 describe("membership", () => {
     it.each([
-        ["actor", ActorMembership],
-        ["subject", SubjectMembership],
-        ["stakeholder", StakeholderMembership],
+        ["actor", ActorMembership.$type],
+        ["subject", SubjectMembership.$type],
+        ["stakeholder", StakeholderMembership.$type],
     ] as const)("should print %s memberships", async (kw, type) => {
         return expectPrinted(`requirement def { protected ${kw} #prefix a {}  }`, {
             node: type,
@@ -444,25 +444,25 @@ describe("membership", () => {
 
     it("should print feature memberships", async () => {
         return expectPrinted("requirement def { private #prefix part a {}  }", {
-            node: FeatureMembership,
+            node: FeatureMembership.$type,
             lang: "sysml",
         }).resolves.toEqual("private #prefix part a {}\n");
     });
 
     describe.each([
-        ["framed concern", "frame", "concern", FramedConcernMembership],
-        ["requirement verification", "verify", "requirement", RequirementVerificationMembership],
+        ["framed concern", "frame", "concern", FramedConcernMembership.$type],
+        ["requirement verification", "verify", "requirement", RequirementVerificationMembership.$type],
         [
             "requirement constraint assumption",
             "assume",
             "constraint",
-            RequirementConstraintMembership,
+            RequirementConstraintMembership.$type,
         ],
         [
             "requirement constraint requirement",
             "require",
             "constraint",
-            RequirementConstraintMembership,
+            RequirementConstraintMembership.$type,
         ],
     ] as const)("%s membership", (_, member, target, type) => {
         it("should print shorthand", async () => {
@@ -489,21 +489,21 @@ describe("membership", () => {
 
     it("should print objective memberships", async () => {
         return expectPrinted("case def { protected objective #prefix a = 1 {}  }", {
-            node: ObjectiveMembership,
+            node: ObjectiveMembership.$type,
             lang: "sysml",
         }).resolves.toEqual("protected objective #prefix a = 1 {}\n");
     });
 
     it("should print alias memberships", async () => {
         return expectPrinted("alias a for b {}", {
-            node: Membership,
+            node: Membership.$type,
             lang: "sysml",
         }).resolves.toEqual("alias a for b {}\n");
     });
 
     it("should print initial node members", async () => {
         return expectPrinted("action def { first a {} }", {
-            node: Membership,
+            node: Membership.$type,
             lang: "sysml",
         }).resolves.toEqual("first a {}\n");
     });
@@ -512,7 +512,7 @@ describe("membership", () => {
         return expectPrinted(
             "public filter some_long_lhs_value_herer > some_long_rhs_value_here;",
             {
-                node: ElementFilterMembership,
+                node: ElementFilterMembership.$type,
                 lang: "sysml",
                 options: {
                     lineWidth: 40,
@@ -529,7 +529,7 @@ describe("membership", () => {
 
     it("should print return members", async () => {
         return expectPrinted("calc def { return a = 1; }", {
-            node: ReturnParameterMembership,
+            node: ReturnParameterMembership.$type,
             lang: "sysml",
         }).resolves.toEqual("return a = 1;\n");
     });
@@ -537,14 +537,14 @@ describe("membership", () => {
     describe("variant memberships", () => {
         it("should print regular members", async () => {
             return expectPrinted("calc def { variant ref a = 1; }", {
-                node: VariantMembership,
+                node: VariantMembership.$type,
                 lang: "sysml",
             }).resolves.toEqual("variant ref a = 1;\n");
         });
 
         it("should print enum members", async () => {
             return expectPrinted("enum def { enum = 1; }", {
-                node: VariantMembership,
+                node: VariantMembership.$type,
                 lang: "sysml",
             }).resolves.toEqual("enum = 1;\n");
         });
@@ -552,7 +552,7 @@ describe("membership", () => {
 
     it("should print view rendering memberships", async () => {
         return expectPrinted("view def { render x :> xx; }", {
-            node: ViewRenderingMembership,
+            node: ViewRenderingMembership.$type,
             lang: "sysml",
         }).resolves.toEqual("render x :> xx;\n");
     });
@@ -564,7 +564,7 @@ describe("notes", () => {
             `
         // leading
         private class A; // trailing`,
-            { node: OwningMembership, lang: "kerml" }
+            { node: OwningMembership.$type, lang: "kerml" }
         ).resolves.toEqual(`// leading
 private class A; // trailing\n`);
     });
@@ -573,7 +573,7 @@ private class A; // trailing\n`);
 describe("KerML member features", () => {
     it("should print member features", () => {
         return expectPrintedAs(`class { member a; }`, {
-            node: OwningMembership,
+            node: OwningMembership.$type,
             index: 1,
             lang: "kerml",
         }).resolves.toEqual("member a;\n");
@@ -581,7 +581,7 @@ describe("KerML member features", () => {
 
     it("should print member metadata features", () => {
         return expectPrintedAs(`class { @a; }`, {
-            node: OwningMembership,
+            node: OwningMembership.$type,
             index: 1,
             lang: "kerml",
         }).resolves.toEqual("@a;\n");
@@ -589,7 +589,7 @@ describe("KerML member features", () => {
 
     it("should print member multiplicity subset", () => {
         return expectPrintedAs(`class { multiplicity a :> b; }`, {
-            node: OwningMembership,
+            node: OwningMembership.$type,
             index: 1,
             lang: "kerml",
         }).resolves.toEqual("multiplicity a :> b;\n");
@@ -597,7 +597,7 @@ describe("KerML member features", () => {
 
     it("should print member multiplicity range", () => {
         return expectPrintedAs(`class { multiplicity a [0]; }`, {
-            node: OwningMembership,
+            node: OwningMembership.$type,
             index: 1,
             lang: "kerml",
         }).resolves.toEqual("multiplicity a [0];\n");

@@ -25,7 +25,7 @@ export interface AnnotatingElementOptions extends ElementOptions<RelationshipMet
     annotations?: readonly Edge<AnnotationMeta, ElementMeta>[];
 }
 
-@metamodelOf(AnnotatingElement, "abstract")
+@metamodelOf(AnnotatingElement.$type, "abstract")
 export abstract class AnnotatingElementMeta extends ElementMeta {
     protected _annotations: AnnotationMeta[] = [];
 

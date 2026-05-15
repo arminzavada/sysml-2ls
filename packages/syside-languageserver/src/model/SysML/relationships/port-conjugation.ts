@@ -20,7 +20,7 @@ import { ConjugationMeta, RelationshipOptionsBody } from "../../KerML/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ConjugatedPortDefinitionMeta, PortDefinitionMeta } from "../port-definition.js";
 
-@metamodelOf(PortConjugation)
+@metamodelOf(PortConjugation.$type)
 // @ts-expect-error ignoring static inheritance error
 export class PortConjugationMeta<
     T extends PortDefinitionMeta = PortDefinitionMeta,

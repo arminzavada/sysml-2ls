@@ -28,7 +28,7 @@ export interface TriggerInvocationExpressionOptions extends InvocationExpression
     kind: TriggerInvocationExpressionKind;
 }
 
-@metamodelOf(TriggerInvocationExpression, {
+@metamodelOf(TriggerInvocationExpression.$type, {
     when: "Triggers::TriggerWhen",
     at: "Triggers::TriggerAt",
     after: "Triggers::TriggerAfter",

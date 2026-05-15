@@ -29,7 +29,7 @@ export interface MetadataAccessExpressionOptions extends ModelElementOptions<Rel
     reference: ElementMeta;
 }
 
-@metamodelOf(MetadataAccessExpression)
+@metamodelOf(MetadataAccessExpression.$type)
 export class MetadataAccessExpressionMeta extends ExpressionMeta {
     protected _reference?: ElementMeta;
 

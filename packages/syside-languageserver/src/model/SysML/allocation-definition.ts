@@ -20,7 +20,7 @@ import { ConnectionDefinitionMeta, ConnectionDefinitionOptions } from "./connect
 
 export type AllocationDefinitionOptions = ConnectionDefinitionOptions;
 
-@metamodelOf(AllocationDefinition, {
+@metamodelOf(AllocationDefinition.$type, {
     base: "Allocations::Allocation",
     binary: "Allocations::Allocation",
 })

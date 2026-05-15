@@ -27,7 +27,7 @@ export interface ItemFlowEndOptions extends FeatureOptions {
     parent?: EndFeatureMembershipMeta;
 }
 
-@metamodelOf(ItemFlowEnd, ImplicitItemFlowEnds)
+@metamodelOf(ItemFlowEnd.$type, ImplicitItemFlowEnds)
 export class ItemFlowEndMeta extends FeatureMeta {
     override get isEnd(): boolean {
         return true;

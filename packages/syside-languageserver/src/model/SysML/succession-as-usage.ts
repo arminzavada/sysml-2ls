@@ -35,7 +35,7 @@ import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-us
 
 export interface SuccessionAsUsageOptions extends SuccessionOptions, ConnectorAsUsageOptions {}
 
-@metamodelOf(SuccessionAsUsage, {
+@metamodelOf(SuccessionAsUsage.$type, {
     base: "Occurrences::happensBeforeLinks",
     binary: "Occurrences::happensBeforeLinks",
 })
@@ -50,7 +50,7 @@ export class SuccessionAsUsageMeta extends Mixin(SuccessionMeta, ConnectorAsUsag
 
     targetFeature(): FeatureMembershipMeta | undefined {
         const owner = this.owner();
-        if (!owner?.is(Type)) return;
+        if (!owner?.is(Type.$type)) return;
 
         const parent = this.parent();
 
@@ -58,7 +58,7 @@ export class SuccessionAsUsageMeta extends Mixin(SuccessionMeta, ConnectorAsUsag
         const index = features.findIndex((m) => m === parent);
         if (index >= features.length) return;
         return stream(features.slice(index + 1))
-            .filter((m) => m.is(FeatureMembership))
+            .filter((m) => m.is(FeatureMembership.$type))
             .head() as FeatureMembershipMeta | undefined;
     }
 
@@ -67,28 +67,28 @@ export class SuccessionAsUsageMeta extends Mixin(SuccessionMeta, ConnectorAsUsag
         linker?: (model: BasicMetamodel) => void
     ): MembershipMeta<FeatureMeta> | undefined {
         const owner = feature.owner();
-        if (!owner?.is(Type)) return;
+        if (!owner?.is(Type.$type)) return;
 
         const parent = feature.parent();
         const features = owner.featureMembers();
         let index = features.findIndex((m) => m === parent);
         while (--index >= 0) {
             const membership = features[index];
-            if (membership.is(TransitionFeatureMembership)) continue;
+            if (membership.is(TransitionFeatureMembership.$type)) continue;
 
             linker?.call(undefined, membership);
             const element = membership.element();
             if (!element) continue;
             if (
                 !element.isParameter &&
-                !element.is(TransitionUsage) &&
-                (!element.is(Connector) ||
-                    (!owner.isAny(ActionDefinition, ActionUsage) && element.is(ItemFlow)))
+                !element.is(TransitionUsage.$type) &&
+                (!element.is(Connector.$type) ||
+                    (!owner.isAny(ActionDefinition.$type, ActionUsage.$type) && element.is(ItemFlow.$type)))
             )
                 return membership;
         }
 
-        return owner.is(Feature)
+        return owner.is(Feature.$type)
             ? SuccessionAsUsageMeta.findPreviousFeature(owner, linker)
             : undefined;
     }

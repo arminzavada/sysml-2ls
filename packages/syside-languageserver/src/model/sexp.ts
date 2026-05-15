@@ -28,8 +28,8 @@ interface SExpOptions {
 function isImplied(node: ElementMeta): boolean {
     const parent = node.parent();
     return (
-        (node.is(Relationship) && node.isImplied) ||
-        (!!parent && parent?.is(Relationship) && parent?.isImplied)
+        (node.is(Relationship.$type) && node.isImplied) ||
+        (!!parent && parent?.is(Relationship.$type) && parent?.isImplied)
     );
 }
 
@@ -75,7 +75,7 @@ export function toSExp(
 
     out.push(...exps);
 
-    if (exps.length === 0 && options.includeTargets && node.is(Relationship)) {
+    if (exps.length === 0 && options.includeTargets && node.is(Relationship.$type)) {
         const element = node.element();
         if (element) {
             out.push(

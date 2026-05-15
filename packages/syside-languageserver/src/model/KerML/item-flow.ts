@@ -52,7 +52,7 @@ export interface ItemFlowOptions extends StepOptions, ConnectorOptions {
     item?: Edge<FeatureMembershipMeta, ItemFeatureMeta>;
 }
 
-@metamodelOf(ItemFlow, ImplicitItemFlows)
+@metamodelOf(ItemFlow.$type, ImplicitItemFlows)
 export class ItemFlowMeta extends Mixin(StepMeta, ConnectorMeta) {
     protected _item?: FeatureMembershipMeta<ItemFeatureMeta> | undefined;
 
@@ -84,7 +84,7 @@ export class ItemFlowMeta extends Mixin(StepMeta, ConnectorMeta) {
      * @returns owned item flow ends of this item flow
      */
     itemFlowEnds(): ItemFlowEndMeta[] {
-        return this.ownedEnds().filter(BasicMetamodel.is(ItemFlowEnd));
+        return this.ownedEnds().filter(BasicMetamodel.is(ItemFlowEnd.$type));
     }
 
     override featureMembers(): readonly MembershipMeta<FeatureMeta>[] {

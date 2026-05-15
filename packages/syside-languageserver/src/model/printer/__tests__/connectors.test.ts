@@ -41,7 +41,7 @@ describe("connectors", () => {
         return expectPrintedAs(text, {
             ...context,
             lang: "kerml",
-            node: context?.node ?? Connector,
+            node: context?.node ?? Connector.$type,
         });
     };
 
@@ -105,20 +105,20 @@ describe("connectors", () => {
 
     it("should print binary binding connectors", async () => {
         return expectPrinted("binding a of one = two {}", {
-            node: BindingConnector,
+            node: BindingConnector.$type,
         }).resolves.toEqual("binding a of one = two {}\n");
     });
 
     it("should print binary successions", async () => {
         return expectPrinted("succession a first one then two {}", {
-            node: Succession,
+            node: Succession.$type,
         }).resolves.toEqual("succession a first one then two {}\n");
     });
 });
 
 describe.each([
-    ["kerml", ItemFlow, SuccessionItemFlow],
-    ["sysml", FlowConnectionUsage, SuccessionFlowConnectionUsage],
+    ["kerml", ItemFlow.$type, SuccessionItemFlow.$type],
+    ["sysml", FlowConnectionUsage.$type, SuccessionFlowConnectionUsage.$type],
 ] as const)("%s item flows", (lang, flowType, successionType) => {
     const expectPrinted = (
         text: string,
@@ -215,7 +215,7 @@ describe("messages", () => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
-            node: context?.node ?? FlowConnectionUsage,
+            node: context?.node ?? FlowConnectionUsage.$type,
         });
     };
 
@@ -250,7 +250,7 @@ describe("binding connectors as usage", () => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
-            node: context?.node ?? BindingConnectorAsUsage,
+            node: context?.node ?? BindingConnectorAsUsage.$type,
         });
     };
 
@@ -282,21 +282,21 @@ describe("binding connectors as usage", () => {
 describe.each([
     [
         "connection usages",
-        ConnectionUsage,
+        ConnectionUsage.$type,
         "connection",
         "connect",
         { multi: "binary_connection_usages", optional: "connection_usage_keyword" },
     ],
     [
         "allocation usages",
-        AllocationUsage,
+        AllocationUsage.$type,
         "allocation",
         "allocate",
         { multi: "binary_allocation_usages", optional: "allocation_usage_keyword" },
     ],
     [
         "interface usages",
-        InterfaceUsage,
+        InterfaceUsage.$type,
         "interface",
         "connect",
         { multi: "binary_interface_usages", optional: false },
@@ -368,7 +368,7 @@ describe("interface usage", () => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
-            node: context?.node ?? InterfaceUsage,
+            node: context?.node ?? InterfaceUsage.$type,
         });
     };
 

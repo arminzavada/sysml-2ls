@@ -265,7 +265,7 @@ export function printMetadataFeature(node: MetadataFeatureMeta, context: ModelPr
         );
     }
 
-    const typing = node.specializations(FeatureTyping).at(0);
+    const typing = node.specializations(FeatureTyping.$type).at(0);
 
     /* istanbul ignore next */
     if (!typing) throwError(node, "Invalid MetadataFeature - missing FeatureTyping");
@@ -297,7 +297,7 @@ export function printMetadataFeature(node: MetadataFeatureMeta, context: ModelPr
  * feature bodies.
  */
 const MetadataBodyElementPrinter: ElementPrinter = (node, context) => {
-    if (node.nodeType() !== FeatureMembership) return DefaultElementPrinter(node, context);
+    if (node.nodeType() !== FeatureMembership.$type) return DefaultElementPrinter(node, context);
 
     const kw = context.mode === "kerml" ? "feature" : "ref";
     const target = (node as FeatureMembershipMeta).element();
@@ -308,7 +308,7 @@ const MetadataBodyElementPrinter: ElementPrinter = (node, context) => {
     const redef = heritage.at(0);
 
     /* istanbul ignore next */
-    if (redef?.nodeType() !== Redefinition)
+    if (redef?.nodeType() !== Redefinition.$type)
         throwError(target, "Invalid MetadataFeature body feature - should start with redefinition");
 
     const relationships: Doc[] = [

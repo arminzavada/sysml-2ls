@@ -66,7 +66,7 @@ export function JSONMetaReplacer(key: string, value: unknown): unknown {
 
     if (key.length > 0 && isMetamodel(value)) {
         // serialize all internal nodes
-        if (value.is(Element)) return value.qualifiedName;
+        if (value.is(Element.$type)) return value.qualifiedName;
         return `[Node ${value.nodeType()}]`;
     }
 
@@ -80,7 +80,7 @@ export function JSONMetaReplacer(key: string, value: unknown): unknown {
  */
 export function cstNodeRuleName(node?: CstNode): string | undefined {
     if (!node) return;
-    let element: AstNode | undefined = node.feature;
+    let element: AstNode | undefined = node.grammarSource;
     while (element) {
         if (isAbstractRule(element)) return element.name;
         if (isRuleCall(element)) return element.rule.ref?.name;
@@ -118,7 +118,7 @@ export function simplifyCstNode(node: CstNode, depth = 2): DebugCstNode {
             tree.push(rule);
             if (tree.length === depth) break;
         }
-        cst = cst.parent;
+        cst = cst.container;
     }
 
     return {
@@ -139,7 +139,7 @@ export function JSONreplacer(key: string, value: unknown): unknown {
     }
 
     if (key === "$meta") {
-        if (!isMetamodel(value) || !value.is(Element)) return value;
+        if (!isMetamodel(value) || !value.is(Element.$type)) return value;
         // only serialize basic metamodel data to avoid circular references
         return {
             elementId: value.elementId,

@@ -24,7 +24,7 @@ import {
     SpecializationMeta,
 } from "../_internal.js";
 
-@metamodelOf(Subsetting)
+@metamodelOf(Subsetting.$type)
 // @ts-expect-error ignoring static inheritance error
 export class SubsettingMeta<T extends FeatureMeta = FeatureMeta> extends SpecializationMeta<T> {
     override ast(): Subsetting | undefined {

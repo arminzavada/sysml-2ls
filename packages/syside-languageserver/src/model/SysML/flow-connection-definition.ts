@@ -25,7 +25,7 @@ export interface FlowConnectionDefinitionOptions
     extends InteractionOptions,
         ActionDefinitionOptions {}
 
-@metamodelOf(FlowConnectionDefinition, {
+@metamodelOf(FlowConnectionDefinition.$type, {
     base: "FlowConnections::MessageConnection",
     binary: "FlowConnections::MessageTransferConnection",
 })

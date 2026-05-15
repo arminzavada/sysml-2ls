@@ -19,7 +19,7 @@ import { Target } from "../../../utils/containers.js";
 import { metamodelOf } from "../../metamodel.js";
 import { FeatureMeta, TypeReferenceMeta } from "./../_internal.js";
 
-@metamodelOf(FeatureReference)
+@metamodelOf(FeatureReference.$type)
 export class FeatureReferenceMeta extends TypeReferenceMeta {
     override readonly to = new Target<FeatureMeta>();
 

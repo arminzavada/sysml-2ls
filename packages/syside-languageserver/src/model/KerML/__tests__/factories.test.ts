@@ -60,8 +60,13 @@ describe("Element factories", () => {
         ["struct", StructureMeta, TypeClassifier.Structure],
     ])(
         "should construct %1 with the correct classifier flag",
-        (_, proto: typeof TypeMeta, classifier) => {
-            expect(proto.create(id, document)).toMatchObject({ classifier });
+        (_, proto, classifier) => {
+            // TS 5.8 enforces strict assignability between the per-meta-class
+            // `create` static signatures; the test only cares about the
+            // runtime return value, so erase to a callable.
+            expect(
+                (proto.create as unknown as (...args: unknown[]) => object)(id, document)
+            ).toMatchObject({ classifier });
         }
     );
 
@@ -133,7 +138,7 @@ describe("Element factories", () => {
     });
 
     it("should create null expressions", () => {
-        expect(NullExpressionMeta.create(id, document).nodeType()).toEqual(NullExpression);
+        expect(NullExpressionMeta.create(id, document).nodeType()).toEqual(NullExpression.$type);
     });
 
     it("should assign operator in operator expression", () => {

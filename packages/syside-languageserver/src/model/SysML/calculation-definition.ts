@@ -23,7 +23,7 @@ import { ElementParts } from "../KerML/index.js";
 
 export interface CalculationDefinitionOptions extends FunctionOptions, ActionDefinitionOptions {}
 
-@metamodelOf(CalculationDefinition, {
+@metamodelOf(CalculationDefinition.$type, {
     base: "Calculations::Calculation",
 })
 export class CalculationDefinitionMeta extends Mixin(FunctionMeta, ActionDefinitionMeta) {

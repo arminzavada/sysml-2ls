@@ -30,7 +30,7 @@ export const ImplicitLiteralExpressions = {
 
 export type LiteralExpressionOptions = ModelElementOptions<RelationshipMeta>;
 
-@metamodelOf(LiteralExpression, ImplicitLiteralExpressions)
+@metamodelOf(LiteralExpression.$type, ImplicitLiteralExpressions)
 export class LiteralExpressionMeta extends ExpressionMeta {
     override ast(): LiteralExpression | undefined {
         return this._ast as LiteralExpression;

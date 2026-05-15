@@ -26,7 +26,7 @@ export interface PerformActionUsageOptions
     extends EventOccurrenceUsageOptions,
         ActionUsageOptions {}
 
-@metamodelOf(PerformActionUsage, {
+@metamodelOf(PerformActionUsage.$type, {
     performedAction: "Parts::Part::performedActions",
 })
 export class PerformActionUsageMeta extends Mixin(EventOccurrenceUsageMeta, ActionUsageMeta) {
@@ -50,7 +50,7 @@ export class PerformActionUsageMeta extends Mixin(EventOccurrenceUsageMeta, Acti
         return this._ast as PerformActionUsage;
     }
     override namingFeature(): FeatureMeta | undefined {
-        return this.types(ReferenceSubsetting).head() as FeatureMeta | undefined;
+        return this.types(ReferenceSubsetting.$type).head() as FeatureMeta | undefined;
     }
 }
 

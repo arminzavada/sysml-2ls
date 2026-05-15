@@ -18,6 +18,7 @@ import { AstNode, LangiumDocument } from "langium";
 import { TypeFeaturing } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
+    ElementMeta,
     FeatureMeta,
     FeaturingMeta,
     RelationshipMeta,
@@ -25,7 +26,8 @@ import {
     TypeMeta,
 } from "../_internal.js";
 
-@metamodelOf(TypeFeaturing)
+@metamodelOf(TypeFeaturing.$type)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class TypeFeaturingMeta<T extends TypeMeta = TypeMeta> extends FeaturingMeta<T> {
     override ast(): TypeFeaturing | undefined {
         return this._ast as TypeFeaturing;
@@ -40,7 +42,7 @@ export class TypeFeaturingMeta<T extends TypeMeta = TypeMeta> extends FeaturingM
         document: LangiumDocument,
         options?: RelationshipOptions<TypeMeta, Parent, FeatureMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options);
+        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
     }
 }
 

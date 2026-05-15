@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { createGrammarConfig, GrammarAST, GrammarConfig, LangiumCoreServices } from "langium";
-const { isRegexToken } = GrammarAST;
+const { isRegexToken, isTerminalRule } = GrammarAST;
 
 // Cached grammar config since it is identical between KerML and SysML. May be
 // helpful when/if we decide to create services per test case.
@@ -35,7 +35,7 @@ export function createSysMLGrammarConfig(services: LangiumCoreServices): Grammar
         const rule = grammar.rules.find((rule) => rule.name === terminal);
 
         // NB: this is not very robust to changes in the grammar files
-        if (!rule || !isRegexToken(rule.definition)) continue;
+        if (!rule || !isTerminalRule(rule) || !isRegexToken(rule.definition)) continue;
 
         // `RegexToken.regex` is emitted in the delimited form `/pattern/`;
         // strip the delimiters so we can wrap with `^…$` for an anchored match.

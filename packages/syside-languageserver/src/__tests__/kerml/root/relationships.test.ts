@@ -29,7 +29,7 @@ test("relationships are parseable", async () => {
             ...anything(4),
             {
                 target: {
-                    $type: Dependency,
+                    $type: Dependency.$type,
                     declaredName: "R",
                     declaredShortName: "'5'",
                     client: [qualifiedTypeReference("A"), qualifiedTypeReference("D")],

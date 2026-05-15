@@ -9,10 +9,10 @@ entry RootNamespace returns Namespace:
 
 // Tokens
 
-fragment TypedByToken returns string:
+TypedByToken returns string:
     ':' | 'typed' 'by'
 ;
-fragment ConjugatesToken returns string:
+ConjugatesToken returns string:
     '~' | 'conjugates'
 ;
 

@@ -34,7 +34,7 @@ export interface IfActionUsageOptions extends ActionUsageOptions {
     else?: Edge<ParameterMembershipMeta, ActionUsageMeta>;
 }
 
-@metamodelOf(IfActionUsage, {
+@metamodelOf(IfActionUsage.$type, {
     base: "Actions::ifThenActions",
     ifThenElse: "Actions::ifThenElseActions",
     subaction: "Actions::Action::ifSubactions",

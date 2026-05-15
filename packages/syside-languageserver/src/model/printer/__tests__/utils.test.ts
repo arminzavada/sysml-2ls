@@ -115,14 +115,14 @@ describe("references", () => {
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         $container: {} as any,
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        $meta: { notes: [], nodeType: () => ElementReference } as any,
-                        $type: ElementReference,
+                        $meta: { notes: [], nodeType: () => ElementReference.$type } as any,
+                        $type: ElementReference.$type,
                         parts: [
-                            { $refText: "'first element'" },
-                            { $refText: "'second element'" },
-                            { $refText: "'third element'" },
-                            { $refText: "'fourth element'" },
-                            { $refText: "'fifth element'" },
+                            { $refText: "'first element'", ref: undefined },
+                            { $refText: "'second element'", ref: undefined },
+                            { $refText: "'third element'", ref: undefined },
+                            { $refText: "'fourth element'", ref: undefined },
+                            { $refText: "'fifth element'", ref: undefined },
                         ],
                     },
                     { ...defaultKerMLPrinterContext(), highlighting: false }
@@ -149,7 +149,7 @@ describe("keywords", () => {
 
 describe("other", () => {
     test("throwError should add source location", async () => {
-        const node = await parsedNode("package P {}", { lang: "kerml", node: Package });
+        const node = await parsedNode("package P {}", { lang: "kerml", node: Package.$type });
         expect(() => throwError(node.$meta, "test")).toThrowErrorMatchingInlineSnapshot(
             `[Error: test on line 1, character: 1]`
         );

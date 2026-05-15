@@ -57,7 +57,7 @@ type TextCommentMatch = DeepPartial<Required<TextComment>>;
 
 describe("notes", () => {
     it("should attach inner ML note", async () => {
-        (await expectNotes("feature a = ( //* a note */ );", { node: NullExpression })).toEqual([
+        (await expectNotes("feature a = ( //* a note */ );", { node: NullExpression.$type })).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -68,7 +68,7 @@ describe("notes", () => {
     });
 
     it("should attach inner SL note", async () => {
-        (await expectNotes("feature a = ( // a note\n);", { node: NullExpression })).toEqual([
+        (await expectNotes("feature a = ( // a note\n);", { node: NullExpression.$type })).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "line",
                 text: " a note",
@@ -79,7 +79,7 @@ describe("notes", () => {
     });
 
     it("should attach trailing note", async () => {
-        (await expectNotes("feature a = () //* a note */;", { node: FeatureValue })).toEqual([
+        (await expectNotes("feature a = () //* a note */;", { node: FeatureValue.$type })).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -90,7 +90,7 @@ describe("notes", () => {
     });
 
     it("should attach EOL trailing note", async () => {
-        (await expectNotes("feature a = (); //* a note */", { node: OwningMembership })).toEqual([
+        (await expectNotes("feature a = (); //* a note */", { node: OwningMembership.$type })).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -101,7 +101,7 @@ describe("notes", () => {
     });
 
     it("should attach EOL leading note", async () => {
-        (await expectNotes("feature a = //* a note */\n();\n", { node: NullExpression })).toEqual([
+        (await expectNotes("feature a = //* a note */\n();\n", { node: NullExpression.$type })).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -112,7 +112,7 @@ describe("notes", () => {
     });
 
     it("should attach own line trailing note", async () => {
-        (await expectNotes("feature a = ();\n//* a note */", { node: OwningMembership })).toEqual([
+        (await expectNotes("feature a = ();\n//* a note */", { node: OwningMembership.$type })).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -123,7 +123,7 @@ describe("notes", () => {
     });
 
     it("should attach own line leading note", async () => {
-        (await expectNotes("feature a = \n//* a note */\n();\n", { node: NullExpression })).toEqual(
+        (await expectNotes("feature a = \n//* a note */\n();\n", { node: NullExpression.$type })).toEqual(
             [
                 recursiveObjectContaining<TextCommentMatch>({
                     kind: "block",
@@ -136,7 +136,7 @@ describe("notes", () => {
     });
 
     it("should attach own line inner note", async () => {
-        (await expectNotes("feature a = (\n//* a note */\n);\n", { node: NullExpression })).toEqual(
+        (await expectNotes("feature a = (\n//* a note */\n);\n", { node: NullExpression.$type })).toEqual(
             [
                 recursiveObjectContaining<TextCommentMatch>({
                     kind: "block",
@@ -149,7 +149,7 @@ describe("notes", () => {
     });
 
     it("should attach remaining leading note 1", async () => {
-        (await expectNotes("feature a = //* a note */();\n", { node: NullExpression })).toEqual([
+        (await expectNotes("feature a = //* a note */();\n", { node: NullExpression.$type })).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
                 kind: "block",
                 text: " a note ",
@@ -162,7 +162,7 @@ describe("notes", () => {
     it("should attach remaining leading note 2", async () => {
         (
             await expectNotes("class a { class b; //* a note */ classifier c; }", {
-                node: OwningMembership,
+                node: OwningMembership.$type,
                 index: 2,
             })
         ).toEqual([
@@ -178,7 +178,7 @@ describe("notes", () => {
     it("should attach remaining trailing note", async () => {
         (
             await expectNotes("class a { feature b :> c //* a note */ :>> d; }", {
-                node: Subsetting,
+                node: Subsetting.$type,
             })
         ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
@@ -193,7 +193,7 @@ describe("notes", () => {
     it("should attach end of line notes inside bodies to the enclosing node", async () => {
         (
             await expectNotes("#prefix class a { // note \n }", {
-                node: Class,
+                node: Class.$type,
             })
         ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
@@ -208,7 +208,7 @@ describe("notes", () => {
     it("should attach own line notes inside bodies to the enclosing node", async () => {
         (
             await expectNotes("#prefix class a { \n// note \n }", {
-                node: Class,
+                node: Class.$type,
             })
         ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
@@ -223,7 +223,7 @@ describe("notes", () => {
     it("should attach remaining notes inside bodies to the enclosing node", async () => {
         (
             await expectNotes("#prefix class a { //* note */ }", {
-                node: Class,
+                node: Class.$type,
             })
         ).toEqual([
             recursiveObjectContaining<TextCommentMatch>({
@@ -239,7 +239,7 @@ describe("notes", () => {
         it("should attach remaining note with a label", async () => {
             (
                 await expectNotes("class a :> b:: //* note */ c; }", {
-                    node: ClassifierReference,
+                    node: ClassifierReference.$type,
                 })
             ).toEqual([
                 recursiveObjectContaining<TextCommentMatch>({
@@ -255,7 +255,7 @@ describe("notes", () => {
         it("should attach end of line note with a label", async () => {
             (
                 await expectNotes("class a :> b:: //* note */ \nc; }", {
-                    node: ClassifierReference,
+                    node: ClassifierReference.$type,
                 })
             ).toEqual([
                 recursiveObjectContaining<TextCommentMatch>({

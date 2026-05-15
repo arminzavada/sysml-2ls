@@ -22,7 +22,7 @@ import { ItemDefinitionMeta, ItemDefinitionOptions } from "./item-definition.js"
 
 export interface MetadataDefinitionOptions extends MetaclassOptions, ItemDefinitionOptions {}
 
-@metamodelOf(MetadataDefinition, {
+@metamodelOf(MetadataDefinition.$type, {
     base: "Metadata::MetadataItem",
 })
 export class MetadataDefinitionMeta extends Mixin(MetaclassMeta, ItemDefinitionMeta) {

@@ -86,10 +86,10 @@ describe("Model elements", () => {
     });
 
     describe.each([
-        [Documentation, DocumentationMeta, "documentation"],
-        [Comment, CommentMeta, "comments"],
-        [MetadataFeature, MetadataFeatureMeta, "metadata"],
-        [TextualRepresentation, TextualRepresentationMeta, "textualRepresentation"],
+        [Documentation.$type, DocumentationMeta, "documentation"],
+        [Comment.$type, CommentMeta, "comments"],
+        [MetadataFeature.$type, MetadataFeatureMeta, "metadata"],
+        [TextualRepresentation.$type, TextualRepresentationMeta, "textualRepresentation"],
     ] as const)("%s annotations", (_, proto, prop) => {
         it("should set parent annotating elements as its source", () => {
             // @ts-expect-error incompatible `ast()`...
@@ -217,13 +217,13 @@ describe("Model elements", () => {
     });
 
     describe.each([
-        [Dependency, DependencyMeta],
-        [Disjoining, DisjoiningMeta],
-        [FeatureInverting, FeatureInvertingMeta],
-        [TypeFeaturing, TypeFeaturingMeta],
-        [Membership, MembershipMeta],
-        [Import, NamespaceImportMeta],
-        [Inheritance, SpecializationMeta],
+        [Dependency.$type, DependencyMeta],
+        [Disjoining.$type, DisjoiningMeta],
+        [FeatureInverting.$type, FeatureInvertingMeta],
+        [TypeFeaturing.$type, TypeFeaturingMeta],
+        [Membership.$type, MembershipMeta],
+        [Import.$type, NamespaceImportMeta],
+        [Inheritance.$type, SpecializationMeta],
     ] as const)("%s children", (_, proto) => {
         let element: SysMLInterface<typeof _>["$meta"];
 
@@ -272,7 +272,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${FeatureReferenceExpression} expression`, () => {
+    describe(`${FeatureReferenceExpression.$type} expression`, () => {
         testChildProperty<FeatureReferenceExpressionMeta>({
             proto: FeatureReferenceExpressionMeta,
             edgeProto: OwningMembershipMeta,
@@ -281,7 +281,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${Namespace} elements`, () => {
+    describe(`${Namespace.$type} elements`, () => {
         describe("prefixes", () => {
             testChildrenArray({
                 proto: NamespaceMeta,
@@ -339,7 +339,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${Type} elements`, () => {
+    describe(`${Type.$type} elements`, () => {
         describe("heritage", () => {
             testChildrenArray({
                 proto: TypeMeta,
@@ -421,7 +421,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${Feature} elements`, () => {
+    describe(`${Feature.$type} elements`, () => {
         describe("value", () => {
             testChildProperty<FeatureMeta>({
                 proto: FeatureMeta,
@@ -446,7 +446,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${MultiplicityRange} elements`, () => {
+    describe(`${MultiplicityRange.$type} elements`, () => {
         describe("range", () => {
             testChildProperty<MultiplicityRangeMeta>({
                 proto: MultiplicityRangeMeta,
@@ -457,7 +457,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${Connector} elements`, () => {
+    describe(`${Connector.$type} elements`, () => {
         describe("ends", () => {
             testChildrenArray({
                 proto: ConnectorMeta,
@@ -474,8 +474,8 @@ describe("Model elements", () => {
     });
 
     describe.each([
-        [SysMLFunction, FunctionMeta],
-        [Expression, ExpressionMeta],
+        [SysMLFunction.$type, FunctionMeta],
+        [Expression.$type, ExpressionMeta],
     ] as const)("%s elements", (_, proto) => {
         describe("result", () => {
             testChildProperty<ExpressionMeta>({
@@ -487,7 +487,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${ItemFlow} elements`, () => {
+    describe(`${ItemFlow.$type} elements`, () => {
         describe("item", () => {
             testChildProperty<ItemFlowMeta>({
                 proto: ItemFlowMeta,

@@ -27,7 +27,7 @@ test.concurrent.each([
     ["Literal boolean", "true", [true]],
     ["Literal boolean", "false", [false]],
     ["Literal string", '"string"', ["string"]],
-    ["Literal infinity", "*", [{ $type: LiteralInfinity }]],
+    ["Literal infinity", "*", [{ $type: LiteralInfinity.$type }]],
     ["Division", "10 / 5", [2]],
     ["Modulo", "5 % 2", [1]],
     ["Multiplication", "5 * 2", [10]],

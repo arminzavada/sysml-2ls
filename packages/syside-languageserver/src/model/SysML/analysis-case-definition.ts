@@ -20,7 +20,7 @@ import { CaseDefinitionMeta, CaseDefinitionOptions } from "./case-definition.js"
 
 export type AnalysisCaseDefinitionOptions = CaseDefinitionOptions;
 
-@metamodelOf(AnalysisCaseDefinition, {
+@metamodelOf(AnalysisCaseDefinition.$type, {
     base: "AnalysisCases::AnalysisCase",
 })
 export class AnalysisCaseDefinitionMeta extends CaseDefinitionMeta {

@@ -25,7 +25,7 @@ export interface ConnectionDefinitionOptions
     extends AssociationStructureOptions,
         PartDefinitionOptions {}
 
-@metamodelOf(ConnectionDefinition, {
+@metamodelOf(ConnectionDefinition.$type, {
     base: "Connections::Connection",
     binary: "Connections::BinaryConnection",
 })

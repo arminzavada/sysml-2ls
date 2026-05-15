@@ -24,7 +24,7 @@ import { ElementParts } from "../KerML/index.js";
 
 export interface CalculationUsageOptions extends ExpressionOptions, ActionUsageOptions {}
 
-@metamodelOf(CalculationUsage, {
+@metamodelOf(CalculationUsage.$type, {
     base: "Calculations::calculations",
     subcalculation: "Calculations::Calculation::subcalculations",
 })
@@ -39,7 +39,7 @@ export class CalculationUsageMeta extends Mixin(ExpressionMeta, ActionUsageMeta)
     isSubcalculation(): boolean {
         const parent = this.owner();
         return Boolean(
-            this.isNonEntryExitComposite() && parent?.isAny(CalculationUsage, CalculationDefinition)
+            this.isNonEntryExitComposite() && parent?.isAny(CalculationUsage.$type, CalculationDefinition.$type)
         );
     }
 

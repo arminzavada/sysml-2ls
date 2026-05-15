@@ -18,7 +18,7 @@ import { Redefinition } from "../../../generated/ast.js";
 import { metamodelOf } from "../../metamodel.js";
 import { FeatureMeta, SubsettingMeta } from "../_internal.js";
 
-@metamodelOf(Redefinition)
+@metamodelOf(Redefinition.$type)
 export class RedefinitionMeta<T extends FeatureMeta = FeatureMeta> extends SubsettingMeta<T> {
     override ast(): Redefinition | undefined {
         return this._ast as Redefinition;

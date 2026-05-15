@@ -95,7 +95,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
         const services = this.serviceRegistry.getServices(document.uri) as SysMLDefaultServices;
         const exports = await (
             services.references.ScopeComputation as SysMLScopeComputation
-        ).computeExports(
+        ).collectExportedSymbols(
             // all root nodes are namespaces
             document as LangiumDocument<Namespace>,
             cancelToken
@@ -183,7 +183,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
             if (typeof child === "string" || !child) continue;
 
             let element: ElementMeta | undefined;
-            if (child.is(Membership)) element = child.element();
+            if (child.is(Membership.$type)) element = child.element();
             else element = child.element()?.element();
             candidate = element;
         }
@@ -221,7 +221,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
         if (!type) return;
         if (typeof type !== "string") return type;
         const result = this.findGlobalElement(type, document, addDependency);
-        if (result?.is(Type)) return result;
+        if (result?.is(Type.$type)) return result;
         return;
     }
 

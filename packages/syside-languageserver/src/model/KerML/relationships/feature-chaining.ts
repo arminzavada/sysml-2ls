@@ -19,7 +19,7 @@ import { FeatureChaining } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { FeatureMeta, RelationshipMeta, RelationshipOptionsBody } from "../_internal.js";
 
-@metamodelOf(FeatureChaining)
+@metamodelOf(FeatureChaining.$type)
 // @ts-expect-error ignoring static inheritance error
 export class FeatureChainingMeta<T extends FeatureMeta = FeatureMeta> extends RelationshipMeta<T> {
     override ast(): FeatureChaining | undefined {

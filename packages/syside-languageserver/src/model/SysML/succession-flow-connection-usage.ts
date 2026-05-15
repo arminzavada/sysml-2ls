@@ -27,7 +27,7 @@ export interface SuccessionFlowConnectionUsageOptions
     ends?: readonly Edge<EndFeatureMembershipMeta, ItemFlowEndMeta>[];
 }
 
-@metamodelOf(SuccessionFlowConnectionUsage, {
+@metamodelOf(SuccessionFlowConnectionUsage.$type, {
     base: "FlowConnections::successionFlowConnections",
     message: "FlowConnections::successionFlowConnections",
 })

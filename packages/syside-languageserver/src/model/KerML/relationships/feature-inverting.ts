@@ -19,7 +19,8 @@ import { FeatureInverting } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ElementMeta, FeatureMeta, RelationshipMeta, RelationshipOptions } from "../_internal.js";
 
-@metamodelOf(FeatureInverting)
+@metamodelOf(FeatureInverting.$type)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class FeatureInvertingMeta<T extends FeatureMeta = FeatureMeta> extends RelationshipMeta<T> {
     /**
      * Adds new owned body elements and returns the new number of body elements.
@@ -53,7 +54,7 @@ export class FeatureInvertingMeta<T extends FeatureMeta = FeatureMeta> extends R
         document: LangiumDocument,
         options?: RelationshipOptions<FeatureMeta, Parent, FeatureMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options);
+        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
     }
 }
 

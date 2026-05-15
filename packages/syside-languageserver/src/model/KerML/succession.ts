@@ -24,7 +24,7 @@ export const ImplicitSuccessions = {
 
 export type SuccessionOptions = ConnectorOptions;
 
-@metamodelOf(Succession, ImplicitSuccessions)
+@metamodelOf(Succession.$type, ImplicitSuccessions)
 export class SuccessionMeta extends ConnectorMeta {
     override ast(): Succession | undefined {
         return this._ast as Succession;

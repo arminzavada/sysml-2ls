@@ -20,13 +20,13 @@ import { AttributeUsageMeta, AttributeUsageOptions } from "./attribute-usage.js"
 
 export type EnumerationUsageOptions = AttributeUsageOptions;
 
-@metamodelOf(EnumerationUsage)
+@metamodelOf(EnumerationUsage.$type)
 export class EnumerationUsageMeta extends AttributeUsageMeta {
     override ast(): EnumerationUsage | undefined {
         return this._ast as EnumerationUsage;
     }
     protected override isVariantNode(): boolean {
-        return Boolean(this.owner()?.is(EnumerationDefinition));
+        return Boolean(this.owner()?.is(EnumerationDefinition.$type));
     }
 }
 

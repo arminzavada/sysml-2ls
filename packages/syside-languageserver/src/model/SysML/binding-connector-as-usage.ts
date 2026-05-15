@@ -24,7 +24,7 @@ export interface BindingConnectorAsUsageOptions
     extends BindingConnectorOptions,
         ConnectorAsUsageOptions {}
 
-@metamodelOf(BindingConnectorAsUsage, {
+@metamodelOf(BindingConnectorAsUsage.$type, {
     base: "Links::selfLinks",
     binary: "Links::selfLinks",
 })

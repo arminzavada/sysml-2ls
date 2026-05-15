@@ -39,7 +39,7 @@ export interface SuccessionItemFlowOptions extends ItemFlowOptions, SuccessionOp
     ends?: readonly Edge<EndFeatureMembershipMeta, ItemFlowEndMeta>[];
 }
 
-@metamodelOf(SuccessionItemFlow, ImplicitSuccessionItemFlows)
+@metamodelOf(SuccessionItemFlow.$type, ImplicitSuccessionItemFlows)
 export class SuccessionItemFlowMeta extends Mixin(ItemFlowMeta, SuccessionMeta) {
     override ast(): SuccessionItemFlow | undefined {
         return this._ast as SuccessionItemFlow;

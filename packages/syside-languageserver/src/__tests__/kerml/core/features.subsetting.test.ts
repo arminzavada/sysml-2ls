@@ -31,7 +31,7 @@ test.concurrent.each(["subsets", ":>"])(
                 ...anything(2),
                 {
                     target: {
-                        $type: Subsetting,
+                        $type: Subsetting.$type,
                         ...withQualifiedName("Sub"),
                         sourceRef: qualifiedTypeReference("parent"),
                         targetRef: qualifiedTypeReference("person"),
@@ -61,7 +61,7 @@ test.concurrent.each(["specialization", ""])(
                 ...anything(2),
                 {
                     target: {
-                        $type: Subsetting,
+                        $type: Subsetting.$type,
                         sourceRef: qualifiedTypeReference("parent"),
                         targetRef: qualifiedTypeReference("person"),
                     },

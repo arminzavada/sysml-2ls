@@ -27,7 +27,7 @@ import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
 
 export type RenderingUsageOptions = PartUsageOptions;
 
-@metamodelOf(RenderingUsage, {
+@metamodelOf(RenderingUsage.$type, {
     base: "Views::renderings",
     subrendering: "Views::Rendering::subrenderings",
     viewRendering: "Views::View::viewRendering",
@@ -40,27 +40,27 @@ export class RenderingUsageMeta extends PartUsageMeta {
     override defaultGeneralTypes(): GeneralType[] {
         const supertypes = super.defaultGeneralTypes();
         if (this.isViewRendering()) {
-            supertypes.push({ type: "viewRendering", specialization: Redefinition });
+            supertypes.push({ type: "viewRendering", specialization: Redefinition.$type });
         }
         return supertypes;
     }
 
     isSubrendering(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(RenderingUsage, RenderingDefinition));
+        return Boolean(parent?.isAny(RenderingUsage.$type, RenderingDefinition.$type));
     }
 
     isViewRendering(): boolean {
         const parent = this.parent();
-        return Boolean(parent?.is(ViewRenderingMembership));
+        return Boolean(parent?.is(ViewRenderingMembership.$type));
     }
 
     override ast(): RenderingUsage | undefined {
         return this._ast as RenderingUsage;
     }
     override namingFeature(): FeatureMeta | undefined {
-        return this.parent()?.is(ViewRenderingMembership)
-            ? (this.types(ReferenceSubsetting).head() as FeatureMeta | undefined)
+        return this.parent()?.is(ViewRenderingMembership.$type)
+            ? (this.types(ReferenceSubsetting.$type).head() as FeatureMeta | undefined)
             : super.namingFeature();
     }
 }

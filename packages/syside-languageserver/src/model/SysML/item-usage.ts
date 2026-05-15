@@ -20,7 +20,7 @@ import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.
 
 export type ItemUsageOptions = OccurrenceUsageOptions;
 
-@metamodelOf(ItemUsage, {
+@metamodelOf(ItemUsage.$type, {
     base: "Items::items",
     subitem: "Items::Item::subitems",
 })
@@ -36,7 +36,7 @@ export class ItemUsageMeta extends OccurrenceUsageMeta {
     protected isSubitem(): boolean {
         if (!this.isComposite) return false;
         const parent = this.owner();
-        return Boolean(parent?.isAny(ItemDefinition, ItemUsage));
+        return Boolean(parent?.isAny(ItemDefinition.$type, ItemUsage.$type));
     }
 
     override ast(): ItemUsage | undefined {

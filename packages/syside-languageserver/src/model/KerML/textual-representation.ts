@@ -23,7 +23,7 @@ export interface TextualRepresentationOptions extends TextualAnnotatingElementOp
     language?: string;
 }
 
-@metamodelOf(TextualRepresentation)
+@metamodelOf(TextualRepresentation.$type)
 export class TextualRepresentationMeta extends TextualAnnotatingMeta {
     /**
      * Trimmed language identifier

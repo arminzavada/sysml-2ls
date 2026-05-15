@@ -31,7 +31,7 @@ test("named item flows are parsed", async () => {
         }
         flow fuelFlow from fuelTank::fuelOut to engine::fuelIn;
     }`,
-            { node: ItemFlow, build: true }
+            { node: ItemFlow.$type, build: true }
         )
     ).resolves.toMatchObject({
         ends: anything(2),
@@ -65,7 +65,7 @@ test.each([
     feature vehicle : Vehicle {
         ${declaration} from fuelTank.fuelOut to engine.fuelIn;
     }`,
-            { node: ItemFlow, build: true }
+            { node: ItemFlow.$type, build: true }
         )
     ).resolves.toMatchObject({
         ends: anything(2),

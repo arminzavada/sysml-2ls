@@ -58,76 +58,76 @@ const AstToModel: {
         model["setParent"](node.$container?.$meta);
     },
 
-    [ast.Comment](model, node) {
+    [ast.Comment.$type](model, node) {
         if (node.locale) model.locale = node.locale.substring(1, node.locale.length - 1);
     },
 
-    [ast.FeatureReferenceExpression](model, node) {
+    [ast.FeatureReferenceExpression.$type](model, node) {
         model["_expression"] = node.expression.$meta as MembershipMeta<FeatureMeta>;
     },
 
-    [ast.LiteralBoolean](model, node) {
+    [ast.LiteralBoolean.$type](model, node) {
         model.literal = node.literal;
     },
 
-    [ast.LiteralNumber](model, node) {
+    [ast.LiteralNumber.$type](model, node) {
         // only check the cst node text for exponential or decimal notation
         model["_isInteger"] = !/[eE.]/.test(node.$cstNode?.text ?? "");
         model["_literal"] = node.literal;
     },
 
-    [ast.LiteralString](model, node) {
+    [ast.LiteralString.$type](model, node) {
         model.literal = node.literal.slice(1, node.literal.length - 1);
     },
 
-    [ast.OperatorExpression](model, node) {
+    [ast.OperatorExpression.$type](model, node) {
         if (node.operator) model.operator = `'${node.operator}'` as Operator;
     },
 
-    [ast.InvocationExpression](model, node) {
+    [ast.InvocationExpression.$type](model, node) {
         model["_operands"] = node.operands.map((e) => e.$meta);
     },
 
-    [ast.ElementReference](model, node) {
+    [ast.ElementReference.$type](model, node) {
         model.text = node.text ?? node.$cstNode?.text ?? "";
         model.found.length = node.parts.length;
     },
 
-    [ast.FeatureValue](model, node) {
+    [ast.FeatureValue.$type](model, node) {
         model.isDefault = node.isDefault;
         model.isInitial = node.isInitial;
     },
 
-    [ast.Import](model, node) {
+    [ast.Import.$type](model, node) {
         model.isRecursive = !!node.isRecursive;
         model["_importsAll"] = node.importsAll;
-        if (model.parent()?.is(ast.Package) && model.parent()?.parent()?.is(ast.Import)) {
+        if (model.parent()?.is(ast.Package.$type) && model.parent()?.parent()?.is(ast.Import.$type)) {
             model.visibility = Visibility.public;
         }
     },
 
-    [ast.AnnotatingElement](model, node) {
+    [ast.AnnotatingElement.$type](model, node) {
         model["_annotations"] = node.about.map((a) => a.$meta);
     },
 
-    [ast.Connector](model, node) {
+    [ast.Connector.$type](model, node) {
         model["_ends"] = node.ends.map((e) => e.$meta);
     },
 
-    [ast.Element](model, node) {
+    [ast.Element.$type](model, node) {
         model.declaredName = sanitizeName(node.declaredName);
         model.declaredShortName = sanitizeName(node.declaredShortName);
     },
 
-    [ast.Expression](model, node) {
+    [ast.Expression.$type](model, node) {
         model["_result"] = node.result?.$meta;
     },
 
-    [ast.SysMLFunction](model, node) {
+    [ast.SysMLFunction.$type](model, node) {
         model["_result"] = node.result?.$meta;
     },
 
-    [ast.Feature](model, node) {
+    [ast.Feature.$type](model, node) {
         model["_value"] = node.value?.$meta;
         model.isOrdered = node.isOrdered;
 
@@ -144,19 +144,19 @@ const AstToModel: {
             ?.$meta as OwningMembershipMeta<FeatureMeta>;
     },
 
-    [ast.Invariant](model, node) {
+    [ast.Invariant.$type](model, node) {
         model.isNegated = node.isNegated;
     },
 
-    [ast.LibraryPackage](model, node) {
+    [ast.LibraryPackage.$type](model, node) {
         model.isStandard = node.isStandard;
     },
 
-    [ast.MultiplicityRange](model, node) {
+    [ast.MultiplicityRange.$type](model, node) {
         model["_range"] = node.range?.$meta as OwningMembershipMeta<ExpressionMeta>;
     },
 
-    [ast.Namespace](model, node) {
+    [ast.Namespace.$type](model, node) {
         model["_prefixes"].length = 0;
         model["_children"].clear();
 
@@ -166,7 +166,7 @@ const AstToModel: {
         model["_children"].push(...node.children.map((child) => child.$meta));
     },
 
-    [ast.Dependency](model, node) {
+    [ast.Dependency.$type](model, node) {
         model["_prefixes"].length = 0;
         model["_children"].clear();
 
@@ -176,7 +176,7 @@ const AstToModel: {
         model["_children"].push(...node.elements.map((child) => child.$meta));
     },
 
-    [ast.Relationship](model, node) {
+    [ast.Relationship.$type](model, node) {
         model["_visibility"] = getVisibility(node.visibility);
 
         if (node.target) model["_element"] = node.target.$meta;
@@ -189,16 +189,16 @@ const AstToModel: {
         model["_children"].push(...node.elements.map((e) => e.$meta));
     },
 
-    [ast.TextualAnnotatingElement](model, node) {
+    [ast.TextualAnnotatingElement.$type](model, node) {
         // Body may fail to parse and be left undefined so check here
         if (node.body as string | undefined) model.body = prettyAnnotationBody(node.body);
     },
 
-    [ast.TextualRepresentation](model, node) {
+    [ast.TextualRepresentation.$type](model, node) {
         model.language = node.language.substring(1, node.language.length - 1);
     },
 
-    [ast.Type](model, node) {
+    [ast.Type.$type](model, node) {
         model["_isAbstract"] = Boolean(node.isAbstract);
         model.isSufficient = node.isSufficient;
         model["_multiplicity"] = node.multiplicity
@@ -211,69 +211,69 @@ const AstToModel: {
         model["_typeRelationships"].push(...node.typeRelationships.map((e) => e.$meta));
     },
 
-    [ast.RequirementConstraintMembership](model, node) {
+    [ast.RequirementConstraintMembership.$type](model, node) {
         model.kind = node.kind === "assume" ? "assumption" : "requirement";
     },
 
-    [ast.StateSubactionMembership](model, node) {
+    [ast.StateSubactionMembership.$type](model, node) {
         model.kind = node.kind;
     },
 
-    [ast.TransitionFeatureMembership](model, node) {
+    [ast.TransitionFeatureMembership.$type](model, node) {
         model["_kind"] = getTransitionFeatureKind(node);
     },
 
-    [ast.AcceptActionUsage](model, node) {
+    [ast.AcceptActionUsage.$type](model, node) {
         (model["_payload"] as RelationshipMeta | undefined) = node.payload.$meta;
         (model["_receiver"] as RelationshipMeta | undefined) = node.receiver?.$meta;
     },
 
-    [ast.StateUsage](model, node) {
+    [ast.StateUsage.$type](model, node) {
         model.isParallel = node.isParallel;
     },
 
-    [ast.AssignmentActionUsage](model, node) {
+    [ast.AssignmentActionUsage.$type](model, node) {
         (model["_targetMember"] as RelationshipMeta) = node.targetMember.$meta;
         (model["_assignedValue"] as RelationshipMeta) = node.assignedValue.$meta;
     },
 
-    [ast.Definition](model, node) {
+    [ast.Definition.$type](model, node) {
         model.isIndividual = node.isIndividual;
         model["_isVariation"] = node.isVariation;
     },
 
-    [ast.ForLoopActionUsage](model, node) {
+    [ast.ForLoopActionUsage.$type](model, node) {
         (model["_variable"] as RelationshipMeta) = node.variable.$meta;
         (model["_sequence"] as RelationshipMeta) = node.sequence.$meta;
         (model["_body"] as RelationshipMeta) = node.body.$meta;
     },
 
-    [ast.IfActionUsage](model, node) {
+    [ast.IfActionUsage.$type](model, node) {
         model["_condition"] = node.condition.$meta as ParameterMembershipMeta<ExpressionMeta>;
         model["_then"] = node.then.$meta as ParameterMembershipMeta<ActionUsageMeta>;
         model["_else"] = node.else?.$meta as ParameterMembershipMeta<ActionUsageMeta>;
     },
 
-    [ast.SatisfyRequirementUsage](model, node) {
+    [ast.SatisfyRequirementUsage.$type](model, node) {
         model["_satisfactionSubject"] = node.satisfactionSubject?.$meta;
     },
 
-    [ast.SendActionUsage](model, node) {
+    [ast.SendActionUsage.$type](model, node) {
         (model["_payload"] as RelationshipMeta | undefined) = node.payload.$meta;
         (model["_sender"] as RelationshipMeta | undefined) = node.sender?.$meta;
         (model["_receiver"] as RelationshipMeta | undefined) = node.receiver?.$meta;
     },
 
-    [ast.StateDefinition](model, node) {
+    [ast.StateDefinition.$type](model, node) {
         model.isParallel = node.isParallel;
     },
 
-    [ast.TerminateActionUsage](model, node) {
+    [ast.TerminateActionUsage.$type](model, node) {
         (model["_terminatedOccurrence"] as RelationshipMeta | undefined) =
             node.terminatedOccurrence?.$meta;
     },
 
-    [ast.TransitionUsage](model, node) {
+    [ast.TransitionUsage.$type](model, node) {
         (model["_source"] as RelationshipMeta | undefined) = node.source?.$meta;
         (model["_accepter"] as RelationshipMeta | undefined) = node.accepter?.$meta;
         (model["_guard"] as RelationshipMeta | undefined) = node.guard?.$meta;
@@ -297,32 +297,32 @@ const AstToModel: {
         }
     },
 
-    [ast.Usage](model, node) {
+    [ast.Usage.$type](model, node) {
         model.isVariation = node.isVariation;
         model.isIndividual = node.isIndividual;
         model.isReference = node.isReference;
         model.portionKind = node.portionKind;
     },
 
-    [ast.WhileLoopActionUsage](model, node) {
+    [ast.WhileLoopActionUsage.$type](model, node) {
         (model["_condition"] as RelationshipMeta | undefined) = node.condition?.$meta;
         (model["_body"] as RelationshipMeta | undefined) = node.body.$meta;
         (model["_until"] as RelationshipMeta | undefined) = node.until?.$meta;
     },
 
-    [ast.Membership](model, node) {
+    [ast.Membership.$type](model, node) {
         model.isAlias = node.isAlias;
     },
 
-    [ast.ItemFlow](model, node) {
+    [ast.ItemFlow.$type](model, node) {
         model["_item"] = node.item?.$meta as FeatureMembershipMeta<ItemFeatureMeta>;
     },
 
-    [ast.TriggerInvocationExpression](model, node) {
+    [ast.TriggerInvocationExpression.$type](model, node) {
         model.kind = node.kind;
     },
 
-    [ast.FlowConnectionUsage](model, node) {
+    [ast.FlowConnectionUsage.$type](model, node) {
         model["_messages"] = node.messages.map(
             (m) => m.$meta as ParameterMembershipMeta<EventOccurrenceUsageMeta>
         );
@@ -338,7 +338,7 @@ const ClearArtifacts: { [K in SysMLType]?: ClearArtifactsFunction<SysMLInterface
         model.setupState = "none";
     },
 
-    [ast.Element](model) {
+    [ast.Element.$type](model) {
         model["_comments"] = model["_comments"].filter((e) => e.owner() === model);
         model["_docs"] = model["_docs"].filter((e) => e.owner() === model);
         model["_reps"] = model["_reps"].filter((e) => e.owner() === model);
@@ -356,7 +356,7 @@ const ClearArtifacts: { [K in SysMLType]?: ClearArtifactsFunction<SysMLInterface
         garbage.forEach((key) => model["_memberLookup"].delete(key));
     },
 
-    [ast.Feature](model) {
+    [ast.Feature.$type](model) {
         // reset effective names
         model["setName"](model.declaredName);
         model["setShortName"](model.declaredShortName);
@@ -364,28 +364,28 @@ const ClearArtifacts: { [K in SysMLType]?: ClearArtifactsFunction<SysMLInterface
         model["typings"] = undefined;
     },
 
-    [ast.ElementReference](model) {
+    [ast.ElementReference.$type](model) {
         model.to.reset();
         model.found.fill(undefined);
     },
 
-    [ast.Namespace](model) {
+    [ast.Namespace.$type](model) {
         model["_importResolutionState"] = "none";
     },
 
-    [ast.Dependency](model) {
+    [ast.Dependency.$type](model) {
         model.client.length = 0;
         model.supplier.length = 0;
     },
 
-    [ast.Relationship](model) {
+    [ast.Relationship.$type](model) {
         // remove unowned target element
         if (model.element()?.parent() !== model) model["_element"] = undefined;
         if (model.source() === model.parent() || model.source()?.parent() === model) return;
         model["_source"] = undefined;
     },
 
-    [ast.Type](model) {
+    [ast.Type.$type](model) {
         // remove implicit and out-of-line relationships
         const heritage = model.heritage.filter((e) => !e.isImplied && e.parent() === model);
         model["_heritage"].clear();
@@ -400,15 +400,15 @@ const ClearArtifacts: { [K in SysMLType]?: ClearArtifactsFunction<SysMLInterface
         model["resetInputParameters"]();
     },
 
-    [ast.Association](model) {
+    [ast.Association.$type](model) {
         model["resetEnds"]();
     },
 
-    [ast.Connector](model) {
+    [ast.Connector.$type](model) {
         model["resetEnds"]();
     },
 
-    [ast.MultiplicityRange](model) {
+    [ast.MultiplicityRange.$type](model) {
         model["_bounds"] = "unset";
     },
 };

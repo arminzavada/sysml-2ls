@@ -41,7 +41,7 @@ export interface MultiplicityRangeOptions extends MultiplicityOptions {
     range: Edge<OwningMembershipMeta, ExpressionMeta>;
 }
 
-@metamodelOf(MultiplicityRange, ImplicitMultiplicityRanges)
+@metamodelOf(MultiplicityRange.$type, ImplicitMultiplicityRanges)
 export class MultiplicityRangeMeta extends MultiplicityMeta {
     protected _bounds: Bounds | undefined | LazyGetter<Bounds | undefined> | "unset" = "unset";
 

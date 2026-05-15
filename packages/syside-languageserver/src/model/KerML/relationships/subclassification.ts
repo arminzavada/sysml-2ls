@@ -24,7 +24,7 @@ import {
     SpecializationMeta,
 } from "../_internal.js";
 
-@metamodelOf(Subclassification)
+@metamodelOf(Subclassification.$type)
 // @ts-expect-error ignoring static inheritance error
 export class SubclassificationMeta<
     T extends ClassifierMeta = ClassifierMeta,

@@ -49,7 +49,7 @@ import { TerminateActionUsageMeta } from "../terminate-action-usage.js";
 import { TransitionUsageMeta, TransitionUsageOptions } from "../transition-usage.js";
 
 describe("Model elements", () => {
-    describe(`${AcceptActionUsage} elements`, () => {
+    describe(`${AcceptActionUsage.$type} elements`, () => {
         describe.each(["payload", "receiver"] as const)("%s item", (prop) => {
             testChildProperty<AcceptActionUsageMeta>({
                 proto: AcceptActionUsageMeta,
@@ -60,7 +60,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${AssignmentActionUsage} elements`, () => {
+    describe(`${AssignmentActionUsage.$type} elements`, () => {
         describe.each(["target", "targetMember", "assignedValue"] as const)("%s item", (prop) => {
             testChildProperty<AssignmentActionUsageMeta>({
                 proto: AssignmentActionUsageMeta,
@@ -71,7 +71,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${ForLoopActionUsage} elements`, () => {
+    describe(`${ForLoopActionUsage.$type} elements`, () => {
         describe.each([
             ["variable", ReferenceUsageMeta],
             ["sequence", ReferenceUsageMeta],
@@ -86,7 +86,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${IfActionUsage} elements`, () => {
+    describe(`${IfActionUsage.$type} elements`, () => {
         describe.each([
             ["condition", ExpressionMeta],
             ["then", ActionUsageMeta],
@@ -101,7 +101,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${SatisfyRequirementUsage} elements`, () => {
+    describe(`${SatisfyRequirementUsage.$type} elements`, () => {
         describe("satisfaction subject item", () => {
             testChildProperty<SatisfyRequirementUsageMeta>({
                 proto: SatisfyRequirementUsageMeta,
@@ -112,7 +112,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${SendActionUsage} elements`, () => {
+    describe(`${SendActionUsage.$type} elements`, () => {
         describe.each(["payload", "sender", "receiver"] as const)("%s item", (prop) => {
             testChildProperty<SendActionUsageMeta>({
                 proto: SendActionUsageMeta,
@@ -123,7 +123,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${TerminateActionUsage} elements`, () => {
+    describe(`${TerminateActionUsage.$type} elements`, () => {
         describe("terminatedOccurrence item", () => {
             testChildProperty<TerminateActionUsageMeta>({
                 proto: TerminateActionUsageMeta,
@@ -134,7 +134,7 @@ describe("Model elements", () => {
         });
     });
 
-    describe(`${TransitionUsage} elements`, () => {
+    describe(`${TransitionUsage.$type} elements`, () => {
         const id = basicIdProvider();
         let document: LangiumDocument;
 

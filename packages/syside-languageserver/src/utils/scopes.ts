@@ -122,6 +122,13 @@ export abstract class SysMLScope implements Scope {
         return this.getExportedElement(name)?.description;
     }
 
+    getElements(name: string): Stream<SysMLNodeDescription> {
+        // SysML scopes always resolve to a single canonical element for a given
+        // name; expose the single result as a unary stream.
+        const description = this.getElement(name);
+        return description ? stream([description]) : EMPTY_STREAM;
+    }
+
     /**
      *
      * @param includeSelf if true, include this scope in the stream
@@ -278,7 +285,7 @@ export abstract class ImportScope extends ElementScope {
      */
     protected makeRecursiveScope(target: ElementMeta): Stream<SysMLScope> {
         // only the owned namespace members are recursively imported
-        if (!target.is(Namespace)) return EMPTY_STREAM;
+        if (!target.is(Namespace.$type)) return EMPTY_STREAM;
         const node = target.ast();
         let namespaces: Stream<NamespaceMeta>;
 
@@ -301,9 +308,9 @@ export abstract class ImportScope extends ElementScope {
                 target,
                 (ns) =>
                     stream(ns.children)
-                        .filter(BasicMetamodel.is(OwningMembership))
+                        .filter(BasicMetamodel.is(OwningMembership.$type))
                         .map((m) => m.element())
-                        .filter(BasicMetamodel.is(Namespace)),
+                        .filter(BasicMetamodel.is(Namespace.$type)),
                 { includeRoot: true }
             );
         }
@@ -368,7 +375,7 @@ export class NamespaceScope extends ElementScope {
                 // imported with the import visibility
                 // prevent infinite loops
                 this.options.visited.add(imp);
-                return imp.is(MembershipImport)
+                return imp.is(MembershipImport.$type)
                     ? new MembershipImportScope(imp, this.options)
                     : new NamespaceImportScope(imp as NamespaceImportMeta, this.options);
             })
@@ -526,7 +533,7 @@ export function makeScope(
         );
     }
 
-    let target = element.is(Membership) ? element.element() : element;
+    let target = element.is(Membership.$type) ? element.element() : element;
     target ??= element;
 
     const ctor = SCOPE_MAP.get(target.nodeType());
@@ -564,7 +571,7 @@ export function makeLinkingScope(
             imported: { visibility: Visibility.private, depth: 1 },
             inherited: { visibility: Visibility.private, depth: 1 },
         });
-        parentScopes = parents.filter(BasicMetamodel.is(Element)).map((parent) =>
+        parentScopes = parents.filter(BasicMetamodel.is(Element.$type)).map((parent) =>
             makeScope(parent, {
                 ...scopeOptions,
                 // redefinitions are only valid in the owning scope

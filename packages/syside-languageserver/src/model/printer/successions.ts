@@ -72,7 +72,7 @@ export function successionAsUsageKind(
     node: SuccessionAsUsageMeta,
     previousSibling?: ElementMeta
 ): "target" | "empty" | "regular" | "transition" {
-    if (previousSibling?.is(StateSubactionMembership) && previousSibling.kind === "entry") {
+    if (previousSibling?.is(StateSubactionMembership.$type) && previousSibling.kind === "entry") {
         return node.ends.some(isExplicitConnectorEnd) ? "transition" : "empty";
     }
 
@@ -261,7 +261,7 @@ function printThenElse(
 function printSource(node: MembershipMeta<FeatureMeta>, context: ModelPrinterContext): Doc {
     // `printTarget` only prints chainings for inheritance relationships, but
     // here any owning membership will print chaining to match grammar
-    if (node.nodeType() === Membership) return printAsTarget(node, context);
+    if (node.nodeType() === Membership.$type) return printAsTarget(node, context);
     return printModelElement(node, context, {
         printer: (node, context) => printChaining(node.element() as FeatureMeta, context),
     });
@@ -286,11 +286,11 @@ function transitionUsageKind(
 ): TransitionUsageKind {
     if (node.else) return "default-target";
 
-    if (node.owner()?.isAny(StateUsage, StateDefinition)) {
+    if (node.owner()?.isAny(StateUsage.$type, StateDefinition.$type)) {
         if (node.source) return "transition";
         if (node.accepter || node.effect) return "target-transition";
         if (
-            previousSibling?.is(StateSubactionMembership) &&
+            previousSibling?.is(StateSubactionMembership.$type) &&
             previousSibling.kind === "entry" &&
             node.guard
         )
@@ -330,7 +330,7 @@ function printGuardedTargetSuccession(
         ]),
     ];
 
-    if (node.owner()?.isAny(StateDefinition, StateUsage)) {
+    if (node.owner()?.isAny(StateDefinition.$type, StateUsage.$type)) {
         // assume entry transition member
         parts.push(literals.semicolon);
     } else {

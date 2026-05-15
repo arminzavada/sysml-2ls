@@ -45,7 +45,7 @@ export interface ConnectorOptions extends FeatureOptions {
     ends?: readonly Edge<EndFeatureMembershipMeta>[];
 }
 
-@metamodelOf(Connector, ImplicitConnectors)
+@metamodelOf(Connector.$type, ImplicitConnectors)
 // @ts-expect-error stop it with static inheritance errors
 export class ConnectorMeta extends Mixin(
     ConnectorMixin,
@@ -160,7 +160,7 @@ export class ConnectorMeta extends Mixin(
         return stream(this.allEnds())
             .map(
                 (end) =>
-                    end.specializations(ReferenceSubsetting).at(0) as
+                    end.specializations(ReferenceSubsetting.$type).at(0) as
                         | ReferenceSubsettingMeta
                         | undefined
             )

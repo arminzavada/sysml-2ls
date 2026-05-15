@@ -31,7 +31,7 @@ test("feature inverting can be parsed", async () => {
             ...anything(1),
             {
                 target: {
-                    $type: FeatureInverting,
+                    $type: FeatureInverting.$type,
                     ...withQualifiedName("parent_child"),
                     sourceRef: qualifiedTypeReference("Person::parent"),
                     targetRef: qualifiedTypeReference("Person::child"),
@@ -62,7 +62,7 @@ test.concurrent.each(["inverting", ""])(
                 ...anything(1),
                 {
                     target: {
-                        $type: FeatureInverting,
+                        $type: FeatureInverting.$type,
                         sourceRef: qualifiedTypeReference("Person::parent"),
                         targetRef: qualifiedTypeReference("Person::child"),
                     },
@@ -85,11 +85,11 @@ test("features can own invertings", async () => {
                         ...anything(1),
                         {
                             target: {
-                                $type: Feature,
+                                $type: Feature.$type,
                                 ...withQualifiedName("Person::parents"),
                                 typeRelationships: [
                                     {
-                                        $type: FeatureInverting,
+                                        $type: FeatureInverting.$type,
                                         targetRef: qualifiedTypeReference("Person::children"),
                                     },
                                 ],
@@ -119,7 +119,7 @@ test("inverse features can be arbitrarily nested", async () => {
             ...anything(2),
             {
                 target: {
-                    $type: Classifier,
+                    $type: Classifier.$type,
                     ...withQualifiedName("C"),
                     children: [
                         {
@@ -131,7 +131,7 @@ test("inverse features can be arbitrarily nested", async () => {
                                             ...withQualifiedName("C::b::a"),
                                             typeRelationships: [
                                                 {
-                                                    $type: FeatureInverting,
+                                                    $type: FeatureInverting.$type,
                                                     targetRef: qualifiedTypeReference("A::b::c"),
                                                 },
                                             ],

@@ -33,7 +33,7 @@ export interface MembershipOptions<
     isAlias?: boolean;
 }
 
-@metamodelOf(Membership)
+@metamodelOf(Membership.$type)
 // @ts-expect-error ignoring static inheritance error
 export class MembershipMeta<T extends ElementMeta = ElementMeta> extends RelationshipMeta<T> {
     isAlias = false;

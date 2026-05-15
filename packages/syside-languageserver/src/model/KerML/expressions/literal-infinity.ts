@@ -24,7 +24,7 @@ export const ImplicitLiteralInfinities = {
 
 export type LiteralInfinityOptions = LiteralExpressionOptions;
 
-@metamodelOf(LiteralInfinity, ImplicitLiteralInfinities)
+@metamodelOf(LiteralInfinity.$type, ImplicitLiteralInfinities)
 export class LiteralInfinityMeta extends LiteralExpressionMeta {
     override ast(): LiteralInfinity | undefined {
         return this._ast as LiteralInfinity;

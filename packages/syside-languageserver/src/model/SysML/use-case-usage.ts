@@ -20,7 +20,7 @@ import { CaseUsageMeta, CaseUsageOptions } from "./case-usage.js";
 
 export type UseCaseUsageOptions = CaseUsageOptions;
 
-@metamodelOf(UseCaseUsage, {
+@metamodelOf(UseCaseUsage.$type, {
     base: "UseCases::useCases",
     subUseCase: "UseCases::UseCase::subUseCases",
 })
@@ -32,7 +32,7 @@ export class UseCaseUsageMeta extends CaseUsageMeta {
     isSubUseCase(): boolean {
         const parent = this.owner();
         return Boolean(
-            this.isNonEntryExitComposite() && parent?.isAny(UseCaseUsage, UseCaseDefinition)
+            this.isNonEntryExitComposite() && parent?.isAny(UseCaseUsage.$type, UseCaseDefinition.$type)
         );
     }
 

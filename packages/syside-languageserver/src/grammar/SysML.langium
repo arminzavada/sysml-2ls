@@ -7,7 +7,7 @@ import 'KerML.expressions'
 // Tokens
 // ===================================================================================================
 
-fragment DefinedByToken returns string:
+DefinedByToken returns string:
     ':' | 'defined' 'by'
 ;
 
@@ -1561,7 +1561,7 @@ fragment EffectBehaviorUsageBody:
     ( '{' ActionBodyItems '}' )?
 ;
 EffectBehaviorUsage_1 returns ActionUsage:
-    {ActionUsage}
+    {ActionUsage} EffectBehaviorUsageBody
 ;
 EffectBehaviorUsage_2 returns PerformActionUsage:
     PerformActionUsageDeclaration EffectBehaviorUsageBody

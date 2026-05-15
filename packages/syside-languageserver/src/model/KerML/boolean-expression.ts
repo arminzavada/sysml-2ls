@@ -24,7 +24,7 @@ export const ImplicitBooleanExpressions = {
 
 export type BooleanExpressionOptions = ExpressionOptions;
 
-@metamodelOf(BooleanExpression, ImplicitBooleanExpressions)
+@metamodelOf(BooleanExpression.$type, ImplicitBooleanExpressions)
 export class BooleanExpressionMeta extends ExpressionMeta {
     override ast(): BooleanExpression | undefined {
         return this._ast as BooleanExpression;

@@ -20,7 +20,7 @@ import { metamodelOf } from "../metamodel.js";
 
 export type LifeClassOptions = ClassOptions;
 
-@metamodelOf(LifeClass)
+@metamodelOf(LifeClass.$type)
 export class LifeClassMeta extends ClassMeta {
     override ast(): LifeClass | undefined {
         return this._ast as LifeClass;

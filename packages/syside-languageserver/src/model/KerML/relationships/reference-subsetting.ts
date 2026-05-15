@@ -18,7 +18,7 @@ import { ReferenceSubsetting } from "../../../generated/ast.js";
 import { metamodelOf } from "../../metamodel.js";
 import { FeatureMeta, SubsettingMeta } from "../_internal.js";
 
-@metamodelOf(ReferenceSubsetting)
+@metamodelOf(ReferenceSubsetting.$type)
 export class ReferenceSubsettingMeta<
     T extends FeatureMeta = FeatureMeta,
 > extends SubsettingMeta<T> {

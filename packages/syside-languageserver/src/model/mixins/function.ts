@@ -33,7 +33,7 @@ export class FunctionMixin {
     resultParameter(this: TypeMeta & FunctionMixin): ResultExpressionMembershipMeta | undefined {
         if (!this._result) {
             return this.allTypes()
-                .filter(BasicMetamodel.isAny(SysMLFunction, Expression))
+                .filter(BasicMetamodel.isAny(SysMLFunction.$type, Expression.$type))
                 .map((e) => (e as FunctionMixin)._result)
                 .nonNullable()
                 .head();
@@ -43,7 +43,7 @@ export class FunctionMixin {
     }
 
     returnParameter(this: TypeMeta): ReturnParameterMembershipMeta | undefined {
-        return this._children.get(ReturnParameterMembership).at(0);
+        return this._children.get(ReturnParameterMembership.$type).at(0);
     }
 
     /**

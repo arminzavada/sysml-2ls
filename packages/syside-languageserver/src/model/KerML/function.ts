@@ -38,7 +38,7 @@ export interface FunctionOptions extends BehaviorOptions {
     result?: Edge<ResultExpressionMembershipMeta>;
 }
 
-@metamodelOf(SysMLFunction, ImplicitFunctions)
+@metamodelOf(SysMLFunction.$type, ImplicitFunctions)
 export class FunctionMeta extends Mixin(BehaviorMeta, FunctionMixin) {
     @enumerable
     get result(): ResultExpressionMembershipMeta | undefined {

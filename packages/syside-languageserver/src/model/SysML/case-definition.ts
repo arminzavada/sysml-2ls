@@ -20,7 +20,7 @@ import { CalculationDefinitionMeta, CalculationDefinitionOptions } from "./calcu
 
 export type CaseDefinitionOptions = CalculationDefinitionOptions;
 
-@metamodelOf(CaseDefinition, {
+@metamodelOf(CaseDefinition.$type, {
     base: "Cases::Case",
 })
 export class CaseDefinitionMeta extends CalculationDefinitionMeta {

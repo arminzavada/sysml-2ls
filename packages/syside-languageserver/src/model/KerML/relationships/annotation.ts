@@ -21,6 +21,7 @@ import {
     AnnotatingElementMeta,
     ElementMeta,
     RelationshipMeta,
+    RelationshipOptions,
     RelationshipOptionsBody,
 } from "../_internal.js";
 
@@ -32,7 +33,8 @@ export type AnnotationOptions<Parent extends ElementMeta | undefined = ElementMe
               source: AnnotatingElementMeta;
           };
 
-@metamodelOf(Annotation)
+@metamodelOf(Annotation.$type)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class AnnotationMeta<T extends ElementMeta = ElementMeta> extends RelationshipMeta<T> {
     override ast(): Annotation | undefined {
         return this._ast as Annotation;
@@ -50,7 +52,7 @@ export class AnnotationMeta<T extends ElementMeta = ElementMeta> extends Relatio
             else this._element = undefined;
         }
 
-        if (current?.is(AnnotatingElement)) this._source = current;
+        if (current?.is(AnnotatingElement.$type)) this._source = current;
         else (this._element as ElementMeta | undefined) = current;
     }
 
@@ -60,7 +62,7 @@ export class AnnotationMeta<T extends ElementMeta = ElementMeta> extends Relatio
         document: LangiumDocument,
         options?: AnnotationOptions<P>
     ): T["$meta"] {
-        const self = ElementMeta.create.call(this, provider, document, options) as AnnotationMeta;
+        const self = ElementMeta.create.call(this, provider, document, options as RelationshipOptions<ElementMeta, P>) as AnnotationMeta;
 
         if (options) {
             self._visibility = options.visibility;

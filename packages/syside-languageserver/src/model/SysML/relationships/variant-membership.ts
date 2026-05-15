@@ -24,7 +24,7 @@ import { InterfaceUsageMeta } from "../interface-usage.js";
 import { DefinitionMeta } from "../definition.js";
 import { ActionUsageMeta } from "../action-usage.js";
 
-@metamodelOf(VariantMembership)
+@metamodelOf(VariantMembership.$type)
 export class VariantMembershipMeta<
     T extends UsageMeta = UsageMeta,
 > extends OwningMembershipMeta<T> {

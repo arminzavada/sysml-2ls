@@ -42,7 +42,7 @@ test("disjoining can be parsed", async () => {
             ...anything(5),
             {
                 target: {
-                    $type: Disjoining,
+                    $type: Disjoining.$type,
                     ...withQualifiedName("Disj"),
                     sourceRef: qualifiedTypeReference("A"),
                     targetRef: qualifiedTypeReference("B"),
@@ -50,20 +50,20 @@ test("disjoining can be parsed", async () => {
             },
             {
                 target: {
-                    $type: Disjoining,
+                    $type: Disjoining.$type,
                     sourceRef: qualifiedTypeReference("Mammal"),
                     targetRef: qualifiedTypeReference("Mineral"),
                 },
             },
             {
                 target: {
-                    $type: Disjoining,
+                    $type: Disjoining.$type,
                     sourceRef: qualifiedTypeReference("Person::parents"),
                     targetRef: qualifiedTypeReference("Person::children"),
                     elements: [
                         {
                             source: {
-                                $type: Documentation,
+                                $type: Documentation.$type,
                                 body: "/* No Person can be their own parent. */",
                             },
                         },
@@ -86,21 +86,21 @@ test("disjoining may be omitted without identifiers", async () => {
             ...anything(5),
             {
                 target: {
-                    $type: Disjoining,
+                    $type: Disjoining.$type,
                     sourceRef: qualifiedTypeReference("A"),
                     targetRef: qualifiedTypeReference("B"),
                 },
             },
             {
                 target: {
-                    $type: Disjoining,
+                    $type: Disjoining.$type,
                     sourceRef: qualifiedTypeReference("Mammal"),
                     targetRef: qualifiedTypeReference("Mineral"),
                 },
             },
             {
                 target: {
-                    $type: Disjoining,
+                    $type: Disjoining.$type,
                     sourceRef: qualifiedTypeReference("Person::parents"),
                     targetRef: qualifiedTypeReference("Person::children"),
                 },
@@ -123,27 +123,27 @@ test("types can declare owned disjoinings", async () => {
             ...anything(6),
             {
                 target: {
-                    $type: Class,
+                    $type: Class.$type,
                     ...withQualifiedName("C"),
                     heritage: [
-                        { $type: Subclassification, targetRef: qualifiedTypeReference("Anything") },
+                        { $type: Subclassification.$type, targetRef: qualifiedTypeReference("Anything") },
                     ],
                     typeRelationships: [
-                        { $type: Disjoining, targetRef: qualifiedTypeReference("A") },
-                        { $type: Disjoining, targetRef: qualifiedTypeReference("B") },
+                        { $type: Disjoining.$type, targetRef: qualifiedTypeReference("A") },
+                        { $type: Disjoining.$type, targetRef: qualifiedTypeReference("B") },
                     ],
                 },
             },
             { target: withQualifiedName("Animal") },
             {
                 target: {
-                    $type: Class,
+                    $type: Class.$type,
                     ...withQualifiedName("Mammal2"),
                     heritage: [
-                        { $type: Subclassification, targetRef: qualifiedTypeReference("Animal") },
+                        { $type: Subclassification.$type, targetRef: qualifiedTypeReference("Animal") },
                     ],
                     typeRelationships: [
-                        { $type: Disjoining, targetRef: qualifiedTypeReference("Mineral") },
+                        { $type: Disjoining.$type, targetRef: qualifiedTypeReference("Mineral") },
                     ],
                 },
             },

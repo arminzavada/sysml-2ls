@@ -89,7 +89,7 @@ export interface TypeOptions extends NamespaceOptions {
     typeRelationships?: EdgeContainer<TypeRelationshipMeta>;
 }
 
-@metamodelOf(Type, ImplicitTypes)
+@metamodelOf(Type.$type, ImplicitTypes)
 export class TypeMeta extends Mixin(
     InputParametersMixin,
     NamespaceMeta as Class<[ElementID], NamespaceMeta, typeof NamespaceMeta>
@@ -141,7 +141,7 @@ export class TypeMeta extends Mixin(
         return this.addDeclaredRelationship(
             this._heritage,
             value.filter(
-                ([_, target]) => !target.is(Feature) || target.basicFeature() !== (this as TypeMeta)
+                ([_, target]) => !target.is(Feature.$type) || target.basicFeature() !== (this as TypeMeta)
             ),
             this.onHeritageAdded,
             this
@@ -397,7 +397,7 @@ export class TypeMeta extends Mixin(
      * {@link type}, false otherwise
      */
     specializes(type: string | TypeMeta): boolean {
-        const conjugator = this._heritage.get(Conjugation).at(0);
+        const conjugator = this._heritage.get(Conjugation.$type).at(0);
         if (conjugator) {
             return Boolean(conjugator.element()?.specializes(type));
         }
@@ -536,7 +536,7 @@ export class TypeMeta extends Mixin(
         const source = element.source();
         if (source && source.parent() === element) return false;
         const parent = element.parent();
-        return Boolean(!parent || parent.is(Type));
+        return Boolean(!parent || parent.is(Type.$type));
     }
 
     protected maybeTakeOwnership(element: FeatureRelationshipMeta | InheritanceMeta): void {
@@ -573,7 +573,7 @@ export class TypeMeta extends Mixin(
 
         visited.add(this);
 
-        const conjugator = this._heritage.get(Conjugation).at(0);
+        const conjugator = this._heritage.get(Conjugation.$type).at(0);
         if (conjugator) {
             const original = conjugator.element();
             if (!original || visited.has(original)) {
@@ -598,11 +598,11 @@ export class TypeMeta extends Mixin(
     }
 
     ownedFeatureMemberships(): Stream<FeatureMembershipMeta> {
-        return stream(this.featureMembers()).filter(BasicMetamodel.is(FeatureMembership));
+        return stream(this.featureMembers()).filter(BasicMetamodel.is(FeatureMembership.$type));
     }
 
     ownedFeatures(): Stream<FeatureMeta> {
-        return this.featuresByMembership(FeatureMembership);
+        return this.featuresByMembership(FeatureMembership.$type);
     }
 
     ownedParameters(): Stream<FeatureMeta> {

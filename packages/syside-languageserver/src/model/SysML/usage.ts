@@ -37,7 +37,7 @@ export interface UsageOptions extends FeatureOptions {
     portionKind?: PortionKind;
 }
 
-@metamodelOf(Usage)
+@metamodelOf(Usage.$type)
 export class UsageMeta extends FeatureMeta {
     isVariant = false;
     isVariation = false;
@@ -49,7 +49,7 @@ export class UsageMeta extends FeatureMeta {
         current: ElementMeta | undefined
     ): void {
         super.onParentSet(previous, current);
-        this.isVariant = !!current?.is(VariantMembership);
+        this.isVariant = !!current?.is(VariantMembership.$type);
     }
 
     @enumerable
@@ -89,12 +89,12 @@ export class UsageMeta extends FeatureMeta {
         return this._ast as Usage;
     }
     protected isVariantNode(): boolean {
-        return !!this.parent()?.is(VariantMembership);
+        return !!this.parent()?.is(VariantMembership.$type);
     }
 
     override namingFeature(): FeatureMeta | undefined {
         const parent = this.parent();
-        if (parent?.is(VariantMembership)) {
+        if (parent?.is(VariantMembership.$type)) {
             const referenced = this.referencedFeature();
             if (referenced) return referenced;
         }
@@ -109,17 +109,17 @@ export class UsageMeta extends FeatureMeta {
         return Boolean(
             this.isComposite &&
                 !this.isEntryExitAction() &&
-                this.owner()?.isAny(ActionDefinition, ActionUsage)
+                this.owner()?.isAny(ActionDefinition.$type, ActionUsage.$type)
         );
     }
 
     isPartOwnedComposite(): boolean {
-        return Boolean(this.isComposite && this.owner()?.isAny(PartDefinition, PartUsage));
+        return Boolean(this.isComposite && this.owner()?.isAny(PartDefinition.$type, PartUsage.$type));
     }
 
     isEntryExitAction(): boolean {
         const parent = this.parent();
-        return !!parent?.is(StateSubactionMembership) && parent.kind !== "do";
+        return !!parent?.is(StateSubactionMembership.$type) && parent.kind !== "do";
     }
 
     protected static applyUsageOptions(model: UsageMeta, options: UsageOptions): void {

@@ -21,7 +21,7 @@ import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.
 
 export type EventOccurrenceUsageOptions = OccurrenceUsageOptions;
 
-@metamodelOf(EventOccurrenceUsage, {
+@metamodelOf(EventOccurrenceUsage.$type, {
     suboccurrence: "Occurrences::Occurrence::timeEnclosedOccurrences",
 })
 export class EventOccurrenceUsageMeta extends OccurrenceUsageMeta {
@@ -39,7 +39,7 @@ export class EventOccurrenceUsageMeta extends OccurrenceUsageMeta {
 
     protected override isSuboccurrence(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(OccurrenceUsage, OccurrenceDefinition));
+        return Boolean(parent?.isAny(OccurrenceUsage.$type, OccurrenceDefinition.$type));
     }
 
     override ast(): EventOccurrenceUsage | undefined {

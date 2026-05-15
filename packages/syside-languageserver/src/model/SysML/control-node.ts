@@ -20,7 +20,7 @@ import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
 
 export type ControlNodeOptions = ActionUsageOptions;
 
-@metamodelOf(ControlNode)
+@metamodelOf(ControlNode.$type)
 export class ControlNodeMeta extends ActionUsageMeta {
     override ast(): ControlNode | undefined {
         return this._ast as ControlNode;

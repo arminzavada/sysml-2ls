@@ -90,7 +90,7 @@ export function printPrefixes(
 
                 return printModelElement(feature, context, {
                     printer(prefix, context) {
-                        const target = prefix.specializations(ast.FeatureTyping).at(0);
+                        const target = prefix.specializations(ast.FeatureTyping.$type).at(0);
 
                         /* istanbul ignore next */
                         if (!target)
@@ -592,7 +592,7 @@ export function printMultiplicityPart(
     const props: Text[] = [];
 
     let suffix: Doc[] = [];
-    if (node.is(ast.Feature)) {
+    if (node.is(ast.Feature.$type)) {
         if (node.isOrderedExplicitly) props.push(keyword("ordered"));
         if (node.isNonUnique) props.push(keyword("nonunique"));
 
@@ -693,8 +693,8 @@ export function defaultSpecializationGrouper(context: ModelPrinterContext): Spec
         let placement = context.format.multiplicity_placement;
         if (
             (!node.multiplicity &&
-                (!node.is(ast.Feature) || !node.isNonUnique || !node.isOrdered)) ||
-            (context.mode === "kerml" && node.is(ast.Type) && !node.is(ast.Feature))
+                (!node.is(ast.Feature.$type) || !node.isNonUnique || !node.isOrdered)) ||
+            (context.mode === "kerml" && node.is(ast.Type.$type) && !node.is(ast.Feature.$type))
         )
             // avoid splitting specializations if there is no multiplicity part
             // in KerML, non-feature types always have multiplicity as before
@@ -852,7 +852,7 @@ export function printNamespaceDecl<T extends NamespaceMeta>(
     };
 
     // print heritage and other relationships in declaration
-    if (node.is(ast.Type)) {
+    if (node.is(ast.Type.$type)) {
         const options = parts as TypePrinterOptions;
         const specialization = printSpecializationPart(node, context, {
             specializations: options.specializations ?? defaultSpecializationGrouper(context),
@@ -1032,16 +1032,16 @@ export function printFeature(node: FeatureMeta, context: ModelPrinterContext): D
     const owner = node.owner();
     if (owner) {
         if (
-            node.parent()?.nodeType() == ast.ParameterMembership &&
-            owner.is(ast.InvocationExpression)
+            node.parent()?.nodeType() == ast.ParameterMembership.$type &&
+            owner.is(ast.InvocationExpression.$type)
         ) {
             return printArgument(node, context);
         }
         switch (owner.nodeType()) {
-            case ast.FeatureChainExpression:
+            case ast.FeatureChainExpression.$type:
                 return printChaining(node, context);
-            case ast.OperatorExpression: {
-                const typing = node.specializations(ast.FeatureTyping)[0];
+            case ast.OperatorExpression.$type: {
+                const typing = node.specializations(ast.FeatureTyping.$type)[0];
                 /* istanbul ignore next */
                 if (!typing)
                     throwError(
@@ -1050,8 +1050,8 @@ export function printFeature(node: FeatureMeta, context: ModelPrinterContext): D
                     );
                 return printTarget(typing, context);
             }
-            case ast.FeatureReferenceExpression: {
-                if (node.parent()?.nodeType() === ast.ReturnParameterMembership)
+            case ast.FeatureReferenceExpression.$type: {
+                if (node.parent()?.nodeType() === ast.ReturnParameterMembership.$type)
                     // self reference expression
                     return literals.emptytext;
                 break;

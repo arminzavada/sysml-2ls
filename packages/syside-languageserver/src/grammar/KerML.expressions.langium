@@ -66,19 +66,19 @@ fragment Identification:
 
 // Tokens
 
-fragment SpecializesToken returns string:
+SpecializesToken returns string:
     ':>' | 'specializes'
 ;
-fragment SubsetsToken returns string:
+SubsetsToken returns string:
     ':>' | 'subsets'
 ;
-fragment ReferencesToken returns string:
+ReferencesToken returns string:
     '::>' | 'references'
 ;
-fragment CrossesToken returns string:
+CrossesToken returns string:
     '=>' | 'crosses'
 ;
-fragment RedefinesToken returns string:
+RedefinesToken returns string:
     ':>>' | 'redefines'
 ;
 

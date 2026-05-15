@@ -20,7 +20,7 @@ import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
 
 export type ViewUsageOptions = PartUsageOptions;
 
-@metamodelOf(ViewUsage, {
+@metamodelOf(ViewUsage.$type, {
     base: "Views::views",
     subview: "Views::View::subviews",
 })
@@ -31,7 +31,7 @@ export class ViewUsageMeta extends PartUsageMeta {
 
     isSubview(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(ViewDefinition, ViewUsage));
+        return Boolean(parent?.isAny(ViewDefinition.$type, ViewUsage.$type));
     }
 
     override ast(): ViewUsage | undefined {

@@ -48,11 +48,11 @@ test("multiple relationships can be specified using multiple clauses", async () 
             ...anything(2),
             {
                 target: {
-                    $type: Classifier,
+                    $type: Classifier.$type,
                     ...withQualifiedName("Person"),
                     typeRelationships: [
-                        { $type: Unioning, targetRef: qualifiedTypeReference("Adult") },
-                        { $type: Unioning, targetRef: qualifiedTypeReference("Child") },
+                        { $type: Unioning.$type, targetRef: qualifiedTypeReference("Adult") },
+                        { $type: Unioning.$type, targetRef: qualifiedTypeReference("Child") },
                     ],
                 },
             },

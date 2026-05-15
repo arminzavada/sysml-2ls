@@ -71,7 +71,7 @@ export type RelationshipOptions<
     Source extends ElementMeta = ElementMeta,
 > = RelationshipOptionsBody<Target, Parent> & SourcePart<Parent, Source>;
 
-@metamodelOf(Relationship, "abstract")
+@metamodelOf(Relationship.$type, "abstract")
 export abstract class RelationshipMeta<
     Target extends ElementMeta = ElementMeta,
 > extends ElementMeta {
@@ -84,19 +84,19 @@ export abstract class RelationshipMeta<
     protected _element?: Target;
 
     override get comments(): readonly CommentMeta[] {
-        return this._children.get(Comment).concat(this._comments);
+        return this._children.get(Comment.$type).concat(this._comments);
     }
 
     override get documentation(): readonly DocumentationMeta[] {
-        return this._children.get(Documentation).concat(this._docs);
+        return this._children.get(Documentation.$type).concat(this._docs);
     }
 
     override get metadata(): Stream<MetadataFeatureMeta> {
-        return stream(this._children.get(MetadataFeature)).concat(this._metadata);
+        return stream(this._children.get(MetadataFeature.$type)).concat(this._metadata);
     }
 
     override get textualRepresentation(): readonly TextualRepresentationMeta[] {
-        return this._children.get(TextualRepresentation).concat(this._reps);
+        return this._children.get(TextualRepresentation.$type).concat(this._reps);
     }
 
     protected override onParentSet(
@@ -182,7 +182,7 @@ export abstract class RelationshipMeta<
      */
     finalElement(): Target | FeatureMeta | undefined {
         const target = this.element();
-        return target?.is(Feature) && target.chainings.length > 0
+        return target?.is(Feature.$type) && target.chainings.length > 0
             ? target.chainings.at(-1)?.element()
             : target;
     }

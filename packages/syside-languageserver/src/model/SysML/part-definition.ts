@@ -20,7 +20,7 @@ import { ItemDefinitionMeta, ItemDefinitionOptions } from "./item-definition.js"
 
 export type PartDefinitionOptions = ItemDefinitionOptions;
 
-@metamodelOf(PartDefinition, {
+@metamodelOf(PartDefinition.$type, {
     base: "Parts::Part",
 })
 export class PartDefinitionMeta extends ItemDefinitionMeta {

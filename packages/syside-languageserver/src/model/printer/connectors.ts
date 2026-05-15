@@ -94,7 +94,7 @@ export function printEndReferenceSubsetting(
     /* istanbul ignore next */
     if (!target) throwError(node, `Invalid ${kind} member - missing target element`);
 
-    const ref = target.specializations(ast.ReferenceSubsetting).at(0);
+    const ref = target.specializations(ast.ReferenceSubsetting.$type).at(0);
 
     /* istanbul ignore next */
     if (!ref) throwError(target, `Invalid ${kind} feature - missing reference subsetting`);
@@ -150,12 +150,12 @@ export type EndMemberPrinter = typeof printConnectorEndMember;
  * Default printer for item flow ends.
  */
 export function printItemFlowEnd(node: ItemFlowEndMeta, context: ModelPrinterContext): Doc {
-    const ref = node.specializations(ast.ReferenceSubsetting).at(0);
-    const member = node.children.find(BasicMetamodel.is(ast.FeatureMembership))?.element();
+    const ref = node.specializations(ast.ReferenceSubsetting.$type).at(0);
+    const member = node.children.find(BasicMetamodel.is(ast.FeatureMembership.$type))?.element();
 
     /* istanbul ignore next */
     if (!member) throwError(node, "Invalid item flow end - missing item flow feature member");
-    const memberRedef = member.specializations(ast.Redefinition).find((r) => !r.isImplied);
+    const memberRedef = member.specializations(ast.Redefinition.$type).find((r) => !r.isImplied);
 
     /* istanbul ignore next */
     if (!memberRedef) throwError(member, "Invalid item flow feature member - missing redefinition");
@@ -181,7 +181,7 @@ export function printItemFlowEndMember(node: EndMember, context: ModelPrinterCon
     if (!target) throwError(node, "Invalid connector end member - missing target element");
 
     /* istanbul ignore next */
-    if (!target.is(ast.ItemFlowEnd))
+    if (!target.is(ast.ItemFlowEnd.$type))
         throwError(
             node,
             `Invalid connector end member - bad target element type (${target.nodeType()}`
@@ -411,7 +411,7 @@ export function printItemFeature(node: ItemFeatureMeta, context: ModelPrinterCon
             node.specializations().reduce((count, s) => (s.isImplied ? count : count + 1), 0) ===
                 1 &&
             // shorthand requires a single feature typing
-            node.specializations(ast.FeatureTyping).filter((s) => !s.isImplied).length === 1,
+            node.specializations(ast.FeatureTyping.$type).filter((s) => !s.isImplied).length === 1,
         specializations: defaultSpecializationGrouper(context),
     });
 

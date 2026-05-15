@@ -22,7 +22,7 @@ import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurre
 
 export interface ActionDefinitionOptions extends BehaviorOptions, OccurrenceDefinitionOptions {}
 
-@metamodelOf(ActionDefinition, {
+@metamodelOf(ActionDefinition.$type, {
     base: "Actions::Action",
 })
 export class ActionDefinitionMeta extends Mixin(BehaviorMeta, OccurrenceDefinitionMeta) {

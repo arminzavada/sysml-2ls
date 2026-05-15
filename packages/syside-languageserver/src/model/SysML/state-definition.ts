@@ -23,7 +23,7 @@ export interface StateDefinitionOptions extends ActionDefinitionOptions {
     isParallel?: boolean;
 }
 
-@metamodelOf(StateDefinition, {
+@metamodelOf(StateDefinition.$type, {
     base: "States::StateAction",
 })
 export class StateDefinitionMeta extends ActionDefinitionMeta {

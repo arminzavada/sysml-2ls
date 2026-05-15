@@ -58,7 +58,7 @@ function printElement(
     const parent = element.parent();
     const owner = element.owner();
     if (parent && owner) {
-        const self = parent.is(OwningMembership) ? parent : element;
+        const self = parent.is(OwningMembership.$type) ? parent : element;
         const siblings = owner.ownedElements().toArray();
         const index = siblings.findIndex((e) => e === self);
         if (index !== -1) previousSibling = siblings[index];

@@ -26,7 +26,7 @@ import { enumerable } from "../../utils/index.js";
 export interface ConnectorAsUsageOptions extends UsageOptions, ConnectorOptions {}
 
 // never returned from the textual syntax so make it abstract
-@metamodelOf(ConnectorAsUsage, "abstract")
+@metamodelOf(ConnectorAsUsage.$type, "abstract")
 export class ConnectorAsUsageMeta extends Mixin(ConnectorMeta, UsageMeta) {
     @enumerable
     // @ts-expect-error issue with mixins

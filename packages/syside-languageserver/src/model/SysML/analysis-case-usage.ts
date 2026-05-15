@@ -20,7 +20,7 @@ import { CaseUsageMeta, CaseUsageOptions } from "./case-usage.js";
 
 export type AnalysisCaseUsageOptions = CaseUsageOptions;
 
-@metamodelOf(AnalysisCaseUsage, {
+@metamodelOf(AnalysisCaseUsage.$type, {
     base: "AnalysisCases::analysisCases",
     subAnalysisCase: "AnalysisCases::AnalysisCase::subAnalysisCases",
 })
@@ -36,7 +36,7 @@ export class AnalysisCaseUsageMeta extends CaseUsageMeta {
         const parent = this.owner();
         return (
             this.isNonEntryExitComposite() &&
-            Boolean(parent?.isAny(AnalysisCaseUsage, AnalysisCaseDefinition))
+            Boolean(parent?.isAny(AnalysisCaseUsage.$type, AnalysisCaseDefinition.$type))
         );
     }
 }

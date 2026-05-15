@@ -20,7 +20,7 @@ import { CalculationUsageMeta, CalculationUsageOptions } from "./calculation-usa
 
 export type CaseUsageOptions = CalculationUsageOptions;
 
-@metamodelOf(CaseUsage, {
+@metamodelOf(CaseUsage.$type, {
     base: "Cases::cases",
     subcase: "Cases::Case::subcases",
 })
@@ -35,7 +35,7 @@ export class CaseUsageMeta extends CalculationUsageMeta {
 
     isSubcase(): boolean {
         const parent = this.owner();
-        return Boolean(this.isNonEntryExitComposite() && parent?.isAny(CaseDefinition, CaseUsage));
+        return Boolean(this.isNonEntryExitComposite() && parent?.isAny(CaseDefinition.$type, CaseUsage.$type));
     }
 }
 

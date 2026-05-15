@@ -27,7 +27,7 @@ export interface CollectExpressionOptions extends OperatorExpressionOptions {
     operator?: never;
 }
 
-@metamodelOf(CollectExpression)
+@metamodelOf(CollectExpression.$type)
 export class CollectExpressionMeta extends OperatorExpressionMeta {
     override get operator(): AnyOperator {
         return IMPLICIT_OPERATORS.COLLECT;

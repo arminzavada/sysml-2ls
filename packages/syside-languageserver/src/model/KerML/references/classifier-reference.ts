@@ -19,7 +19,7 @@ import { Target } from "../../../utils/containers.js";
 import { metamodelOf } from "../../metamodel.js";
 import { ClassifierMeta, TypeReferenceMeta } from "../_internal.js";
 
-@metamodelOf(ClassifierReference)
+@metamodelOf(ClassifierReference.$type)
 export class ClassifierReferenceMeta extends TypeReferenceMeta {
     override readonly to = new Target<ClassifierMeta>();
 

@@ -20,7 +20,7 @@ import { ConnectionUsageMeta, ConnectionUsageOptions } from "./connection-usage.
 
 export type InterfaceUsageOptions = ConnectionUsageOptions;
 
-@metamodelOf(InterfaceUsage, {
+@metamodelOf(InterfaceUsage.$type, {
     base: "Interfaces::interfaces",
     binary: "Interfaces::binaryInterfaces",
 })

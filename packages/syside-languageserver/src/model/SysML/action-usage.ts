@@ -22,7 +22,7 @@ import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.
 
 export interface ActionUsageOptions extends StepOptions, OccurrenceUsageOptions {}
 
-@metamodelOf(ActionUsage, {
+@metamodelOf(ActionUsage.$type, {
     base: "Actions::actions",
     subaction: "Actions::Action::subactions",
     ownedAction: "Parts::Part::ownedActions",
@@ -67,7 +67,7 @@ export class ActionUsageMeta extends Mixin(StepMeta, OccurrenceUsageMeta) {
 
     isPerformedAction(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(PartUsage, PartDefinition));
+        return Boolean(parent?.isAny(PartUsage.$type, PartDefinition.$type));
     }
 }
 

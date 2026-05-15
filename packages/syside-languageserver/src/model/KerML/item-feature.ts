@@ -25,7 +25,7 @@ export const ItemFeatureImplicits = {
 
 export type ItemFeatureOptions = FeatureOptions;
 
-@metamodelOf(ItemFeature, ItemFeatureImplicits)
+@metamodelOf(ItemFeature.$type, ItemFeatureImplicits)
 export class ItemFeatureMeta extends FeatureMeta {
     override ast(): ItemFeature | undefined {
         return this._ast as ItemFeature;
@@ -35,7 +35,7 @@ export class ItemFeatureMeta extends FeatureMeta {
     }
 
     override specializationKind(): SubtypeKeys<Inheritance> {
-        return Redefinition;
+        return Redefinition.$type;
     }
 }
 

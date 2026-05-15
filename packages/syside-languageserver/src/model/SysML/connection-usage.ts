@@ -24,7 +24,7 @@ import { enumerable } from "../../utils/index.js";
 
 export interface ConnectionUsageOptions extends PartUsageOptions, ConnectorAsUsageOptions {}
 
-@metamodelOf(ConnectionUsage, {
+@metamodelOf(ConnectionUsage.$type, {
     base: "Connections::connections",
     binary: "Connections::binaryConnections",
 })

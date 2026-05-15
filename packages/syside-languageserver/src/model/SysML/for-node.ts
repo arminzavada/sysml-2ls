@@ -20,7 +20,7 @@ import { ControlNodeMeta, ControlNodeOptions } from "./control-node.js";
 
 export type ForNodeOptions = ControlNodeOptions;
 
-@metamodelOf(ForkNode, {
+@metamodelOf(ForkNode.$type, {
     subaction: "Actions::Action::forks",
 })
 export class ForkNodeMeta extends ControlNodeMeta {

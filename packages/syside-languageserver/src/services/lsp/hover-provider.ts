@@ -38,9 +38,15 @@ export class SysMLHoverProvider extends AstNodeHoverProvider {
         this.events = services.Events;
     }
 
-    protected override getAstNodeHoverContent(node: AstNode): MaybePromise<Hover | undefined> {
+    protected override getAstNodeHoverContent(node: AstNode): MaybePromise<string | undefined> {
         if (!isElement(node)) return;
-        return this.getHoverContents(node.$meta, AstUtils.getDocument(node));
+        return this.getHoverMarkdown(node.$meta, AstUtils.getDocument(node));
+    }
+
+    protected getHoverContents(node: ElementMeta, document?: LangiumDocument): Hover | undefined {
+        const value = this.getHoverMarkdown(node, document);
+        if (!value) return undefined;
+        return { contents: { kind: "markdown", value } };
     }
 
     override async getHoverContent(
@@ -74,7 +80,7 @@ export class SysMLHoverProvider extends AstNodeHoverProvider {
         return hover;
     }
 
-    protected getHoverContents(node: ElementMeta, document?: LangiumDocument): Hover | undefined {
+    protected getHoverMarkdown(node: ElementMeta, document?: LangiumDocument): string | undefined {
         let content = `#### \`${node.qualifiedName}\`
 \`${node.nodeType()}\``;
 
@@ -86,7 +92,7 @@ export class SysMLHoverProvider extends AstNodeHoverProvider {
         // use docs from the first specialization that has them
         let docs = node.documentation;
         if (docs.length === 0) {
-            if (node.is(Membership)) {
+            if (node.is(Membership.$type)) {
                 const target = node.element();
                 if (target) {
                     content += `Alias for \`${target.qualifiedName}\`\n`;
@@ -95,7 +101,7 @@ export class SysMLHoverProvider extends AstNodeHoverProvider {
                 }
             }
 
-            if (node.is(Type)) {
+            if (node.is(Type.$type)) {
                 for (const type of node.allTypes()) {
                     docs = type.documentation;
                     if (docs.length > 0) break;
@@ -108,14 +114,6 @@ export class SysMLHoverProvider extends AstNodeHoverProvider {
             content += docs.map((doc) => doc.body).join("\n\n");
         }
 
-        if (content) {
-            return {
-                contents: {
-                    kind: "markdown",
-                    value: content,
-                },
-            };
-        }
-        return undefined;
+        return content || undefined;
     }
 }

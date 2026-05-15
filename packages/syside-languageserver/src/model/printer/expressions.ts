@@ -163,7 +163,7 @@ export function precedence(node: ElementMeta): number {
 export function getArguments(node: OperatorExpressionMeta): readonly FeatureMeta[];
 export function getArguments(node: ElementMeta | undefined): readonly FeatureMeta[] | undefined;
 export function getArguments(node: ElementMeta | undefined): readonly FeatureMeta[] | undefined {
-    if (!node?.is(ast.OperatorExpression)) return;
+    if (!node?.is(ast.OperatorExpression.$type)) return;
     return node.arguments();
 }
 
@@ -174,23 +174,23 @@ const HighlightOperator = { type: SemanticTokenTypes.operator };
  */
 export function getOperator(expr: ElementMeta | undefined): AnyOperator {
     switch (expr?.nodeType()) {
-        case ast.SelectExpression:
+        case ast.SelectExpression.$type:
             return IMPLICIT_OPERATORS.SELECT;
-        case ast.FeatureChainExpression:
+        case ast.FeatureChainExpression.$type:
             return IMPLICIT_OPERATORS.DOT;
-        case ast.CollectExpression:
+        case ast.CollectExpression.$type:
             return IMPLICIT_OPERATORS.COLLECT;
-        case ast.IndexExpression:
+        case ast.IndexExpression.$type:
             return IMPLICIT_OPERATORS.INDEX;
-        case ast.OperatorExpression: {
+        case ast.OperatorExpression.$type: {
             return (expr as OperatorExpressionMeta).operator;
         }
-        case ast.FeatureReferenceExpression:
+        case ast.FeatureReferenceExpression.$type:
             return getOperator((expr as FeatureReferenceExpressionMeta).expression?.element());
-        case ast.MetadataAccessExpression: {
+        case ast.MetadataAccessExpression.$type: {
             const owner = expr.owner();
             if (
-                owner?.is(ast.OperatorExpression) &&
+                owner?.is(ast.OperatorExpression.$type) &&
                 (owner.operator === OPERATORS.AT_AT || owner.operator === OPERATORS.META)
             ) {
                 // classification `@@` and `meta` expressions parse metadata
@@ -344,7 +344,7 @@ function paren(doc: Doc, condition: boolean): Doc {
 }
 
 const defaultFeaturePrinter: ElementPrinter<FeatureMeta> = (node, context) => {
-    if (node.nodeType() === ast.Feature) {
+    if (node.nodeType() === ast.Feature.$type) {
         if (node.chainings.length === 0) {
             // self reference expression
             return literals.emptytext;
@@ -400,9 +400,9 @@ function printBinaryishExpressions(
     // feature chain expressions may not have been linked so memberships
     // would fail, find one explicitly
     rhs ??= expr.children
-        .filter(BasicMetamodel.is(ast.Membership))
+        .filter(BasicMetamodel.is(ast.Membership.$type))
         // catch also ReturnParameterMemberships that are not arguments
-        .find((m) => !m.is(ast.ParameterMembership) || !m.element().value)
+        .find((m) => !m.is(ast.ParameterMembership.$type) || !m.element().value)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ?.element() as any;
 
@@ -470,9 +470,9 @@ function printConditionalExpression(
     context: ModelPrinterContext,
     nested = false
 ): Doc {
-    if (expr.is(ast.FeatureReferenceExpression)) {
+    if (expr.is(ast.FeatureReferenceExpression.$type)) {
         const target = expr.expression?.element();
-        if (!target || !target.is(ast.OperatorExpression) || target.operator != OPERATORS.IF)
+        if (!target || !target.is(ast.OperatorExpression.$type) || target.operator != OPERATORS.IF)
             throwError(
                 expr,
                 "FeatureReferenceExpression does not refer to a conditional expression!"
@@ -488,7 +488,7 @@ function printConditionalExpression(
         hasChain = true;
         printedElse = printConditionalExpression(else_ as OperatorExpressionMeta, context, true);
     } else if (
-        else_.is(ast.FeatureReferenceExpression) &&
+        else_.is(ast.FeatureReferenceExpression.$type) &&
         getOperator(else_.expression?.element()) === OPERATORS.IF
     ) {
         hasChain = true;
@@ -542,12 +542,12 @@ function printConditionalExpression(
 function printArrowExpression(expr: InvocationExpressionMeta, context: ModelPrinterContext): Doc {
     const args = expr.arguments();
     const nonArg = expr.children
-        .find((m): m is FeatureMembershipMeta => m.nodeType() == ast.FeatureMembership)
+        .find((m): m is FeatureMembershipMeta => m.nodeType() == ast.FeatureMembership.$type)
         ?.element();
     const isExpr =
         args.length === 1 &&
         nonArg &&
-        nonArg.nodeType() === ast.Expression &&
+        nonArg.nodeType() === ast.Expression.$type &&
         nonArg.specializations().every((s) => s.isImplied);
     const isList = Boolean(!nonArg || args.length >= 2);
 
@@ -557,7 +557,7 @@ function printArrowExpression(expr: InvocationExpressionMeta, context: ModelPrin
     );
     const func = indent([
         text("->", HighlightOperator),
-        printTarget(expr.specializations(ast.FeatureTyping)[0], context),
+        printTarget(expr.specializations(ast.FeatureTyping.$type)[0], context),
     ]);
 
     if (isList) {
@@ -595,7 +595,7 @@ function printArrowExpression(expr: InvocationExpressionMeta, context: ModelPrin
         softline,
         func,
         indent(line),
-        indent(printTarget(nonArg.specializations(ast.FeatureTyping)[0], context)),
+        indent(printTarget(nonArg.specializations(ast.FeatureTyping.$type)[0], context)),
     ]);
 }
 
@@ -686,7 +686,7 @@ export function printArgument(arg: FeatureMeta, context: ModelPrinterContext): D
 
     let rhs = printArgumentValue(value, context);
 
-    const name = arg.specializations().find((s) => !s.isImplied && s.is(ast.Redefinition));
+    const name = arg.specializations().find((s) => !s.isImplied && s.is(ast.Redefinition.$type));
     if (!name) return rhs;
 
     // named argument
@@ -720,7 +720,7 @@ export function printInvocationExpr(
         return printArrowExpression(node, context);
     }
 
-    const typing = node.specializations(ast.FeatureTyping).at(0);
+    const typing = node.specializations(ast.FeatureTyping.$type).at(0);
 
     /* istanbul ignore next */
     if (!typing) throwError(node, "Invalid InvocationExpression - missing feature typing");
@@ -802,7 +802,7 @@ export function printNullExpression(node: NullExpressionMeta, context: ModelPrin
 export function printExpressionBody(node: ExpressionMeta, context: ModelPrinterContext): Doc {
     if (node.specializations().some((s) => !s.isImplied))
         // a function reference
-        return printTarget(node.specializations(ast.FeatureTyping)[0], context);
+        return printTarget(node.specializations(ast.FeatureTyping.$type)[0], context);
 
     return group(
         printChildrenBlock(node, node.children, context, {
@@ -815,14 +815,14 @@ export function printExpressionBody(node: ExpressionMeta, context: ModelPrinterC
 
 export function printExpression(node: ExpressionMeta, context: ModelPrinterContext): Doc {
     if (
-        node.parent()?.is(ast.FeatureMembership) &&
-        node.owner()?.isAny(ast.InvocationExpression, ast.FeatureReferenceExpression)
+        node.parent()?.is(ast.FeatureMembership.$type) &&
+        node.owner()?.isAny(ast.InvocationExpression.$type, ast.FeatureReferenceExpression.$type)
     ) {
         // this is a body expression
         return printExpressionBody(node, context);
     }
 
-    if (node.owner()?.is(ast.TriggerInvocationExpression)) {
+    if (node.owner()?.is(ast.TriggerInvocationExpression.$type)) {
         /* istanbul ignore next */
         if (!node.result) throwError(node, "Invalid change expression - missing result member");
         return printModelElement(node.result, context);
@@ -862,7 +862,7 @@ export function printTriggerInvocationExpression(
             `trigger invocation expression ${node.kind === "when" ? "change" : "owned"} expression`
         ).descend((node) => {
             /* istanbul ignore next */
-            if (!node.is(ast.FeatureMembership))
+            if (!node.is(ast.FeatureMembership.$type))
                 throwError(
                     node,
                     "Expected a feature membership as first trigger invocation expression member"
@@ -880,7 +880,7 @@ export function printTriggerInvocationExpression(
                 return descendant
                     .descend((node) => {
                         /* istanbul ignore next */
-                        if (!node.is(ast.Feature))
+                        if (!node.is(ast.Feature.$type))
                             throwError(node, "Expected an owned feature value");
                         return node.value;
                     })

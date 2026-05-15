@@ -20,7 +20,7 @@ import { RequirementUsageMeta, RequirementUsageOptions } from "./requirement-usa
 
 export type ConcernUsageOptions = RequirementUsageOptions;
 
-@metamodelOf(ConcernUsage, {
+@metamodelOf(ConcernUsage.$type, {
     base: "Requirements::concernChecks",
     concern: "Requirements::RequirementCheck::concerns",
 })
@@ -44,7 +44,7 @@ export class ConcernUsageMeta extends RequirementUsageMeta {
     }
 
     override requirementConstraintSupertype(): string | undefined {
-        return this.parent()?.is(FramedConcernMembership)
+        return this.parent()?.is(FramedConcernMembership.$type)
             ? "concern"
             : super.requirementConstraintKind();
     }

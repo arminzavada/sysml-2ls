@@ -28,7 +28,7 @@ export interface InvariantOptions extends BooleanExpressionOptions {
     isNegated?: boolean;
 }
 
-@metamodelOf(Invariant, ImplicitInvariants)
+@metamodelOf(Invariant.$type, ImplicitInvariants)
 export class InvariantMeta extends BooleanExpressionMeta {
     /**
      * Whether this invariant is negated

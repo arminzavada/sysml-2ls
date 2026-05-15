@@ -20,7 +20,7 @@ import { ConnectionDefinitionMeta, ConnectionDefinitionOptions } from "./connect
 
 export type InterfaceDefinitionOptions = ConnectionDefinitionOptions;
 
-@metamodelOf(InterfaceDefinition, {
+@metamodelOf(InterfaceDefinition.$type, {
     base: "Interfaces::Interface",
     binary: "Interfaces::BinaryInterface",
 })

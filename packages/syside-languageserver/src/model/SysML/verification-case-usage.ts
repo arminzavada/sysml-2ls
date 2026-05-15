@@ -20,7 +20,7 @@ import { CaseUsageMeta, CaseUsageOptions } from "./case-usage.js";
 
 export type VerificationCaseUsageOptions = CaseUsageOptions;
 
-@metamodelOf(VerificationCaseUsage, {
+@metamodelOf(VerificationCaseUsage.$type, {
     base: "VerificationCases::verificationCases",
     subVerificationCase: "VerificationCases::VerificationCase::subVerificationCases",
 })
@@ -33,7 +33,7 @@ export class VerificationCaseUsageMeta extends CaseUsageMeta {
         const parent = this.owner();
         return Boolean(
             this.isNonEntryExitComposite() &&
-                parent?.isAny(VerificationCaseUsage, VerificationCaseDefinition)
+                parent?.isAny(VerificationCaseUsage.$type, VerificationCaseDefinition.$type)
         );
     }
 

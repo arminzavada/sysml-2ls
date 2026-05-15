@@ -31,7 +31,7 @@ export interface SatisfyRequirementUsageOptions
     satisfactionSubject?: Edge<SubjectMembershipMeta>;
 }
 
-@metamodelOf(SatisfyRequirementUsage, {
+@metamodelOf(SatisfyRequirementUsage.$type, {
     base: "Requirements::satisfiedRequirementChecks",
     negated: "Requirements::notSatisfiedRequirementChecks",
 })

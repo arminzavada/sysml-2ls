@@ -19,7 +19,7 @@ import { Target } from "../../../utils/containers.js";
 import { metamodelOf } from "../../metamodel.js";
 import { ElementReferenceMeta, NamespaceMeta } from "../_internal.js";
 
-@metamodelOf(NamespaceReference)
+@metamodelOf(NamespaceReference.$type)
 export class NamespaceReferenceMeta extends ElementReferenceMeta {
     override readonly to = new Target<NamespaceMeta>();
 

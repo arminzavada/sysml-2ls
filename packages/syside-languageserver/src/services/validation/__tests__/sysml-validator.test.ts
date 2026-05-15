@@ -95,7 +95,7 @@ function expectOwningType<
 
     const root = meta.create(id, doc);
 
-    expect(root?.is(ast.Element)).toBeTruthy();
+    expect(root?.is(ast.Element.$type)).toBeTruthy();
 
     return expectModelValidations(root as ElementMeta, code);
 }
@@ -147,7 +147,7 @@ describe("Usage validation", () => {
             ]),
         });
 
-        expect(root?.is(ast.Element)).toBeTruthy();
+        expect(root?.is(ast.Element.$type)).toBeTruthy();
 
         return expectModelValidations(
             root as ElementMeta,
@@ -248,7 +248,7 @@ describe("Conjugated port definition validation", () => {
         const port = PortDefinitionMeta.create(id, doc);
         port.conjugatedDefinition
             ?.element()
-            .specializations(ast.PortConjugation)
+            .specializations(ast.PortConjugation.$type)
             .at(0)
             ?.["setElement"](undefined);
 
@@ -654,16 +654,16 @@ describe("Quantity expressions", () => {
 });
 
 describe.each([
-    [ast.OccurrenceUsage, "occurrence", ast.Class, "validateOccurrenceUsageTyping"],
-    [ast.ItemUsage, "item", ast.Structure, "validateItemUsageTyping"],
-    [ast.PartUsage, "part", ast.Structure, "validatePartUsageTyping"],
-    [ast.ActionUsage, "action", ast.Behavior, "validateActionUsageTyping"],
-    [ast.ConnectionUsage, "connection", ast.Association, "validateConnectionUsageTyping"],
-    [ast.FlowConnectionUsage, "flow", ast.Interaction, "validateFlowConnectionUsageTyping"],
-    [ast.InterfaceUsage, "interface", ast.InterfaceDefinition, "validateInterfaceUsageTyping"],
-    [ast.AllocationUsage, "allocation", ast.AllocationDefinition, "validateAllocationUsageTyping"],
-    [ast.PortUsage, "port", ast.PortDefinition, "validatePortUsageTyping"],
-    [ast.StateUsage, "state", ast.Behavior, "validateStateUsageTyping"],
+    [ast.OccurrenceUsage.$type, "occurrence", ast.Class.$type, "validateOccurrenceUsageTyping"],
+    [ast.ItemUsage.$type, "item", ast.Structure.$type, "validateItemUsageTyping"],
+    [ast.PartUsage.$type, "part", ast.Structure.$type, "validatePartUsageTyping"],
+    [ast.ActionUsage.$type, "action", ast.Behavior.$type, "validateActionUsageTyping"],
+    [ast.ConnectionUsage.$type, "connection", ast.Association.$type, "validateConnectionUsageTyping"],
+    [ast.FlowConnectionUsage.$type, "flow", ast.Interaction.$type, "validateFlowConnectionUsageTyping"],
+    [ast.InterfaceUsage.$type, "interface", ast.InterfaceDefinition.$type, "validateInterfaceUsageTyping"],
+    [ast.AllocationUsage.$type, "allocation", ast.AllocationDefinition.$type, "validateAllocationUsageTyping"],
+    [ast.PortUsage.$type, "port", ast.PortDefinition.$type, "validatePortUsageTyping"],
+    [ast.StateUsage.$type, "state", ast.Behavior.$type, "validateStateUsageTyping"],
 ])("%s validation", (_, kw, supertype, code) => {
     test(`usages typed by non-${supertype} trigger validation`, async () => {
         return expectValidations(`attribute def C; ${kw} p : C;`, code).resolves.toHaveLength(1);
@@ -736,31 +736,31 @@ describe("PartUsage validation", () => {
 });
 
 describe.each([
-    [ast.ConstraintUsage, "constraint", ast.Predicate, "validateConstraintUsageTyping"],
-    [ast.CalculationUsage, "calc", ast.SysMLFunction, "validateCalculationUsageTyping"],
-    [ast.CaseUsage, "case", ast.CaseDefinition, "validateCaseUsageTyping"],
+    [ast.ConstraintUsage.$type, "constraint", ast.Predicate.$type, "validateConstraintUsageTyping"],
+    [ast.CalculationUsage.$type, "calc", ast.SysMLFunction.$type, "validateCalculationUsageTyping"],
+    [ast.CaseUsage.$type, "case", ast.CaseDefinition.$type, "validateCaseUsageTyping"],
     [
-        ast.AnalysisCaseUsage,
+        ast.AnalysisCaseUsage.$type,
         "analysis",
-        ast.AnalysisCaseDefinition,
+        ast.AnalysisCaseDefinition.$type,
         "validateAnalysisCaseUsageTyping",
     ],
     [
-        ast.VerificationCaseUsage,
+        ast.VerificationCaseUsage.$type,
         "verification",
-        ast.VerificationCaseDefinition,
+        ast.VerificationCaseDefinition.$type,
         "validateVerificationCaseUsageTyping",
     ],
-    [ast.UseCaseUsage, "use case", ast.UseCaseDefinition, "validateUseCaseUsageTyping"],
+    [ast.UseCaseUsage.$type, "use case", ast.UseCaseDefinition.$type, "validateUseCaseUsageTyping"],
     [
-        ast.RequirementUsage,
+        ast.RequirementUsage.$type,
         "requirement",
-        ast.RequirementDefinition,
+        ast.RequirementDefinition.$type,
         "validateRequirementUsageTyping",
     ],
-    [ast.ViewUsage, "view", ast.ViewDefinition, "validateViewUsageTyping"],
-    [ast.ViewpointUsage, "viewpoint", ast.ViewpointDefinition, "validateViewpointUsageTyping"],
-    [ast.RenderingUsage, "rendering", ast.RenderingDefinition, "validateRenderingUsageTyping"],
+    [ast.ViewUsage.$type, "view", ast.ViewDefinition.$type, "validateViewUsageTyping"],
+    [ast.ViewpointUsage.$type, "viewpoint", ast.ViewpointDefinition.$type, "validateViewpointUsageTyping"],
+    [ast.RenderingUsage.$type, "rendering", ast.RenderingDefinition.$type, "validateRenderingUsageTyping"],
 ])("%s validation", (_, kw, supertype, code) => {
     test(`usages typed by non-${supertype} trigger validation`, async () => {
         return expectValidations(`attribute def C; ${kw} p : C;`, code).resolves.toHaveLength(1);
@@ -794,66 +794,66 @@ describe("Metadata validation", () => {
 
 describe.each([
     [
-        ast.ViewDefinition,
+        ast.ViewDefinition.$type,
         "view def",
         "render",
-        ast.RenderingUsage,
+        ast.RenderingUsage.$type,
         "validateViewDefinitionOnlyOneViewRendering",
     ],
-    [ast.ViewUsage, "view", "render", ast.RenderingUsage, "validateViewUsageOnlyOneViewRendering"],
+    [ast.ViewUsage.$type, "view", "render", ast.RenderingUsage.$type, "validateViewUsageOnlyOneViewRendering"],
     [
-        ast.CaseDefinition,
+        ast.CaseDefinition.$type,
         "case def",
         "subject",
-        ast.SubjectMembership,
+        ast.SubjectMembership.$type,
         "validateCaseDefinitionOnlyOneSubject",
     ],
-    [ast.CaseUsage, "case", "subject", ast.SubjectMembership, "validateCaseUsageOnlyOneSubject"],
+    [ast.CaseUsage.$type, "case", "subject", ast.SubjectMembership.$type, "validateCaseUsageOnlyOneSubject"],
     [
-        ast.CaseDefinition,
+        ast.CaseDefinition.$type,
         "case def",
         "objective",
-        ast.ObjectiveMembership,
+        ast.ObjectiveMembership.$type,
         "validateCaseDefinitionOnlyOneObjective",
     ],
     [
-        ast.CaseUsage,
+        ast.CaseUsage.$type,
         "case",
         "objective",
-        ast.ObjectiveMembership,
+        ast.ObjectiveMembership.$type,
         "validateCaseUsageOnlyOneObjective",
     ],
-    [ast.StateUsage, "state", "do action", "do subaction", "validateStateUsageStateSubactionKind"],
+    [ast.StateUsage.$type, "state", "do action", "do subaction", "validateStateUsageStateSubactionKind"],
     [
-        ast.StateUsage,
+        ast.StateUsage.$type,
         "state",
         "entry action",
         "entry subaction",
         "validateStateUsageStateSubactionKind",
     ],
     [
-        ast.StateUsage,
+        ast.StateUsage.$type,
         "state",
         "exit action",
         "exit subaction",
         "validateStateUsageStateSubactionKind",
     ],
     [
-        ast.StateDefinition,
+        ast.StateDefinition.$type,
         "state def",
         "do action",
         "do subaction",
         "validateStateDefinitionStateSubactionKind",
     ],
     [
-        ast.StateDefinition,
+        ast.StateDefinition.$type,
         "state def",
         "entry action",
         "entry subaction",
         "validateStateDefinitionStateSubactionKind",
     ],
     [
-        ast.StateDefinition,
+        ast.StateDefinition.$type,
         "state def",
         "exit action",
         "exit subaction",

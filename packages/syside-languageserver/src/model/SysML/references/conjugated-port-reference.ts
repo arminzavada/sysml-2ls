@@ -20,7 +20,7 @@ import { ClassifierReferenceMeta } from "../../KerML/references/classifier-refer
 import { metamodelOf } from "../../metamodel.js";
 import { PortDefinitionMeta } from "../port-definition.js";
 
-@metamodelOf(ConjugatedPortReference)
+@metamodelOf(ConjugatedPortReference.$type)
 export class ConjugatedPortReferenceMeta extends ClassifierReferenceMeta {
     override readonly to = new Target<PortDefinitionMeta>();
 

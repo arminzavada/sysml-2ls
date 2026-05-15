@@ -203,7 +203,7 @@ export function typeArgument(expr: meta.OperatorExpressionMeta): meta.TypeMeta |
         .ownedFeatures()
         .tail(Math.max(0, 1 - expr.operands.length))
         .head();
-    if (arg?.is(Type)) {
+    if (arg?.is(Type.$type)) {
         return arg.types().head();
     }
 
@@ -219,8 +219,8 @@ export function typeArgument(expr: meta.OperatorExpressionMeta): meta.TypeMeta |
  */
 export function isType(node: unknown, type: meta.TypeMeta): boolean {
     if (!isMetamodel(node)) return false;
-    if (node.is(Type)) return node === type || node.allTypes().includes(type);
-    if (node.is(LiteralExpression)) {
+    if (node.is(Type.$type)) return node === type || node.allTypes().includes(type);
+    if (node.is(LiteralExpression.$type)) {
         return node.returnType() === type.qualifiedName;
     }
     return false;
@@ -235,8 +235,8 @@ export function isType(node: unknown, type: meta.TypeMeta): boolean {
  */
 export function hasType(node: unknown, type: meta.TypeMeta): boolean {
     if (!isMetamodel(node)) return false;
-    if (node.is(Type)) return node === type || node.types().includes(type);
-    if (node.is(LiteralExpression)) {
+    if (node.is(Type.$type)) return node === type || node.types().includes(type);
+    if (node.is(LiteralExpression.$type)) {
         return node.returnType() === type.qualifiedName;
     }
     return false;
@@ -249,7 +249,7 @@ export function hasType(node: unknown, type: meta.TypeMeta): boolean {
  * @see {@link isMetaclassFeature}
  */
 export function metaclassReferenceOf(element: meta.ElementMeta): meta.ElementMeta | undefined {
-    if (!element.is(MetadataFeature)) return;
+    if (!element.is(MetadataFeature.$type)) return;
     return element.annotatedElements().find((node) => node.metaclass === element);
 }
 
@@ -275,8 +275,8 @@ export function resultType(value: ExpressionResultValue): meta.TypeMeta | string
     if (typeof value === "string") return "ScalarValues::String";
     if (typeof value === "number")
         return Number.isInteger(value) ? "ScalarValues::Integer" : "ScalarValues::Rational";
-    if (value?.isAny(InlineExpression, Expression)) return value.returnType();
-    if (value?.is(Type)) return value;
+    if (value?.isAny(InlineExpression.$type, Expression.$type)) return value.returnType();
+    if (value?.is(Type.$type)) return value;
     return;
 }
 
@@ -306,7 +306,7 @@ export function typeFor(result: ExpressionResult): (meta.TypeMeta | string)[] | 
 export function typeOf(arg: ExpressionLike): meta.TypeMeta | string | undefined {
     if (!arg) return;
     if (arg.value) return arg.value.element()?.returnType();
-    if (arg.isAny(Expression, SysMLFunction)) return arg.returnType();
+    if (arg.isAny(Expression.$type, SysMLFunction.$type)) return arg.returnType();
     return arg;
 }
 

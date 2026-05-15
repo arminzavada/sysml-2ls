@@ -29,7 +29,7 @@ import { RelationshipOptionsBody } from "../../KerML/index.js";
 import { RequirementDefinitionMeta } from "../requirement-definition.js";
 import { RequirementConstraintKind } from "../../enums.js";
 
-@metamodelOf(RequirementVerificationMembership)
+@metamodelOf(RequirementVerificationMembership.$type)
 export class RequirementVerificationMembershipMeta<
     T extends RequirementUsageMeta = RequirementUsageMeta,
 > extends RequirementConstraintMembershipMeta<T> {
@@ -46,9 +46,9 @@ export class RequirementVerificationMembershipMeta<
 
     isLegalVerification(): boolean {
         let owner = this.owner();
-        if (!owner?.is(RequirementUsage) || !owner.parent()?.is(ObjectiveMembership)) return false;
+        if (!owner?.is(RequirementUsage.$type) || !owner.parent()?.is(ObjectiveMembership.$type)) return false;
         owner = owner.owner();
-        return Boolean(owner?.isAny(VerificationCaseDefinition, VerificationCaseUsage));
+        return Boolean(owner?.isAny(VerificationCaseDefinition.$type, VerificationCaseUsage.$type));
     }
 
     static override create<T extends AstNode>(

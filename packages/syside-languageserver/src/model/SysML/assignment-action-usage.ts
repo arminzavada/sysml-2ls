@@ -29,7 +29,7 @@ export interface AssignmentActionUsageOptions extends ActionUsageOptions {
     assignedValue: Edge<ParameterMembershipMeta, UsageMeta>;
 }
 
-@metamodelOf(AssignmentActionUsage, {
+@metamodelOf(AssignmentActionUsage.$type, {
     base: "Actions::assignmentActions",
     subaction: "Actions::Action::assignments",
     featureWrite: "Actions::AssignmentAction",

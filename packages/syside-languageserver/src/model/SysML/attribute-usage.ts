@@ -21,7 +21,7 @@ import { UsageMeta, UsageOptions } from "./usage.js";
 
 export type AttributeUsageOptions = UsageOptions;
 
-@metamodelOf(AttributeUsage, {
+@metamodelOf(AttributeUsage.$type, {
     base: "Base::dataValues",
 })
 export class AttributeUsageMeta extends UsageMeta {

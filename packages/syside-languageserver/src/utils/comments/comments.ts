@@ -154,7 +154,7 @@ export function visitComments(root: CstNode, visitor: CommentVisitor): void {
     const onNext = (node: CstNode | undefined): void => {
         const isLeaf = node && isLeafCstNode(node);
 
-        const ast = node?.element;
+        const ast = node?.astNode;
         const last = path.at(-1);
         if (last !== ast) {
             const astChanged = !node?.hidden && (!ast || !path.includes(ast));
@@ -208,10 +208,10 @@ export function visitComments(root: CstNode, visitor: CommentVisitor): void {
                             // only add the preceding node if it is contained by the
                             // enclosing node, or the enclosing nodes ends after the
                             // preceding node starts
-                            distance(preceding?.$cstNode, node.element.$cstNode) <= 0
+                            distance(preceding?.$cstNode, node.astNode.$cstNode) <= 0
                                 ? preceding
                                 : undefined,
-                        $enclosingNode: node?.element,
+                        $enclosingNode: node?.astNode,
                         segment: {
                             offset: node.offset,
                             end: node.end,

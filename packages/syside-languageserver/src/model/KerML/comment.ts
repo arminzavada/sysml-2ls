@@ -23,7 +23,7 @@ export interface CommentOptions extends TextualAnnotatingElementOptions {
     locale?: string;
 }
 
-@metamodelOf(Comment)
+@metamodelOf(Comment.$type)
 export class CommentMeta extends TextualAnnotatingMeta {
     locale?: string;
 

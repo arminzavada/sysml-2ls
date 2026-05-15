@@ -35,7 +35,7 @@ export interface WhileLoopActionUsageOptions extends LoopActionUsageOptions {
     until?: Edge<ParameterMembershipMeta, ExpressionMeta>;
 }
 
-@metamodelOf(WhileLoopActionUsage, {
+@metamodelOf(WhileLoopActionUsage.$type, {
     base: "Actions::whileLoopActions",
     subaction: "Actions::Action::whileLoops",
 })

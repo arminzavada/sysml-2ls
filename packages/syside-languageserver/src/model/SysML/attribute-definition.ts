@@ -22,7 +22,7 @@ import { DefinitionMeta, DefinitionOptions } from "./definition.js";
 
 export interface AttributeDefinitionOptions extends DataTypeOptions, DefinitionOptions {}
 
-@metamodelOf(AttributeDefinition, {
+@metamodelOf(AttributeDefinition.$type, {
     base: "Base::DataValue",
 })
 export class AttributeDefinitionMeta extends Mixin(DataTypeMeta, DefinitionMeta) {

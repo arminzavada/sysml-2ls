@@ -167,10 +167,10 @@ export class SysMLFormatter implements Formatter {
         params: DocumentFormattingParams
     ): Promise<PrinterConfig> {
         const lineWidth: number | undefined =
-            (await this.config.getConfiguration(
+            ((await this.config.getConfiguration(
                 Utils.extname(document.uri).replace(".", ""),
                 "syside.editor.formatter.lineWidth"
-            )) ?? this.config.get().formatting.lineWidth;
+            )) as number | undefined) ?? this.config.get().formatting.lineWidth;
 
         const text = document.textDocument.getText();
         const newlinePos = text.lastIndexOf("\n");

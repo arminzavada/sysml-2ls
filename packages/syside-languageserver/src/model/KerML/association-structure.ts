@@ -27,7 +27,7 @@ export const ImplicitAssociationStructures = {
 
 export interface AssociationStructureOptions extends StructureOptions, AssociationOptions {}
 
-@metamodelOf(AssociationStructure, ImplicitAssociationStructures)
+@metamodelOf(AssociationStructure.$type, ImplicitAssociationStructures)
 export class AssociationStructMeta extends Mixin(StructureMeta, AssociationMeta) {
     protected override _classifier = TypeClassifier.AssociationStruct;
 

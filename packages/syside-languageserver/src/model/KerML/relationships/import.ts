@@ -37,7 +37,7 @@ export interface ImportOptions<
     importsAll?: boolean;
 }
 
-@metamodelOf(Import, "abstract")
+@metamodelOf(Import.$type, "abstract")
 // @ts-expect-error ignoring static inheritance error
 export abstract class ImportMeta<T extends Importable = Importable> extends RelationshipMeta<T> {
     isRecursive = false;

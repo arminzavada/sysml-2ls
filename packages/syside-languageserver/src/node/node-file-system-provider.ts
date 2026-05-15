@@ -61,14 +61,14 @@ export class SysMLNodeFileSystemProvider
         this.stdlib = value ? resolvePathURI(value) : undefined;
     }
 
-    async exists(path: URI): Promise<boolean> {
+    override async exists(path: URI): Promise<boolean> {
         return fs.promises.stat(path.fsPath).then(
             /* resolved */ () => true,
             /* rejected */ () => false
         );
     }
 
-    existsSync(path: URI): boolean {
+    override existsSync(path: URI): boolean {
         return fs.existsSync(path.fsPath);
     }
 

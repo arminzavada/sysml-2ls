@@ -30,7 +30,7 @@ export interface FeatureValueOptions
     isInitial?: boolean;
 }
 
-@metamodelOf(FeatureValue)
+@metamodelOf(FeatureValue.$type)
 export class FeatureValueMeta<
     T extends ExpressionMeta = ExpressionMeta,
 > extends OwningMembershipMeta<T> {

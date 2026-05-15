@@ -37,7 +37,7 @@ test.concurrent.each(["typed by", ":"])(
                 ...anything(2),
                 {
                     target: {
-                        $type: FeatureTyping,
+                        $type: FeatureTyping.$type,
                         ...withQualifiedName("t"),
                         sourceRef: qualifiedTypeReference("customer"),
                         targetRef: qualifiedTypeReference("Person"),
@@ -67,7 +67,7 @@ test.concurrent.each(["specialization", ""])(
                 ...anything(2),
                 {
                     target: {
-                        $type: FeatureTyping,
+                        $type: FeatureTyping.$type,
                         sourceRef: qualifiedTypeReference("customer"),
                         targetRef: qualifiedTypeReference("Person"),
                     },
@@ -98,7 +98,7 @@ test("features typed by aliases resolve to aliased types", async () => {
     });
 
     const typings = Array.from(
-        (result.value.children[2].target as Feature).$meta.specializations(FeatureTyping)
+        (result.value.children[2].target as Feature).$meta.specializations(FeatureTyping.$type)
     );
 
     expect(typings).toHaveLength(1);

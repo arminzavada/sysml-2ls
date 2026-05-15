@@ -20,7 +20,7 @@ import { ElementMeta, NamespaceMeta, NamespaceOptions } from "./_internal.js";
 
 export type PackageOptions = NamespaceOptions;
 
-@metamodelOf(Package)
+@metamodelOf(Package.$type)
 export class PackageMeta extends NamespaceMeta {
     override ast(): Package | undefined {
         return this._ast as Package;

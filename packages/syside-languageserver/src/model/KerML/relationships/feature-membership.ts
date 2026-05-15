@@ -30,7 +30,7 @@ export interface FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta>
     element(): T;
 }
 
-@metamodelOf(FeatureMembership)
+@metamodelOf(FeatureMembership.$type)
 @mix(FeaturingMeta, OwningMembershipMeta)
 // eslint-disable-next-line unused-imports/no-unused-vars
 export class FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta> {

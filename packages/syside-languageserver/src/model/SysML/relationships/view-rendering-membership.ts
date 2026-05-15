@@ -23,7 +23,7 @@ import { RenderingUsageMeta } from "../rendering-usage.js";
 import { ViewDefinitionMeta } from "../view-definition.js";
 import { ViewUsageMeta } from "../view-usage.js";
 
-@metamodelOf(ViewRenderingMembership)
+@metamodelOf(ViewRenderingMembership.$type)
 export class ViewRenderingMembershipMeta<
     T extends RenderingUsageMeta = RenderingUsageMeta,
 > extends FeatureMembershipMeta<T> {

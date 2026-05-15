@@ -23,7 +23,7 @@ import { AbstractKerMLCommentVisitor } from "../../utils/comments/comments.js";
 
 export class KerMLCommentAttachVisitor extends AbstractKerMLCommentVisitor {
     override visit(comment: CstTextComment): void {
-        const model = comment.$cstNode.element.$meta;
+        const model = comment.$cstNode.astNode.$meta;
         if (!model) return;
 
         const note = comment as TextComment;
@@ -126,7 +126,7 @@ export class KerMLCommentAttachVisitor extends AbstractKerMLCommentVisitor {
     }
 
     protected onAttached(target: BasicMetamodel, note: TextComment): void {
-        if (note.localPlacement !== "inner" || !target.is(ElementReference)) return;
+        if (note.localPlacement !== "inner" || !target.is(ElementReference.$type)) return;
 
         let part = note.$next?.text === "::" ? note.$previous : note.$next;
 

@@ -50,7 +50,7 @@ export interface TransitionUsageOptions extends ActionUsageOptions {
     else?: Edge<OwningMembershipMeta, SuccessionAsUsageMeta>;
 }
 
-@metamodelOf(TransitionUsage, {
+@metamodelOf(TransitionUsage.$type, {
     base: "Actions::transitionActions",
     actionTransition: "Actions::Action::decisionTransitions",
     stateTransition: "States::StateAction::stateTransitions",
@@ -144,13 +144,13 @@ export class TransitionUsageMeta extends ActionUsageMeta {
     isActionTransition(): boolean {
         if (!this.isComposite) return false;
         const parent = this.owner();
-        return Boolean(parent?.isAny(ActionUsage, ActionDefinition));
+        return Boolean(parent?.isAny(ActionUsage.$type, ActionDefinition.$type));
     }
 
     isStateTransition(): boolean {
         if (!this.isComposite) return false;
         const parent = this.owner();
-        return Boolean(parent?.isAny(StateDefinition, StateUsage));
+        return Boolean(parent?.isAny(StateDefinition.$type, StateUsage.$type));
     }
 
     override ast(): TransitionUsage | undefined {

@@ -27,7 +27,7 @@ export interface LiteralBooleanOptions extends LiteralExpressionOptions {
     value?: boolean;
 }
 
-@metamodelOf(LiteralBoolean, ImplicitLiteralBooleans)
+@metamodelOf(LiteralBoolean.$type, ImplicitLiteralBooleans)
 export class LiteralBooleanMeta extends LiteralExpressionMeta {
     literal = false;
 

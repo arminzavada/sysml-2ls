@@ -31,7 +31,7 @@ describe("comments", () => {
         text: string,
         context?: DeepPartial<PrinterTestContext>
     ): Promise<Assertion<string>> => {
-        const e = await parsedNode(text, { lang: "kerml", node: Comment });
+        const e = await parsedNode(text, { lang: "kerml", node: Comment.$type });
         return expect(printKerMLElement(e.$meta, context));
     };
 
@@ -171,7 +171,7 @@ describe("documentation", () => {
         text: string,
         context?: DeepPartial<PrinterTestContext>
     ): Promise<Assertion<string>> => {
-        const e = await parsedNode(text, { lang: "kerml", node: Documentation });
+        const e = await parsedNode(text, { lang: "kerml", node: Documentation.$type });
         return expect(printKerMLElement(e.$meta, context));
     };
 
@@ -225,7 +225,7 @@ describe("textual representations", () => {
         text: string,
         context?: DeepPartial<PrinterTestContext>
     ): Promise<Assertion<string>> => {
-        const e = await parsedNode(text, { lang: "kerml", node: TextualRepresentation });
+        const e = await parsedNode(text, { lang: "kerml", node: TextualRepresentation.$type });
         return expect(printKerMLElement(e.$meta, context));
     };
 
@@ -342,7 +342,7 @@ describe("metadata features", () => {
         context?: DeepPartial<PrinterTestContext> & { lang?: "kerml" | "sysml" }
     ): Promise<Assertion<string>> => {
         const lang = context?.lang ?? "kerml";
-        const node = lang === "kerml" ? MetadataFeature : MetadataUsage;
+        const node = lang === "kerml" ? MetadataFeature.$type : MetadataUsage.$type;
         const e = await parsedNode(text, { lang, node });
         return expect((lang === "kerml" ? printKerMLElement : printSysMLElement)(e.$meta, context));
     };

@@ -22,7 +22,7 @@ import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurre
 
 export interface ItemDefinitionOptions extends StructureOptions, OccurrenceDefinitionOptions {}
 
-@metamodelOf(ItemDefinition, {
+@metamodelOf(ItemDefinition.$type, {
     base: "Items::Item",
 })
 export class ItemDefinitionMeta extends Mixin(StructureMeta, OccurrenceDefinitionMeta) {

@@ -58,7 +58,7 @@ test.concurrent.each([
             ...anything(4),
             {
                 target: {
-                    $type: Feature,
+                    $type: Feature.$type,
                     ...withQualifiedName("x"),
                     heritage: expect.arrayContaining(
                         ["A", "B", "f", "g"].map((name) =>
@@ -98,7 +98,7 @@ test("features without subsetting, redefinition and conjugation relationships su
     ]);
     expect(sanitizeTree(result.value.children[2].target, undefined, "include $meta")).toMatchObject(
         {
-            $type: Feature,
+            $type: Feature.$type,
             ...withQualifiedName("person"),
             heritage: [{ targetRef: qualifiedTypeReference("Person") }],
         }
@@ -142,10 +142,10 @@ test("feature multiplicity can be specified after identification", async () => {
                     ...withQualifiedName("parent"),
                     multiplicity: {
                         target: {
-                            $type: MultiplicityRange,
+                            $type: MultiplicityRange.$type,
                             range: {
                                 target: {
-                                    $type: LiteralNumber,
+                                    $type: LiteralNumber.$type,
                                     literal: 2,
                                 },
                             },
@@ -170,10 +170,10 @@ test("feature multiplicity can be specified after one specialization", async () 
                     ...withQualifiedName("parent"),
                     multiplicity: {
                         target: {
-                            $type: MultiplicityRange,
+                            $type: MultiplicityRange.$type,
                             range: {
                                 target: {
-                                    $type: LiteralNumber,
+                                    $type: LiteralNumber.$type,
                                     literal: 2,
                                 },
                             },
@@ -201,14 +201,14 @@ test.concurrent.each([
                 ...anything(1),
                 {
                     target: {
-                        $type: Feature,
+                        $type: Feature.$type,
                         ...withQualifiedName("readings"),
                         multiplicity: {
                             target: {
-                                $type: MultiplicityRange,
+                                $type: MultiplicityRange.$type,
                                 range: {
                                     target: {
-                                        $type: LiteralInfinity,
+                                        $type: LiteralInfinity.$type,
                                     },
                                 },
                             },
@@ -223,9 +223,9 @@ test.concurrent.each([
 );
 
 test.concurrent.each([
-    ["disjoint from", Disjoining],
-    ["chains", FeatureChaining],
-    ["inverse of", FeatureInverting],
+    ["disjoint from", Disjoining.$type],
+    ["chains", FeatureChaining.$type],
+    ["inverse of", FeatureInverting.$type],
 ])("feature relationships '%s' are parsed", async (relationship: string, type: string) => {
     await expect(`
     feature a {
@@ -260,7 +260,7 @@ test("feature can be featured", async () => {
                     ...withQualifiedName("b"),
                     typeRelationships: [
                         {
-                            $type: TypeFeaturing,
+                            $type: TypeFeaturing.$type,
                             targetRef: qualifiedTypeReference("a"),
                         },
                     ],

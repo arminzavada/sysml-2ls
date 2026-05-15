@@ -31,15 +31,15 @@ export interface FeatureChainExpressionOptions extends OperatorExpressionOptions
     operator?: never;
 }
 
-@metamodelOf(FeatureChainExpression, ImplicitFeatureChainExpressions)
+@metamodelOf(FeatureChainExpression.$type, ImplicitFeatureChainExpressions)
 export class FeatureChainExpressionMeta extends OperatorExpressionMeta {
     targetFeature(): FeatureMeta | undefined {
         const target = this._children
-            .get(Membership)
+            .get(Membership.$type)
             .at(Math.max(0, 1 - this.operands.length))
             ?.element();
 
-        return target?.is(Feature) ? target : undefined;
+        return target?.is(Feature.$type) ? target : undefined;
     }
 
     override ast(): FeatureChainExpression | undefined {

@@ -23,7 +23,7 @@ export interface StateUsageOptions extends ActionUsageOptions {
     isParallel?: boolean;
 }
 
-@metamodelOf(StateUsage, {
+@metamodelOf(StateUsage.$type, {
     base: "States::stateActions",
     substate: "States::StateAction::substates",
     exclusiveState: "States::StateAction::exclusiveStates",
@@ -40,12 +40,12 @@ export class StateUsageMeta extends ActionUsageMeta {
 
     isExclusiveState(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(StateDefinition, StateUsage) && !parent.isParallel);
+        return Boolean(parent?.isAny(StateDefinition.$type, StateUsage.$type) && !parent.isParallel);
     }
 
     isSubstate(): boolean {
         return Boolean(
-            this.isNonEntryExitComposite() && this.owner()?.isAny(StateDefinition, StateUsage)
+            this.isNonEntryExitComposite() && this.owner()?.isAny(StateDefinition.$type, StateUsage.$type)
         );
     }
 

@@ -20,7 +20,7 @@ import { RequirementDefinitionMeta, RequirementDefinitionOptions } from "./requi
 
 export type ConcernDefinitionOptions = RequirementDefinitionOptions;
 
-@metamodelOf(ConcernDefinition, {
+@metamodelOf(ConcernDefinition.$type, {
     base: "Requirements::ConcernCheck",
 })
 export class ConcernDefinitionMeta extends RequirementDefinitionMeta {

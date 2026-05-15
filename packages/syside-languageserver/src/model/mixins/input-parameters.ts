@@ -19,7 +19,7 @@ import { FeatureMeta, MembershipMeta, TypeMeta } from "../KerML/_internal.js";
 import { PositionalFeaturesBase } from "./positional-features.js";
 
 const Filter: (f: MembershipMeta<FeatureMeta>) => boolean = (f) => {
-    if (!f.is(OwningMembership)) return false;
+    if (!f.is(OwningMembership.$type)) return false;
     const dir = f.element()?.direction;
     return dir === "in" || dir === "inout";
 };

@@ -32,14 +32,14 @@ describe("successions", () => {
     it("should print regular successions", async () => {
         return expectPrinted("readonly succession first a then b;", {
             lang: "sysml",
-            node: SuccessionAsUsage,
+            node: SuccessionAsUsage.$type,
         }).resolves.toEqual("readonly succession first a then b;\n");
     });
 
     it("should print empty successions", async () => {
         return expectPrinted("action { first start; then action a; }", {
             lang: "sysml",
-            node: SuccessionAsUsage,
+            node: SuccessionAsUsage.$type,
         }).resolves.toEqual("then\n");
     });
 
@@ -52,7 +52,7 @@ describe("successions", () => {
         }`,
             {
                 lang: "sysml",
-                node: StateDefinition,
+                node: StateDefinition.$type,
             }
         ).resolves.toEqual(`state def Counting {
     entry assign counter.count := 0;
@@ -65,21 +65,21 @@ describe("successions", () => {
     it("should print empty successions with multiplicity source", async () => {
         return expectPrinted("action { first start; then [1] action a; }", {
             lang: "sysml",
-            node: SuccessionAsUsage,
+            node: SuccessionAsUsage.$type,
         }).resolves.toEqual("then [1]\n");
     });
 
     it("should print target successions", async () => {
         return expectPrinted("action { first start; then [1] b; }", {
             lang: "sysml",
-            node: SuccessionAsUsage,
+            node: SuccessionAsUsage.$type,
         }).resolves.toEqual("then [1] b;\n");
     });
 
     it("should print target successions with source ends", async () => {
         return expectPrinted("action { first start; [2] then [1] b; }", {
             lang: "sysml",
-            node: SuccessionAsUsage,
+            node: SuccessionAsUsage.$type,
         }).resolves.toEqual("[2] then [1] b;\n");
     });
 
@@ -90,7 +90,7 @@ describe("successions", () => {
         const node = (
             await parsedNode("state { entry; public then b; }", {
                 lang: "sysml",
-                node: SuccessionAsUsage,
+                node: SuccessionAsUsage.$type,
             })
         ).$meta;
         const entry = (
@@ -115,7 +115,7 @@ describe("transition usages", () => {
         ): Assertion<Promise<string>> => {
             return expectPrinted(`action { ${text} }`, {
                 lang: "sysml",
-                node: TransitionUsage,
+                node: TransitionUsage.$type,
                 ...options,
             });
         };
@@ -193,7 +193,7 @@ then some_long_then_succession_here {
         ): Assertion<Promise<string>> => {
             return expectPrinted(`state { ${text} }`, {
                 lang: "sysml",
-                node: TransitionUsage,
+                node: TransitionUsage.$type,
                 ...options,
             });
         };
@@ -349,7 +349,7 @@ then some_long_then_succession_here {
                 then Wait;
             }`,
             {
-                node: TransitionUsage,
+                node: TransitionUsage.$type,
                 lang: "sysml",
             }
         ).resolves.toEqual(`accept rs : ResultGiveItems
@@ -365,7 +365,7 @@ describe("succession actions", () => {
     ): Assertion<Promise<string>> => {
         return expectPrinted(text, {
             lang: "sysml",
-            node: Namespace,
+            node: Namespace.$type,
             ...options,
         });
     };

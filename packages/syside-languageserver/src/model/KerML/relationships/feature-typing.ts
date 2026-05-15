@@ -25,7 +25,7 @@ import {
     TypeMeta,
 } from "../_internal.js";
 
-@metamodelOf(FeatureTyping)
+@metamodelOf(FeatureTyping.$type)
 // @ts-expect-error ignoring static inheritance error
 export class FeatureTypingMeta<T extends TypeMeta = TypeMeta> extends SpecializationMeta<T> {
     override ast(): FeatureTyping | undefined {

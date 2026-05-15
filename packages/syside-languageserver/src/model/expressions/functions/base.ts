@@ -109,7 +109,7 @@ export class IndexFunction extends BuiltinFunction {
             !(values instanceof RangeGenerator) &&
             values.length === 1 &&
             typeof values[0] === "object" &&
-            values[0].is(Type) &&
+            values[0].is(Type.$type) &&
             values[0].conforms(name)
         );
     }
@@ -140,7 +140,7 @@ export class IndexFunction extends BuiltinFunction {
             "Collections::Collection::elements",
             collection
         );
-        if (!elementsFeature?.is(Feature))
+        if (!elementsFeature?.is(Feature.$type))
             throw new Error("Feature 'Collections::Collection::elements' not found");
         const elements = evaluator.evaluateFeatureChain([collection, elementsFeature], collection);
         return this.indexSequence(elements, index);
@@ -159,7 +159,7 @@ export class IndexFunction extends BuiltinFunction {
         evaluator: ModelLevelExpressionEvaluator
     ): ExpressionResult {
         const dimensionsFeature = evaluator.libraryType("Collections::Array::dimensions", array);
-        if (!dimensionsFeature?.is(Feature))
+        if (!dimensionsFeature?.is(Feature.$type))
             throw new Error("Feature 'Collections::Array::dimensions' not found");
         const dimensions = evaluator.evaluateFeatureChain([array, dimensionsFeature], array);
         if (dimensions.length !== indices.length)

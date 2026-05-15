@@ -57,10 +57,10 @@ export class SysMLEmptyFileSystemProvider
         return;
     }
 
-    async exists(path: URI): Promise<boolean> {
+    override async exists(): Promise<boolean> {
         return false;
     }
-    existsSync(path: URI): boolean {
+    override existsSync(): boolean {
         return false;
     }
     loadScript(path: URI): Promise<object | undefined> {

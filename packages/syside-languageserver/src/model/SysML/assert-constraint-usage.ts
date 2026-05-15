@@ -23,7 +23,7 @@ import { AstNode, LangiumDocument } from "langium";
 
 export interface AssertConstraintUsageOptions extends InvariantOptions, ConstraintUsageOptions {}
 
-@metamodelOf(AssertConstraintUsage, {
+@metamodelOf(AssertConstraintUsage.$type, {
     base: "Constraints::assertedConstraintChecks",
     negated: "Constraints::negatedConstraintChecks",
 })
@@ -34,7 +34,7 @@ export class AssertConstraintUsageMeta extends Mixin(InvariantMeta, ConstraintUs
 
     protected override isBehaviorOwned(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(ActionDefinition, ActionUsage));
+        return Boolean(parent?.isAny(ActionDefinition.$type, ActionUsage.$type));
     }
 
     override ast(): AssertConstraintUsage | undefined {

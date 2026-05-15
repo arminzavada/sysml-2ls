@@ -297,7 +297,7 @@ export function printReference(
         const to = options.astNode?.$meta.to;
         // need to unwrap membership targets if ast requires a type
         const targetRef =
-            options.astNode.$type !== MembershipReference && target.is(Membership)
+            options.astNode.$type !== MembershipReference.$type && target.is(Membership.$type)
                 ? target.element()
                 : target;
         if (!to?.cached || to.target === targetRef)
@@ -606,7 +606,7 @@ export function collectPrintRange(
         // have the same offset
         if ((scope.parent() !== undefined && blockOffset === -1) || blockOffset >= offset) {
             const parent = scope.parent();
-            if (parent?.is(OwningMembership)) scope = parent;
+            if (parent?.is(OwningMembership.$type)) scope = parent;
             return {
                 elements: [scope],
                 range: getChildrenRange([scope]) as PrintRange,
@@ -679,13 +679,13 @@ export function collectPrintRange(
         if (first === last) {
             const child = children[first];
             if (
-                (child.is(Relationship) && !child.element()?.is(InlineExpression)) ||
-                child.is(Namespace)
+                (child.is(Relationship.$type) && !child.element()?.is(InlineExpression.$type)) ||
+                child.is(Namespace.$type)
             ) {
                 // descend down to check if the whole element or just some
                 // of its children need to be printed
                 const target =
-                    child.is(OwningMembership) && child.element().is(Namespace)
+                    child.is(OwningMembership.$type) && child.element().is(Namespace.$type)
                         ? (child.element() as NamespaceMeta)
                         : child;
                 level++;
@@ -715,7 +715,7 @@ export function getChildrenRange(children: readonly ElementMeta[]): PrintRange |
     const last = children.findLast((e) => e.cst());
     if (first === undefined || last === undefined) return;
     const left = [first];
-    if (first.is(Relationship)) {
+    if (first.is(Relationship.$type)) {
         left.push(
             ...[first.source(), first.element()]
                 .filter(NonNullable)
@@ -726,7 +726,7 @@ export function getChildrenRange(children: readonly ElementMeta[]): PrintRange |
     let right = [last];
     if (first === last) {
         right = left;
-    } else if (last.is(Relationship)) {
+    } else if (last.is(Relationship.$type)) {
         right.push(
             ...[last.source(), last.element()]
                 .filter(NonNullable)

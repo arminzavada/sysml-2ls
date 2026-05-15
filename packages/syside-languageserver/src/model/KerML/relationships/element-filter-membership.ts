@@ -25,14 +25,14 @@ import {
     RelationshipOptionsBody,
 } from "../_internal.js";
 
-@metamodelOf(ElementFilterMembership)
+@metamodelOf(ElementFilterMembership.$type)
 export class ElementFilterMembershipMeta<
     T extends ExpressionMeta = ExpressionMeta,
 > extends OwningMembershipMeta<T> {
     @enumerable
     override get visibility(): Visibility {
         const parent = this.parent();
-        if (parent?.nodeType() === Package && parent.parent()?.is(NamespaceImport))
+        if (parent?.nodeType() === Package.$type && parent.parent()?.is(NamespaceImport.$type))
             return Visibility.private;
         return super.visibility;
     }

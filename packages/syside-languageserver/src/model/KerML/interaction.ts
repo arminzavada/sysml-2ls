@@ -21,7 +21,7 @@ import { AssociationMeta, AssociationOptions, BehaviorMeta, BehaviorOptions } fr
 
 export interface InteractionOptions extends AssociationOptions, BehaviorOptions {}
 
-@metamodelOf(Interaction)
+@metamodelOf(Interaction.$type)
 export class InteractionMeta extends Mixin(AssociationMeta, BehaviorMeta) {
     override ast(): Interaction | undefined {
         return this._ast as Interaction;

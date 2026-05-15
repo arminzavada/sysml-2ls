@@ -23,7 +23,7 @@ import { Class } from "ts-mixer/dist/types/types";
 
 export interface MetadataUsageOptions extends MetadataFeatureOptions, ItemUsageOptions {}
 
-@metamodelOf(MetadataUsage, {
+@metamodelOf(MetadataUsage.$type, {
     base: "Metadata::metadataItems",
     annotatedElement: "Metaobjects::Metaobject::annotatedElement",
     baseType: "Metaobjects::SemanticMetadata::baseType",

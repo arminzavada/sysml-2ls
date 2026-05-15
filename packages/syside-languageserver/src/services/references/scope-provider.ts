@@ -165,11 +165,11 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         // FeatureChainExpression's first operand is itself a
         // FeatureChainExpression whose own resolution produced its
         // `targetFeature()`.
-        if (owner?.is(FeatureChainExpression)) {
+        if (owner?.is(FeatureChainExpression.$type)) {
             const target = (owner as FeatureChainExpressionMeta).targetFeature();
             const previous = target ?? (owner as FeatureChainExpressionMeta).operands.at(0);
             const resolvedPrevious =
-                previous && previous.is(FeatureReferenceExpression)
+                previous && previous.is(FeatureReferenceExpression.$type)
                     ? previous.expression?.element()
                     : previous;
             if (resolvedPrevious) {
@@ -182,13 +182,13 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             return;
         }
 
-        while (owner?.is(InlineExpression)) {
+        while (owner?.is(InlineExpression.$type)) {
             // unwrap all the expressions to get the real parent
             owner = owner.owner();
         }
 
         // need to unwrap feature chaining
-        if (owner?.is(FeatureChaining)) {
+        if (owner?.is(FeatureChaining.$type)) {
             // For `f chains a.b.c` (and the equivalent FeatureChain fragment
             // produced by `OwnedFeatureChain` for subsetting/typing
             // declarations), the parent Feature carries the chainings in
@@ -229,23 +229,23 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         // of its declaration. However SysML adds more references that are
         // not used for scope resolution therefore we only skip if the
         // reference declares a specialization
-        if (owner?.isAny(Specialization, Conjugation)) {
+        if (owner?.isAny(Specialization.$type, Conjugation.$type)) {
             // TODO: not sure if this is right and specializations are
             // allowed to reference the declaring element but this fixes a
             // linking error in
             // SysML-v2-Release/sysml/src/examples/Individuals%20Examples/JohnIndividualExample.sysml
             if (
-                owner.nodeType() !== Subsetting &&
-                owner.nodeType() !== CrossSubsetting &&
-                owner.nodeType() !== FeatureInverting
+                owner.nodeType() !== Subsetting.$type &&
+                owner.nodeType() !== CrossSubsetting.$type &&
+                owner.nodeType() !== FeatureInverting.$type
             ) {
                 options.skip = owner.source();
             }
 
             const parent = owner.parent();
-            if (parent?.parent()?.is(ParameterMembership)) {
+            if (parent?.parent()?.is(ParameterMembership.$type)) {
                 const outer = parent.owner();
-                if (outer?.is(InvocationExpression) && (parent as FeatureMeta).value)
+                if (outer?.is(InvocationExpression.$type) && (parent as FeatureMeta).value)
                     // resolution of type relationships in an invocation
                     // argument should be done in the invoked function scope
                     return this.localScope(
@@ -260,16 +260,16 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             // sense
             owner = owner.source() === parent ? parent?.owner() : parent;
 
-            if (options.skip?.parent()?.is(EndFeatureMembership)) {
+            if (options.skip?.parent()?.is(EndFeatureMembership.$type)) {
                 // connector ends cannot reference connector scope
                 owner = owner?.owner();
             }
-        } else if (owner?.parent()?.is(ParameterMembership)) {
-            if (owner.owner()?.is(InvocationExpression)) {
+        } else if (owner?.parent()?.is(ParameterMembership.$type)) {
+            if (owner.owner()?.is(InvocationExpression.$type)) {
                 // invocation argument
                 return this.initialScope(owner.owner(), document, options);
             }
-        } else if (owner?.is(Membership)) {
+        } else if (owner?.is(Membership.$type)) {
             // skip the alias scope since resolution tries to follow aliases to
             // their final destination
             owner = owner.owner();
@@ -281,7 +281,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         // node has the same name as the reference
         document ??= owner.document;
 
-        const parent = owner.is(Element) ? owner : (owner.parent() as ElementMeta | undefined);
+        const parent = owner.is(Element.$type) ? owner : (owner.parent() as ElementMeta | undefined);
         if (parent) this.initializeParents(parent, document);
 
         return makeLinkingScope(
@@ -320,9 +320,9 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
      * and `undefined` for no reference
      */
     protected getElementTarget(node: Metamodel): ElementMeta | undefined | "error" {
-        if (node.is(ElementReference)) {
+        if (node.is(ElementReference.$type)) {
             return node.to.target ?? "error";
-        } else if (node.isAny(InlineExpression, Expression, SysMLFunction)) {
+        } else if (node.isAny(InlineExpression.$type, Expression.$type, SysMLFunction.$type)) {
             const target = node.returnType();
             return this.indexManager.findType(target) ?? "error";
         }
@@ -359,7 +359,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         if (!isLeafCstNode(contextCst)) {
             contextCst = CstUtils.findLeafNodeAtOffset(contextCst, contextCst.end);
         }
-        const element = contextCst?.element;
+        const element = contextCst?.astNode;
         if (!element?.$meta) return;
         return this.getElementTarget(element.$meta);
     }

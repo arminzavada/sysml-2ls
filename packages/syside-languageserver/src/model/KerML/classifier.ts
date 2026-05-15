@@ -30,18 +30,24 @@ export const ImplicitClassifiers = {
     base: "Base::Anything",
 };
 
-export interface ClassifierOptions extends TypeOptions {
+export type ClassifierOptions = Omit<TypeOptions, "heritage"> & {
     heritage?: EdgeContainer<ConjugationMeta<ClassifierMeta> | SubclassificationMeta>;
-}
+};
 
-@metamodelOf(Classifier, ImplicitClassifiers)
+// TS 5.8 enforces strict assignability on the static side: the narrower
+// `ClassifierOptions` parameter on `create` is incompatible with the base
+// `TypeOptions`. The runtime contract is sound — callers go through this
+// class's `create` (typed with `ClassifierOptions`) — but the compiler can't
+// verify that statically.
+@metamodelOf(Classifier.$type, ImplicitClassifiers)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class ClassifierMeta extends TypeMeta {
     override ast(): Classifier | undefined {
         return this._ast as Classifier;
     }
 
     override specializationKind(): SubtypeKeys<Inheritance> {
-        return Subclassification;
+        return Subclassification.$type;
     }
 
     static override create<T extends AstNode>(
@@ -50,7 +56,7 @@ export class ClassifierMeta extends TypeMeta {
         document: LangiumDocument,
         options?: ClassifierOptions
     ): T["$meta"] {
-        return super.create(provider, document, options);
+        return super.create(provider, document, options as TypeOptions);
     }
 }
 

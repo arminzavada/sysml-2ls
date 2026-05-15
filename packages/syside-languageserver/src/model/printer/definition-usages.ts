@@ -64,7 +64,7 @@ function usageBasicModifiers(node: UsageMeta, ignoreRef = false): Doc[] {
     if (node.isDerived) modifiers.push(keyword("derived"));
     if (node.isEndExplicitly) modifiers.push(keyword("end"));
 
-    if (!ignoreRef && node.isReferenceExplicitly && node.nodeType() !== ast.ReferenceUsage)
+    if (!ignoreRef && node.isReferenceExplicitly && node.nodeType() !== ast.ReferenceUsage.$type)
         modifiers.push(keyword("ref"));
 
     return modifiers;
@@ -224,7 +224,7 @@ export function printOccurrenceUsageSubtype(
         node
             .specializations()
             .find((s) => !s.isImplied)
-            ?.nodeType() === ast.ReferenceSubsetting
+            ?.nodeType() === ast.ReferenceSubsetting.$type
     ) {
         const kw = formatPreserved(node, options.format, "always", {
             find: (node) => GrammarUtils.findNodeForKeyword(node, optionalKw.split(" ").at(-1) as string),
@@ -386,7 +386,7 @@ export function printEnumerationUsage(
     node: EnumerationUsageMeta,
     context: ModelPrinterContext
 ): Doc {
-    if (!node.owner()?.is(ast.EnumerationDefinition))
+    if (!node.owner()?.is(ast.EnumerationDefinition.$type))
         return printGenericUsage("auto", "enum", node, context, {
             appendToDeclaration: featureValueAppender(node, context),
             ignoreRef: shouldIgnoreRef(node, context.format.attribute_usage_reference_keyword),
@@ -445,8 +445,8 @@ export function printOccurrenceUsage(node: OccurrenceUsageMeta, context: ModelPr
 export function printPortUsage(node: PortUsageMeta, context: ModelPrinterContext): Doc {
     if (
         node.isEndExplicitly &&
-        node.parent()?.is(ast.FeatureMembership) &&
-        node.owner()?.isAny(ast.InterfaceDefinition, ast.InterfaceUsage) &&
+        node.parent()?.is(ast.FeatureMembership.$type) &&
+        node.owner()?.isAny(ast.InterfaceDefinition.$type, ast.InterfaceUsage.$type) &&
         formatPreserved(node, context.format.interface_port_keyword, "always", {
             find: (node) => GrammarUtils.findNodeForKeyword(node, "port"),
             choose: {
@@ -461,7 +461,7 @@ export function printPortUsage(node: PortUsageMeta, context: ModelPrinterContext
     }
     return printGenericOccurrenceUsage("auto", "port", node, context, {
         appendToDeclaration: featureValueAppender(node, context),
-        ignoreRef: node.owningType?.isAny(ast.PortUsage, ast.PortDefinition)
+        ignoreRef: node.owningType?.isAny(ast.PortUsage.$type, ast.PortDefinition.$type)
             ? false
             : shouldIgnoreRef(node, context.format.port_usage_reference_keyword),
     });
@@ -487,8 +487,8 @@ export function printReferenceUsage(node: ReferenceUsageMeta, context: ModelPrin
     };
 
     if (
-        node.parent()?.nodeType() === ast.VariantMembership &&
-        canPrintShorthandUsage(node, ast.ReferenceSubsetting) &&
+        node.parent()?.nodeType() === ast.VariantMembership.$type &&
+        canPrintShorthandUsage(node, ast.ReferenceSubsetting.$type) &&
         !getKw()
     ) {
         return printShorthandUsage(node, context);
@@ -498,8 +498,8 @@ export function printReferenceUsage(node: ReferenceUsageMeta, context: ModelPrin
         "auto",
         // DefaultReferenceUsage cannot be used in variant memberships and as
         // interface members
-        node.parent()?.nodeType() === ast.VariantMembership ||
-            node.owner()?.isAny(ast.InterfaceDefinition, ast.InterfaceUsage)
+        node.parent()?.nodeType() === ast.VariantMembership.$type ||
+            node.owner()?.isAny(ast.InterfaceDefinition.$type, ast.InterfaceUsage.$type)
             ? "ref"
             : getKw(),
         node,
@@ -509,7 +509,7 @@ export function printReferenceUsage(node: ReferenceUsageMeta, context: ModelPrin
 
 export function canPrintShorthandUsage(
     node: UsageMeta,
-    firstSpec: SubtypeKeys<ast.Inheritance> = ast.ReferenceSubsetting
+    firstSpec: SubtypeKeys<ast.Inheritance> = ast.ReferenceSubsetting.$type
 ): boolean {
     return (
         node.prefixes.length === 0 &&

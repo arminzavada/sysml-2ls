@@ -101,7 +101,7 @@ export function featureRelationships<T extends FeatureRelationshipMeta[]>(
     return EdgeContainer.make(...children) as unknown as FeatureRelationshipContainer;
 }
 
-export interface FeatureOptions extends TypeOptions {
+export type FeatureOptions = Omit<TypeOptions, "heritage" | "typeRelationships"> & {
     direction?: FeatureDirectionKind;
     isComposite?: boolean;
     isPortion?: boolean;
@@ -114,12 +114,16 @@ export interface FeatureOptions extends TypeOptions {
     heritage?: EdgeContainer<SubsettingMeta | FeatureTypingMeta | ConjugationMeta<FeatureMeta>>;
     typeRelationships?: FeatureRelationshipContainer;
     value?: Edge<FeatureValueMeta>;
-}
+};
 
 // TODO: isOrdered, name, shortName, typings can become stale if heritage
 // targets are mutated
 
-@metamodelOf(Feature, ImplicitFeatures)
+// TS 5.8 enforces strict assignability on the static side; `FeatureOptions`
+// narrows `TypeOptions`. See `classifier.ts` for the same pattern and
+// rationale.
+@metamodelOf(Feature.$type, ImplicitFeatures)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class FeatureMeta extends TypeMeta {
     protected _direction: FeatureDirectionKind = "none";
     protected _impliedDirection?: "out" | "in";
@@ -140,8 +144,8 @@ export class FeatureMeta extends TypeMeta {
     }
     protected computedImpliedDirection(): void {
         const parent = this.parent();
-        if (this._direction === "none" && parent?.is(ParameterMembership)) {
-            this._impliedDirection = parent.is(ReturnParameterMembership) ? "out" : "in";
+        if (this._direction === "none" && parent?.is(ParameterMembership.$type)) {
+            this._impliedDirection = parent.is(ReturnParameterMembership.$type) ? "out" : "in";
         } else {
             this._impliedDirection = undefined;
         }
@@ -240,7 +244,7 @@ export class FeatureMeta extends TypeMeta {
     }
 
     get typeFeaturings(): readonly TypeFeaturingMeta[] {
-        return this._typeRelationships.get(TypeFeaturing);
+        return this._typeRelationships.get(TypeFeaturing.$type);
     }
 
     get featuredBy(): readonly TypeMeta[] {
@@ -252,7 +256,7 @@ export class FeatureMeta extends TypeMeta {
     }
 
     get chainings(): readonly FeatureChainingMeta[] {
-        return this._typeRelationships.get(FeatureChaining);
+        return this._typeRelationships.get(FeatureChaining.$type);
     }
 
     get chainingFeatures(): readonly FeatureMeta[] {
@@ -287,7 +291,7 @@ export class FeatureMeta extends TypeMeta {
     ): void {
         super.onParentSet(previous, current);
 
-        this._isImpliedEnd = Boolean(current?.is(EndFeatureMembership));
+        this._isImpliedEnd = Boolean(current?.is(EndFeatureMembership.$type));
         this.computedImpliedDirection();
     }
 
@@ -295,7 +299,7 @@ export class FeatureMeta extends TypeMeta {
         previous: [ElementMeta, ElementMeta] | undefined,
         current: [ElementMeta, ElementMeta] | undefined
     ): void {
-        if (current?.[0].is(FeatureMembership) && current?.[1].is(Type)) {
+        if (current?.[0].is(FeatureMembership.$type) && current?.[1].is(Type.$type)) {
             this._owningType = current[1];
         } else {
             this._owningType = undefined;
@@ -333,12 +337,12 @@ export class FeatureMeta extends TypeMeta {
         }
         return (
             this.isPortion &&
-            (owningType.is(Class) || (owningType.is(Feature) && owningType.hasClassType()))
+            (owningType.is(Class.$type) || (owningType.is(Feature.$type) && owningType.hasClassType()))
         );
     }
 
     get ownedCrossSubsetting(): CrossSubsettingMeta | undefined {
-        return this.specializations(CrossSubsetting).at(0) as CrossSubsettingMeta | undefined;
+        return this.specializations(CrossSubsetting.$type).at(0) as CrossSubsettingMeta | undefined;
     }
 
     get crossFeature(): FeatureMeta | undefined {
@@ -359,9 +363,9 @@ export class FeatureMeta extends TypeMeta {
     findOwnedCrossFeature(): FeatureMeta | undefined {
         if (this.ownedCrossFeature) return this.ownedCrossFeature;
         for (const child of this.children) {
-            if (child.nodeType() !== OwningMembership) continue;
+            if (child.nodeType() !== OwningMembership.$type) continue;
             const f = child.element();
-            if (f && f.is(Feature) && !f.is(MetadataFeature) && !f.is(Multiplicity)) return f;
+            if (f && f.is(Feature.$type) && !f.is(MetadataFeature.$type) && !f.is(Multiplicity.$type)) return f;
         }
         return undefined;
     }
@@ -405,7 +409,7 @@ export class FeatureMeta extends TypeMeta {
      */
     protected isBehaviorOwned(): boolean {
         const owner = this.owner();
-        return Boolean(owner?.isAny(Behavior, Step));
+        return Boolean(owner?.isAny(Behavior.$type, Step.$type));
     }
 
     /**
@@ -423,7 +427,7 @@ export class FeatureMeta extends TypeMeta {
     protected isSubobject(): boolean {
         if (!this.isComposite) return false;
         const owner = this.owner();
-        return Boolean(owner?.is(Structure) || (owner?.is(Feature) && owner.hasStructureType()));
+        return Boolean(owner?.is(Structure.$type) || (owner?.is(Feature.$type) && owner.hasStructureType()));
     }
 
     /**
@@ -440,7 +444,7 @@ export class FeatureMeta extends TypeMeta {
     protected isSuboccurrence(): boolean {
         if (!this.isComposite) return false;
         const owner = this.owner();
-        return Boolean(owner?.is(Class) || (owner?.is(Feature) && owner.hasClassType()));
+        return Boolean(owner?.is(Class.$type) || (owner?.is(Feature.$type) && owner.hasClassType()));
     }
 
     /**
@@ -450,7 +454,7 @@ export class FeatureMeta extends TypeMeta {
     isAssociationEnd(): boolean {
         if (!this.isEnd) return false;
         const owner = this.owner();
-        return Boolean(owner?.isAny(Association, Connector));
+        return Boolean(owner?.isAny(Association.$type, Connector.$type));
     }
 
     /**
@@ -458,7 +462,7 @@ export class FeatureMeta extends TypeMeta {
      * otherwise the naming feature of the first redefinition
      */
     namingFeature(): FeatureMeta | undefined {
-        return this.types(Redefinition).head() as FeatureMeta | undefined;
+        return this.types(Redefinition.$type).head() as FeatureMeta | undefined;
     }
 
     isFeaturedWithin(type: TypeMeta | undefined): boolean {
@@ -488,7 +492,7 @@ export class FeatureMeta extends TypeMeta {
             (s) =>
                 s
                     .element()
-                    ?._heritage.get(Redefinition)
+                    ?._heritage.get(Redefinition.$type)
                     .filter((s) => {
                         const target = s.element();
                         if (visited.has(target)) return false;
@@ -508,7 +512,7 @@ export class FeatureMeta extends TypeMeta {
     }
 
     referencedFeature<K extends SysMLType>(kind?: K): FeatureMeta | undefined {
-        const feature = this.types(ReferenceSubsetting).head() as FeatureMeta | undefined;
+        const feature = this.types(ReferenceSubsetting.$type).head() as FeatureMeta | undefined;
         if (kind) return feature?.is(kind) ? feature : this;
         return feature;
     }
@@ -523,11 +527,11 @@ export class FeatureMeta extends TypeMeta {
 
     get isParameter(): boolean {
         // parameter if direction was specified explicitly
-        return Boolean(this.direction !== "none" && this.owner()?.isAny(Behavior, Step));
+        return Boolean(this.direction !== "none" && this.owner()?.isAny(Behavior.$type, Step.$type));
     }
 
     get isResultParameter(): boolean {
-        return Boolean(this.parent()?.is(ReturnParameterMembership));
+        return Boolean(this.parent()?.is(ReturnParameterMembership.$type));
     }
 
     recomputeEffectiveNames(): void {
@@ -551,7 +555,7 @@ export class FeatureMeta extends TypeMeta {
 
         this.typings = undefined;
 
-        if (!this._impliedIsOrdered && heritage.is(Subsetting)) {
+        if (!this._impliedIsOrdered && heritage.is(Subsetting.$type)) {
             if (heritage.finalElement()?.isOrdered) this._impliedIsOrdered = true;
         }
 
@@ -559,7 +563,7 @@ export class FeatureMeta extends TypeMeta {
             this.updateEffectiveNames();
         }
 
-        if (heritage.is(Redefinition)) {
+        if (heritage.is(Redefinition.$type)) {
             // add a tombstone to the owning type children to signify that the
             // redefined feature is no longer accessible through it
             const feature = heritage.finalElement();
@@ -582,10 +586,10 @@ export class FeatureMeta extends TypeMeta {
 
         if (
             this._impliedIsOrdered &&
-            heritage.some((h) => h.is(Subsetting) && h.finalElement()?.isOrdered)
+            heritage.some((h) => h.is(Subsetting.$type) && h.finalElement()?.isOrdered)
         ) {
             this._impliedIsOrdered = this.heritage.some(
-                (h) => h.is(Subsetting) && h.finalElement()?.isOrdered
+                (h) => h.is(Subsetting.$type) && h.finalElement()?.isOrdered
             );
         }
 
@@ -594,7 +598,7 @@ export class FeatureMeta extends TypeMeta {
         const lookup = this.owningType?.["_memberLookup"];
         if (!lookup) return;
         heritage
-            .filter(BasicMetamodel.is(Redefinition))
+            .filter(BasicMetamodel.is(Redefinition.$type))
             .map((r) => r.finalElement())
             .filter(NonNullable)
             .forEach((feature) => {
@@ -609,7 +613,7 @@ export class FeatureMeta extends TypeMeta {
     }
 
     override specializationKind(): SubtypeKeys<Inheritance> {
-        return Subsetting;
+        return Subsetting.$type;
     }
 
     allTypings(recompute = false): TypeMeta[] {
@@ -624,7 +628,7 @@ export class FeatureMeta extends TypeMeta {
     }
 
     private collectDirectTypes(visited: Set<FeatureMeta>): Stream<TypeMeta> {
-        const types = stream(this.specializations(FeatureTyping))
+        const types = stream(this.specializations(FeatureTyping.$type))
             .map((s) => s.finalElement())
             .nonNullable();
 
@@ -642,9 +646,9 @@ export class FeatureMeta extends TypeMeta {
 
         return stream(
             this.collectDirectTypes(visited),
-            ...([Conjugation, Subsetting] as const).map((kind) =>
+            ...([Conjugation.$type, Subsetting.$type] as const).map((kind) =>
                 this.types(kind)
-                    .filter(BasicMetamodel.is(Feature))
+                    .filter(BasicMetamodel.is(Feature.$type))
                     .flatMap((f) => (f as FeatureMeta).collectInheritedTypes(visited))
             )
         );
@@ -661,7 +665,7 @@ export class FeatureMeta extends TypeMeta {
                 for (const type of feature.featuredBy) {
                     if (types.has(type)) continue;
                     types.add(type);
-                    if (type.is(Feature)) next.push(type);
+                    if (type.is(Feature.$type)) next.push(type);
                 }
             }
 
@@ -679,7 +683,7 @@ export class FeatureMeta extends TypeMeta {
         if (this.ownedCrossFeatureMember) {
             parts.push(["ownedCrossFeatureMember", [this.ownedCrossFeatureMember]]);
         }
-        if (this.parent()?.is(EndFeatureMembership)) {
+        if (this.parent()?.is(EndFeatureMembership.$type)) {
             parts.push(["heritage", this.heritage]);
             if (this._multiplicity) {
                 parts.push(["multiplicity", [this._multiplicity]]);
@@ -718,7 +722,7 @@ export class FeatureMeta extends TypeMeta {
         document: LangiumDocument,
         options?: FeatureOptions
     ): T["$meta"] {
-        const model = super.create(provider, document, options) as FeatureMeta;
+        const model = super.create(provider, document, options as TypeOptions) as FeatureMeta;
         if (options) FeatureMeta.applyFeatureOptions(model, options);
         return model;
     }

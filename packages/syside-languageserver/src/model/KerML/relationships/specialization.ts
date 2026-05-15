@@ -20,7 +20,7 @@ import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.j
 import { RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 import { InheritanceMeta } from "./inheritance.js";
 
-@metamodelOf(Specialization)
+@metamodelOf(Specialization.$type)
 export class SpecializationMeta<T extends TypeMeta = TypeMeta> extends InheritanceMeta<T> {
     override ast(): Specialization | undefined {
         return this._ast as Specialization;

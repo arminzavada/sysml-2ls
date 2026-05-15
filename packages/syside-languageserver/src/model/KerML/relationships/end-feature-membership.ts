@@ -25,7 +25,7 @@ import {
     RelationshipOptionsBody,
 } from "../_internal.js";
 
-@metamodelOf(EndFeatureMembership)
+@metamodelOf(EndFeatureMembership.$type)
 export class EndFeatureMembershipMeta<
     T extends FeatureMeta = FeatureMeta,
 > extends FeatureMembershipMeta<T> {

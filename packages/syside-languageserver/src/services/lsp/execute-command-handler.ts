@@ -333,7 +333,7 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
         _ = CancellationToken.None
     ): string[] {
         const node = this.findCursorNode(editor)?.$meta;
-        if (!node?.is(Type)) return [];
+        if (!node?.is(Type.$type)) return [];
         return stream([[node.qualifiedName, node.nodeType(), "self"]])
             .concat(
                 node
@@ -357,7 +357,7 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
         _ = CancellationToken.None
     ): string {
         const node = this.findCursorNode(editor)?.$meta;
-        if (!node?.is(Element)) return "not an element";
+        if (!node?.is(Element.$type)) return "not an element";
         return toSExp(node);
     }
 
@@ -371,7 +371,7 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
         _ = CancellationToken.None
     ): string[] {
         const node = this.findCursorNode(editor)?.$meta;
-        if (!node?.is(Element)) return [];
+        if (!node?.is(Element.$type)) return [];
         // also return private children
         return makeLinkingScope(node, { skipParents: true })
             .getAllElements()
@@ -389,7 +389,7 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
         _ = CancellationToken.None
     ): string[] {
         const node = this.findCursorNode(editor)?.$meta;
-        if (!node?.is(Element)) return [];
+        if (!node?.is(Element.$type)) return [];
         // also return private children
         return makeLinkingScope(node)
             .getAllExportedElements()
@@ -410,16 +410,16 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
         const node = this.findCursorNode(editor)?.$meta;
         if (!node) return;
         const evaluator = this.shared.Evaluator;
-        if (node.is(InlineExpression)) {
+        if (node.is(InlineExpression.$type)) {
             let parent: Metamodel | undefined = node.owner();
-            while (parent && !parent.is(Element)) parent = parent.owner();
+            while (parent && !parent.is(Element.$type)) parent = parent.owner();
             if (parent) return toJSON(evaluator.evaluate(node, parent), JSONreplacer);
-        } else if (node.is(Feature)) {
+        } else if (node.is(Feature.$type)) {
             if (!node.value) return;
             const expression = node.value.element();
             if (!expression) return;
             return toJSON(evaluator.evaluate(expression, node), JSONreplacer);
-        } else if (node.is(FeatureValue)) {
+        } else if (node.is(FeatureValue.$type)) {
             const expression = node.element();
             if (!expression) return;
             return toJSON(
@@ -542,6 +542,6 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
             rootNode,
             document.textDocument.offsetAt(activePosition)
         );
-        return leaf?.element;
+        return leaf?.astNode;
     }
 }

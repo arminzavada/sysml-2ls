@@ -133,7 +133,7 @@ function printPayloadParameter<
                             param
                                 .specializations()
                                 .find((s) => !s.isImplied)
-                                ?.is(FeatureTyping) &&
+                                ?.is(FeatureTyping.$type) &&
                             !param.value
                     ),
                     appendToDeclaration: featureValueAppender(param, context),
@@ -206,7 +206,7 @@ export function printAssignmentAction(
     suffix.push(
         printAsTarget(node.targetMember, context, {
             printer(node, context) {
-                if (node.parent()?.is(OwningMembership))
+                if (node.parent()?.is(OwningMembership.$type))
                     return indent(printChaining(node, context));
                 return DefaultElementPrinter(node, context);
             },
@@ -346,7 +346,7 @@ export function printCondition(
 ): Doc {
     let expr: Doc;
     let target: FeatureMeta;
-    if (edge.is(OwningMembership)) {
+    if (edge.is(OwningMembership.$type)) {
         expr = printTarget(edge, context);
         target = edge.element();
     } else {
@@ -390,7 +390,7 @@ export function printWhileLoop(node: WhileLoopActionUsageMeta, context: ModelPri
         kind: "while loop body parameter",
         mustBreak: node.until !== undefined,
     });
-    if (!node.condition || !node.condition.element()?.is(Expression)) {
+    if (!node.condition || !node.condition.element()?.is(Expression.$type)) {
         suffix.push(keyword("loop "), body[1]);
     } else {
         suffix.push(
@@ -474,13 +474,13 @@ export function printIfAction(node: IfActionUsageMeta, context: ModelPrinterCont
         ),
         printActionBodyParameter(node, "then", context, {
             kind: "if then branch",
-            mustBreak: Boolean(elseBranch) || node.owner()?.nodeType() === IfActionUsage,
+            mustBreak: Boolean(elseBranch) || node.owner()?.nodeType() === IfActionUsage.$type,
         })
     );
 
     if (elseBranch) {
         suffix.push(keyword(" else"));
-        if (elseBranch.is(IfActionUsage)) {
+        if (elseBranch.is(IfActionUsage.$type)) {
             suffix.push(literals.space, printIfAction(elseBranch, context));
         } else {
             suffix.push(
@@ -521,13 +521,13 @@ export function printSubaction(
 ): Doc {
     const decl = ((): Doc | undefined => {
         switch (node.nodeType()) {
-            case PerformActionUsage:
+            case PerformActionUsage.$type:
                 return printPerformAction(node as PerformActionUsageMeta, context, true);
-            case AcceptActionUsage:
+            case AcceptActionUsage.$type:
                 return printAcceptActionUsage(node as AcceptActionUsageMeta, context, true);
-            case SendActionUsage:
+            case SendActionUsage.$type:
                 return printSendAction(node as SendActionUsageMeta, context, true);
-            case AssignmentActionUsage:
+            case AssignmentActionUsage.$type:
                 return printAssignmentAction(node as AssignmentActionUsageMeta, context, true);
             default:
                 return;
@@ -621,7 +621,7 @@ export function actionBodyJoiner(): ChildrenJoiner {
         previous?: ElementMeta
     ): Doc | undefined => {
         let target = child;
-        if (target.is(OwningMembership)) target = target.element();
+        if (target.is(OwningMembership.$type)) target = target.element();
 
         if (state.continuation) {
             const continuation = state.continuation;
@@ -630,7 +630,7 @@ export function actionBodyJoiner(): ChildrenJoiner {
             index--;
         } else {
             switch (target.nodeType()) {
-                case TransitionUsage: {
+                case TransitionUsage.$type: {
                     if ((target as TransitionUsageMeta).source) {
                         state.stack.length = 0;
                         break;
@@ -638,7 +638,7 @@ export function actionBodyJoiner(): ChildrenJoiner {
 
                     if (
                         (target as TransitionUsageMeta).else &&
-                        state.stack.at(-1)?.type === DecisionNode
+                        state.stack.at(-1)?.type === DecisionNode.$type
                     ) {
                         state.stack[state.stack.length - 1].isDone = true;
                         break;
@@ -648,7 +648,7 @@ export function actionBodyJoiner(): ChildrenJoiner {
                     break;
                 }
 
-                case SuccessionAsUsage: {
+                case SuccessionAsUsage.$type: {
                     const kind = successionAsUsageKind(target as SuccessionAsUsageMeta, previous);
                     if (kind === "regular")
                         // starts with `first` -> not a shorthard so
@@ -673,11 +673,11 @@ export function actionBodyJoiner(): ChildrenJoiner {
             if (index !== 0) doc = applyIndent([hardline, doc]);
         }
 
-        if (target.is(ControlNode)) {
+        if (target.is(ControlNode.$type)) {
             const type = target.nodeType();
             // only decision and fork nodes can have multiple outgoing
             // successions
-            if (type === DecisionNode || type === ForkNode)
+            if (type === DecisionNode.$type || type === ForkNode.$type)
                 state.stack.push({
                     type,
                     isDone: false,

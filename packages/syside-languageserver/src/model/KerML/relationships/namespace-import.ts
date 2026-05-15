@@ -19,7 +19,7 @@ import { NamespaceImport } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ImportMeta, ImportOptions, NamespaceMeta } from "../_internal.js";
 
-@metamodelOf(NamespaceImport)
+@metamodelOf(NamespaceImport.$type)
 export class NamespaceImportMeta<T extends NamespaceMeta = NamespaceMeta> extends ImportMeta<T> {
     override ast(): NamespaceImport | undefined {
         return this._ast as NamespaceImport;

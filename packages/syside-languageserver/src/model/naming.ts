@@ -111,8 +111,8 @@ export function computeQualifiedName(meta: ElementMeta, parent: Metamodel | unde
     let name = getName(meta);
     let parentName = "";
     while (parent?.owner()) {
-        if (!parent.is(TransparentElement)) {
-            if (parent.is(Element)) {
+        if (!parent.is(TransparentElement.$type)) {
+            if (parent.is(Element.$type)) {
                 return concatNames(parent.qualifiedName, name);
             } else {
                 parentName = parent.elementId.toString() ?? "<unnamed>";

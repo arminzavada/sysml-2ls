@@ -35,7 +35,7 @@ export const ImplicitAssociations = {
 
 export type AssociationOptions = ClassifierOptions;
 
-@metamodelOf(Association, ImplicitAssociations)
+@metamodelOf(Association.$type, ImplicitAssociations)
 // Note: inherited methods are override by the last class inside `Mixin`
 export class AssociationMeta extends Mixin(
     ConnectorMixin,

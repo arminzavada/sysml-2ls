@@ -26,12 +26,12 @@ export const ImplicitMultiplicities = {
 
 export type MultiplicityOptions = FeatureOptions;
 
-@metamodelOf(Multiplicity, ImplicitMultiplicities)
+@metamodelOf(Multiplicity.$type, ImplicitMultiplicities)
 export class MultiplicityMeta extends FeatureMeta {
     override get typeFeaturings(): readonly TypeFeaturingMeta[] {
         const explicit = super.typeFeaturings;
         if (explicit.length > 0) return explicit;
-        if (this.owningType?.is(Feature)) return this.owningType.typeFeaturings;
+        if (this.owningType?.is(Feature.$type)) return this.owningType.typeFeaturings;
         return explicit;
     }
 
@@ -40,8 +40,8 @@ export class MultiplicityMeta extends FeatureMeta {
     }
     override defaultSupertype(): string {
         const owner = this.owner();
-        if (owner?.is(Classifier)) return "classifier";
-        if (owner?.is(Feature)) return "feature";
+        if (owner?.is(Classifier.$type)) return "classifier";
+        if (owner?.is(Feature.$type)) return "feature";
         return "base";
     }
 }

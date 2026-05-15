@@ -39,7 +39,7 @@ test.concurrent.each(["redefines", ":>>"])(
                 ...anything(2),
                 {
                     target: {
-                        $type: Redefinition,
+                        $type: Redefinition.$type,
                         ...withQualifiedName("Redef"),
                         sourceRef: qualifiedTypeReference("a"),
                         targetRef: qualifiedTypeReference("b"),
@@ -69,7 +69,7 @@ test.concurrent.each(["specialization", ""])(
                 ...anything(2),
                 {
                     target: {
-                        $type: Redefinition,
+                        $type: Redefinition.$type,
                         sourceRef: qualifiedTypeReference("a"),
                         targetRef: qualifiedTypeReference("b"),
                     },
@@ -88,11 +88,11 @@ test("features can have multiple owned redefinitions", async () => {
             ...anything(2),
             {
                 target: {
-                    $type: Feature,
+                    $type: Feature.$type,
                     ...withQualifiedName("c"),
                     heritage: [
-                        { $type: Redefinition, targetRef: qualifiedTypeReference("a") },
-                        { $type: Redefinition, targetRef: qualifiedTypeReference("b") },
+                        { $type: Redefinition.$type, targetRef: qualifiedTypeReference("a") },
+                        { $type: Redefinition.$type, targetRef: qualifiedTypeReference("b") },
                     ],
                 },
             },

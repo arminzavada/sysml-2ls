@@ -26,7 +26,7 @@ import {
 } from "../../metamodel.js";
 import { ElementMeta } from "../_internal.js";
 
-@metamodelOf(ElementReference)
+@metamodelOf(ElementReference.$type)
 export class ElementReferenceMeta extends BasicMetamodel<ElementReference> {
     /**
      * Final reference target of this reference chain

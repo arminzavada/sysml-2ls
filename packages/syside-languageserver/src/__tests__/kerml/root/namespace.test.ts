@@ -72,7 +72,7 @@ test("namespaces can have comments", async () => {
     doc N9_Doc
         /* doc about N9 */
     }`,
-            { node: Comment, index: 2 }
+            { node: Comment.$type, index: 2 }
         )
     ).resolves.toMatchObject({ body: "/* also comment about N9 */" });
 });

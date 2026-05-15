@@ -59,13 +59,13 @@ export interface ArrayEditCase<
 
 function expectOwned(owner: ElementMeta, edge: RelationshipMeta, target: ElementMeta): void {
     expect(owner.ownedElements().toArray()).toEqual(expect.arrayContaining([edge]));
-    if (edge.is(OwningMembership)) expect(target.parent()).toBe(edge);
+    if (edge.is(OwningMembership.$type)) expect(target.parent()).toBe(edge);
     expect(edge.parent()).toBe(owner);
     expect([edge.source(), edge.element()]).toEqual(expect.arrayContaining([owner, target]));
 }
 
 function expectOrphan(edge: RelationshipMeta, target: ElementMeta): void {
-    if (edge.is(OwningMembership)) {
+    if (edge.is(OwningMembership.$type)) {
         expect(target.owner()).toBe(undefined);
         expect(target.parent()).toBe(undefined);
     }

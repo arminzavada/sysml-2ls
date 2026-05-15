@@ -29,7 +29,7 @@ export interface SendActionUsageOptions extends ActionUsageOptions {
     receiver?: Edge<ParameterMembershipMeta, ReferenceUsageMeta>;
 }
 
-@metamodelOf(SendActionUsage, {
+@metamodelOf(SendActionUsage.$type, {
     base: "Actions::sendActions",
     subaction: "Actions::Action::sendSubactions",
 })

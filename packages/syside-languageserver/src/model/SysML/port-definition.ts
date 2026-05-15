@@ -26,7 +26,7 @@ import { PortConjugationMeta } from "./relationships/index.js";
 
 export interface PortDefinitionOptions extends StructureOptions, OccurrenceDefinitionOptions {}
 
-@metamodelOf(PortDefinition, {
+@metamodelOf(PortDefinition.$type, {
     base: "Ports::Port",
 })
 export class PortDefinitionMeta extends Mixin(StructureMeta, OccurrenceDefinitionMeta) {
@@ -84,7 +84,7 @@ export class PortDefinitionMeta extends Mixin(StructureMeta, OccurrenceDefinitio
     }
 }
 
-@metamodelOf(ConjugatedPortDefinition)
+@metamodelOf(ConjugatedPortDefinition.$type)
 export class ConjugatedPortDefinitionMeta extends PortDefinitionMeta {
     get originalPortDefinition(): PortDefinitionMeta {
         // this holds as long as no one edits hidden properties

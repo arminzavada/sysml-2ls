@@ -93,7 +93,7 @@ export function sanitizeTree(
     if (isLinkingError(node)) {
         return {
             message: node.message,
-            property: node.property,
+            property: node.info.property,
         };
     }
     if (node instanceof Set) {

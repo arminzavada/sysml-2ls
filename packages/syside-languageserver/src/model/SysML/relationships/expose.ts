@@ -22,7 +22,7 @@ import { Importable, ImportMeta, ImportOptions } from "../../KerML/relationships
 import { ElementIDProvider, metamodelOf, MetatypeProto } from "../../metamodel.js";
 import { ViewUsageMeta } from "../view-usage.js";
 
-@metamodelOf(Expose, "abstract")
+@metamodelOf(Expose.$type, "abstract")
 export abstract class ExposeMeta<T extends Importable = Importable> extends ImportMeta<T> {
     /**
      * Visibility of the element at the end of this import

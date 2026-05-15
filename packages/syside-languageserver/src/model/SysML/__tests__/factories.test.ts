@@ -126,8 +126,8 @@ describe("Element factories", () => {
     it("should set up implicit transition usage features", () => {
         const tu = TransitionUsageMeta.create(id, document);
 
-        expect(tu["_payload"]?.element()?.nodeType()).toEqual(ReferenceUsage);
-        expect(tu["_transitionLinkSource"]?.element()?.nodeType()).toEqual(ReferenceUsage);
+        expect(tu["_payload"]?.element()?.nodeType()).toEqual(ReferenceUsage.$type);
+        expect(tu["_transitionLinkSource"]?.element()?.nodeType()).toEqual(ReferenceUsage.$type);
     });
 
     it("should add ends to flow connection usage", () => {

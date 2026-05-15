@@ -25,7 +25,7 @@ import { AstNode, LangiumDocument } from "langium";
 
 export interface OccurrenceDefinitionOptions extends ClassOptions, DefinitionOptions {}
 
-@metamodelOf(OccurrenceDefinition, {
+@metamodelOf(OccurrenceDefinition.$type, {
     base: "Occurrences::Occurrence",
 })
 export class OccurrenceDefinitionMeta extends Mixin(ClassMeta, DefinitionMeta) {

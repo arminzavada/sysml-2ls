@@ -57,9 +57,9 @@
         "grammar:watch": "langium generate --watch"
     },
     "dependencies": {
-        "chevrotain": "~11.0.3",
+        "chevrotain": "~12.0.0",
         "commander": "^10.0.1",
-        "langium": "~3.5.0",
+        "langium": "~4.2.4",
         "node-fetch": "^3.3.2",
         "performance-now": "^2.1.0",
         "string-width": "^6.1.0",
@@ -72,7 +72,7 @@
     },
     "devDependencies": {
         "chalk": "^5.2.0",
-        "langium-cli": "~3.5.2",
+        "langium-cli": "~4.2.1",
         "syside-languageclient": "workspace:*",
         "typescript-string-operations": "^1.5.0"
     }

@@ -24,7 +24,7 @@ export const ImplicitMetaclasses = {
 
 export type MetaclassOptions = StructureOptions;
 
-@metamodelOf(Metaclass, ImplicitMetaclasses)
+@metamodelOf(Metaclass.$type, ImplicitMetaclasses)
 export class MetaclassMeta extends StructureMeta {
     override ast(): Metaclass | undefined {
         return this._ast as Metaclass;

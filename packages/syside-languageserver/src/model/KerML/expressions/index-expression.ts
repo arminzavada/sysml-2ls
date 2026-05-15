@@ -27,7 +27,7 @@ export interface IndexExpressionOptions extends OperatorExpressionOptions {
     operator?: never;
 }
 
-@metamodelOf(IndexExpression)
+@metamodelOf(IndexExpression.$type)
 export class IndexExpressionMeta extends OperatorExpressionMeta {
     override get operator(): AnyOperator {
         return IMPLICIT_OPERATORS.INDEX;

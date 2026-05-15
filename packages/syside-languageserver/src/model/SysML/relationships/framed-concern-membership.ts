@@ -24,7 +24,7 @@ import { RequirementConstraintMembershipMeta } from "./requirement-constraint-me
 import { RequirementUsageMeta } from "../requirement-usage.js";
 import { RequirementConstraintKind } from "../../enums.js";
 
-@metamodelOf(FramedConcernMembership)
+@metamodelOf(FramedConcernMembership.$type)
 export class FramedConcernMembershipMeta<
     T extends ConcernUsageMeta = ConcernUsageMeta,
 > extends RequirementConstraintMembershipMeta<T> {

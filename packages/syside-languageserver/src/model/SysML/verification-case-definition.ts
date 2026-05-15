@@ -20,7 +20,7 @@ import { CaseDefinitionMeta, CaseDefinitionOptions } from "./case-definition.js"
 
 export type VerificationCaseDefinitionOptions = CaseDefinitionOptions;
 
-@metamodelOf(VerificationCaseDefinition, {
+@metamodelOf(VerificationCaseDefinition.$type, {
     base: "VerificationCases::VerificationCase",
 })
 export class VerificationCaseDefinitionMeta extends CaseDefinitionMeta {

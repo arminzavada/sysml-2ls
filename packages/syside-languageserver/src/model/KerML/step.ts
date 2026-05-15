@@ -29,7 +29,7 @@ export const ImplicitSteps = {
 
 export type StepOptions = FeatureOptions;
 
-@metamodelOf(Step, ImplicitSteps)
+@metamodelOf(Step.$type, ImplicitSteps)
 export class StepMeta extends FeatureMeta {
     override ast(): Step | undefined {
         return this._ast as Step;
@@ -45,7 +45,7 @@ export class StepMeta extends FeatureMeta {
 
     protected isIncomingTransfer(): boolean {
         const parent = this.owner();
-        if (!parent?.is(ItemFlow)) return false;
+        if (!parent?.is(ItemFlow.$type)) return false;
         return Boolean(parent.item);
     }
 }

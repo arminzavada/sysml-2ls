@@ -17,9 +17,10 @@
 import { AstNode, LangiumDocument } from "langium";
 import { Differencing } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
-import { RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
+import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
-@metamodelOf(Differencing)
+@metamodelOf(Differencing.$type)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class DifferencingMeta<T extends TypeMeta = TypeMeta> extends RelationshipMeta<T> {
     override ast(): Differencing | undefined {
         return this._ast as Differencing;
@@ -32,7 +33,7 @@ export class DifferencingMeta<T extends TypeMeta = TypeMeta> extends Relationshi
         // cannot have source
         options?: RelationshipOptions<TypeMeta, TypeMeta, TypeMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options);
+        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
     }
 }
 

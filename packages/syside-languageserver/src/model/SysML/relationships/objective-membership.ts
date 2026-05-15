@@ -23,7 +23,7 @@ import { CaseDefinitionMeta } from "../case-definition.js";
 import { CaseUsageMeta } from "../case-usage.js";
 import { RequirementUsageMeta } from "../requirement-usage.js";
 
-@metamodelOf(ObjectiveMembership)
+@metamodelOf(ObjectiveMembership.$type)
 export class ObjectiveMembershipMeta<
     T extends RequirementUsageMeta = RequirementUsageMeta,
 > extends FeatureMembershipMeta<T> {

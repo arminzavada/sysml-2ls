@@ -20,7 +20,7 @@ import { UsageMeta, UsageOptions } from "./usage.js";
 
 export type OccurrenceUsageOptions = UsageOptions;
 
-@metamodelOf(OccurrenceUsage, {
+@metamodelOf(OccurrenceUsage.$type, {
     base: "Occurrences::occurrences",
     timeslice: "Occurrences::Occurrence::timeSlices",
     snapshot: "Occurrences::Occurrence::snapshots",

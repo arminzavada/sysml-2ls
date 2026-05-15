@@ -20,7 +20,7 @@ import { PackageMeta, PackageOptions } from "./_internal.js";
 
 export type LibraryPackageOptions = PackageOptions;
 
-@metamodelOf(LibraryPackage)
+@metamodelOf(LibraryPackage.$type)
 export class LibraryPackageMeta extends PackageMeta {
     /**
      * Whether this library package is standard

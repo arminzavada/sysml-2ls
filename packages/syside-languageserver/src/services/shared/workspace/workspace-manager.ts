@@ -14,7 +14,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AstNode, DefaultWorkspaceManager, LangiumDocument, OperationCancelled } from "langium";
+import {
+    AstNode,
+    DefaultWorkspaceManager,
+    FileSystemNode,
+    LangiumDocument,
+    OperationCancelled,
+} from "langium";
 import {
     CancellationToken,
     Connection,
@@ -118,9 +124,8 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
         const fileNames = this.serviceRegistry.all.flatMap(
             (e) => (e.LanguageMetaData as { fileNames?: string[] }).fileNames ?? []
         );
-        const selector = { fileExtensions, fileNames };
         for (const node of content) {
-            if (!this.includeEntry(folders[0], node, selector)) continue;
+            if (!this.shouldIncludeStdlibEntry(node, fileExtensions, fileNames)) continue;
 
             if (node.isFile) {
                 collected.push(node.uri);
@@ -149,6 +154,29 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
         );
 
         return;
+    }
+
+    /**
+     * Filter a stdlib entry against registered language file extensions and
+     * file names. Directories are always traversed; files must match the
+     * language metadata.
+     *
+     * 4.x note: replaces the old `includeEntry(folder, entry, selector)` API
+     * which Langium retired (see PR #1784).
+     */
+    protected shouldIncludeStdlibEntry(
+        entry: FileSystemNode,
+        fileExtensions: string[],
+        fileNames: string[]
+    ): boolean {
+        if (entry.isDirectory) return true;
+        const path = entry.uri.path;
+        const dot = path.lastIndexOf(".");
+        const ext = dot >= 0 ? path.slice(dot + 1) : "";
+        if (ext && fileExtensions.includes(ext)) return true;
+        const slash = path.lastIndexOf("/");
+        const name = slash >= 0 ? path.slice(slash + 1) : path;
+        return fileNames.includes(name);
     }
 
     /**

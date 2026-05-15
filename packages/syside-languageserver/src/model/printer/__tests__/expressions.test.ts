@@ -28,7 +28,7 @@ import { expectPrinted, makeEmpty, printKerMLElement, printSysMLElement } from "
 
 const parseExpr = async (expr: string): Promise<ExpressionMeta> => {
     const e = (
-        await parsedNode(`feature a = ${expr};`, { lang: "kerml", node: Feature })
+        await parsedNode(`feature a = ${expr};`, { lang: "kerml", node: Feature.$type })
     ).$meta.value?.element();
     expect(e).toBeDefined();
     return e as ExpressionMeta;
@@ -132,7 +132,7 @@ describe("null expression", () => {
             "feature a = //* leading */ ( //* inner */ ) // trailing\n;",
             {
                 lang: "kerml",
-                node: FeatureValue,
+                node: FeatureValue.$type,
             }
         );
 
@@ -557,7 +557,7 @@ describe("operator expressions", () => {
                 {
                     build: true,
                     lang: "sysml",
-                    node: Namespace,
+                    node: Namespace.$type,
                 }
             ).resolves.toMatchInlineSnapshot(`
 "calc acc : Acceleration {

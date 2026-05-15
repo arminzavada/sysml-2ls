@@ -27,7 +27,7 @@ export interface LiteralStringOptions extends LiteralExpressionOptions {
     value?: string;
 }
 
-@metamodelOf(LiteralString, ImplicitLiteralStrings)
+@metamodelOf(LiteralString.$type, ImplicitLiteralStrings)
 export class LiteralStringMeta extends LiteralExpressionMeta {
     literal = "";
 

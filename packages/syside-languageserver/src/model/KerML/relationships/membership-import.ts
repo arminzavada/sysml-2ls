@@ -19,7 +19,7 @@ import { MembershipImport } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ImportMeta, ImportOptions, MembershipMeta } from "../_internal.js";
 
-@metamodelOf(MembershipImport)
+@metamodelOf(MembershipImport.$type)
 export class MembershipImportMeta<T extends MembershipMeta = MembershipMeta> extends ImportMeta<T> {
     override ast(): MembershipImport | undefined {
         return this._ast as MembershipImport;

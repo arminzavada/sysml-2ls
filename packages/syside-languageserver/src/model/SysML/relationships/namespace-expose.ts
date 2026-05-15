@@ -29,7 +29,7 @@ export interface NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta>
     get importsAll(): boolean;
 }
 
-@metamodelOf(NamespaceExpose)
+@metamodelOf(NamespaceExpose.$type)
 @mix(ExposeMeta, NamespaceImportMeta)
 // eslint-disable-next-line unused-imports/no-unused-vars
 export class NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta> {

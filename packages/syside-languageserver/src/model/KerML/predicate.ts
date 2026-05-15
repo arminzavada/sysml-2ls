@@ -24,7 +24,7 @@ export const ImplicitPredicates = {
 
 export type PredicateOptions = FunctionOptions;
 
-@metamodelOf(Predicate, ImplicitPredicates)
+@metamodelOf(Predicate.$type, ImplicitPredicates)
 export class PredicateMeta extends FunctionMeta {
     override ast(): Predicate | undefined {
         return this._ast as Predicate;

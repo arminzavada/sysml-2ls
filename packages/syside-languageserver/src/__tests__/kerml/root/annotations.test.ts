@@ -24,7 +24,7 @@ describe("elements are parseable with annotations", () => {
     test("with single line comment", async () => {
         return expect(
             parsedNode("namespace { comment /* this is a comment */ }", {
-                node: Comment,
+                node: Comment.$type,
             })
         ).resolves.toMatchObject({ body: "/* this is a comment */" });
     });
@@ -32,7 +32,7 @@ describe("elements are parseable with annotations", () => {
     test("with single line comment without a keyword", async () => {
         return expect(
             parsedNode("namespace { /* this is a comment */ }", {
-                node: Comment,
+                node: Comment.$type,
             })
         ).resolves.toMatchObject({ body: "/* this is a comment */" });
     });
@@ -47,7 +47,7 @@ namespace {
              * a comment
              */ }`,
                 {
-                    node: Comment,
+                    node: Comment.$type,
                 }
             )
         ).resolves.toMatchObject({
@@ -60,7 +60,7 @@ namespace {
     test("with a named single line comment", async () => {
         return expect(
             parsedNode("namespace { comment Comment /* this is a comment */ }", {
-                node: Comment,
+                node: Comment.$type,
             })
         ).resolves.toMatchObject({ body: "/* this is a comment */" });
     });
@@ -68,7 +68,7 @@ namespace {
     test("with named documentation", async () => {
         return expect(
             parsedNode("namespace { doc Doc /* this is a doc */ }", {
-                node: Documentation,
+                node: Documentation.$type,
             })
         ).resolves.toMatchObject({ body: "/* this is a doc */" });
     });
@@ -76,7 +76,7 @@ namespace {
     test("with unnamed documentation", async () => {
         return expect(
             parsedNode("namespace { doc /* this is a doc */ }", {
-                node: Documentation,
+                node: Documentation.$type,
             })
         ).resolves.toMatchObject({ body: "/* this is a doc */" });
     });
@@ -86,7 +86,7 @@ namespace {
         test("with keyword", () => {
             return expect(
                 parsedNode('rep inOCL language "OCL" /* self.x > 0.0 */', {
-                    node: TextualRepresentation,
+                    node: TextualRepresentation.$type,
                 })
             ).resolves.toMatchObject({ body: "/* self.x > 0.0 */", language: `"OCL"` });
         });
@@ -94,7 +94,7 @@ namespace {
         test("with keyword and no name", async () => {
             return expect(
                 parsedNode('rep language "OCL" /* self.x > 0.0 */', {
-                    node: TextualRepresentation,
+                    node: TextualRepresentation.$type,
                 })
             ).resolves.toMatchObject({ body: "/* self.x > 0.0 */", language: `"OCL"` });
         });
@@ -106,7 +106,7 @@ namespace {
                 language "HTML" 
                     /* <a href="https://plm.elsewhere.com/part?id="1234"/> */
             }`,
-                    { node: TextualRepresentation }
+                    { node: TextualRepresentation.$type }
                 )
             ).resolves.toMatchObject({
                 body: `/* <a href="https://plm.elsewhere.com/part?id="1234"/> */`,
@@ -124,7 +124,7 @@ test("Multiple comments are parsed", async () => {
         /* comment 2 */   
     }`,
             {
-                node: Comment,
+                node: Comment.$type,
                 index: 1,
             }
         )

@@ -25,7 +25,7 @@ export const ImplicitClasses = {
 
 export type ClassOptions = ClassifierOptions;
 
-@metamodelOf(Class, ImplicitClasses)
+@metamodelOf(Class.$type, ImplicitClasses)
 export class ClassMeta extends ClassifierMeta {
     protected override _classifier = TypeClassifier.Class;
 

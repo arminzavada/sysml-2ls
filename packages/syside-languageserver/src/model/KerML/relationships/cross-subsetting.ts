@@ -18,7 +18,7 @@ import { CrossSubsetting } from "../../../generated/ast.js";
 import { metamodelOf } from "../../metamodel.js";
 import { FeatureMeta, SubsettingMeta } from "../_internal.js";
 
-@metamodelOf(CrossSubsetting)
+@metamodelOf(CrossSubsetting.$type)
 export class CrossSubsettingMeta<T extends FeatureMeta = FeatureMeta> extends SubsettingMeta<T> {
     override ast(): CrossSubsetting | undefined {
         return this._ast as CrossSubsetting;

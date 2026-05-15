@@ -20,7 +20,7 @@ import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
 
 export type LoopActionUsageOptions = ActionUsageOptions;
 
-@metamodelOf(LoopActionUsage, "abstract")
+@metamodelOf(LoopActionUsage.$type, "abstract")
 export class LoopActionUsageMeta extends ActionUsageMeta {
     override ast(): LoopActionUsage | undefined {
         return this._ast as LoopActionUsage;

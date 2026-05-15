@@ -232,7 +232,7 @@ export class SysMLSemanticTokenProvider extends AbstractSemanticTokenProvider {
         for (const ref of node.parts) {
             ++index;
             let target = ref.ref?.$meta;
-            if (target?.is(Membership)) target = target.element();
+            if (target?.is(Membership.$type)) target = target.element();
             if (!target) continue;
             const type = tokenType(target);
             if (!type) continue;

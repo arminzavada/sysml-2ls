@@ -21,7 +21,7 @@ import { RequirementUsageOptions } from "./requirement-usage.js";
 
 export type ViewpointDefinitionOptions = RequirementUsageOptions;
 
-@metamodelOf(ViewpointDefinition, {
+@metamodelOf(ViewpointDefinition.$type, {
     base: "Views::ViewpointCheck",
 })
 export class ViewpointDefinitionMeta extends RequirementDefinitionMeta {

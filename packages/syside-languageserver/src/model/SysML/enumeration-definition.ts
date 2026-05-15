@@ -21,7 +21,7 @@ import { AttributeDefinitionMeta, AttributeDefinitionOptions } from "./attribute
 
 export type EnumerationDefinitionOptions = AttributeDefinitionOptions;
 
-@metamodelOf(EnumerationDefinition)
+@metamodelOf(EnumerationDefinition.$type)
 export class EnumerationDefinitionMeta extends AttributeDefinitionMeta {
     @enumerable
     override get isVariation(): boolean {

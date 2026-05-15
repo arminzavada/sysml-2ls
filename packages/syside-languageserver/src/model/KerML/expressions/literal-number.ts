@@ -30,7 +30,7 @@ export interface LiteralNumberOptions extends LiteralExpressionOptions {
     value?: number;
 }
 
-@metamodelOf(LiteralNumber, ImplicitLiteralNumbers)
+@metamodelOf(LiteralNumber.$type, ImplicitLiteralNumbers)
 export class LiteralNumberMeta extends LiteralExpressionMeta {
     protected _isInteger = true;
     protected _literal = 0;

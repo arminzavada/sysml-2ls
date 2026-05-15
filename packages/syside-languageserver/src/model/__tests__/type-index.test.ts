@@ -42,20 +42,20 @@ import {
 import { typeIndex } from "../types.js";
 
 test.concurrent.each([
-    [Element, []],
-    [Comment, [TextualAnnotatingElement, AnnotatingElement, Element]],
-    [Feature, [Type, Namespace, Element]],
+    [Element.$type, []],
+    [Comment.$type, [TextualAnnotatingElement.$type, AnnotatingElement.$type, Element.$type]],
+    [Feature.$type, [Type.$type, Namespace.$type, Element.$type]],
     [
-        OperatorExpression,
+        OperatorExpression.$type,
         [
-            InvocationExpression,
-            InlineExpression,
-            Expression,
-            Step,
-            Feature,
-            Type,
-            Namespace,
-            Element,
+            InvocationExpression.$type,
+            InlineExpression.$type,
+            Expression.$type,
+            Step.$type,
+            Feature.$type,
+            Type.$type,
+            Namespace.$type,
+            Element.$type,
         ],
     ],
 ])("type inheritance is sorted in inheritance order: %s", (type: string, expected: string[]) => {
@@ -64,18 +64,18 @@ test.concurrent.each([
 
 test.concurrent.each([
     [
-        AnnotatingElement,
+        AnnotatingElement.$type,
         [
-            Comment,
-            Documentation,
-            MetadataFeature,
-            MetadataUsage,
-            TextualAnnotatingElement,
-            TextualRepresentation,
+            Comment.$type,
+            Documentation.$type,
+            MetadataFeature.$type,
+            MetadataUsage.$type,
+            TextualAnnotatingElement.$type,
+            TextualRepresentation.$type,
         ],
     ],
-    [Multiplicity, [MultiplicityRange]],
-    [Subsetting, [CrossSubsetting, Redefinition, ReferenceSubsetting]],
+    [Multiplicity.$type, [MultiplicityRange.$type]],
+    [Subsetting.$type, [CrossSubsetting.$type, Redefinition.$type, ReferenceSubsetting.$type]],
 ])("%s have subtypes computed", (supertype, subtypes) => {
     expect(subtypes).toEqual(expect.arrayContaining(Array.from(typeIndex.getSubtypes(supertype))));
 });
@@ -84,18 +84,18 @@ test("map values are propagated to unset subtypes with `expandToDerivedTypes`", 
     expect(
         Object.fromEntries(
             typeIndex.expandToDerivedTypes({
-                Type: Type,
-                Element: Element,
-                Definition: Definition,
+                Type: Type.$type,
+                Element: Element.$type,
+                Definition: Definition.$type,
             })
         )
     ).toMatchObject({
-        Element: Element,
-        Namespace: Element,
-        Type: Type,
-        Feature: Type,
-        Definition: Definition,
-        ConnectionDefinition: Definition,
+        Element: Element.$type,
+        Namespace: Element.$type,
+        Type: Type.$type,
+        Feature: Type.$type,
+        Definition: Definition.$type,
+        ConnectionDefinition: Definition.$type,
     });
 });
 
@@ -103,14 +103,14 @@ test("mapped arrays are expanded and merged with subtypes with `expandAndMerge`"
     expect(
         Object.fromEntries(
             typeIndex.expandAndMerge({
-                Type: [Type],
-                Element: [Element],
+                Type: [Type.$type],
+                Element: [Element.$type],
             })
         )
     ).toMatchObject({
-        Element: [Element],
-        Namespace: [Element],
-        Type: expect.arrayContaining([Type, Element]),
-        Feature: expect.arrayContaining([Type, Element]),
+        Element: [Element.$type],
+        Namespace: [Element.$type],
+        Type: expect.arrayContaining([Type.$type, Element.$type]),
+        Feature: expect.arrayContaining([Type.$type, Element.$type]),
     });
 });

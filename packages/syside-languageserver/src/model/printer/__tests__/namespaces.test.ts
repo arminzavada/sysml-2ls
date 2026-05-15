@@ -50,7 +50,7 @@ const expectPrinted = (
     return expectPrintedAs(text, {
         ...context,
         lang: context?.lang ?? "kerml",
-        node: context?.node ?? Type,
+        node: context?.node ?? Type.$type,
     });
 };
 
@@ -97,7 +97,7 @@ describe("type formatting", () => {
             { }`,
             {
                 options: { lineWidth: 40 },
-                node: Feature,
+                node: Feature.$type,
             }
         ).resolves.toMatchInlineSnapshot(`
 "feature some_long_identifier_here
@@ -142,12 +142,12 @@ type a
         "typed by",
     ] as const)("should merge sequential %s relationships", async (token) => {
         return expectPrinted(`feature all a ${token} c  ${token} e;`, {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual(`feature all a ${token} c, e;\n`);
     });
 
     it("should merge sequential feature chaining", async () => {
-        return expectPrinted("feature a chains a chains b {}", { node: Feature }).resolves.toEqual(
+        return expectPrinted("feature a chains a chains b {}", { node: Feature.$type }).resolves.toEqual(
             "feature a chains a.b {}\n"
         );
     });
@@ -156,7 +156,7 @@ type a
         "should not merge sequential %s relationship",
         async (token) => {
             return expectPrinted(`feature a ${token} b ${token} c {}`, {
-                node: Feature,
+                node: Feature.$type,
             }).resolves.toEqual(`feature a ${token} b ${token} c {}\n`);
         }
     );
@@ -167,7 +167,7 @@ type a
     ] as const)("should replace %s with token", async (_, token, prop) => {
         return expectPrinted(`classifier a ${token} c;`, {
             format: { [prop]: { default: "token" } },
-            node: Classifier,
+            node: Classifier.$type,
         }).resolves.toEqual(`classifier a ${token} c;\n`);
     });
 
@@ -208,7 +208,7 @@ type a
     );
 
     it("should print conjugated port typings in SysML", async () => {
-        return expectPrinted("part a : ~b {}", { lang: "sysml", node: PartUsage }).resolves
+        return expectPrinted("part a : ~b {}", { lang: "sysml", node: PartUsage.$type }).resolves
             .toMatchInlineSnapshot(`
 "part a : ~b {}
 "
@@ -236,25 +236,25 @@ type a
 describe("kerml feature formatting", () => {
     it("should print feature modifiers", async () => {
         return expectPrinted("out abstract composite readonly derived feature c;", {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual("out abstract composite readonly derived feature c;\n");
     });
 
     it("should print end features", async () => {
         return expectPrinted("end feature c;", {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual("end feature c;\n");
     });
 
     it("should print end features with owned cross features", async () => {
         return expectPrinted("end [1] feature c;", {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual("end [1] feature c;\n");
     });
 
     it("should break long owned cross features multiplicities", async () => {
         return expectPrinted("end ['some very long reference identifier'] feature c;", {
-            node: Feature,
+            node: Feature.$type,
             options: { lineWidth: 30 },
         }).resolves.toEqual(`end [
             'some very long reference identifier'
@@ -264,7 +264,7 @@ feature c;\n`);
 
     it("should print expr nodes", async () => {
         return expectPrinted("expr fn { public in feature a; \n\ntrue }", {
-            node: Expression,
+            node: Expression.$type,
         }).resolves.toEqual(
             `expr fn {
     public in feature a;
@@ -277,7 +277,7 @@ feature c;\n`);
 
     it("should print feature values", async () => {
         return expectPrinted("feature a = a->select { in x; true };", {
-            node: Feature,
+            node: Feature.$type,
             options: { lineWidth: 25 },
         }).resolves.toEqual(
             `feature a = a->select {
@@ -290,7 +290,7 @@ feature c;\n`);
 
     it("should print initial feature values", async () => {
         return expectPrinted("feature a := a->select { in x; true };", {
-            node: Feature,
+            node: Feature.$type,
             options: { lineWidth: 25 },
         }).resolves.toEqual(
             `feature a := a->select {
@@ -303,25 +303,25 @@ feature c;\n`);
 
     it("should print default = feature values", async () => {
         return expectPrinted("feature a default = 42;", {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual("feature a default = 42;\n");
     });
 
     it("should print default feature values", async () => {
         return expectPrinted("feature a default 42;", {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual("feature a default 42;\n");
     });
 
     it("should print default initial feature values", async () => {
         return expectPrinted("feature a default := 42;", {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual("feature a default := 42;\n");
     });
 
     it("should print feature values with force broken body expressions", async () => {
         return expectPrinted("feature a = a->select { \nin x; true };", {
-            node: Feature,
+            node: Feature.$type,
         }).resolves.toEqual(
             `feature a = a->select {
     in x;
@@ -335,7 +335,7 @@ feature c;\n`);
         return expectPrinted(
             "feature redefines totalMass = mass + sum(subcomponents.totalMass.?{in p :> ISQ::mass; p > minMass});",
             {
-                node: Feature,
+                node: Feature.$type,
             }
         ).resolves.toEqual(
             `feature redefines totalMass =
@@ -348,7 +348,7 @@ feature c;\n`);
         return expectPrinted(
             "feature redefines totalMass = some_long_id_here.some_long_id_next.some_long_id_last;",
             {
-                node: Feature,
+                node: Feature.$type,
                 options: {
                     lineWidth: 50,
                 },
@@ -372,7 +372,7 @@ feature c;\n`);
         );
         `,
             {
-                node: Feature,
+                node: Feature.$type,
             }
         ).resolves.toMatchInlineSnapshot(`
 "feature :>> 'Static Pressure' = 'Ideal Gas Law'(
@@ -387,24 +387,24 @@ feature c;\n`);
 
 describe("invariants", () => {
     it("should preserve true", async () => {
-        return expectPrinted("inv true I {}", { node: Invariant }).resolves.toEqual(
+        return expectPrinted("inv true I {}", { node: Invariant.$type }).resolves.toEqual(
             "inv true I {}\n"
         );
     });
 
     it("should not add true with preserve", async () => {
-        return expectPrinted("inv I {}", { node: Invariant }).resolves.toEqual("inv I {}\n");
+        return expectPrinted("inv I {}", { node: Invariant.$type }).resolves.toEqual("inv I {}\n");
     });
 
     it("should print false when negated", async () => {
-        return expectPrinted("inv false I {}", { node: Invariant }).resolves.toEqual(
+        return expectPrinted("inv false I {}", { node: Invariant.$type }).resolves.toEqual(
             "inv false I {}\n"
         );
     });
 
     it("should remove true if not required and option is set", async () => {
         return expectPrinted("inv true I {}", {
-            node: Invariant,
+            node: Invariant.$type,
             format: {
                 invariant_true_keyword: { default: "never" },
             },
@@ -415,24 +415,24 @@ describe("invariants", () => {
 describe("multiplicity", () => {
     it("should print multiplicity first", async () => {
         return expectPrinted("feature a :> b [1] ordered nonunique;", {
-            node: Feature,
+            node: Feature.$type,
             format: { multiplicity_placement: "first" },
         }).resolves.toEqual("feature a [1] ordered nonunique :> b;\n");
     });
 
     it.each([
-        ["type", Type],
-        ["class", Class],
-        ["classifier", Classifier],
-        ["datatype", DataType],
-        ["struct", Structure],
-        ["assoc", Association],
-        ["assoc struct", AssociationStructure],
-        ["behavior", Behavior],
-        ["function", SysMLFunction],
-        ["predicate", Predicate],
-        ["interaction", Interaction],
-        ["metaclass", Metaclass],
+        ["type", Type.$type],
+        ["class", Class.$type],
+        ["classifier", Classifier.$type],
+        ["datatype", DataType.$type],
+        ["struct", Structure.$type],
+        ["assoc", Association.$type],
+        ["assoc struct", AssociationStructure.$type],
+        ["behavior", Behavior.$type],
+        ["function", SysMLFunction.$type],
+        ["predicate", Predicate.$type],
+        ["interaction", Interaction.$type],
+        ["metaclass", Metaclass.$type],
     ] as const)(
         "should always print multiplicity first for non-feature type %s in KerML mode",
         async (kw, type) => {
@@ -446,14 +446,14 @@ describe("multiplicity", () => {
 
     it("should print multiplicity after first specialization", async () => {
         return expectPrinted("feature a :> b :> c [1] ordered nonunique;", {
-            node: Feature,
+            node: Feature.$type,
             format: { multiplicity_placement: "first-specialization" },
         }).resolves.toEqual("feature a :> b [1] ordered nonunique :> c;\n");
     });
 
     it("should print multiplicity last", async () => {
         return expectPrinted("feature a :> b [1] nonunique ordered :>> c;", {
-            node: Feature,
+            node: Feature.$type,
             format: { multiplicity_placement: "last" },
         }).resolves.toEqual("feature a :> b :>> c [1] nonunique ordered;\n");
     });
@@ -464,7 +464,7 @@ describe("multiplicity", () => {
                 :> some_long_id_here [1] nonunique ordered
                 :>> some_long_id_here;`,
             {
-                node: Feature,
+                node: Feature.$type,
                 options: {
                     lineWidth: 50,
                 },
@@ -479,14 +479,14 @@ describe("multiplicity", () => {
 
     it("should print multiplicity properties", async () => {
         return expectPrinted("feature a :> b nonunique ordered :>> c;", {
-            node: Feature,
+            node: Feature.$type,
             format: { multiplicity_placement: "last" },
         }).resolves.toEqual("feature a :> b :>> c nonunique ordered;\n");
     });
 
     it("should reorder 'ordered' and 'nonunique' with option set to 'ordered'", async () => {
         return expectPrinted("feature a :> b [1] nonunique ordered :>> c;", {
-            node: Feature,
+            node: Feature.$type,
             format: {
                 multiplicity_placement: "last",
                 ordered_nonunique_priority: { default: "ordered" },
@@ -496,7 +496,7 @@ describe("multiplicity", () => {
 
     it("should reorder 'ordered' and 'nonunique' with option set to 'nonunique'", async () => {
         return expectPrinted("feature a :> b [1] ordered nonunique :>> c;", {
-            node: Feature,
+            node: Feature.$type,
             format: {
                 multiplicity_placement: "last",
                 ordered_nonunique_priority: { default: "nonunique" },
@@ -506,13 +506,13 @@ describe("multiplicity", () => {
 
     it("should print multiplicity subset member", async () => {
         return expectPrinted("multiplicity m :> another {}", {
-            node: Multiplicity,
+            node: Multiplicity.$type,
         }).resolves.toEqual("multiplicity m :> another {}\n");
     });
 
     it("should print multiplicity range member", async () => {
         return expectPrinted("multiplicity m [5] {}", {
-            node: MultiplicityRange,
+            node: MultiplicityRange.$type,
         }).resolves.toEqual("multiplicity m [5] {}\n");
     });
 });
@@ -520,50 +520,50 @@ describe("multiplicity", () => {
 describe("namespaces", () => {
     it("should print bare namespace", async () => {
         return expectPrinted("namespace NS {}", {
-            node: Namespace,
+            node: Namespace.$type,
         }).resolves.toEqual("namespace NS {}\n");
     });
 
     it("should print packages", async () => {
         return expectPrinted("#prefix package NS {}", {
-            node: Package,
+            node: Package.$type,
         }).resolves.toEqual("#prefix package NS {}\n");
     });
 
     it("should print library packages", async () => {
         return expectPrinted("standard library #prefix package NS {}", {
-            node: LibraryPackage,
+            node: LibraryPackage.$type,
         }).resolves.toEqual("standard library #prefix package NS {}\n");
     });
 
     it("should print leading notes attached to prefixes", async () => {
         return expectPrinted("// note\n#prefix package NS {}", {
-            node: OwningMembership,
+            node: OwningMembership.$type,
         }).resolves.toEqual("// note\n#prefix package NS {}\n");
     });
 
     it("should print trailing notes attached to prefixes", async () => {
         return expectPrinted("#prefix // note\npackage NS {}", {
-            node: OwningMembership,
+            node: OwningMembership.$type,
         }).resolves.toEqual("#prefix // note\npackage NS {}\n");
     });
 });
 
 describe.each([
-    [Association, "assoc"],
-    [AssociationStructure, "assoc struct"],
-    [Behavior, "behavior"],
-    [BooleanExpression, "bool"],
-    [Class, "class"],
-    [Classifier, "classifier"],
-    [DataType, "datatype"],
-    [Interaction, "interaction"],
-    [Metaclass, "metaclass"],
-    [Predicate, "predicate"],
-    [Step, "step"],
-    [Structure, "struct"],
-    [SysMLFunction, "function"],
-    [Type, "type"],
+    [Association.$type, "assoc"],
+    [AssociationStructure.$type, "assoc struct"],
+    [Behavior.$type, "behavior"],
+    [BooleanExpression.$type, "bool"],
+    [Class.$type, "class"],
+    [Classifier.$type, "classifier"],
+    [DataType.$type, "datatype"],
+    [Interaction.$type, "interaction"],
+    [Metaclass.$type, "metaclass"],
+    [Predicate.$type, "predicate"],
+    [Step.$type, "step"],
+    [Structure.$type, "struct"],
+    [SysMLFunction.$type, "function"],
+    [Type.$type, "type"],
 ] as const)("%s type", (type, kw) => {
     it("should print element", async () => {
         return expectPrinted(`abstract ${kw} Element :> A {}`, { node: type }).resolves.toEqual(

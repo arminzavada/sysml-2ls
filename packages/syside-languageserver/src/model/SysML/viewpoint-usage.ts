@@ -20,7 +20,7 @@ import { RequirementUsageMeta, RequirementUsageOptions } from "./requirement-usa
 
 export type ViewpointUsageOptions = RequirementUsageOptions;
 
-@metamodelOf(ViewpointUsage, {
+@metamodelOf(ViewpointUsage.$type, {
     base: "Views::viewpointChecks",
     satisfied: "Views::View::viewpointSatisfactions",
 })
@@ -31,7 +31,7 @@ export class ViewpointUsageMeta extends RequirementUsageMeta {
 
     isSatisfiedViewpoint(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(ViewDefinition, ViewUsage));
+        return Boolean(parent?.isAny(ViewDefinition.$type, ViewUsage.$type));
     }
 
     override ast(): ViewpointUsage | undefined {

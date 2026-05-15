@@ -20,7 +20,7 @@ import { ControlNodeMeta, ControlNodeOptions } from "./control-node.js";
 
 export type MergeNodeOptions = ControlNodeOptions;
 
-@metamodelOf(MergeNode, {
+@metamodelOf(MergeNode.$type, {
     subaction: "Actions::Action::merges",
 })
 export class MergeNodeMeta extends ControlNodeMeta {

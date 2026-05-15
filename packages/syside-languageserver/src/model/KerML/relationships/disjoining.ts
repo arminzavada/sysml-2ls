@@ -19,7 +19,8 @@ import { Disjoining } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
-@metamodelOf(Disjoining)
+@metamodelOf(Disjoining.$type)
+// @ts-expect-error TS2417 - intentional narrower static `create` signature
 export class DisjoiningMeta<T extends TypeMeta = TypeMeta> extends RelationshipMeta<T> {
     /**
      * Adds new owned body elements and returns the new number of body elements.
@@ -53,7 +54,7 @@ export class DisjoiningMeta<T extends TypeMeta = TypeMeta> extends RelationshipM
         document: LangiumDocument,
         options?: RelationshipOptions<TypeMeta, Parent, TypeMeta>
     ): T["$meta"] {
-        return super.create(provider, document, options);
+        return super.create(provider, document, options as RelationshipOptions<ElementMeta, ElementMeta | undefined>);
     }
 }
 

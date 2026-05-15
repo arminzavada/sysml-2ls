@@ -25,7 +25,7 @@ export const ImplicitStructures = {
 
 export type StructureOptions = ClassOptions;
 
-@metamodelOf(Structure, ImplicitStructures)
+@metamodelOf(Structure.$type, ImplicitStructures)
 export class StructureMeta extends ClassMeta {
     protected override _classifier = TypeClassifier.Structure;
 

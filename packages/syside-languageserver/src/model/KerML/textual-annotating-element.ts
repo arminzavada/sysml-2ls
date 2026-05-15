@@ -23,7 +23,7 @@ export interface TextualAnnotatingElementOptions extends AnnotatingElementOption
     body: string;
 }
 
-@metamodelOf(TextualAnnotatingElement, "abstract")
+@metamodelOf(TextualAnnotatingElement.$type, "abstract")
 export abstract class TextualAnnotatingMeta extends AnnotatingElementMeta {
     /**
      * Trimmed annotating element body

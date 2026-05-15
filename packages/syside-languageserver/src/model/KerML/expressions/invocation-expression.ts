@@ -32,7 +32,7 @@ import {
 
 export type InvocationExpressionOptions = ExpressionOptions;
 
-@metamodelOf(InvocationExpression)
+@metamodelOf(InvocationExpression.$type)
 export class InvocationExpressionMeta extends ExpressionMeta {
     protected _args: readonly ExpressionMeta[] = [];
 
@@ -54,7 +54,7 @@ export class InvocationExpressionMeta extends ExpressionMeta {
     }
 
     argumentMembers(): readonly FeatureMeta[] {
-        return this._children.get(ParameterMembership).map((m) => m.element());
+        return this._children.get(ParameterMembership.$type).map((m) => m.element());
     }
 
     arguments(): readonly ExpressionMeta[] {
@@ -67,7 +67,7 @@ export class InvocationExpressionMeta extends ExpressionMeta {
     }
 
     override isModelLevelEvaluable(): boolean {
-        if (this.invokes()?.isAny(Expression, SysMLFunction))
+        if (this.invokes()?.isAny(Expression.$type, SysMLFunction.$type))
             return super.isModelLevelEvaluable() && this.args.every((p) => p.isModelLevelEvaluable);
         // Treat as constructor expression
         return this.args.every((p) => p.isModelLevelEvaluable);
@@ -90,7 +90,7 @@ export class InvocationExpressionMeta extends ExpressionMeta {
 
     override returnType(): string | TypeMeta | undefined {
         const type = this.invokes();
-        if (type?.isAny(Expression, SysMLFunction)) return type.returnType();
+        if (type?.isAny(Expression.$type, SysMLFunction.$type)) return type.returnType();
         return type;
     }
 

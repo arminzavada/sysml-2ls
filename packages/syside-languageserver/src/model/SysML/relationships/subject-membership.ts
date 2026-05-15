@@ -25,7 +25,7 @@ import { RequirementUsageMeta } from "../requirement-usage.js";
 import { CaseDefinitionMeta } from "../case-definition.js";
 import { CaseUsageMeta } from "../case-usage.js";
 
-@metamodelOf(SubjectMembership)
+@metamodelOf(SubjectMembership.$type)
 export class SubjectMembershipMeta<
     T extends ReferenceUsageMeta = ReferenceUsageMeta,
 > extends ParameterMembershipMeta<T> {

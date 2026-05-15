@@ -31,7 +31,7 @@ export interface IncludeUseCaseUsageOptions
     extends PerformActionUsageOptions,
         UseCaseUsageOptions {}
 
-@metamodelOf(IncludeUseCaseUsage, {
+@metamodelOf(IncludeUseCaseUsage.$type, {
     base: "UseCases::useCases",
     subUseCase: "UseCases::UseCase::includedUseCases",
     performedAction: "Parts::Part::performedActions",
@@ -57,11 +57,11 @@ export class IncludeUseCaseUsageMeta extends Mixin(PerformActionUsageMeta, UseCa
 
     hasRelevantSubjectParameter(): boolean {
         const parent = this.owner();
-        return Boolean(parent?.isAny(CaseDefinition, CaseUsage));
+        return Boolean(parent?.isAny(CaseDefinition.$type, CaseUsage.$type));
     }
 
     override namingFeature(): FeatureMeta | undefined {
-        return this.types(ReferenceSubsetting).head() as FeatureMeta | undefined;
+        return this.types(ReferenceSubsetting.$type).head() as FeatureMeta | undefined;
     }
 }
 

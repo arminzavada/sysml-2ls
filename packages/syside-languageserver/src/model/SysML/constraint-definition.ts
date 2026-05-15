@@ -25,7 +25,7 @@ export interface ConstraintDefinitionOptions
     extends PredicateOptions,
         OccurrenceDefinitionOptions {}
 
-@metamodelOf(ConstraintDefinition, {
+@metamodelOf(ConstraintDefinition.$type, {
     base: "Constraints::ConstraintCheck",
 })
 export class ConstraintDefinitionMeta extends Mixin(PredicateMeta, OccurrenceDefinitionMeta) {

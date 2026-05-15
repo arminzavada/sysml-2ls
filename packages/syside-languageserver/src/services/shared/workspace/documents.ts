@@ -204,4 +204,16 @@ export class SysMLDocuments extends DefaultLangiumDocuments {
 
         return doc;
     }
+
+    override deleteDocuments(folder: URI): LangiumDocument<AstNode>[] {
+        // 4.x's `DocumentBuilder.update` deletes via `deleteDocuments` (plural)
+        // rather than per-URI `deleteDocument`. Mirror the invalidation side
+        // effects from `deleteDocument` here so cross-document state is
+        // released on bulk deletion as well.
+        const docs = super.deleteDocuments(folder);
+        for (const doc of docs) {
+            doc.onInvalidated.values().forEach((cb) => cb());
+        }
+        return docs;
+    }
 }

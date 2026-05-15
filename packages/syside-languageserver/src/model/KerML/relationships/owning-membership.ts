@@ -19,7 +19,7 @@ import { OwningMembership } from "../../../generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ElementMeta, MembershipMeta, NamespaceMeta, RelationshipOptionsBody } from "../_internal.js";
 
-@metamodelOf(OwningMembership)
+@metamodelOf(OwningMembership.$type)
 export class OwningMembershipMeta<T extends ElementMeta = ElementMeta> extends MembershipMeta<T> {
     protected override onTargetSet(previous?: T, target?: T): void {
         if (previous) this.unsetOwnership(previous);

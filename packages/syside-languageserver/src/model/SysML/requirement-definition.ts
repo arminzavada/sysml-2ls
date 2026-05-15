@@ -20,7 +20,7 @@ import { ConstraintDefinitionMeta, ConstraintDefinitionOptions } from "./constra
 
 export type RequirementDefinitionOptions = ConstraintDefinitionOptions;
 
-@metamodelOf(RequirementDefinition, {
+@metamodelOf(RequirementDefinition.$type, {
     base: "Requirements::RequirementCheck",
 })
 export class RequirementDefinitionMeta extends ConstraintDefinitionMeta {

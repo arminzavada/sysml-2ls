@@ -25,7 +25,7 @@ import {
     RelationshipOptionsBody,
 } from "../_internal.js";
 
-@metamodelOf(ReturnParameterMembership)
+@metamodelOf(ReturnParameterMembership.$type)
 export class ReturnParameterMembershipMeta<
     T extends FeatureMeta = FeatureMeta,
 > extends ParameterMembershipMeta<T> {

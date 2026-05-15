@@ -24,7 +24,7 @@ import { enumerable } from "../../utils/index.js";
 
 export interface ExhibitStateUsageOptions extends PerformActionUsageOptions, StateUsageOptions {}
 
-@metamodelOf(ExhibitStateUsage, {
+@metamodelOf(ExhibitStateUsage.$type, {
     performedAction: "Parts::Part::exhibitedStates",
 })
 export class ExhibitStateUsageMeta extends Mixin(PerformActionUsageMeta, StateUsageMeta) {
@@ -47,7 +47,7 @@ export class ExhibitStateUsageMeta extends Mixin(PerformActionUsageMeta, StateUs
         return this._ast as ExhibitStateUsage;
     }
     override namingFeature(): FeatureMeta | undefined {
-        return this.types(ReferenceSubsetting).head() as FeatureMeta | undefined;
+        return this.types(ReferenceSubsetting.$type).head() as FeatureMeta | undefined;
     }
 }
 

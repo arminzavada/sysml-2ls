@@ -139,12 +139,12 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
     }
 
     targetFeatureFor(target: ElementMeta): FeatureMeta {
-        if (target.is(Feature)) return target;
+        if (target.is(Feature.$type)) return target;
 
         // feature created only for evaluation, parent errors are not useful here
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const feature = FeatureMeta.create(this.util.idProvider, target.document);
-        if (target.is(Type)) {
+        if (target.is(Type.$type)) {
             const typing = FeatureTypingMeta.create(this.util.idProvider, target.document, {
                 isImplied: true,
             });
@@ -162,9 +162,9 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
 
         const subchain = features.slice(1);
         return values.flatMap((value) => {
-            if (typeof value !== "object" || !value.is(Type)) return [value];
+            if (typeof value !== "object" || !value.is(Type.$type)) return [value];
 
-            const target = value.is(Feature)
+            const target = value.is(Feature.$type)
                 ? type === value
                     ? value
                     : this.util.chainFeatures(this.targetFeatureFor(type), value)
@@ -173,17 +173,17 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
         });
     }
 
-    @evaluates(NullExpression)
+    @evaluates(NullExpression.$type)
     evaluateNull(): ExpressionResult {
         return [];
     }
 
-    @evaluates(LiteralInfinity)
+    @evaluates(LiteralInfinity.$type)
     evaluateInfinity(expression: LiteralInfinityMeta): [LiteralInfinityMeta] {
         return [expression];
     }
 
-    @evaluates(LiteralBoolean, LiteralNumber, LiteralString)
+    @evaluates(LiteralBoolean.$type, LiteralNumber.$type, LiteralString.$type)
     evaluateLiteral(
         expression: LiteralNumberMeta | LiteralBooleanMeta | LiteralStringMeta
     ): [number | boolean | string] {
@@ -243,7 +243,7 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
         return left === right;
     }
 
-    @evaluates(InvocationExpression)
+    @evaluates(InvocationExpression.$type)
     evaluateInvocation(
         expression: InvocationExpressionMeta,
         target: ElementMeta
@@ -255,15 +255,15 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
         return builtin.call(expression, target, this);
     }
 
-    @evaluates(FeatureReferenceExpression)
+    @evaluates(FeatureReferenceExpression.$type)
     evaluateFeatureReference(
         expression: FeatureReferenceExpressionMeta,
         target: ElementMeta
     ): ExpressionResult {
         const referenced = expression.expression?.element();
         if (!referenced) throw new Error("No referenced element");
-        const type = target.is(Type) ? target : undefined;
-        if (referenced.is(FeatureReference)) {
+        const type = target.is(Type.$type) ? target : undefined;
+        if (referenced.is(FeatureReference.$type)) {
             const feature = referenced.to.target;
             if (!feature) throw new Error("No linked reference");
             if (!type)
@@ -272,14 +272,14 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
                 );
             return this.evaluateFeature(feature, type);
         }
-        if (referenced.is(TypeReference)) return this.evaluateReference(referenced);
-        if (referenced.is(InlineExpression)) return this.evaluate(referenced, target);
+        if (referenced.is(TypeReference.$type)) return this.evaluateReference(referenced);
+        if (referenced.is(InlineExpression.$type)) return this.evaluate(referenced, target);
         if (!type)
             throw new Error("Cannot evaluate feature reference expression in a non-type context");
         return this.evaluateFeature(referenced, type);
     }
 
-    @evaluates(MetadataAccessExpression)
+    @evaluates(MetadataAccessExpression.$type)
     evaluateMetadataAccess(
         expression: MetadataAccessExpressionMeta,
         target: ElementMeta
@@ -305,11 +305,11 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
 
         // readonly arrays can't be reversed...
         const types =
-            type.is(Feature) && type.chainings.length > 0 ? [...type.chainingFeatures] : [type];
+            type.is(Feature.$type) && type.chainings.length > 0 ? [...type.chainingFeatures] : [type];
 
         for (const t of types.reverse()) {
             if (
-                t.is(MetadataFeature) &&
+                t.is(MetadataFeature.$type) &&
                 feature.conforms("Metaobjects::Metaobject::annotatedElement")
             ) {
                 const annotated = t.annotatedElements().at(0) ?? t.owner();
@@ -318,7 +318,7 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
             }
 
             if (isMetaclassFeature(t)) {
-                if (feature.is(Expression)) continue;
+                if (feature.is(Expression.$type)) continue;
                 // TODO: reflection
                 return [];
             }
@@ -328,7 +328,7 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
             const target = t
                 .featureMembers()
                 .map((member) => member.element())
-                .find((f) => f?.allTypes(Redefinition).includes(feature));
+                .find((f) => f?.allTypes(Redefinition.$type).includes(feature));
 
             if (target) {
                 const value = target.value?.element();
@@ -344,7 +344,7 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
         return [feature];
     }
 
-    @evaluates(ElementReference)
+    @evaluates(ElementReference.$type)
     evaluateReference(ref: ElementReferenceMeta): ElementMeta[] {
         const target = ref.to.target;
         if (!target) throw new Error("No linked reference");

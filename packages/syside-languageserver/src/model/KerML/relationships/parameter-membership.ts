@@ -26,7 +26,7 @@ import {
 } from "../_internal.js";
 import type { ActionUsageMeta } from "../../SysML/index.js";
 
-@metamodelOf(ParameterMembership)
+@metamodelOf(ParameterMembership.$type)
 export class ParameterMembershipMeta<
     T extends FeatureMeta = FeatureMeta,
 > extends FeatureMembershipMeta<T> {

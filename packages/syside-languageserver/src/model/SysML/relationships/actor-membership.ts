@@ -25,7 +25,7 @@ import { CaseDefinitionMeta } from "../case-definition.js";
 import { RequirementDefinitionMeta } from "../requirement-definition.js";
 import { RequirementUsageMeta } from "../requirement-usage.js";
 
-@metamodelOf(ActorMembership)
+@metamodelOf(ActorMembership.$type)
 export class ActorMembershipMeta<
     T extends PartUsageMeta = PartUsageMeta,
 > extends ParameterMembershipMeta<T> {

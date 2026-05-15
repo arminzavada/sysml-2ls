@@ -36,7 +36,7 @@ export interface ForLoopActionUsageOptions extends LoopActionUsageOptions {
     body?: Edge<ParameterMembershipMeta, ActionUsageMeta>;
 }
 
-@metamodelOf(ForLoopActionUsage, {
+@metamodelOf(ForLoopActionUsage.$type, {
     base: "Actions::forLoopActions",
     subaction: "Actions::Action::forLoops",
     loopVariable: "Actions::ForLoopAction::var", // TODO:

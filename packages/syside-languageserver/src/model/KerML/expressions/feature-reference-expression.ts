@@ -36,7 +36,7 @@ export interface FeatureReferenceExpressionOptions extends ExpressionOptions {
     expression: Edge<MembershipMeta, FeatureMeta>;
 }
 
-@metamodelOf(FeatureReferenceExpression)
+@metamodelOf(FeatureReferenceExpression.$type)
 export class FeatureReferenceExpressionMeta extends ExpressionMeta {
     private _expression?: MembershipMeta<FeatureMeta> | undefined;
 
@@ -60,8 +60,8 @@ export class FeatureReferenceExpressionMeta extends ExpressionMeta {
     }
     override returnType(): TypeMeta | string | undefined {
         const expr = this.expression?.element();
-        if (!expr || !this.expression?.is(FeatureMembership)) return expr;
-        if (expr.isAny(Expression, SysMLFunction)) return expr.returnType();
+        if (!expr || !this.expression?.is(FeatureMembership.$type)) return expr;
+        if (expr.isAny(Expression.$type, SysMLFunction.$type)) return expr.returnType();
         return expr;
     }
 

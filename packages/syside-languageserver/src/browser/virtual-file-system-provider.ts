@@ -76,6 +76,42 @@ export class VirtualFileSystemProvider implements SysMLFileSystemProvider {
         }
     }
 
+    readDirectorySync(uri: URI): FileSystemNode[] {
+        if (uri.toString() === this.standardLibrary.toString()) {
+            return [...this.files].map(
+                (file) =>
+                    <FileSystemNode>{
+                        isDirectory: false,
+                        isFile: true,
+                        uri: URI.parse(file),
+                    }
+            );
+        }
+        return [];
+    }
+
+    async stat(uri: URI): Promise<FileSystemNode> {
+        return this.statSync(uri);
+    }
+
+    statSync(uri: URI): FileSystemNode {
+        const isDir = uri.toString() === this.standardLibrary.toString();
+        return {
+            isDirectory: isDir,
+            isFile: !isDir && this.existsSync(uri),
+            uri,
+        };
+    }
+
+    async readBinary(uri: URI): Promise<Uint8Array> {
+        const text = await this.readFile(uri);
+        return new TextEncoder().encode(text);
+    }
+
+    readBinarySync(uri: URI): Uint8Array {
+        return new TextEncoder().encode(this.readFileSync(uri));
+    }
+
     async loadScript(): Promise<undefined> {
         console.warn("Dynamic scripts are not supported on the Web");
     }

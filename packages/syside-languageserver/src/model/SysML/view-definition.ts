@@ -20,7 +20,7 @@ import { PartDefinitionMeta, PartDefinitionOptions } from "./part-definition.js"
 
 export type ViewDefinitionOptions = PartDefinitionOptions;
 
-@metamodelOf(ViewDefinition, {
+@metamodelOf(ViewDefinition.$type, {
     base: "Views::View",
 })
 export class ViewDefinitionMeta extends PartDefinitionMeta {

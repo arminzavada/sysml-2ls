@@ -109,7 +109,7 @@ describe("visitor", () => {
                         text: "}",
                     },
                     $precedingNode: {
-                        $type: OwningMembership,
+                        $type: OwningMembership.$type,
                     },
                     segment: {
                         offset: 13,
@@ -147,7 +147,7 @@ describe("visitor", () => {
                         text: "}",
                     },
                     $precedingNode: {
-                        $type: OwningMembership,
+                        $type: OwningMembership.$type,
                     },
                     $next: undefined,
                     segment: {
@@ -173,7 +173,7 @@ describe("visitor", () => {
                         text: "}",
                     },
                     $enclosingNode: <Partial<Package>>{
-                        $type: Package,
+                        $type: Package.$type,
                         declaredName: "P",
                     },
                     $precedingNode: undefined,
@@ -205,7 +205,7 @@ describe("visitor", () => {
                     text: "}",
                 },
                 $enclosingNode: <Partial<Package>>{
-                    $type: Package,
+                    $type: Package.$type,
                     declaredName: "P",
                 },
                 $precedingNode: undefined,
@@ -233,11 +233,11 @@ describe("visitor", () => {
                     text: "about",
                 },
                 $enclosingNode: {
-                    $type: Comment,
+                    $type: Comment.$type,
                 },
                 $precedingNode: undefined,
                 $followingNode: {
-                    $type: Annotation,
+                    $type: Annotation.$type,
                 },
                 kind: "block",
             })

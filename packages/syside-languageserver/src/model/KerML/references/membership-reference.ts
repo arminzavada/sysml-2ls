@@ -19,7 +19,7 @@ import { Target } from "../../../utils/containers.js";
 import { metamodelOf } from "../../metamodel.js";
 import { ElementReferenceMeta, MembershipMeta } from "../_internal.js";
 
-@metamodelOf(MembershipReference)
+@metamodelOf(MembershipReference.$type)
 export class MembershipReferenceMeta extends ElementReferenceMeta {
     override readonly to = new Target<MembershipMeta>();
 

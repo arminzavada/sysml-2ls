@@ -107,14 +107,9 @@ export function metamodelOf<K extends SysMLType>(
 
         const supertypes = new Set(typeIndex.getInheritanceChain(type));
         supertypes.add(type);
-        target.prototype.is =
-            supertypes.size > 1
-                ? function (t: SysMLType): boolean {
-                      return supertypes.has(t);
-                  }
-                : function (t: SysMLType): boolean {
-                      return type === t;
-                  };
+        const check: (t: SysMLType) => boolean =
+            supertypes.size > 1 ? (t) => supertypes.has(t) : (t) => type === t;
+        target.prototype.is = check as typeof target.prototype.is;
     };
 
     if (generalizations === "abstract") {
@@ -301,7 +296,7 @@ export class BasicMetamodel<T extends AstNode = AstNode> implements Metamodel<T>
         this._parent = parent;
         if (previous !== parent) this.onParentSet(previous as ElementMeta, parent as ElementMeta);
 
-        this.setOwner(parent?.is(NonOwnerType) ? parent.parent() : parent, previous);
+        this.setOwner(parent?.is(NonOwnerType.$type) ? parent.parent() : parent, previous);
     }
 
     protected setOwner(owner: Metamodel | undefined, previousParent?: Metamodel): void {
@@ -360,7 +355,7 @@ export class BasicMetamodel<T extends AstNode = AstNode> implements Metamodel<T>
     }
 
     specializationKind(): Inheritance["$type"] {
-        return Specialization;
+        return Specialization.$type;
     }
 
     is<K extends SysMLType>(type: K): this is SysMLTypeList[K]["$meta"] {

@@ -28,7 +28,7 @@ export interface AcceptActionUsageOptions extends ActionUsageOptions {
     receiver?: Edge<ParameterMembershipMeta, ReferenceUsageMeta>;
 }
 
-@metamodelOf(AcceptActionUsage, {
+@metamodelOf(AcceptActionUsage.$type, {
     base: "Actions::acceptActions",
     subactions: "Actions::Action::acceptSubactions",
 })
@@ -65,7 +65,7 @@ export class AcceptActionUsageMeta extends ActionUsageMeta {
 
     isTriggerAction(): boolean {
         const parent = this.parent();
-        return Boolean(parent?.is(TransitionFeatureMembership) && parent.kind === "trigger");
+        return Boolean(parent?.is(TransitionFeatureMembership.$type) && parent.kind === "trigger");
     }
 
     override featureMembers(): readonly MembershipMeta<FeatureMeta>[] {

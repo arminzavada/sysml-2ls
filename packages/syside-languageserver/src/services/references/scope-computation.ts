@@ -16,11 +16,14 @@
 
 import {
     AstNode,
+    AstNodeDescription,
     DefaultScopeComputation,
     interruptAndCheck,
     LangiumDocument,
+    LocalSymbols,
     MultiMap,
     stream,
+    Stream,
 } from "langium";
 import { CancellationToken } from "vscode-languageserver";
 import {
@@ -38,6 +41,21 @@ import {
     SysMLNodeDescriptionProvider,
 } from "../shared/workspace/ast-descriptions.js";
 
+/**
+ * Adapt a `MultiMap` from `computeLocalScopes` to Langium 4.x's `LocalSymbols`
+ * shape introduced by PR #2200.
+ */
+function toLocalSymbols(scopes: MultiMap<AstNode, AstNodeDescription>): LocalSymbols {
+    return {
+        has(node: AstNode): boolean {
+            return scopes.has(node);
+        },
+        getStream(key: AstNode): Stream<AstNodeDescription> {
+            return stream(scopes.get(key));
+        },
+    };
+}
+
 export class SysMLScopeComputation extends DefaultScopeComputation {
     protected override readonly descriptions: SysMLNodeDescriptionProvider;
 
@@ -53,7 +71,7 @@ export class SysMLScopeComputation extends DefaultScopeComputation {
      * @returns An array of exported elements with the first element to the root
      * namespace
      */
-    override async computeExports(
+    override async collectExportedSymbols(
         document: LangiumDocument<Element>,
         cancelToken = CancellationToken.None
     ): Promise<SysMLNodeDescription[]> {
@@ -79,14 +97,14 @@ export class SysMLScopeComputation extends DefaultScopeComputation {
      * @param cancelToken optional cancellation token
      * @returns MultiMap of AstNode exported children
      */
-    override async computeLocalScopes(
+    override async collectLocalSymbols(
         document: LangiumDocument,
         cancelToken = CancellationToken.None
-    ): Promise<MultiMap<AstNode, SysMLNodeDescription>> {
+    ): Promise<LocalSymbols> {
         const model = document.parseResult.value;
         const scopes = new MultiMap<AstNode, SysMLNodeDescription>();
         await this.processContainer(model, scopes, document, false, cancelToken);
-        return scopes;
+        return toLocalSymbols(scopes);
     }
 
     /**
@@ -129,7 +147,7 @@ export class SysMLScopeComputation extends DefaultScopeComputation {
             if (!isElement(element)) continue;
             this.createDescription(element, document);
 
-            if (element.$meta.is(Membership)) localExports.push(element.$meta);
+            if (element.$meta.is(Membership.$type)) localExports.push(element.$meta);
         }
         scopes.addAll(
             container,

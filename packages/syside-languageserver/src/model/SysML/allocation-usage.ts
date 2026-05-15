@@ -20,7 +20,7 @@ import { ConnectionUsageMeta, ConnectionUsageOptions } from "./connection-usage.
 
 export type AllocationUsageOptions = ConnectionUsageOptions;
 
-@metamodelOf(AllocationUsage, {
+@metamodelOf(AllocationUsage.$type, {
     base: "Allocations::allocations",
     binary: "Allocations::allocations",
 })

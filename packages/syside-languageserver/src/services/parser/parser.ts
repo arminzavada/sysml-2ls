@@ -65,18 +65,18 @@ function fixOperatorExpression(expr: OperatorExpression, services: SysMLDefaultS
         ClassificationTestOperator.includes(expr.operator)
     ) {
         const reflection = services.shared.AstReflection;
-        const expression = reflection.createNode(FeatureReferenceExpression, {
+        const expression = reflection.createNode(FeatureReferenceExpression.$type, {
             $container: expr,
             $containerProperty: "operands",
             $containerIndex: 0,
         });
 
-        const member = reflection.createNode(ReturnParameterMembership, {
+        const member = reflection.createNode(ReturnParameterMembership.$type, {
             $container: expression,
             $containerProperty: "expression",
         });
 
-        reflection.createNode(Feature, {
+        reflection.createNode(Feature.$type, {
             $container: member,
             $containerProperty: "target",
         });
@@ -86,12 +86,12 @@ function fixOperatorExpression(expr: OperatorExpression, services: SysMLDefaultS
 function addLoopMember(node: WhileLoopActionUsage, services: SysMLDefaultServices): void {
     if (!node.condition) {
         const reflection = services.shared.AstReflection;
-        const membership = reflection.createNode(ParameterMembership, {
+        const membership = reflection.createNode(ParameterMembership.$type, {
             $container: node,
             $containerProperty: "condition",
         });
 
-        reflection.createNode(Usage, {
+        reflection.createNode(Usage.$type, {
             $container: membership,
             $containerProperty: "target",
         });
@@ -100,19 +100,19 @@ function addLoopMember(node: WhileLoopActionUsage, services: SysMLDefaultService
 
 function finalizeImport(node: Import, services: SysMLDefaultServices): void {
     const type: string = node.$type;
-    if (type !== Import && type !== Expose) return;
+    if (type !== Import.$type && type !== Expose.$type) return;
     if (node.isNamespace || node.target) {
         if (node.targetRef) {
             (node.targetRef as Mutable<AstNode>).$type = node.isNamespace
-                ? NamespaceReference
-                : MembershipReference;
+                ? NamespaceReference.$type
+                : MembershipReference.$type;
         }
-        (node as Mutable<Import>).$type = type === Expose ? NamespaceExpose : NamespaceImport;
+        (node as Mutable<Import>).$type = type === Expose.$type ? NamespaceExpose.$type : NamespaceImport.$type;
         if (node.target && node.targetRef) {
             // need to reparent `node.reference`
             const pack = node.target as Package;
             const imp = services.shared.AstReflection.createNode(
-                node.isNamespace ? NamespaceImport : MembershipImport,
+                node.isNamespace ? NamespaceImport.$type : MembershipImport.$type,
                 {
                     $container: pack,
                     $containerProperty: "children",
@@ -131,8 +131,8 @@ function finalizeImport(node: Import, services: SysMLDefaultServices): void {
         // remove unneeded property
         delete node.isNamespace;
     } else {
-        if (node.targetRef) (node.targetRef as Mutable<AstNode>).$type = MembershipReference;
-        (node as Mutable<Import>).$type = type === Expose ? MembershipExpose : MembershipImport;
+        if (node.targetRef) (node.targetRef as Mutable<AstNode>).$type = MembershipReference.$type;
+        (node as Mutable<Import>).$type = type === Expose.$type ? MembershipExpose.$type : MembershipImport.$type;
     }
 }
 
@@ -144,12 +144,12 @@ function createEmptyParametersInTransitionUsage(
 ): void {
     const reflection = services.shared.AstReflection;
     {
-        const membership = reflection.createNode(ParameterMembership, {
+        const membership = reflection.createNode(ParameterMembership.$type, {
             $container: node,
             $containerProperty: "transitionLinkSource",
         });
 
-        reflection.createNode(ReferenceUsage, {
+        reflection.createNode(ReferenceUsage.$type, {
             $container: membership,
             $containerProperty: "target",
         });
@@ -157,12 +157,12 @@ function createEmptyParametersInTransitionUsage(
 
     if (!node.accepter) return;
     {
-        const membership = reflection.createNode(ParameterMembership, {
+        const membership = reflection.createNode(ParameterMembership.$type, {
             $container: node,
             $containerProperty: "payload",
         });
 
-        reflection.createNode(ReferenceUsage, {
+        reflection.createNode(ReferenceUsage.$type, {
             $container: membership,
             $containerProperty: "target",
         });
@@ -190,13 +190,13 @@ function createMissingEndsInSuccessionAsUsage(
         else insert = [0];
     }
     for (const index of insert) {
-        const member = reflection.createNode(EndFeatureMembership, {
+        const member = reflection.createNode(EndFeatureMembership.$type, {
             $container: node,
             $containerProperty: "ends",
             $containerIndex: index,
             $cstNode: node.$cstNode,
         });
-        reflection.createNode(Feature, {
+        reflection.createNode(Feature.$type, {
             $container: member,
             $containerProperty: "target",
             $cstNode: node.$cstNode,

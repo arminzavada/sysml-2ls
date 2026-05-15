@@ -29,7 +29,7 @@ test("type featuring can be parsed", async () => {
             ...anything(2),
             {
                 target: {
-                    $type: TypeFeaturing,
+                    $type: TypeFeaturing.$type,
                     ...withQualifiedName("engine_by_Vehicle"),
                     sourceRef: qualifiedTypeReference("engine"),
                     targetRef: qualifiedTypeReference("Vehicle"),
@@ -58,7 +58,7 @@ test.each(["of", ""])(
                 ...anything(2),
                 {
                     target: {
-                        $type: TypeFeaturing,
+                        $type: TypeFeaturing.$type,
                         sourceRef: qualifiedTypeReference("engine"),
                         targetRef: qualifiedTypeReference("Vehicle"),
                     },
@@ -78,13 +78,13 @@ test("features can own type featurings", async () => {
             ...anything(2),
             {
                 target: {
-                    $type: Feature,
+                    $type: Feature.$type,
                     ...withQualifiedName("engine"),
                     heritage: [
-                        { $type: FeatureTyping, targetRef: qualifiedTypeReference("Engine") },
+                        { $type: FeatureTyping.$type, targetRef: qualifiedTypeReference("Engine") },
                     ],
                     typeRelationships: [
-                        { $type: TypeFeaturing, targetRef: qualifiedTypeReference("Vehicle") },
+                        { $type: TypeFeaturing.$type, targetRef: qualifiedTypeReference("Vehicle") },
                     ],
                 },
             },

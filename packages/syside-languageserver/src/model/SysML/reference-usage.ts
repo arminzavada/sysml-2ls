@@ -25,7 +25,7 @@ export type ReferenceUsageOptions = UsageOptions;
 
 // TODO: Redefinitions
 
-@metamodelOf(ReferenceUsage)
+@metamodelOf(ReferenceUsage.$type)
 export class ReferenceUsageMeta extends UsageMeta {
     @enumerable
     override get isComposite(): boolean {
@@ -37,7 +37,7 @@ export class ReferenceUsageMeta extends UsageMeta {
 
     override defaultGeneralTypes(): GeneralType[] {
         const owner = this.owner();
-        if (owner?.is(TransitionUsage) && this === owner.payloadParameter()) return [];
+        if (owner?.is(TransitionUsage.$type) && this === owner.payloadParameter()) return [];
         const supertypes = super.defaultGeneralTypes();
 
         return supertypes;

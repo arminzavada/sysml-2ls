@@ -18,12 +18,12 @@ import { CstNode, CstUtils, DocumentSegment } from "langium";
 import { Range } from "vscode-languageserver";
 
 export function getPreviousNode(node: CstNode, hidden = true): CstNode | undefined {
-    while (node.parent) {
-        const parent = node.parent;
-        let index = parent.children.indexOf(node);
+    while (node.container) {
+        const parent = node.container;
+        let index = parent.content.indexOf(node);
         while (index > 0) {
             index--;
-            const previous = parent.children[index];
+            const previous = parent.content[index];
             if (hidden || !previous.hidden) {
                 return previous;
             }
@@ -34,13 +34,13 @@ export function getPreviousNode(node: CstNode, hidden = true): CstNode | undefin
 }
 
 export function getNextNode(node: CstNode, hidden = true): CstNode | undefined {
-    while (node.parent) {
-        const parent = node.parent;
-        let index = parent.children.indexOf(node);
-        const last = parent.children.length - 1;
+    while (node.container) {
+        const parent = node.container;
+        let index = parent.content.indexOf(node);
+        const last = parent.content.length - 1;
         while (index < last) {
             index++;
-            const next = parent.children[index];
+            const next = parent.content[index];
             if (hidden || !next.hidden) {
                 return next;
             }
@@ -63,9 +63,9 @@ export function findChildren(node: CstNode, range: Range = node.range): CstNode[
     const it = CstUtils.streamCst(node).iterator();
     let next = it.next();
 
-    const owner = node.element;
+    const owner = node.astNode;
     while (!next.done) {
-        if (next.value.element !== owner || next.value.hidden) {
+        if (next.value.astNode !== owner || next.value.hidden) {
             it.prune();
             if (isOverlapping(range, next.value.range)) children.push(next.value);
         }

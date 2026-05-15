@@ -25,7 +25,7 @@ export interface DefinitionOptions extends ClassifierOptions {
     isIndividual?: boolean;
 }
 
-@metamodelOf(Definition)
+@metamodelOf(Definition.$type)
 export class DefinitionMeta extends ClassifierMeta {
     protected _isVariation = false;
     isIndividual = false;

@@ -30,7 +30,7 @@ export const ImplicitNullExpressions = {
 
 export type NullExpressionOptions = ModelElementOptions<RelationshipMeta>;
 
-@metamodelOf(NullExpression, ImplicitNullExpressions)
+@metamodelOf(NullExpression.$type, ImplicitNullExpressions)
 export class NullExpressionMeta extends ExpressionMeta {
     override ast(): NullExpression | undefined {
         return this._ast as NullExpression;

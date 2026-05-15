@@ -18,7 +18,7 @@ import { Featuring } from "../../../generated/ast.js";
 import { metamodelOf } from "../../metamodel.js";
 import { ElementMeta, RelationshipMeta, TypeMeta } from "../_internal.js";
 
-@metamodelOf(Featuring, "abstract")
+@metamodelOf(Featuring.$type, "abstract")
 export abstract class FeaturingMeta<T extends TypeMeta = TypeMeta> extends RelationshipMeta<T> {
     /**
      * Adds new owned body elements and returns the new number of body elements.

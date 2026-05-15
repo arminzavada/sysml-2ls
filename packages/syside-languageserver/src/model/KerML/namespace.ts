@@ -54,20 +54,20 @@ import { ElementContainer } from "../containers.js";
 const FeatureMembers = (e: ElementMeta): e is MembershipMeta<FeatureMeta> =>
     Boolean(
         // filters are feature members but not what we want, they serve a different purpose
-        e.nodeType() !== ElementFilterMembership && e.is(Membership) && e.element()?.is(Feature)
+        e.nodeType() !== ElementFilterMembership.$type && e.is(Membership.$type) && e.element()?.is(Feature.$type)
     );
-const Filters = ElementFilterMembership;
-const Imports = Import;
+const Filters = ElementFilterMembership.$type;
+const Imports = Import.$type;
 
 const makeMemberFilter =
     <K extends SubtypeKeys<Element>>(type: K) =>
     (e: ElementMeta): e is MembershipMeta<SysMLInterface<K>["$meta"]> =>
-        Boolean(e.is(Membership) && e.element()?.is(type));
+        Boolean(e.is(Membership.$type) && e.element()?.is(type));
 
-const DocMembers = makeMemberFilter(Documentation);
-const CommentMembers = makeMemberFilter(Comment);
-const MetaMembers = makeMemberFilter(MetadataFeature);
-const RepMembers = makeMemberFilter(TextualRepresentation);
+const DocMembers = makeMemberFilter(Documentation.$type);
+const CommentMembers = makeMemberFilter(Comment.$type);
+const MetaMembers = makeMemberFilter(MetadataFeature.$type);
+const RepMembers = makeMemberFilter(TextualRepresentation.$type);
 
 export type NamespaceRelationship = MembershipMeta | ImportMeta;
 
@@ -100,7 +100,7 @@ export interface NamespaceOptions extends ElementOptions<RelationshipMeta> {
     children?: EdgeContainer<NamespaceRelationship>;
 }
 
-@metamodelOf(Namespace)
+@metamodelOf(Namespace.$type)
 export class NamespaceMeta extends ElementMeta {
     protected _prefixes: OwningMembershipMeta<MetadataFeatureMeta>[] = [];
     protected _children = new ElementContainer<Membership | Import>();

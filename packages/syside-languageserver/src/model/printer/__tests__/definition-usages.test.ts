@@ -21,56 +21,56 @@ describe("definition-usage", () => {
     it("should print extended definitions", async () => {
         return expectPrinted("abstract #prefix def a :> b {}", {
             lang: "sysml",
-            node: ast.Definition,
+            node: ast.Definition.$type,
         }).resolves.toEqual("abstract #prefix def a :> b {}\n");
     });
 
     it("should print extended variation definitions", async () => {
         return expectPrinted("variation #prefix def a :> b {}", {
             lang: "sysml",
-            node: ast.Definition,
+            node: ast.Definition.$type,
         }).resolves.toEqual("variation #prefix def a :> b {}\n");
     });
 
     it("should print extended usages", async () => {
         return expectPrinted("inout abstract readonly derived #prefix a :> b {}", {
             lang: "sysml",
-            node: ast.Usage,
+            node: ast.Usage.$type,
         }).resolves.toEqual("inout abstract readonly derived #prefix a :> b {}\n");
     });
 
     it("should print end usages", async () => {
         return expectPrinted("end #prefix a :> b;", {
             lang: "sysml",
-            node: ast.Usage,
+            node: ast.Usage.$type,
         }).resolves.toEqual("end #prefix a :> b;\n");
     });
 
     it("should print end usages with cross features", async () => {
         return expectPrinted("end cross [10] #prefix a :> b;", {
             lang: "sysml",
-            node: ast.Usage,
+            node: ast.Usage.$type,
         }).resolves.toEqual("end cross [10] #prefix a :> b;\n");
     });
 
     it("should print extended variation usages", async () => {
         return expectPrinted("variation #prefix a :> b {}", {
             lang: "sysml",
-            node: ast.Usage,
+            node: ast.Usage.$type,
         }).resolves.toEqual("variation #prefix a :> b {}\n");
     });
 
     it("should print reference usages", async () => {
         return expectPrinted("variation ref a :> b {}", {
             lang: "sysml",
-            node: ast.ReferenceUsage,
+            node: ast.ReferenceUsage.$type,
         }).resolves.toEqual("variation ref a :> b {}\n");
     });
 
     it("should print variant reference usage shorthand", async () => {
         return expectPrinted("part { variant  b {}}", {
             lang: "sysml",
-            node: ast.ReferenceUsage,
+            node: ast.ReferenceUsage.$type,
         }).resolves.toEqual("b {}\n");
     });
 });
@@ -79,65 +79,65 @@ describe("enum", () => {
     it("should print definitions", async () => {
         return expectPrinted("enum def E;", {
             lang: "sysml",
-            node: ast.EnumerationDefinition,
+            node: ast.EnumerationDefinition.$type,
         }).resolves.toEqual("enum def E;\n");
     });
 
     it("should print usages", async () => {
         return expectPrinted("abstract enum E = 1;", {
             lang: "sysml",
-            node: ast.EnumerationUsage,
+            node: ast.EnumerationUsage.$type,
         }).resolves.toEqual("abstract enum E = 1;\n");
     });
 
     it("should print enum values", async () => {
         return expectPrinted("enum def E { enum value; }", {
             lang: "sysml",
-            node: ast.EnumerationUsage,
+            node: ast.EnumerationUsage.$type,
         }).resolves.toEqual("enum value;\n");
     });
 
     it("should preserve missing enum keyword", async () => {
         return expectPrinted("enum def E { = 1; }", {
             lang: "sysml",
-            node: ast.EnumerationUsage,
+            node: ast.EnumerationUsage.$type,
         }).resolves.toEqual("= 1;\n");
     });
 
     it("should remove enum keyword if option is set", async () => {
         return expectPrinted("enum def E { enum value; }", {
             lang: "sysml",
-            node: ast.EnumerationUsage,
+            node: ast.EnumerationUsage.$type,
             format: { enum_member_keyword: { default: "never" } },
         }).resolves.toEqual("value;\n");
     });
 });
 
 describe.each([
-    ["attribute", ast.AttributeDefinition, ast.AttributeUsage],
-    ["action", ast.ActionDefinition, ast.ActionUsage],
-    ["metadata", ast.MetadataDefinition, undefined],
-    ["occurrence", ast.OccurrenceDefinition, ast.OccurrenceUsage],
-    ["part", ast.PartDefinition, ast.PartUsage],
-    ["item", ast.ItemDefinition, ast.ItemUsage],
-    ["port", ast.PortDefinition, ast.PortUsage],
-    ["action", ast.ActionDefinition, undefined],
-    ["allocation", ast.AllocationDefinition, undefined],
-    ["analysis", ast.AnalysisCaseDefinition, ast.AnalysisCaseUsage],
-    ["calc", ast.CalculationDefinition, ast.CalculationUsage],
-    ["case", ast.CaseDefinition, ast.CaseUsage],
-    ["concern", ast.ConcernDefinition, ast.ConcernUsage],
-    ["constraint", ast.ConstraintDefinition, ast.ConstraintUsage],
-    ["rendering", ast.RenderingDefinition, ast.RenderingUsage],
-    ["requirement", ast.RequirementDefinition, ast.RequirementUsage],
-    ["state", ast.StateDefinition, ast.StateUsage],
-    ["use case", ast.UseCaseDefinition, ast.UseCaseUsage],
-    ["verification", ast.VerificationCaseDefinition, ast.VerificationCaseUsage],
-    ["view", ast.ViewDefinition, ast.ViewUsage],
-    ["viewpoint", ast.ViewpointDefinition, ast.ViewpointUsage],
-    ["connection", ast.ConnectionDefinition, undefined],
-    ["interface", ast.InterfaceDefinition, undefined],
-    ["flow", ast.FlowConnectionDefinition, undefined],
+    ["attribute", ast.AttributeDefinition.$type, ast.AttributeUsage.$type],
+    ["action", ast.ActionDefinition.$type, ast.ActionUsage.$type],
+    ["metadata", ast.MetadataDefinition.$type, undefined],
+    ["occurrence", ast.OccurrenceDefinition.$type, ast.OccurrenceUsage.$type],
+    ["part", ast.PartDefinition.$type, ast.PartUsage.$type],
+    ["item", ast.ItemDefinition.$type, ast.ItemUsage.$type],
+    ["port", ast.PortDefinition.$type, ast.PortUsage.$type],
+    ["action", ast.ActionDefinition.$type, undefined],
+    ["allocation", ast.AllocationDefinition.$type, undefined],
+    ["analysis", ast.AnalysisCaseDefinition.$type, ast.AnalysisCaseUsage.$type],
+    ["calc", ast.CalculationDefinition.$type, ast.CalculationUsage.$type],
+    ["case", ast.CaseDefinition.$type, ast.CaseUsage.$type],
+    ["concern", ast.ConcernDefinition.$type, ast.ConcernUsage.$type],
+    ["constraint", ast.ConstraintDefinition.$type, ast.ConstraintUsage.$type],
+    ["rendering", ast.RenderingDefinition.$type, ast.RenderingUsage.$type],
+    ["requirement", ast.RequirementDefinition.$type, ast.RequirementUsage.$type],
+    ["state", ast.StateDefinition.$type, ast.StateUsage.$type],
+    ["use case", ast.UseCaseDefinition.$type, ast.UseCaseUsage.$type],
+    ["verification", ast.VerificationCaseDefinition.$type, ast.VerificationCaseUsage.$type],
+    ["view", ast.ViewDefinition.$type, ast.ViewUsage.$type],
+    ["viewpoint", ast.ViewpointDefinition.$type, ast.ViewpointUsage.$type],
+    ["connection", ast.ConnectionDefinition.$type, undefined],
+    ["interface", ast.InterfaceDefinition.$type, undefined],
+    ["flow", ast.FlowConnectionDefinition.$type, undefined],
 ] as const)("%s", (kw, def, usage) => {
     it("should print definitions", async () => {
         return expectPrinted(`${kw} def E;`, {
@@ -159,7 +159,7 @@ describe("occurrences", () => {
     it.each(["timeslice", "snapshot"])("should print portion kind %s", async (kw) => {
         return expectPrinted(`abstract ${kw} occurrence E : c;`, {
             lang: "sysml",
-            node: ast.OccurrenceUsage,
+            node: ast.OccurrenceUsage.$type,
         }).resolves.toEqual(`abstract ${kw} occurrence E : c;\n`);
     });
 });
@@ -168,14 +168,14 @@ describe("states", () => {
     it("should print parallel keyword in definitions", async () => {
         return expectPrinted("state def S parallel {}", {
             lang: "sysml",
-            node: ast.StateDefinition,
+            node: ast.StateDefinition.$type,
         }).resolves.toEqual("state def S parallel {}\n");
     });
 
     it("should print parallel keyword in usages", async () => {
         return expectPrinted("state S parallel {}", {
             lang: "sysml",
-            node: ast.StateUsage,
+            node: ast.StateUsage.$type,
         }).resolves.toEqual("state S parallel {}\n");
     });
 });
@@ -184,21 +184,21 @@ describe("individual occurrence definitions", () => {
     it("should print definitions with keyword preserved", async () => {
         return expectPrinted("individual occurrence def E { }", {
             lang: "sysml",
-            node: ast.OccurrenceDefinition,
+            node: ast.OccurrenceDefinition.$type,
         }).resolves.toEqual("individual occurrence def E {}\n");
     });
 
     it("should print definitions with missing keyword preserved", async () => {
         return expectPrinted("individual def E { }", {
             lang: "sysml",
-            node: ast.OccurrenceDefinition,
+            node: ast.OccurrenceDefinition.$type,
         }).resolves.toEqual("individual def E {}\n");
     });
 
     it("should print definitions with added keyword", async () => {
         return expectPrinted("individual def E { }", {
             lang: "sysml",
-            node: ast.OccurrenceDefinition,
+            node: ast.OccurrenceDefinition.$type,
             format: {
                 occurrence_keyword: { default: "always" },
             },
@@ -210,21 +210,21 @@ describe.each(["individual", "snapshot", "timeslice"])("%s occurrences", (kw) =>
     it("should print usages with keyword preserved", async () => {
         return expectPrinted(`${kw} occurrence E { }`, {
             lang: "sysml",
-            node: ast.OccurrenceUsage,
+            node: ast.OccurrenceUsage.$type,
         }).resolves.toEqual(`${kw} occurrence E {}\n`);
     });
 
     it("should print usages with missing keyword preserved", async () => {
         return expectPrinted(`${kw} E { }`, {
             lang: "sysml",
-            node: ast.OccurrenceUsage,
+            node: ast.OccurrenceUsage.$type,
         }).resolves.toEqual(`${kw} E {}\n`);
     });
 
     it("should print usages with added keyword", async () => {
         return expectPrinted(`${kw} E { }`, {
             lang: "sysml",
-            node: ast.OccurrenceUsage,
+            node: ast.OccurrenceUsage.$type,
             format: {
                 occurrence_keyword: { default: "always" },
             },
@@ -233,16 +233,16 @@ describe.each(["individual", "snapshot", "timeslice"])("%s occurrences", (kw) =>
 });
 
 describe.each([
-    ["assert", "constraint", ast.AssertConstraintUsage, "assert_constraint_usage_keyword"],
-    ["event", "occurrence", ast.EventOccurrenceUsage, "event_occurrence_keyword"],
-    ["exhibit", "state", ast.ExhibitStateUsage, "exhibit_state_usage_keyword"],
-    ["include", "use case", ast.IncludeUseCaseUsage, "include_use_case_usage_keyword"],
-    ["perform", "action", ast.PerformActionUsage, "perform_action_usage_keyword"],
-    ["assert satisfy", "requirement", ast.SatisfyRequirementUsage, "satisfy_requirement_keyword"],
+    ["assert", "constraint", ast.AssertConstraintUsage.$type, "assert_constraint_usage_keyword"],
+    ["event", "occurrence", ast.EventOccurrenceUsage.$type, "event_occurrence_keyword"],
+    ["exhibit", "state", ast.ExhibitStateUsage.$type, "exhibit_state_usage_keyword"],
+    ["include", "use case", ast.IncludeUseCaseUsage.$type, "include_use_case_usage_keyword"],
+    ["perform", "action", ast.PerformActionUsage.$type, "perform_action_usage_keyword"],
+    ["assert satisfy", "requirement", ast.SatisfyRequirementUsage.$type, "satisfy_requirement_keyword"],
     [
         "assert not satisfy",
         "requirement",
-        ast.SatisfyRequirementUsage,
+        ast.SatisfyRequirementUsage.$type,
         "satisfy_requirement_keyword",
     ],
 ] as const)("%s %s", (id, kw, type, prop) => {
@@ -289,7 +289,7 @@ describe("satisfy requirement", () => {
     it("should print value and by", async () => {
         return expectPrinted("assert satisfy E = 1 by x.x {}", {
             lang: "sysml",
-            node: ast.SatisfyRequirementUsage,
+            node: ast.SatisfyRequirementUsage.$type,
         }).resolves.toEqual("assert satisfy E = 1 by x.x {}\n");
     });
 
@@ -301,7 +301,7 @@ describe("satisfy requirement", () => {
             by some_long_by_name {}`,
             {
                 lang: "sysml",
-                node: ast.SatisfyRequirementUsage,
+                node: ast.SatisfyRequirementUsage.$type,
                 options: { lineWidth: 40 },
             }
         ).resolves.toMatchInlineSnapshot(`
@@ -317,7 +317,7 @@ describe("satisfy requirement", () => {
     it("should preserve missing assert", async () => {
         return expectPrinted("satisfy E = 1 by x {}", {
             lang: "sysml",
-            node: ast.SatisfyRequirementUsage,
+            node: ast.SatisfyRequirementUsage.$type,
         }).resolves.toEqual("satisfy E = 1 by x {}\n");
     });
 });
@@ -326,7 +326,7 @@ describe("exhibit state", () => {
     it("should print parallel states", async () => {
         return expectPrinted("exhibit E = 1 parallel {}", {
             lang: "sysml",
-            node: ast.ExhibitStateUsage,
+            node: ast.ExhibitStateUsage.$type,
             format: {
                 empty_namespace_brackets: {
                     default: "never",
@@ -340,14 +340,14 @@ describe("interfaces", () => {
     it("should print default interface ends", async () => {
         return expectPrinted("interface def I { end End; }", {
             lang: "sysml",
-            node: ast.PortUsage,
+            node: ast.PortUsage.$type,
         }).resolves.toEqual("end End;\n");
     });
 
     it("should print explicit port usage ends", async () => {
         return expectPrinted("interface def I { end [1] port End; }", {
             lang: "sysml",
-            node: ast.PortUsage,
+            node: ast.PortUsage.$type,
         }).resolves.toEqual("end [1] port End;\n");
     });
 });

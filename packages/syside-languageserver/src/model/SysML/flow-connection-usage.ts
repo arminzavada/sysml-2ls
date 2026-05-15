@@ -44,7 +44,7 @@ export interface FlowConnectionUsageOptions
     messages?: readonly Edge<ParameterMembershipMeta, EventOccurrenceUsageMeta>[];
 }
 
-@metamodelOf(FlowConnectionUsage, {
+@metamodelOf(FlowConnectionUsage.$type, {
     base: "FlowConnections::flowConnections",
     message: "FlowConnections::messageConnections",
     enclosedPerformance: "Performances::Performance::enclosedPerformances",

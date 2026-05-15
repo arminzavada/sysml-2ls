@@ -20,7 +20,7 @@ import { FeatureMeta, FeatureTypingMeta, RelationshipOptionsBody } from "../../K
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ConjugatedPortDefinitionMeta } from "../port-definition.js";
 
-@metamodelOf(ConjugatedPortTyping)
+@metamodelOf(ConjugatedPortTyping.$type)
 // @ts-expect-error ignoring static inheritance error
 export class ConjugatedPortTypingMeta<
     T extends ConjugatedPortDefinitionMeta = ConjugatedPortDefinitionMeta,

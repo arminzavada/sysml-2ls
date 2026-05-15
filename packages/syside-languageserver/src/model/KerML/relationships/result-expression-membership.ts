@@ -24,7 +24,7 @@ import {
     RelationshipOptionsBody,
 } from "../_internal.js";
 
-@metamodelOf(ResultExpressionMembership)
+@metamodelOf(ResultExpressionMembership.$type)
 export class ResultExpressionMembershipMeta<
     T extends ExpressionMeta = ExpressionMeta,
 > extends FeatureMembershipMeta<T> {

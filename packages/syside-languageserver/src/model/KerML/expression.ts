@@ -41,7 +41,7 @@ export interface ExpressionOptions extends StepOptions {
     result?: Edge<ResultExpressionMembershipMeta>;
 }
 
-@metamodelOf(Expression, ImplicitExpressions)
+@metamodelOf(Expression.$type, ImplicitExpressions)
 export class ExpressionMeta extends Mixin(StepMeta, FunctionMixin) {
     @enumerable
     get result(): ResultExpressionMembershipMeta | undefined {
@@ -56,7 +56,7 @@ export class ExpressionMeta extends Mixin(StepMeta, FunctionMixin) {
         if (featurings.length > 0) return featurings.map((f) => f.element()).filter(NonNullable);
 
         const owner = this.owner();
-        if (owner?.is(Multiplicity) || this.parent()?.is(FeatureValue)) {
+        if (owner?.is(Multiplicity.$type) || this.parent()?.is(FeatureValue.$type)) {
             return (owner as FeatureMeta).featuredBy;
         }
         return this._owningType ? [this._owningType] : [];

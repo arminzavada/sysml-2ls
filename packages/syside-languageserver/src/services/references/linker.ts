@@ -25,10 +25,10 @@ import {
     isLinkingError,
     LangiumDocument,
     LinkingError,
-    MultiMap,
     Reference,
     ReferenceDescriptionProvider,
     ReferenceInfo,
+    Stream,
 } from "langium";
 import { CancellationToken } from "vscode-languageserver";
 import {
@@ -65,7 +65,7 @@ import { TypedModelDiagnostic } from "../validation/index.js";
  * Reference used by SysML services that makes use of knowing that only Elements can be referenced
  */
 export interface SysMLReference<T extends Element = Element> extends Reference<T> {
-    readonly ref?: T;
+    readonly ref: T | undefined;
     readonly $nodeDescription?: SysMLNodeDescription<T>;
 }
 
@@ -84,9 +84,12 @@ export interface NonNullReference<T extends Element = Element> extends SysMLRefe
 
 /**
  * All references are children of ElementReference in this KerML and SysML
- * grammar and only Elements can be referenced
+ * grammar and only Elements can be referenced.
+ *
+ * 4.x note: `ReferenceInfo.reference` is now `Reference | MultiReference`. The
+ * SysML grammar only uses single references, so we narrow back to `Reference`.
  */
-export interface SysMLReferenceInfo extends ReferenceInfo {
+export interface SysMLReferenceInfo extends Omit<ReferenceInfo, "reference"> {
     container: ElementReference;
     index: number;
     reference: SysMLReference<Element>;
@@ -181,9 +184,9 @@ export class SysMLLinker extends DefaultLinker {
 
             const ref = impNode.targetRef;
 
-            if (imp.isRecursive || imp.is(NamespaceImport)) {
+            if (imp.isRecursive || imp.is(NamespaceImport.$type)) {
                 // check that wildcard imports are valid
-                const namespace = imported.is(Membership) ? imported.element() : imported;
+                const namespace = imported.is(Membership.$type) ? imported.element() : imported;
                 if (!namespace) {
                     document.modelDiagnostics.add(imp, <TypedModelDiagnostic<ImportMeta>>{
                         severity: "error",
@@ -216,9 +219,11 @@ export class SysMLLinker extends DefaultLinker {
         const container = value.ref.$container!;
         const error: LinkingError = {
             message: message,
-            reference: value,
-            container,
-            property: value.ref.$containerProperty ?? "",
+            info: {
+                reference: value,
+                container,
+                property: value.ref.$containerProperty ?? "",
+            },
         };
         ref._ref = error;
     }
@@ -229,7 +234,7 @@ export class SysMLLinker extends DefaultLinker {
      * @param document document that owns {@link ref}
      * @returns final reference of {@link ref} with aliases resolved or undefined
      */
-    @linker(ElementReference)
+    @linker(ElementReference.$type)
     linkReference(ref: ElementReference, document: LangiumDocument): ElementMeta | undefined {
         const to = ref.$meta.to;
         // check if already linked
@@ -258,7 +263,7 @@ export class SysMLLinker extends DefaultLinker {
      * Link a {@link FeatureReferenceExpression}
      * @returns the linked expression target or undefined
      */
-    @linker(FeatureReferenceExpression)
+    @linker(FeatureReferenceExpression.$type)
     linkFeatureReferenceExpression(
         expr: FeatureReferenceExpression,
         document: LangiumDocument
@@ -266,7 +271,7 @@ export class SysMLLinker extends DefaultLinker {
         return this.linkNode(expr.expression, document);
     }
 
-    @linker(MetadataAccessExpression)
+    @linker(MetadataAccessExpression.$type)
     linkMetadataAccessExpression(
         expr: MetadataAccessExpression,
         document: LangiumDocument
@@ -276,7 +281,7 @@ export class SysMLLinker extends DefaultLinker {
         return target;
     }
 
-    @linker(Relationship)
+    @linker(Relationship.$type)
     linkRelationship(node: Relationship, document: LangiumDocument): ElementMeta | undefined {
         if (!node.targetRef) return node.target?.$meta;
         const target = this.linkReference(node.targetRef, document);
@@ -288,7 +293,7 @@ export class SysMLLinker extends DefaultLinker {
      * extra member to detect alias chains
      */
     private readonly visitedAliases = new Set<MembershipMeta>();
-    @linker(Membership)
+    @linker(Membership.$type)
     linkMembership(node: Membership, document: LangiumDocument): ElementMeta | undefined {
         const meta = node.$meta;
         if (meta.element()) return meta.element();
@@ -331,7 +336,7 @@ export class SysMLLinker extends DefaultLinker {
         let foundType: string = description.type;
         let target: ElementMeta | undefined;
         const node = this.loadAstNode(description) as Element | undefined;
-        if (description.type === Membership && referenceType !== Membership) {
+        if (description.type === Membership.$type && referenceType !== Membership.$type) {
             // make sure the alias points to a the required element type aliases
             // always reference named elements anyway so the predicate will
             // always return true anyway
@@ -343,13 +348,13 @@ export class SysMLLinker extends DefaultLinker {
         }
 
         container.found[index] = target;
-        if (referenceType !== Membership) {
-            if (target?.is(Membership)) {
+        if (referenceType !== Membership.$type) {
+            if (target?.is(Membership.$type)) {
                 target = target.element();
             }
         }
-        if (referenceType === ConjugatedPortDefinition) {
-            if (target?.is(PortDefinition)) {
+        if (referenceType === ConjugatedPortDefinition.$type) {
+            if (target?.is(PortDefinition.$type)) {
                 target = target.conjugatedDefinition?.element();
             }
         }
@@ -369,14 +374,14 @@ export class SysMLLinker extends DefaultLinker {
             return this.getCandidateImp(refInfo);
         } catch (err) {
             if (err === "unresolved reference") {
-                return <LinkingError>{
-                    ...refInfo,
+                return {
+                    info: refInfo as ReferenceInfo,
                     message: `Found an unresolved reference with name '${refInfo.reference.$refText}`,
                 };
             }
             if (err instanceof Error) {
                 const linkingError: LinkingError = {
-                    ...refInfo,
+                    info: refInfo as ReferenceInfo,
                     message: `An error occurred while resolving reference to '${refInfo.reference.$refText}': ${err}`,
                 };
                 if (this.config.get().debug.stacktraceInLinkingErrors) {
@@ -425,7 +430,7 @@ export class SysMLLinker extends DefaultLinker {
 
             if (!context || context === "error") return error;
 
-            if (context.is(Type))
+            if (context.is(Type.$type))
                 error.message += `\n\tMRO: [${context
                     .allTypes(undefined, true)
                     .map((t) => `${t.qualifiedName} [${t.setupState}]`)
@@ -468,7 +473,7 @@ export class SysMLLinker extends DefaultLinker {
 
         if (index === ref.parts.length - 1) {
             // last element in the chain
-            if (resolved?.is(Membership) && ref.$type !== MembershipReference) {
+            if (resolved?.is(Membership.$type) && ref.$type !== MembershipReference.$type) {
                 // only resolve alias if we are not looking for membership
                 // reference
                 const ast = resolved.ast();
@@ -478,7 +483,7 @@ export class SysMLLinker extends DefaultLinker {
             }
 
             // unwrap the found membership if we expect a concrete element
-            if (ref.$type !== MembershipReference && resolved?.is(Membership)) {
+            if (ref.$type !== MembershipReference.$type && resolved?.is(Membership.$type)) {
                 resolved = resolved.element();
             }
 
@@ -519,7 +524,7 @@ export class SysMLLinker extends DefaultLinker {
         // TODO: fix in Langium
         const container = refInfo.container.$meta
             ? refInfo.container
-            : (refInfo.reference.$refNode?.element as ElementReference | undefined);
+            : (refInfo.reference.$refNode?.astNode as ElementReference | undefined);
         if (container) {
             const doc = container.$meta.document;
             if (doc) {
@@ -555,6 +560,11 @@ export class SysMLLinker extends DefaultLinker {
         const reference: DefaultReference<Element> = {
             $refNode: refNode,
             $refText: refText,
+            // Langium 4.x's `DefaultLinker.doLink` checks for the `_ref` and
+            // `_nodeDescription` properties' presence with `in`; without an
+            // own-property declaration the link step is silently skipped.
+            _ref: undefined,
+            _nodeDescription: undefined,
 
             get ref() {
                 if (isElement(this._ref)) {
@@ -606,12 +616,12 @@ export class SysMLLinker extends DefaultLinker {
 
             // the computed children may have also been reset completely, add
             // back children from the scope computation phase
-            const children = document.precomputedScopes?.get(node) as
-                | MultiMap<AstNode, SysMLNodeDescription>
+            const children = document.localSymbols?.getStream(node) as
+                | Stream<SysMLNodeDescription>
                 | undefined;
             children?.forEach((child) => {
                 const meta = child.node?.$meta;
-                if (!meta?.is(Membership)) return;
+                if (!meta?.is(Membership.$type)) return;
                 node.$meta["_memberLookup"].set(child.name, meta);
             });
         });

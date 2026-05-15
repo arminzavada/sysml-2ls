@@ -159,7 +159,7 @@ export function printEdgeEnd<T extends RelationshipMeta>(
     const { target, astNode } = value;
 
     if (target?.parent() === edge) {
-        if (target.is(ast.Feature) && edge.isAny(ast.Inheritance, ast.FeatureRelationship))
+        if (target.is(ast.Feature.$type) && edge.isAny(ast.Inheritance.$type, ast.FeatureRelationship.$type))
             // only owned targets by inheritance relationships or by inline
             // expressions are feature chainings
             return printModelElement(target, context, {
@@ -239,7 +239,7 @@ export function printWithVisibility(
     context: ModelPrinterContext
 ): Doc {
     const format = context.format.public_keyword;
-    if (edge.is(ast.Expose) || (!edge.is(ast.Import) && !edge.hasExplicitVisibility)) {
+    if (edge.is(ast.Expose.$type) || (!edge.is(ast.Import.$type) && !edge.hasExplicitVisibility)) {
         return doc;
     }
 
@@ -275,7 +275,7 @@ export function printMembership<T extends ElementMeta>(
     context: ModelPrinterContext,
     options?: PrintModelElementOptions<T>
 ): Doc {
-    if (node.owner()?.is(ast.InlineExpression)) {
+    if (node.owner()?.is(ast.InlineExpression.$type)) {
         return indent(printTarget(node, context));
     }
     // ignore TransitionSourceMember since it should be printed directly
@@ -477,11 +477,11 @@ export function printNamespaceImport(
     const doc: Doc[] = [group(declaration)];
 
     const target = node.element();
-    if (target?.parent() === node && target.nodeType() === ast.Package) {
+    if (target?.parent() === node && target.nodeType() === ast.Package.$type) {
         // owned package implies FilterPackage
         const children = target.children;
         declaration.push(indent(printTarget(children[0], context)));
-        if (children[0].is(ast.NamespaceImport)) declaration.push(text("::*"));
+        if (children[0].is(ast.NamespaceImport.$type)) declaration.push(text("::*"));
         doc.push(indent(children.slice(1).map((child) => printModelElement(child, context))));
     } else {
         declaration.push(indent(printTarget(node, context)), text("::*"));
@@ -550,8 +550,8 @@ export function printElementFilterMembership(
     context: ModelPrinterContext
 ): Doc {
     if (
-        node.parent()?.nodeType() === ast.Package &&
-        node.parent()?.parent()?.is(ast.NamespaceImport)
+        node.parent()?.nodeType() === ast.Package.$type &&
+        node.parent()?.parent()?.is(ast.NamespaceImport.$type)
     ) {
         // filter import
         return group([
@@ -620,7 +620,7 @@ export function printAssignmentExpression(
     if (node) {
         const op = getOperator(node);
         if (
-            node.nodeType() === ast.InvocationExpression ||
+            node.nodeType() === ast.InvocationExpression.$type ||
             (precedence(node) === PREC_LEVELS.ACCESS &&
                 op !== IMPLICIT_OPERATORS.DOT &&
                 op !== IMPLICIT_OPERATORS.METADATA) ||
@@ -641,7 +641,7 @@ export function printAssignmentExpression(
 }
 
 export function printFeatureValue(node: FeatureValueMeta, context: ModelPrinterContext): Doc {
-    if (node.element().is(ast.TriggerInvocationExpression)) return printTarget(node, context);
+    if (node.element().is(ast.TriggerInvocationExpression.$type)) return printTarget(node, context);
 
     const parts: Doc[] = [];
     const prefix: Doc[] = [];
@@ -677,10 +677,10 @@ export function printOwningMembership<T extends ElementMeta>(
 ): Doc {
     if (
         context.mode === "kerml" &&
-        node.element().nodeType() !== ast.MetadataFeature &&
-        node.element()?.is(ast.Feature) &&
-        !node.element().is(ast.Multiplicity) &&
-        node.parent()?.is(ast.Type)
+        node.element().nodeType() !== ast.MetadataFeature.$type &&
+        node.element()?.is(ast.Feature.$type) &&
+        !node.element().is(ast.Multiplicity.$type) &&
+        node.parent()?.is(ast.Type.$type)
     )
         // TypeFeatureMember
         return printGenericMembership("member", node, context, { previousSibling });
@@ -759,7 +759,7 @@ export function printVariantMembership<T extends UsageMeta>(
 
     // enum values are implicitly variants without `variant` keyword
     return printGenericMembership(
-        node.parent()?.is(ast.EnumerationDefinition) ? undefined : "variant",
+        node.parent()?.is(ast.EnumerationDefinition.$type) ? undefined : "variant",
         node,
         context,
         { previousSibling }
@@ -834,7 +834,7 @@ function printSpecialRequirementMember(
     return printGenericMembership(options.memberKeyword, node, context, {
         previousSibling: options.previousSibling,
         printer(node, context) {
-            const allowShorthand = canPrintShorthandUsage(node, ast.ReferenceSubsetting);
+            const allowShorthand = canPrintShorthandUsage(node, ast.ReferenceSubsetting.$type);
 
             const kw = formatPreserved(node, context.format.framed_concern_keyword, "always", {
                 find: (node) => GrammarUtils.findNodeForKeyword(node, options.targetKeyword),

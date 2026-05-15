@@ -19,8 +19,8 @@ import { FeatureMeta, MembershipMeta, TypeMeta } from "../KerML/_internal.js";
 import { PositionalFeaturesBase } from "./positional-features.js";
 
 const Filter: (f: MembershipMeta<FeatureMeta>) => boolean = (f) =>
-    Boolean(f.element()?.isEnd || f.is(EndFeatureMembership));
-const Types: ((t: TypeMeta) => boolean) | undefined = (t) => t.is(Association);
+    Boolean(f.element()?.isEnd || f.is(EndFeatureMembership.$type));
+const Types: ((t: TypeMeta) => boolean) | undefined = (t) => t.is(Association.$type);
 
 export class ConnectorMixin {
     private readonly endsCache = new PositionalFeaturesBase();

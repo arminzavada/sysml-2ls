@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AstNode, CstNode, Mutable, stream, TypeMetaData } from "langium";
+import { AstNode, CstNode, Mutable, PropertyMetaData, TypeMetaData } from "langium";
 import * as ast from "../generated/ast.js";
 import { typeIndex } from "../model/types.js";
 import { AstContainer, AstParent, AstPropertiesFor } from "../utils/ast-util.js";
@@ -46,24 +46,24 @@ export class SysMLAstReflection extends ast.SysMLAstReflection {
         if (refInfo.index === container.parts.length - 1) {
             // last element
             switch (container.$type) {
-                case ast.TypeReference:
-                    return ast.Type;
-                case ast.ClassifierReference:
-                    return ast.Classifier;
-                case ast.MetaclassReference:
-                    return ast.Metaclass;
-                case ast.MembershipReference:
-                    return ast.Membership;
-                case ast.NamespaceReference:
-                    return ast.Namespace;
-                case ast.FeatureReference:
-                    return ast.Feature;
-                case ast.ConjugatedPortReference:
-                    return ast.ConjugatedPortDefinition;
+                case ast.TypeReference.$type:
+                    return ast.Type.$type;
+                case ast.ClassifierReference.$type:
+                    return ast.Classifier.$type;
+                case ast.MetaclassReference.$type:
+                    return ast.Metaclass.$type;
+                case ast.MembershipReference.$type:
+                    return ast.Membership.$type;
+                case ast.NamespaceReference.$type:
+                    return ast.Namespace.$type;
+                case ast.FeatureReference.$type:
+                    return ast.Feature.$type;
+                case ast.ConjugatedPortReference.$type:
+                    return ast.ConjugatedPortDefinition.$type;
             }
         }
 
-        return ast.Element;
+        return ast.Element.$type;
     }
 
     override isSubtype(subtype: string, supertype: string): boolean {
@@ -74,35 +74,31 @@ export class SysMLAstReflection extends ast.SysMLAstReflection {
         let meta = this.metadata.get(type);
         if (meta) return meta;
 
-        // using map since there are a lot of duplicated properties
-        const properties = new Map<string, unknown>(
-            super.getTypeMetaData(type).properties.map((p) => [p.name, p.defaultValue])
-        );
+        const properties: { [name: string]: PropertyMetaData } = {};
+        const ownProperties = super.getTypeMetaData(type).properties;
+        for (const name in ownProperties) {
+            properties[name] = ownProperties[name];
+        }
 
         // the default langium implementation doesn't care about hierarchy
         // members resulting in some arrays/booleans being left undefined... fix
         // that here
         for (const base of typeIndex.getInheritanceChain(type)) {
             const baseMeta = super.getTypeMetaData(base);
-            for (const { name, defaultValue } of baseMeta.properties) {
-                if (properties.has(name)) continue;
-                properties.set(name, defaultValue);
+            for (const name in baseMeta.properties) {
+                if (properties[name]) continue;
+                properties[name] = baseMeta.properties[name];
             }
         }
 
+        // also make sure all nodes have $children member
+        properties["$children"] = { name: "$children", defaultValue: [] };
+
         meta = {
             name: type,
-            properties: stream(properties.entries())
-                .map(([name, defaultValue]) => {
-                    const property: { name: string; defaultValue?: unknown } = { name };
-                    if (defaultValue !== undefined) property.defaultValue = defaultValue;
-                    return property as TypeMetaData["properties"][number];
-                })
-                .toArray(),
+            properties,
+            superTypes: super.getTypeMetaData(type).superTypes ?? [],
         };
-
-        // also make sure all nodes have $children member
-        meta.properties.push({ name: "$children", defaultValue: [] });
         this.metadata.set(type, meta);
         return meta;
     }
@@ -110,13 +106,14 @@ export class SysMLAstReflection extends ast.SysMLAstReflection {
     private assignMandatoryProperties(obj: { $type: string }): void {
         const typeMetaData = this.getTypeMetaData(obj.$type);
         const out = obj as Record<string, unknown>;
-        for (const property of typeMetaData.properties) {
+        for (const name in typeMetaData.properties) {
+            const property = typeMetaData.properties[name];
             if (property.defaultValue === undefined) continue;
-            const value = out[property.name];
+            const value = out[name];
             if (Array.isArray(property.defaultValue) && !Array.isArray(value)) {
-                out[property.name] = [];
+                out[name] = [];
             } else if (typeof property.defaultValue === "boolean" && value === undefined) {
-                out[property.name] = property.defaultValue;
+                out[name] = property.defaultValue;
             }
         }
 

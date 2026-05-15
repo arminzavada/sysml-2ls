@@ -20,7 +20,7 @@ import { CommentMeta, CommentOptions } from "./_internal.js";
 
 export type DocumentationOptions = CommentOptions;
 
-@metamodelOf(Documentation)
+@metamodelOf(Documentation.$type)
 export class DocumentationMeta extends CommentMeta {
     override ast(): Documentation | undefined {
         return this._ast as Documentation;

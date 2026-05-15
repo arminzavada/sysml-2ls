@@ -44,10 +44,10 @@ test("types can be disjoint", async () => {
                 target: {
                     ...withQualifiedName("A"),
                     heritage: [
-                        { $type: Subclassification, targetRef: qualifiedTypeReference("Anything") },
+                        { $type: Subclassification.$type, targetRef: qualifiedTypeReference("Anything") },
                     ],
                     typeRelationships: [
-                        { $type: Disjoining, targetRef: qualifiedTypeReference("B") },
+                        { $type: Disjoining.$type, targetRef: qualifiedTypeReference("B") },
                     ],
                 },
             },
@@ -64,7 +64,7 @@ test("types can conjugate", async () => {
             {
                 target: {
                     ...withQualifiedName("C"),
-                    heritage: [{ $type: Conjugation, targetRef: qualifiedTypeReference("A") }],
+                    heritage: [{ $type: Conjugation.$type, targetRef: qualifiedTypeReference("A") }],
                 },
             },
         ],
@@ -104,10 +104,10 @@ test("types can have multiplicity", async () => {
                     heritage: [{ targetRef: qualifiedTypeReference("Anything") }],
                     multiplicity: {
                         target: {
-                            $type: MultiplicityRange,
+                            $type: MultiplicityRange.$type,
                             range: {
                                 target: {
-                                    $type: LiteralNumber,
+                                    $type: LiteralNumber.$type,
                                     literal: 1,
                                 },
                             },
@@ -142,7 +142,7 @@ test("type children can reference private child members", async () => {
                         {
                             visibility: "private",
                             target: {
-                                $type: Namespace,
+                                $type: Namespace.$type,
                                 ...withQualifiedName("Super::N"),
                                 children: [
                                     {
@@ -159,14 +159,14 @@ test("type children can reference private child members", async () => {
                         {
                             visibility: "protected",
                             target: {
-                                $type: Feature,
+                                $type: Feature.$type,
                                 ...withQualifiedName("Super::f"),
                                 heritage: [{ targetRef: qualifiedTypeReference("Super::N::Sub") }],
                             },
                         },
                         {
                             target: {
-                                $type: Feature,
+                                $type: Feature.$type,
                                 ...withQualifiedName("Super::f1"),
                                 heritage: [{ targetRef: qualifiedTypeReference("Super") }],
                                 typeRelationships: [
@@ -176,7 +176,7 @@ test("type children can reference private child members", async () => {
                         },
                         {
                             target: {
-                                $type: Feature,
+                                $type: Feature.$type,
                                 ...withQualifiedName("Super::f2"),
                                 heritage: [{ targetRef: qualifiedTypeReference("Super") }],
                                 typeRelationships: [
@@ -201,34 +201,34 @@ test("types can be sufficient", async () => {
         children: [
             {
                 target: {
-                    $type: Class,
+                    $type: Class.$type,
                     ...withQualifiedName("MaterialThing"),
                     isAbstract: "abstract",
                 },
             },
             {
                 target: {
-                    $type: Class,
+                    $type: Class.$type,
                     ...withQualifiedName("Wheel"),
                 },
             },
             {
                 target: {
-                    $type: Class,
+                    $type: Class.$type,
                     ...withQualifiedName("Car"),
                     isSufficient: true,
                     heritage: [{ targetRef: qualifiedTypeReference("MaterialThing") }],
                     children: [
                         {
                             target: {
-                                $type: Feature,
+                                $type: Feature.$type,
                                 ...withQualifiedName("Car::wheels"),
                                 multiplicity: {
                                     target: {
-                                        $type: MultiplicityRange,
+                                        $type: MultiplicityRange.$type,
                                         range: {
                                             target: {
-                                                $type: LiteralNumber,
+                                                $type: LiteralNumber.$type,
                                                 literal: 4,
                                             },
                                         },

@@ -42,7 +42,7 @@ export interface DependencyOptions extends ElementOptions<RelationshipMeta> {
     prefixes?: readonly Edge<AnnotationMeta, MetadataFeatureMeta>[];
 }
 
-@metamodelOf(Dependency)
+@metamodelOf(Dependency.$type)
 // @ts-expect-error ignore static inheritance warning why is it even a thing???
 export class DependencyMeta extends RelationshipMeta {
     protected _prefixes: AnnotationMeta<MetadataFeatureMeta>[] = [];

@@ -30,7 +30,7 @@ import { AstNode, LangiumDocument } from "langium";
 
 export interface ConstraintUsageOptions extends BooleanExpressionOptions, OccurrenceUsageOptions {}
 
-@metamodelOf(ConstraintUsage, {
+@metamodelOf(ConstraintUsage.$type, {
     base: "Constraints::constraintChecks",
     checkedConstraint: "Items::Item::checkedConstraints",
     enclosedPerformance: "Performances::Performance::enclosedPerformances",
@@ -61,7 +61,7 @@ export class ConstraintUsageMeta extends Mixin(BooleanExpressionMeta, Occurrence
         if (!this.isComposite) return false;
 
         const parent = this.owner();
-        return Boolean(parent?.isAny(ItemDefinition, ItemUsage));
+        return Boolean(parent?.isAny(ItemDefinition.$type, ItemUsage.$type));
     }
 
     override ast(): ConstraintUsage | undefined {
@@ -70,12 +70,12 @@ export class ConstraintUsageMeta extends Mixin(BooleanExpressionMeta, Occurrence
 
     requirementConstraintKind(): RequirementConstraintKind | undefined {
         const parent = this.parent();
-        return parent?.is(RequirementConstraintMembership) ? parent.kind : undefined;
+        return parent?.is(RequirementConstraintMembership.$type) ? parent.kind : undefined;
     }
 
     override namingFeature(): FeatureMeta | undefined {
         return this.requirementConstraintKind()
-            ? this.referencedFeature(ConstraintUsage)
+            ? this.referencedFeature(ConstraintUsage.$type)
             : super.namingFeature();
     }
 

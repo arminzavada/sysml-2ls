@@ -84,7 +84,7 @@ test.concurrent.each(TABLE)(
         expect(sanitizeTree(type.$meta.specializations())).toMatchObject([
             {
                 element: { qualifiedName: `${pack}::${klass}` },
-                $type: Subclassification,
+                $type: Subclassification.$type,
                 isImplied: true,
             },
         ]);
@@ -118,7 +118,7 @@ test.skip.each(TABLE)(
         ).toMatchObject([
             {
                 element: { qualifiedName: "B" },
-                $type: Subclassification,
+                $type: Subclassification.$type,
                 isImplied: false,
             },
         ]);
@@ -149,7 +149,7 @@ test.each(TABLE.filter((v) => !v[1].startsWith("assoc")))(
             ...anything(1),
             {
                 element: { qualifiedName: `${pack}::${feature}` },
-                $type: Subsetting,
+                $type: Subsetting.$type,
                 isImplied: true,
             },
         ]);

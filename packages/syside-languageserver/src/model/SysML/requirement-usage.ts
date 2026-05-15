@@ -24,7 +24,7 @@ import { ConstraintUsageMeta, ConstraintUsageOptions } from "./constraint-usage.
 
 export type RequirementUsageOptions = ConstraintUsageOptions;
 
-@metamodelOf(RequirementUsage, {
+@metamodelOf(RequirementUsage.$type, {
     base: "Requirements::requirementChecks",
     subrequirement: "Requirements::RequirementCheck::subrequirements",
     verification: "VerificationCases::VerificationCase::obj::requirementVerifications",
@@ -37,14 +37,14 @@ export class RequirementUsageMeta extends ConstraintUsageMeta {
     isVerifiedRequirement(): boolean {
         const parent = this.parent();
         return Boolean(
-            parent?.is(RequirementVerificationMembership) && parent.isLegalVerification()
+            parent?.is(RequirementVerificationMembership.$type) && parent.isLegalVerification()
         );
     }
 
     isSubrequirement(): boolean {
         if (this.requirementConstraintKind() === "assumption") return false;
         return Boolean(
-            this.isComposite && this.owner()?.isAny(RequirementUsage, RequirementDefinition)
+            this.isComposite && this.owner()?.isAny(RequirementUsage.$type, RequirementDefinition.$type)
         );
     }
 

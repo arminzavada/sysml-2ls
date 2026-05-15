@@ -28,7 +28,7 @@ import { ItemUsageMeta, ItemUsageOptions } from "./item-usage.js";
 
 export type PartUsageOptions = ItemUsageOptions;
 
-@metamodelOf(PartUsage, {
+@metamodelOf(PartUsage.$type, {
     base: "Parts::parts",
     subitem: "Items::Item::subparts",
     requirementActor: "Requirements::RequirementCheck::actors",
@@ -45,28 +45,28 @@ export class PartUsageMeta extends ItemUsageMeta {
 
     protected isRequirementActor(): boolean {
         return Boolean(
-            this.parent()?.is(ActorMembership) &&
-                this.owner()?.isAny(RequirementDefinition, RequirementUsage)
+            this.parent()?.is(ActorMembership.$type) &&
+                this.owner()?.isAny(RequirementDefinition.$type, RequirementUsage.$type)
         );
     }
 
     protected isRequirementStakeholder(): boolean {
         return Boolean(
-            this.parent()?.is(StakeholderMembership) &&
-                this.owner()?.isAny(RequirementDefinition, RequirementUsage)
+            this.parent()?.is(StakeholderMembership.$type) &&
+                this.owner()?.isAny(RequirementDefinition.$type, RequirementUsage.$type)
         );
     }
 
     protected isCaseActor(): boolean {
         return Boolean(
-            this.parent()?.is(ActorMembership) && this.owner()?.isAny(CaseDefinition, CaseUsage)
+            this.parent()?.is(ActorMembership.$type) && this.owner()?.isAny(CaseDefinition.$type, CaseUsage.$type)
         );
     }
 
     override isIgnoredParameter(): boolean {
         return Boolean(
             super.isIgnoredParameter() ||
-                this.parent()?.isAny(ActorMembership, StakeholderMembership)
+                this.parent()?.isAny(ActorMembership.$type, StakeholderMembership.$type)
         );
     }
 

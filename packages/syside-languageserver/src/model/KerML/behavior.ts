@@ -24,7 +24,7 @@ export const ImplicitBehaviors = {
 
 export type BehaviorOptions = ClassOptions;
 
-@metamodelOf(Behavior, ImplicitBehaviors)
+@metamodelOf(Behavior.$type, ImplicitBehaviors)
 export class BehaviorMeta extends ClassMeta {
     override ast(): Behavior | undefined {
         return this._ast as Behavior;

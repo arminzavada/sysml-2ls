@@ -29,7 +29,7 @@ describe("Validation registry", () => {
     describe("Custom validations", () => {
         let unregister: Disposable;
         beforeEach(() => {
-            unregister = registry.registerModelValidationRule(Package, () => {
+            unregister = registry.registerModelValidationRule(Package.$type, () => {
                 /* empty */
             });
         });
@@ -37,14 +37,14 @@ describe("Validation registry", () => {
         test("Custom checks are registered", () => {
             // Langium 2.x changed `getChecks` to return a Stream rather than
             // an array, so compare the materialized length.
-            [Package, LibraryPackage].forEach((type) =>
+            [Package.$type, LibraryPackage.$type].forEach((type) =>
                 expect(registry.getChecks(type).toArray()).toHaveLength(1)
             );
         });
 
         test("Custom checks can be unregistered", () => {
             unregister.dispose();
-            [Package, LibraryPackage].forEach((type) =>
+            [Package.$type, LibraryPackage.$type].forEach((type) =>
                 expect(registry.getChecks(type).toArray()).toHaveLength(0)
             );
         });

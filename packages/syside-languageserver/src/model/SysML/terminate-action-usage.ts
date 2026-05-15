@@ -26,7 +26,7 @@ export interface TerminateActionUsageOptions extends ActionUsageOptions {
     terminatedOccurrence: Edge<ParameterMembershipMeta, ReferenceUsageMeta>;
 }
 
-@metamodelOf(TerminateActionUsage, {
+@metamodelOf(TerminateActionUsage.$type, {
     base: "Actions::terminateActions",
     subaction: "Actions::Action::terminateSubactions",
 })

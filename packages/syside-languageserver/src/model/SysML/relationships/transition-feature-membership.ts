@@ -30,7 +30,7 @@ export type TransitionFeatureMembershipOptions = RelationshipOptionsBody<
     TransitionUsageMeta
 >;
 
-@metamodelOf(TransitionFeatureMembership)
+@metamodelOf(TransitionFeatureMembership.$type)
 export class TransitionFeatureMembershipMeta<
     T extends Transition = Transition,
 > extends FeatureMembershipMeta<T> {

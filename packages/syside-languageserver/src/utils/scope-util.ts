@@ -146,9 +146,9 @@ export function resolveContentInputs(
 ): { element?: ElementMeta; options: ContentsOptions } {
     const options = fillContentOptions(opts);
     let resolved: ElementMeta | undefined = undefined;
-    if (node && options.aliasResolver && node.is(Membership))
+    if (node && options.aliasResolver && node.is(Membership.$type))
         resolved = options.aliasResolver(node);
-    else if (node.is(Element)) resolved = node;
+    else if (node.is(Element.$type)) resolved = node;
 
     return {
         element: resolved,
@@ -166,7 +166,7 @@ export function collectRedefinitions<T>(
     redefinitions: Set<ElementMeta | T>
 ): void {
     const visitRedefinitions = (node: FeatureMeta): void => {
-        node.types(Redefinition).forEach((t) => {
+        node.types(Redefinition.$type).forEach((t) => {
             // only features can be redefined
             const f = t as FeatureMeta;
             if (redefinitions.has(f)) return;

@@ -109,9 +109,9 @@ export class DotFunction extends BuiltinFunction {
         // nothing to evaluate, everything is a number
         if (values instanceof RangeGenerator) return [];
 
-        if (!target.is(Type)) throw new Error("Cannot evaluate feature chain for non-type targets");
+        if (!target.is(Type.$type)) throw new Error("Cannot evaluate feature chain for non-type targets");
         return values
-            .filter((value): value is FeatureMeta => typeof value === "object" && value.is(Feature))
+            .filter((value): value is FeatureMeta => typeof value === "object" && value.is(Feature.$type))
             .flatMap((value) => {
                 const chaining = [value];
                 if (targetFeature.chainingFeatures.length > 0)

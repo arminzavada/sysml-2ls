@@ -28,11 +28,11 @@ type Keys<T> = keyof T;
 
 // non-AST types, i.e. operators and enums
 const NON_TYPES = new Set<string>([
-    ast.TransparentElement,
-    ast.FeatureRelationship,
-    ast.InlineExpression,
-    ast.NonOwnerType,
-    ast.TypeRelationship,
+    ast.TransparentElement.$type,
+    ast.FeatureRelationship.$type,
+    ast.InlineExpression.$type,
+    ast.NonOwnerType.$type,
+    ast.TypeRelationship.$type,
 ]);
 
 /**
@@ -57,7 +57,7 @@ class TypesIndex<S = SysMLTypeList> {
                 if (this.base.isSubtype(type, subtype)) {
                     (NON_TYPES.has(subtype)
                         ? unions
-                        : this.base.isSubtype(subtype, ast.Namespace)
+                        : this.base.isSubtype(subtype, ast.Namespace.$type)
                           ? types
                           : relationships
                     ).push(subtype);

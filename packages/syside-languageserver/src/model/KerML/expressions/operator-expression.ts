@@ -74,7 +74,7 @@ export interface OperatorExpressionOptions extends InvocationExpressionOptions {
     operator?: Operator;
 }
 
-@metamodelOf(OperatorExpression)
+@metamodelOf(OperatorExpression.$type)
 export class OperatorExpressionMeta extends InvocationExpressionMeta {
     /**
      * The escaped operator name used in this expression, i.e. `'+'`

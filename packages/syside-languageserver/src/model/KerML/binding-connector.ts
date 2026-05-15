@@ -24,7 +24,7 @@ export const ImplicitBindingConnectors = {
 
 export type BindingConnectorOptions = ConnectorOptions;
 
-@metamodelOf(BindingConnector, ImplicitBindingConnectors)
+@metamodelOf(BindingConnector.$type, ImplicitBindingConnectors)
 export class BindingConnectorMeta extends ConnectorMeta {
     override ast(): BindingConnector | undefined {
         return this._ast as BindingConnector;

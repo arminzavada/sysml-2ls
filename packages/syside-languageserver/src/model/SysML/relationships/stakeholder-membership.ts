@@ -23,7 +23,7 @@ import { PartUsageMeta } from "../part-usage.js";
 import { RequirementDefinitionMeta } from "../requirement-definition.js";
 import { RequirementUsageMeta } from "../requirement-usage.js";
 
-@metamodelOf(StakeholderMembership)
+@metamodelOf(StakeholderMembership.$type)
 export class StakeholderMembershipMeta<
     T extends PartUsageMeta = PartUsageMeta,
 > extends ParameterMembershipMeta<T> {

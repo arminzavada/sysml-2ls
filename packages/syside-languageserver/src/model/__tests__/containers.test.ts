@@ -42,7 +42,7 @@ describe("Containers", () => {
         });
 
         it("should add new elements and invalidate caches", () => {
-            container.get(Namespace);
+            container.get(Namespace.$type);
 
             expect(container["caches"].size).toBeGreaterThan(0);
             container.push(NamespaceMeta.create(id, document));
@@ -51,7 +51,7 @@ describe("Containers", () => {
         });
 
         it("should allow filtering by predicate", () => {
-            const predicate = (e: ElementMeta): boolean => e.is(Namespace);
+            const predicate = (e: ElementMeta): boolean => e.is(Namespace.$type);
             container.push(CommentMeta.create(id, document));
 
             expect(container.get(predicate)).toHaveLength(1);

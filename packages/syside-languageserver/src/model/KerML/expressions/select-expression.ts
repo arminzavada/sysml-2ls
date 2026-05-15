@@ -22,7 +22,7 @@ export interface SelectExpressionOptions extends OperatorExpressionOptions {
     operator?: never;
 }
 
-@metamodelOf(SelectExpression)
+@metamodelOf(SelectExpression.$type)
 export class SelectExpressionMeta extends OperatorExpressionMeta {
     override ast(): SelectExpression | undefined {
         return this._ast as SelectExpression;

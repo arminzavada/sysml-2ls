@@ -29,7 +29,7 @@ export interface MembershipExposeMeta<T extends MembershipMeta = MembershipMeta>
     get importsAll(): boolean;
 }
 
-@metamodelOf(MembershipExpose)
+@metamodelOf(MembershipExpose.$type)
 @mix(ExposeMeta, MembershipImportMeta)
 // eslint-disable-next-line unused-imports/no-unused-vars
 export class MembershipExposeMeta<T extends MembershipMeta = MembershipMeta> {

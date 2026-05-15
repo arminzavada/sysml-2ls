@@ -20,7 +20,7 @@ import { PartDefinitionMeta, PartDefinitionOptions } from "./part-definition.js"
 
 export type RenderingDefinitionOptions = PartDefinitionOptions;
 
-@metamodelOf(RenderingDefinition, {
+@metamodelOf(RenderingDefinition.$type, {
     base: "Views::Rendering",
 })
 export class RenderingDefinitionMeta extends PartDefinitionMeta {

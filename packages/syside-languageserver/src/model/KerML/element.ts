@@ -55,7 +55,7 @@ export type ElementParts = (readonly [string, readonly ElementMeta[]])[];
 export function namedMembership(
     member: MembershipMeta | MembershipImportMeta
 ): MembershipMeta | undefined {
-    return member.is(MembershipImport) ? member.element() : member;
+    return member.is(MembershipImport.$type) ? member.element() : member;
 }
 
 export type LazyMetaclass = LazyGetter<MetadataFeatureMeta | undefined>;
@@ -86,7 +86,7 @@ type SwappedEdge<T extends RelationshipMeta, V extends ElementMeta> = T &
 
 type CleanupCallback = (() => void) & { owner: ElementMeta };
 
-@metamodelOf(Element, "abstract")
+@metamodelOf(Element.$type, "abstract")
 export abstract class ElementMeta extends BasicMetamodel<Element> {
     private static readonly CleanupToken = {};
 
@@ -254,7 +254,7 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
         const old = this.name;
         this.updateName(this._name, name);
         const parent = this.parent();
-        if (parent?.is(Membership) && parent.name === old && parent.shortName === this.shortName)
+        if (parent?.is(Membership.$type) && parent.name === old && parent.shortName === this.shortName)
             parent.updateName(parent._name, name);
     }
 
@@ -294,7 +294,7 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
         const old = this.shortName;
         this.updateName(this._shortName, name);
         const parent = this.parent();
-        if (parent?.is(Membership) && parent.shortName === old && parent.name === this.name)
+        if (parent?.is(Membership.$type) && parent.shortName === old && parent.name === this.name)
             parent.updateName(parent._shortName, name);
     }
 
@@ -373,7 +373,7 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
         current: [ElementMeta, ElementMeta] | undefined
     ): void {
         const oldParent = previous?.[0];
-        if (oldParent?.is(Membership)) {
+        if (oldParent?.is(Membership.$type)) {
             const oldOwner = previous?.[1] as ElementMeta;
             if (oldParent.name) oldOwner.removeLookupMemberByName(oldParent, oldParent.name);
             if (oldParent.shortName)
@@ -382,7 +382,7 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
 
         const currentParent = current?.[0];
         const currentOwner = current?.[1];
-        if (currentParent?.is(Membership)) currentOwner?.addLookupMember(currentParent);
+        if (currentParent?.is(Membership.$type)) currentOwner?.addLookupMember(currentParent);
     }
 
     /**
@@ -423,7 +423,7 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
 
         if (name.sanitized && name.sanitized.length > 0) {
             const membership = this.parent();
-            if (owner && !owner._memberLookup.has(name.sanitized) && membership?.is(Membership)) {
+            if (owner && !owner._memberLookup.has(name.sanitized) && membership?.is(Membership.$type)) {
                 owner._memberLookup.set(name.sanitized, membership);
             }
         }
