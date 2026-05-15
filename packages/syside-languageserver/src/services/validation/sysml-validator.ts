@@ -164,6 +164,17 @@ export class SysMLValidator extends KerMLValidator {
     // validateReferenceUsageIsReference - implicitly ensured by the model
     // validateUsageNonVariationMembership - duplicate with validateVariantMembershipOwningNamespace
 
+    @validateSysML(ast.Usage.$type)
+    validateUsageOwningType(node: UsageMeta, accept: ModelValidationAcceptor): void {
+        const owningType = node.owningType;
+        if (owningType && !owningType.isAny(ast.Definition.$type, ast.Usage.$type)) {
+            accept("error", "The owningType of a Usage must be a Definition or a Usage.", {
+                element: node,
+                code: "validateUsageOwningType",
+            });
+        }
+    }
+
     @validateSysML(ast.VariantMembership.$type)
     validateVariantMembershipOwningNamespace(
         node: VariantMembershipMeta,

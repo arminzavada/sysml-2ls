@@ -136,7 +136,7 @@ describe.each([
 });
 
 describe("Usage validation", () => {
-    test.skip("Usages owned by KerML types trigger validation", () => {
+    test("Usages owned by KerML types trigger validation", () => {
         const doc = emptyDocument();
         const id = basicIdProvider();
 
