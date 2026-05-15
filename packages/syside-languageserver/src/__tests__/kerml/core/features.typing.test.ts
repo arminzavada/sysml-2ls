@@ -26,7 +26,7 @@ import { Feature, FeatureTyping } from "../../../generated/ast.js";
 test.concurrent.each(["typed by", ":"])(
     "feature typings can be parsed with '%s'",
     async (token: string) => {
-        return expect(`
+        await expect(`
         feature customer;
         class Person;
         specialization t typing customer ${token} Person {
@@ -58,7 +58,7 @@ test.concurrent.each(["typed by", ":"])(
 test.concurrent.each(["specialization", ""])(
     "feature typing without identification can be parsed with '%s'",
     async (prefix: string) => {
-        return expect(`
+        await expect(`
         feature customer;
         class Person;
         ${prefix} typing customer : Person;

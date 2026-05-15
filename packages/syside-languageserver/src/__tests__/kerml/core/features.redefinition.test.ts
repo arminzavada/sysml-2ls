@@ -28,7 +28,7 @@ import { Visibility } from "../../../utils/scope-util.js";
 test.concurrent.each(["redefines", ":>>"])(
     "redefinition can be parsed with '%s'",
     async (token: string) => {
-        return expect(`
+        await expect(`
         feature a;
         feature b;
         specialization Redef redefinition a ${token} b {
@@ -60,7 +60,7 @@ test.concurrent.each(["redefines", ":>>"])(
 test.concurrent.each(["specialization", ""])(
     "redefinition without identification can be parsed with '%s'",
     async (prefix: string) => {
-        return expect(`
+        await expect(`
         feature a;
         feature b;
         ${prefix} redefinition a :>> b;

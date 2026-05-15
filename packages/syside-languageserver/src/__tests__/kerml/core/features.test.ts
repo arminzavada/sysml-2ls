@@ -70,7 +70,7 @@ test.concurrent.each([
         ],
     };
 
-    return matcher.toParseKerML(expected);
+    await matcher.toParseKerML(expected);
 });
 
 test("features without subsetting, redefinition and conjugation relationships subset Base::things", async () => {
@@ -118,13 +118,13 @@ test.concurrent.each([
 ])("feature prefix '%s' is parsed", async (prefix: string, property: string, value: unknown) => {
     const result = await parseKerML(prefix + " feature a;");
     expect(result).toMatchObject(NO_ERRORS);
-    return expect(result.value.children[0].target?.$meta).toMatchObject({
+    await expect(result.value.children[0].target?.$meta).toMatchObject({
         qualifiedName: "a",
         [property]: value,
     });
 });
 
-test.failing("conjugating feature with a non-feature issues a warning", async () => {
+test.fails("conjugating feature with a non-feature issues a warning", async () => {
     return expect(`
     classifier A;
     feature a ~ A;`).toParseKerML({}, { buildOptions: { validationChecks: "all" } });
@@ -194,7 +194,7 @@ test.concurrent.each([
 ])(
     "multiplicity keywords '%s' are parsed",
     async (keyword: string, nonunique: boolean, ordered: boolean) => {
-        return expect(`
+        await expect(`
     datatype Real;
     feature readings : Real [*] ${keyword};`).toParseKerML({
             children: [
@@ -227,7 +227,7 @@ test.concurrent.each([
     ["chains", FeatureChaining],
     ["inverse of", FeatureInverting],
 ])("feature relationships '%s' are parsed", async (relationship: string, type: string) => {
-    return expect(`
+    await expect(`
     feature a {
         feature c;
     }

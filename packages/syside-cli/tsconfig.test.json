@@ -4,8 +4,8 @@
         "noEmit": true,
         "rootDir": "src",
         "types": [
-            "jest",
-            "node"
+            "node",
+            "vitest/globals"
         ]
     },
     "references": [

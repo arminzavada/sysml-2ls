@@ -16,6 +16,7 @@
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 
+import { vi } from "vitest";
 import { Duplex } from "stream";
 import {
     CancellationTokenSource,
@@ -93,8 +94,8 @@ class TestClientExtender extends SysMLClientExtender {
         this.commands.push(command);
     }
 
-    selectStdlibPath = jest.fn(() => undefined);
-    configurationRequest = jest.fn((): DeepPartial<SysMLConfig> => {
+    selectStdlibPath = vi.fn(() => undefined);
+    configurationRequest = vi.fn((): DeepPartial<SysMLConfig> => {
         return {
             ...TEST_SERVER_OPTIONS,
             // want to check that the workspace manager attempts to find the
@@ -104,9 +105,9 @@ class TestClientExtender extends SysMLClientExtender {
         };
     });
 
-    loadConfig = jest.fn();
-    saveConfig = jest.fn();
-    maybeUpdateDownloadedStdlib = jest.fn();
+    loadConfig = vi.fn();
+    saveConfig = vi.fn();
+    maybeUpdateDownloadedStdlib = vi.fn();
 }
 
 interface Services {

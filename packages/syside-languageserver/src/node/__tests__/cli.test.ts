@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi } from "vitest";
 import { ArgParser } from "../arg-parser.js";
 import { createArgParser, DefaultNodeLauncherOptions, NodeLauncherOptions } from "../cli.js";
 
@@ -49,8 +50,8 @@ describe("Node CLI", () => {
         "--clientProcessId id",
     ])("should fail on invalid input: %s", (args) => {
         parser.command.configureOutput({
-            writeErr: jest.fn(),
-            writeOut: jest.fn(),
+            writeErr: vi.fn(),
+            writeOut: vi.fn(),
         });
         parser.command.exitOverride();
         expect(() => parse(args)).toThrow();

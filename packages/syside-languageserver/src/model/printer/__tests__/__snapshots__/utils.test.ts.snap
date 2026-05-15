@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`keywords should have KerML keywords collected 1`] = `
+exports[`keywords > should have KerML keywords collected 1`] = `
 Set {
   ":",
   "typed",
@@ -151,7 +151,7 @@ Set {
 }
 `;
 
-exports[`keywords should have SysML keywords collected 1`] = `
+exports[`keywords > should have SysML keywords collected 1`] = `
 Set {
   ":",
   "defined",

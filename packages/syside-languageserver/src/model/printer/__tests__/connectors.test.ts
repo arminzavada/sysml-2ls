@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import { DeepPartial } from "langium";
 import { SubtypeKeys } from "../../../services/index.js";
 import { PrinterTestContext, expectPrinted as expectPrintedAs } from "./utils.js";
@@ -36,7 +37,7 @@ describe("connectors", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): jest.JestMatchers<Promise<string>> => {
+    ): Assertion<Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "kerml",
@@ -122,7 +123,7 @@ describe.each([
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): jest.JestMatchers<Promise<string>> => {
+    ): Assertion<Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang,
@@ -194,15 +195,15 @@ describe.each([
                 node: successionType,
                 options: { lineWidth: 40 },
             }
-        ).resolves.toMatchInlineSnapshot(`
-"succession flow 'some long flow name'
+        ).resolves.toEqual(
+            `succession flow 'some long flow name'
     of 'long item feature name'
         : 'some item feature typing'
         [1] ordered nonunique = 1
     from 'long source end name'
     to 'long destination end name' {}
-"
-`);
+`
+        );
     });
 });
 
@@ -210,7 +211,7 @@ describe("messages", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): jest.JestMatchers<Promise<string>> => {
+    ): Assertion<Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
@@ -245,7 +246,7 @@ describe("binding connectors as usage", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): jest.JestMatchers<Promise<string>> => {
+    ): Assertion<Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
@@ -304,7 +305,7 @@ describe.each([
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): jest.JestMatchers<Promise<string>> => {
+    ): Assertion<Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
@@ -363,7 +364,7 @@ describe("interface usage", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): jest.JestMatchers<Promise<string>> => {
+    ): Assertion<Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",

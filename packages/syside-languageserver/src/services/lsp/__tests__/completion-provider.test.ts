@@ -312,7 +312,7 @@ test.concurrent.each(test_table)(
     executeCompletionTestCase
 );
 
-test.failing.each(failing_test_table)(
+test.fails.each(failing_test_table)(
     "invoked completion for label '$expected.label'",
     executeCompletionTestCase
 );

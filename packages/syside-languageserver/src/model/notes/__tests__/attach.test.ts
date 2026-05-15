@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import { DeepPartial } from "langium";
 import {
     Class,
@@ -35,7 +36,7 @@ async function expectNotes(
         node: SysMLType;
         index?: number;
     }
-): Promise<jest.JestMatchers<TextComment[] | undefined>> {
+): Promise<Assertion<TextComment[] | undefined>> {
     const lang = options.lang ?? "kerml";
     const doc = await (lang === "kerml" ? parseKerML : parseSysML)(text, {
         document: true,

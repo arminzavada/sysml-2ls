@@ -51,7 +51,7 @@ test("feature inverting can be parsed", async () => {
 test.concurrent.each(["inverting", ""])(
     "feature inverting without identification can be parsed with '%s'",
     async (prefix: string) => {
-        return expect(`
+        await expect(`
         classifier Person {
             feature child: Person;
             feature parent: Person;

@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import { DeepPartial } from "langium";
 import {
     Namespace,
@@ -111,7 +112,7 @@ describe("transition usages", () => {
         const expectPrintedAs = (
             text: string,
             options: DeepPartial<Omit<PrinterTestContext, "lang" | "node">> = {}
-        ): jest.JestMatchers<Promise<string>> => {
+        ): Assertion<Promise<string>> => {
             return expectPrinted(`action { ${text} }`, {
                 lang: "sysml",
                 node: TransitionUsage,
@@ -189,7 +190,7 @@ then some_long_then_succession_here {
         const expectPrintedAs = (
             text: string,
             options: DeepPartial<Omit<PrinterTestContext, "lang" | "node">> = {}
-        ): jest.JestMatchers<Promise<string>> => {
+        ): Assertion<Promise<string>> => {
             return expectPrinted(`state { ${text} }`, {
                 lang: "sysml",
                 node: TransitionUsage,
@@ -361,7 +362,7 @@ describe("succession actions", () => {
     const expectPrintedAs = (
         text: string,
         options: DeepPartial<Omit<PrinterTestContext, "lang" | "node">> = {}
-    ): jest.JestMatchers<Promise<string>> => {
+    ): Assertion<Promise<string>> => {
         return expectPrinted(text, {
             lang: "sysml",
             node: Namespace,

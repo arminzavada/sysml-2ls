@@ -29,7 +29,7 @@ import { SysMLBuildOptions } from "../services/shared/workspace/document-builder
 import { makeLinkingScope, makeScope, SysMLScope } from "../utils/scopes.js";
 import { SysMLConfig } from "../services/config.js";
 import { Visibility } from "../utils/scope-util.js";
-import { expect } from "@jest/globals";
+import { expect } from "vitest";
 import { BasicMetamodel, PrintRange, RelationshipMeta, attachNotes } from "../model/index.js";
 import { SysMLType, SysMLInterface } from "../services/index.js";
 

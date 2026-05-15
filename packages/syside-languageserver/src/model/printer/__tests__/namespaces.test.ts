@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import {
     Type,
     Feature,
@@ -45,7 +46,7 @@ import { expectPrinted as expectPrintedAs } from "./utils.js";
 const expectPrinted = (
     text: string,
     context?: Partial<Parameters<typeof expectPrintedAs>[1]>
-): jest.JestMatchers<Promise<string>> => {
+): Assertion<Promise<string>> => {
     return expectPrintedAs(text, {
         ...context,
         lang: context?.lang ?? "kerml",

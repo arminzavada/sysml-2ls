@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi, ExpectStatic } from "vitest";
 import { MarkupContent, Position, TextDocumentIdentifier } from "vscode-languageserver";
 import { parseSysML, services } from "../../../testing/index.js";
 
@@ -34,8 +35,8 @@ const sysMLExampleRaw = `part def Camera {
 type StringMatch =
     | string
     | RegExp
-    | ReturnType<jest.Expect["stringContaining"]>
-    | ReturnType<jest.Expect["stringMatching"]>;
+    | ReturnType<ExpectStatic["stringContaining"]>
+    | ReturnType<ExpectStatic["stringMatching"]>;
 
 const testHover = async (
     position: Position,
@@ -143,7 +144,7 @@ describe("SysMLHoverProvider", () => {
         });
 
         const error = console.error;
-        const errorMock = jest.fn();
+        const errorMock = vi.fn();
         console.error = errorMock;
         await testHover(
             {

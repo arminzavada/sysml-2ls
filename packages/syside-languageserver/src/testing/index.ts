@@ -15,5 +15,5 @@
  ********************************************************************************/
 
 export * from "./server-initialize-params.js";
-export * from "./setup-jest.js";
+export * from "./setup-vitest.js";
 export * from "./utils.js";

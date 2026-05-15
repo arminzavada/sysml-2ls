@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi, Assertion } from "vitest";
 import { Diagnostic } from "vscode-languageserver";
 import {
     emptyDocument,
@@ -51,7 +52,7 @@ export function expectValidations(
     text: string,
     code: string | (string | number | undefined)[],
     buildOptions = BUILD_OPTIONS
-): jest.JestMatchers<Promise<Diagnostic[]>> {
+): Assertion<Promise<Diagnostic[]>> {
     return expect(
         parseKerML(text, { ...BUILD_OPTIONS, ...buildOptions }).then((result) => {
             expect(result.parserErrors).toHaveLength(0);
@@ -66,7 +67,7 @@ const Validator = services.KerML.validation.KerMLValidator;
 export function expectModelValidations(
     root: ElementMeta,
     code: string | (string | number | undefined)[]
-): jest.JestMatchers<ModelDiagnostic[]> {
+): Assertion<Promise<ModelDiagnostic[]>> {
     return expect(
         services.KerML.validation.DocumentValidator.validateModel(root, root.document).then(
             (ds) => {
@@ -78,7 +79,7 @@ export function expectModelValidations(
 }
 
 test("non-constructed elements with implied relationships trigger validation", () => {
-    const accept = jest.fn();
+    const accept = vi.fn();
     const doc = emptyDocument();
     const spec = SpecializationMeta.create(basicIdProvider(), doc, {
         isImplied: true,
@@ -151,7 +152,7 @@ describe("Duplicate member names", () => {
         ).resolves.toHaveLength(2);
     });
 
-    test.failing("duplicate inherited names issue a diagnostic", async () => {
+    test.fails("duplicate inherited names issue a diagnostic", async () => {
         return expectValidations(
             "class A { class B; } struct B :> A { struct B; }",
             "validateNamespaceDistinguishability"
@@ -159,14 +160,14 @@ describe("Duplicate member names", () => {
     });
 });
 
-test.failing("mixed specializations and conjugations trigger validation", () => {
+test.fails("mixed specializations and conjugations trigger validation", () => {
     return expectValidations(
         "feature A :> B ~ C;",
         "validateSpecializationSpecificNotConjugated"
     ).resolves.toHaveLength(1);
 });
 
-test.failing("multiple conjugations trigger validation", () => {
+test.fails("multiple conjugations trigger validation", () => {
     return expectValidations(
         "feature A ~ B ~ C;",
         "validateTypeAtMostOneConjugator"
@@ -348,7 +349,7 @@ describe("Subsettings", () => {
         ).resolves.toHaveLength(1);
     });
 
-    test.failing(
+    test.fails(
         "redefining features with incompatible directions triggers validation ",
         async () => {
             return expectValidations(

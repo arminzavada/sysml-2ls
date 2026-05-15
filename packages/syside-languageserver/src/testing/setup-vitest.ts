@@ -16,34 +16,28 @@
 
 /* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { expect } from "@jest/globals";
-import type { MatcherContext } from "expect";
+import { expect } from "vitest";
+import { getObjectSubset } from "@vitest/expect";
+import type { MatcherState, MatcherHintOptions } from "@vitest/expect";
 import type { IRecognitionException, ILexingError } from "chevrotain";
 import { Namespace } from "../generated/ast.js";
 import { parseKerML, ParseResult, parseSysML, TEST_BUILD_OPTIONS } from "./utils.js";
 import { isLinkingError, stream } from "langium";
-import { getObjectSubset } from "@jest/expect-utils";
-import { MatcherHintOptions, printWithType } from "jest-matcher-utils";
 import chalk from "chalk";
 import { Diagnostic } from "vscode-languageserver";
 import { SysMLBuildOptions } from "../services/shared/workspace/document-builder.js";
 import { isJSONConvertible, JSONType, stringify } from "../utils/common.js";
-import { Context } from "jest-snapshot";
 
-// Omit colon and one or more spaces, so can call getLabelPrinter.
 const EXPECTED_LABEL = "Expected";
 const RECEIVED_LABEL = "Received";
 
 export const EXPECTED_COLOR = chalk.green;
 export const RECEIVED_COLOR = chalk.red;
 
-const SPACE_SYMBOL = "\u{00B7}"; // middle dot
+const SPACE_SYMBOL = "\u{00B7}";
 
-// The optional property of matcher context is true if undefined.
 const isExpand = (expand?: boolean): boolean => expand !== false;
 
-// Instead of inverse highlight which now implies a change,
-// replace common spaces with middle dot at the end of any line.
 const replaceTrailingSpaces = (text: string): string =>
     text.replace(/\s+$/gm, (spaces) => SPACE_SYMBOL.repeat(spaces.length));
 
@@ -51,6 +45,20 @@ export const printReceived = (object: unknown): string =>
     RECEIVED_COLOR(replaceTrailingSpaces(stringify(object)));
 export const printExpected = (value: unknown): string =>
     EXPECTED_COLOR(replaceTrailingSpaces(stringify(value)));
+
+function printWithType(name: string, value: unknown, print: (v: unknown) => string): string {
+    const type =
+        value === null
+            ? "null"
+            : Array.isArray(value)
+              ? "array"
+              : typeof value;
+    return `${name} has type:  ${type}\n${name} has value: ${print(value)}`;
+}
+
+function matcherErrorMessage(hint: string, generic: string, specific: string): string {
+    return `${hint}\n\n${chalk.bold("Matcher error")}: ${generic}\n\n${specific}`;
+}
 
 interface ErrorParameters {
     parserErrors?: IRecognitionException[] | object[];
@@ -123,10 +131,10 @@ export function sanitizeTree(
         const meta = (node as any).$meta;
         // TODO: add more relevant properties used by tests
         const cleanMeta: Record<string, any> = {
-            language: meta.language, // textual representations
-            qualifiedName: meta.qualifiedName, // named elements
-            visibility: meta.visibility, // visible elements
-            to: sanitizeTree(meta.to, cache, includeMeta), // references
+            language: meta.language,
+            qualifiedName: meta.qualifiedName,
+            visibility: meta.visibility,
+            to: sanitizeTree(meta.to, cache, includeMeta),
             $type: meta.nodeType(),
         };
         Object.keys(cleanMeta).forEach(
@@ -138,11 +146,9 @@ export function sanitizeTree(
     for (const key in node) {
         const value = (node as Record<string, any>)[key];
         if (key === "_element") {
-            // for relationships
             o["element"] = sanitizeTree(value, cache, includeMeta);
             continue;
         }
-        // skip over any Langium specific entries
         if (key.startsWith("$") || key.startsWith("_")) continue;
 
         if (Array.isArray(value)) {
@@ -167,17 +173,16 @@ export function sanitizeTree(
 }
 
 async function parses(
-    this: Context,
+    this: MatcherState,
     suffix: string,
     fn: (text: string, options?: SysMLBuildOptions) => Promise<ParseResult>,
-    context: MatcherContext,
+    context: MatcherState,
     received: any,
     value: DeepPartial<Namespace> | undefined,
     { parserErrors, lexerErrors, diagnostics, buildOptions }: MatchOptions
 ): Promise<CustomMatchResult> {
-    // the body is modified from https://github.com/facebook/jest/blob/a20bd2c31e126fc998c2407cfc6c1ecf39ead709/packages/expect/src/matchers.ts#L872-L923
-    // there doesn't seem to be a way to reuse the matchers, also jest may hang if a test fails due to infinite recursion in
-    // printComplexValues -> printObjectProperties -> printer -> ...
+    // Body adapted from jest's `toEqual` matcher; we can't reuse it directly
+    // because the printer recurses infinitely on AST cycles.
     const matcherName = "toParse" + suffix;
     const options: MatcherHintOptions = {
         isNot: context.isNot,
@@ -186,7 +191,7 @@ async function parses(
 
     if (typeof value === "object" && value === null) {
         throw new Error(
-            context.utils.matcherErrorMessage(
+            matcherErrorMessage(
                 context.utils.matcherHint(matcherName, undefined, undefined, options),
                 `${context.utils.EXPECTED_COLOR(
                     "expected"
@@ -198,7 +203,7 @@ async function parses(
 
     const makeError = (): Error => {
         return new Error(
-            context.utils.matcherErrorMessage(
+            matcherErrorMessage(
                 context.utils.matcherHint(matcherName, undefined, undefined, options),
                 `${context.utils.RECEIVED_COLOR("received")} value must be a string`,
                 printWithType("Received", received, printReceived)
@@ -251,24 +256,29 @@ async function parses(
               (stringify(expected) !== stringify(result)
                   ? `\nReceived:     ${printReceived(result)}`
                   : "")
-        : (): string =>
-              // eslint-disable-next-line prefer-template
-              context.utils.matcherHint(matcherName, undefined, undefined, options) +
-              "\n\n" +
-              context.utils.printDiffOrStringify(
-                  expected,
-                  getObjectSubset(result, expected),
-                  EXPECTED_LABEL,
-                  RECEIVED_LABEL,
-                  isExpand(context.expand)
+        : (): string => {
+              const subset = getObjectSubset(result, expected, [
+                  context.utils.iterableEquality,
+                  context.utils.subsetEquality,
+              ]);
+              return (
+                  // eslint-disable-next-line prefer-template
+                  context.utils.matcherHint(matcherName, undefined, undefined, options) +
+                  "\n\n" +
+                  (context.utils.printDiffOrStringify(expected, subset, {
+                      aAnnotation: EXPECTED_LABEL,
+                      bAnnotation: RECEIVED_LABEL,
+                      expand: isExpand(context.expand),
+                  }) ?? "")
               );
+          };
 
     return { message, pass };
 }
 
-// TODO: remove object and require Namespace instead?
 expect.extend({
     async toParseKerML(
+        this: MatcherState,
         received: any,
         value: DeepPartial<Namespace> | object,
         {
@@ -278,8 +288,6 @@ expect.extend({
             buildOptions = TEST_BUILD_OPTIONS,
         }: MatchOptions = {}
     ): Promise<CustomMatchResult> {
-        // @ts-expect-error missing `snapshotState`
-        // https://jestjs.io/docs/expect#custom-snapshot-matchers
         return parses.call(this, "KerML", parseKerML, this, received, value, {
             parserErrors,
             lexerErrors,
@@ -289,6 +297,7 @@ expect.extend({
     },
 
     async toParseSysML(
+        this: MatcherState,
         received: any,
         value: DeepPartial<Namespace> | object,
         {
@@ -298,7 +307,6 @@ expect.extend({
             buildOptions = TEST_BUILD_OPTIONS,
         }: MatchOptions = {}
     ): Promise<CustomMatchResult> {
-        // @ts-expect-error missing `snapshotState`
         return parses.call(this, "SysML", parseSysML, this, received, value, {
             parserErrors,
             lexerErrors,
@@ -319,18 +327,15 @@ export type DeepPartial<T> = T[keyof T] extends Function
     : {
           -readonly [P in keyof T]?: DeepPartial<T[P]>;
       };
+
 interface CustomMatchers<R = unknown> {
     toParseKerML(ast?: DeepPartial<Namespace> | object, options?: MatchOptions): R;
     toParseSysML(ast?: DeepPartial<Namespace> | object, options?: MatchOptions): R;
 }
 
-declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace jest {
-        interface Expect extends CustomMatchers {}
-        interface Matchers<R> extends CustomMatchers<R> {}
-        interface InverseAsymmetricMatchers extends CustomMatchers {}
-    }
+declare module "vitest" {
+    interface Assertion<T = any> extends CustomMatchers<T> {}
+    interface AsymmetricMatchersContaining extends CustomMatchers {}
 }
 
 /**

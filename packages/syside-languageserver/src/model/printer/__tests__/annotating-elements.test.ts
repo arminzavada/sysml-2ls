@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import { DeepPartial } from "langium";
 import { PrinterTestContext, printKerMLElement, printSysMLElement } from "./utils.js";
 import {
@@ -29,7 +30,7 @@ describe("comments", () => {
     const expectPrinted = async (
         text: string,
         context?: DeepPartial<PrinterTestContext>
-    ): Promise<jest.JestMatchers<string>> => {
+    ): Promise<Assertion<string>> => {
         const e = await parsedNode(text, { lang: "kerml", node: Comment });
         return expect(printKerMLElement(e.$meta, context));
     };
@@ -169,7 +170,7 @@ describe("documentation", () => {
     const expectPrinted = async (
         text: string,
         context?: DeepPartial<PrinterTestContext>
-    ): Promise<jest.JestMatchers<string>> => {
+    ): Promise<Assertion<string>> => {
         const e = await parsedNode(text, { lang: "kerml", node: Documentation });
         return expect(printKerMLElement(e.$meta, context));
     };
@@ -223,7 +224,7 @@ describe("textual representations", () => {
     const expectPrinted = async (
         text: string,
         context?: DeepPartial<PrinterTestContext>
-    ): Promise<jest.JestMatchers<string>> => {
+    ): Promise<Assertion<string>> => {
         const e = await parsedNode(text, { lang: "kerml", node: TextualRepresentation });
         return expect(printKerMLElement(e.$meta, context));
     };
@@ -339,7 +340,7 @@ describe("metadata features", () => {
     const expectPrinted = async (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { lang?: "kerml" | "sysml" }
-    ): Promise<jest.JestMatchers<string>> => {
+    ): Promise<Assertion<string>> => {
         const lang = context?.lang ?? "kerml";
         const node = lang === "kerml" ? MetadataFeature : MetadataUsage;
         const e = await parsedNode(text, { lang, node });

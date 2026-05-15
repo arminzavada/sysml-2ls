@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import {
     emptyDocument,
     ParseOptions,
@@ -62,7 +63,7 @@ function expectValidations(
     text: string,
     code: string | (string | number | undefined)[],
     buildOptions = BUILD_OPTIONS
-): jest.JestMatchers<Promise<Diagnostic[]>> {
+): Assertion<Promise<Diagnostic[]>> {
     return expect(
         parseSysML(text, { ...BUILD_OPTIONS, ...buildOptions }).then((result) => {
             expect(result.parserErrors).toHaveLength(0);
@@ -75,7 +76,7 @@ function expectValidations(
 function expectModelValidations(
     root: ElementMeta,
     code: string | (string | number | undefined)[]
-): jest.JestMatchers<ModelDiagnostic[]> {
+): Assertion<Promise<ModelDiagnostic[]>> {
     return expect(
         services.SysML.validation.DocumentValidator.validateModel(root, root.document).then(
             (ds) => {
@@ -88,7 +89,7 @@ function expectModelValidations(
 
 function expectOwningType<
     T extends { create(id: ElementIDProvider, doc: LangiumDocument): BasicMetamodel | undefined },
->(meta: T, code: string): jest.JestMatchers<ModelDiagnostic[]> {
+>(meta: T, code: string): Assertion<Promise<ModelDiagnostic[]>> {
     const doc = emptyDocument();
     const id = basicIdProvider();
 

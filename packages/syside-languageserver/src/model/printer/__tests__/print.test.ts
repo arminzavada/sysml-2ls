@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi, Assertion } from "vitest";
 import { LeafCstNode } from "langium";
 import { printDoc, text } from "../../../utils/index.js";
 import { LiteralInfinityMeta, NullExpressionMeta } from "../../KerML/index.js";
@@ -31,7 +32,7 @@ describe("notes", () => {
     let warn: typeof console.warn;
     beforeEach(() => {
         warn = console.warn;
-        console.warn = jest.fn();
+        console.warn = vi.fn();
     });
     afterEach(() => {
         console.warn = warn;
@@ -345,7 +346,7 @@ part P {}\n`
 });
 
 describe("printing ranges", () => {
-    const expectPrintedRange = (text: string): jest.JestMatchers<Promise<string>> => {
+    const expectPrintedRange = (text: string): Assertion<Promise<string>> => {
         return expect(
             getPrintRange(text, { lang: "sysml" }).then((range) => {
                 expect(range).toBeDefined();

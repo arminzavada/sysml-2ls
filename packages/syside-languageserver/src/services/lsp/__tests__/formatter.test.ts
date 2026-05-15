@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import { FormattingOptions, Range, TextDocumentIdentifier } from "vscode-languageserver";
 import { SysMLFormatter } from "../formatter.js";
 import { TextDocument, TextEdit } from "vscode-languageserver-textdocument";
@@ -80,7 +81,7 @@ const DefaultFormattingOptions: FormattingOptions = {
 function expectFormatted(
     text: string,
     options: DeepPartial<TestFormattingOptions> = DefaultFormattingOptions
-): jest.JestMatchers<Promise<string>> {
+): Assertion<Promise<string>> {
     return expect(
         getDocument(text, options)
             .then(async (document) => ({
@@ -109,7 +110,7 @@ async function formatDocumentRange(
 function expectFormattedRange(
     source: string,
     options: DeepPartial<TestFormattingOptions> = DefaultFormattingOptions
-): jest.JestMatchers<Promise<string>> {
+): Assertion<Promise<string>> {
     const { text, range } = getRange(source);
     return expect(
         getDocument(text, options)
@@ -137,7 +138,7 @@ async function formatDocumentOnType(
 function expectFormattedOnType(
     source: string,
     options: DeepPartial<TestFormattingOptions> = DefaultFormattingOptions
-): jest.JestMatchers<Promise<string>> {
+): Assertion<Promise<string>> {
     const { text, range } = getRange(source);
     return expect(
         getDocument(text, options)

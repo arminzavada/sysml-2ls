@@ -49,7 +49,7 @@ test("type featuring can be parsed", async () => {
 test.each(["of", ""])(
     "type featuring without identification can be parsed with '%s'",
     async (token: string) => {
-        return expect(`
+        await expect(`
         feature engine;
         feature Vehicle;
         featuring ${token} engine by Vehicle;

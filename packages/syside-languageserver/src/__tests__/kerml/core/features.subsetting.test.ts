@@ -20,7 +20,7 @@ import { Subsetting } from "../../../generated/ast.js";
 test.concurrent.each(["subsets", ":>"])(
     "subsetting can be parsed with '%s'",
     async (token: string) => {
-        return expect(`
+        await expect(`
         feature parent;
         feature person;
         specialization Sub subset parent ${token} person {
@@ -52,7 +52,7 @@ test.concurrent.each(["subsets", ":>"])(
 test.concurrent.each(["specialization", ""])(
     "subsetting without identification can be parsed with '%s'",
     async (prefix: string) => {
-        return expect(`
+        await expect(`
         feature parent;
         feature person;
         ${prefix} subset parent :> person;

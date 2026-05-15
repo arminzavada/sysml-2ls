@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi } from "vitest";
 import { createSysMLServices } from "../../../sysml-module.js";
 import { SysMLNodeFileSystem } from "../../../node/node-file-system-provider.js";
 import { ExtensionManager } from "../extension-manager.js";
@@ -21,9 +22,6 @@ import { URI } from "vscode-uri";
 import path from "path";
 import { fileURLToPath } from "node:url";
 
-// ESM equivalent of CommonJS' `__dirname`. Defined with a non-reserved name
-// so it doesn't collide with the CJS `__dirname` global re-injected by SWC
-// when running under Jest (`@swc/jest`).
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const SAMPLES_DIR = path.join(currentDir, "samples");
 const SAMPLES = [
@@ -39,7 +37,7 @@ describe("Extension manager", () => {
         async (...uris: URI[]) => {
             const manager = new ExtensionManager(shared);
 
-            const mock = jest.fn();
+            const mock = vi.fn();
             manager["loadScript"] = mock;
 
             await manager.loadScripts(uris);
@@ -51,7 +49,7 @@ describe("Extension manager", () => {
     it("should attempt to load scripts from a directory", async () => {
         const manager = new ExtensionManager(shared);
 
-        const mock = jest.fn();
+        const mock = vi.fn();
         manager["loadScript"] = mock;
 
         await manager.loadScripts(URI.file(SAMPLES_DIR));
@@ -62,7 +60,7 @@ describe("Extension manager", () => {
     it("should call activation method of the loaded script", async () => {
         const manager = new ExtensionManager(shared);
         const module = await import(SAMPLES[0].fsPath);
-        const mock = jest.fn();
+        const mock = vi.fn();
         module.setMock(mock);
 
         await manager.loadScripts(SAMPLES[0]);

@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi } from "vitest";
 import { LanguageClientExtension } from "../api.js";
 
 describe("Language client extension", () => {
@@ -21,14 +22,14 @@ describe("Language client extension", () => {
 
     it("should assert true for objects with all keys implemented", () => {
         expect(
-            LanguageClientExtension.is(Object.fromEntries(keys.map((k) => [k, jest.fn()])))
+            LanguageClientExtension.is(Object.fromEntries(keys.map((k) => [k, vi.fn()])))
         ).toBeTruthy();
     });
 
     it.each(keys)("should assert false for objects with '%s' missing", (key) => {
         expect(
             LanguageClientExtension.is(
-                Object.fromEntries(keys.filter((k) => k !== key).map((k) => [k, jest.fn()]))
+                Object.fromEntries(keys.filter((k) => k !== key).map((k) => [k, vi.fn()]))
             )
         ).toBeFalsy();
     });

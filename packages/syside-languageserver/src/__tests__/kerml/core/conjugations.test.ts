@@ -39,14 +39,14 @@ test("conjugation can be parsed", async () => {
 test.each(["conjugates", "~"])(
     "conjugation may be omitted without identifiers with '%s'",
     async (token: string) => {
-        return expect(Common + `conjugate Conjugate1 ${token} Original;`).toParseKerML();
+        await expect(Common + `conjugate Conjugate1 ${token} Original;`).toParseKerML();
     }
 );
 
 test.each(["conjugates", "~"])(
     "type can declare owned conjugations with '%s'",
     async (token: string) => {
-        return expect(
+        await expect(
             parsedNode(
                 `class Original;
     class Conjugate1 ${token} Original;`,

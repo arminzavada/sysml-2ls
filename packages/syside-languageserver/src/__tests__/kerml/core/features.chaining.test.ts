@@ -41,7 +41,7 @@ test("feature chains allow qualified feature names in between chain parts", asyn
     });
 });
 
-test.failing("non-feature name in a chain fails to parse", async () => {
+test.fails("non-feature name in a chain fails to parse", async () => {
     return expect(`
     class A {
         class a {

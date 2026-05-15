@@ -29,7 +29,7 @@
         "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
         "build": "tsc",
         "watch": "tsc --watch",
-        "test": "jest --passWithNoTests",
+        "test": "vitest run --passWithNoTests",
         "prepack": "pnpm clean && pnpm build",
         "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
         "index": "node ../../scripts/generate-index.mjs src"

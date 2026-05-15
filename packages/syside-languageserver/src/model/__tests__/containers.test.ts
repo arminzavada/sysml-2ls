@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi } from "vitest";
 import { LangiumDocument } from "langium";
 import { emptyDocument } from "../../testing/utils.js";
 import { CommentMeta, ElementMeta, NamespaceMeta } from "../KerML/index.js";
@@ -59,14 +60,14 @@ describe("Containers", () => {
         });
 
         it("should remove elements by value and invalidate caches", () => {
-            container.invalidateCaches = jest.fn();
+            container.invalidateCaches = vi.fn();
             expect(container.remove(container.all[0])).toBeTruthy();
             expect(container.invalidateCaches).toHaveBeenCalledTimes(1);
             expect(container).toHaveLength(0);
         });
 
         it("should not remove elements by value and invalidate caches if value is not in the container", () => {
-            const mock = jest.fn();
+            const mock = vi.fn();
             container.invalidateCaches = mock;
             expect(container.remove(NamespaceMeta.create(id, document))).toBeFalsy();
             expect(mock).toHaveBeenCalledTimes(0);
@@ -75,7 +76,7 @@ describe("Containers", () => {
 
         it("should remove elements by predicate and invalidate caches", () => {
             container.push(container.all[0]);
-            const mock = jest.fn();
+            const mock = vi.fn();
             container.invalidateCaches = mock;
             expect(container.removeIf(() => true)).toEqual(0);
             expect(mock).toHaveBeenCalledTimes(1);
@@ -112,20 +113,20 @@ describe("Containers", () => {
         });
 
         it("should call observer when removing values", () => {
-            const observer = jest.fn();
+            const observer = vi.fn();
             removeObserved(array, observer, 2);
             expect(observer).toHaveBeenCalledTimes(1);
             expect(array).not.toEqual(expect.arrayContaining([2]));
         });
 
         it("should not call observer when removing values not in array", () => {
-            const observer = jest.fn();
+            const observer = vi.fn();
             removeObserved(array, observer, 200);
             expect(observer).toHaveBeenCalledTimes(0);
         });
 
         it("should call observer when removing values by predicate", () => {
-            const observer = jest.fn();
+            const observer = vi.fn();
             removeIfObserved(array, observer, (v) => v % 2 === 0);
             expect(observer).toHaveBeenCalledTimes(4);
         });

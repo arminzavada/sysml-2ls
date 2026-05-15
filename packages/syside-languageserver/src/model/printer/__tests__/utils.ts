@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { Assertion } from "vitest";
 import { LangiumDocument, AstNode, DeepPartial } from "langium";
 import { SubtypeKeys } from "../../../services/index.js";
 import { emptyDocument, getRange, parseKerML, parseSysML } from "../../../testing/index.js";
@@ -91,7 +92,7 @@ export function expectPrinted(
         node: SubtypeKeys<Element>;
         index?: number;
     }
-): jest.JestMatchers<Promise<string>> {
+): Assertion<Promise<string>> {
     const lang = options.lang ?? "kerml";
     return expect(
         parsedNode(text, options).then((node) =>

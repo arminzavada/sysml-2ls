@@ -19,9 +19,6 @@ import { SysMLNodeFileSystem } from "../node-file-system-provider.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// ESM equivalents for CommonJS' `__dirname`/`__filename`. Defined with
-// non-reserved names so they don't collide with the CJS globals re-injected
-// by SWC when running under Jest (`@swc/jest`).
 const currentFile = fileURLToPath(import.meta.url);
 const currentDir = path.dirname(currentFile);
 

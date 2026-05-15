@@ -40,7 +40,7 @@
         "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
         "build": "pnpm run prebuild && tsc",
         "watch": "pnpm run prebuild && tsc --watch",
-        "test": "jest",
+        "test": "vitest run",
         "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
         "index": "node ../../scripts/generate-index.mjs src/model src/testing src/node src/services src/utils src/launch src/browser",
         "prepack": "pnpm clean && pnpm build && pnpm esbuild --minify && mv README.md .README && cp ../../README.md README.md",

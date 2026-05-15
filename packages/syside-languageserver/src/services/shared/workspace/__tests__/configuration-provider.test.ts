@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi } from "vitest";
 import { DeepPartial } from "langium";
 import { Disposable } from "vscode-languageserver";
 import { recursiveObjectContaining, services } from "../../../../testing/index.js";
@@ -30,7 +31,7 @@ describe("Configuration provider", () => {
     });
 
     test("sysml config change event is triggered", () => {
-        const cb = jest.fn();
+        const cb = vi.fn();
         disposables.push(services.shared.Events.onConfigurationChanged.add(cb));
 
         const old = provider.get();
@@ -55,7 +56,7 @@ describe("Configuration provider", () => {
     test.each(["SysML", "KerML"] as const)(
         "%s language config change event is triggered",
         (lang) => {
-            const cb = jest.fn();
+            const cb = vi.fn();
             disposables.push(services[lang].Events.onConfigurationChanged.add(cb));
 
             const section = provider["toSectionName"](lang.toLowerCase());

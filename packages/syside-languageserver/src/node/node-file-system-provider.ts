@@ -23,17 +23,13 @@ import { URI } from "vscode-uri";
 import { pathToURI, resolvePathURI } from "syside-base";
 import { backtrackToDirname } from "../utils/index.js";
 
-// ESM equivalent of CommonJS' `__dirname`. Defined with a non-reserved name
-// so it doesn't collide with the CJS `__dirname` global re-injected by SWC
-// when running under Jest (`@swc/jest`), and also so it works when esbuild
-// bundles this file to CJS (where `import.meta.url` is empty).
+// Falls back to `__dirname` because esbuild's CJS bundling leaves
+// `import.meta.url` empty but keeps the CJS `__dirname` global populated.
 declare const __dirname: string | undefined;
 const currentDir = (() => {
     try {
         return path.dirname(fileURLToPath(import.meta.url));
     } catch {
-        // `import.meta.url` is empty under esbuild's CJS bundling — fall back
-        // to the global CJS `__dirname`, which esbuild keeps populated.
         return typeof __dirname === "string" ? __dirname : process.cwd();
     }
 })();

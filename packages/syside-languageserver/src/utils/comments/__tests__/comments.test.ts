@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi, Assertion, Mock } from "vitest";
 import {
     AbstractKerMLCommentVisitor,
     CstTextComment,
@@ -58,7 +59,7 @@ describe("trim", () => {
 });
 
 class Visitor extends AbstractKerMLCommentVisitor {
-    visit = jest.fn();
+    visit = vi.fn();
 }
 
 // somehow `DeepPartial` ignores optional properties so make all required
@@ -68,13 +69,13 @@ async function expectVisit(
     text: string,
     calls?: number,
     retVal?: "matcher"
-): Promise<jest.JestMatchers<jest.Mock>>;
-async function expectVisit(text: string, calls: number, retVal: "mock"): Promise<jest.Mock>;
+): Promise<Assertion<Mock>>;
+async function expectVisit(text: string, calls: number, retVal: "mock"): Promise<Mock>;
 async function expectVisit(
     text: string,
     calls = 1,
     retVal: "matcher" | "mock" = "matcher"
-): Promise<jest.JestMatchers<jest.Mock> | jest.Mock> {
+): Promise<Assertion<Mock> | Mock> {
     const visitor = new Visitor();
     const ns = await parseKerML(text);
     visitComments(ns.value.$cstNode as CstNode, visitor);

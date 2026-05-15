@@ -151,7 +151,7 @@ describe("other", () => {
     test("throwError should add source location", async () => {
         const node = await parsedNode("package P {}", { lang: "kerml", node: Package });
         expect(() => throwError(node.$meta, "test")).toThrowErrorMatchingInlineSnapshot(
-            `"test on line 1, character: 1"`
+            `[Error: test on line 1, character: 1]`
         );
     });
 });

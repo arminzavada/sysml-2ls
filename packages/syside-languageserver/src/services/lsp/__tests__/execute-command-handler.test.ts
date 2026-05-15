@@ -14,6 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
+import { vi } from "vitest";
 import { LangiumDocument, ParseResult } from "langium";
 import { CancellationToken, Disposable, TextDocumentIdentifier } from "vscode-languageserver";
 import { URI } from "vscode-uri";
@@ -22,7 +23,7 @@ import { RegisterTextEditorCommandsRequest } from "syside-protocol";
 import { SysMLExecuteCommandHandler } from "../execute-command-handler.js";
 
 const log = console.log;
-const mockLock = jest.fn();
+const mockLock = vi.fn();
 beforeEach(() => {
     console.log = mockLock;
 });
@@ -78,7 +79,7 @@ describe("document commands can be executed", () => {
         uri = result.value.$document?.uri;
     });
 
-    const mock = jest.fn();
+    const mock = vi.fn();
     const update = builder.update;
     builder.update = mock;
     afterAll(() => (builder.update = update));
@@ -204,7 +205,7 @@ describe("Custom commands", () => {
     ): void {
         const command = "my custom command";
         let handler: SysMLExecuteCommandHandler;
-        const fn = jest.fn(function (this: unknown) {
+        const fn = vi.fn(function (this: unknown) {
             return this;
         });
         const self = { $hello: "world" };

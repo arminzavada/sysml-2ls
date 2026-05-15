@@ -19,9 +19,6 @@ import { URI } from "vscode-uri";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// ESM equivalent of CommonJS' `__dirname`. Defined with a non-reserved name
-// so it doesn't collide with the CJS `__dirname` global re-injected by SWC
-// when running under Jest (`@swc/jest`).
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
 /**
