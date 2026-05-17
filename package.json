@@ -15,7 +15,9 @@
     "bugs": {
         "url": "https://github.com/arminzavada/sysml-2ls/issues"
     },
+    "type": "module",
     "scripts": {
+        "postinstall": "node ./scripts/clone-sysml-release.mjs",
         "clean": "pnpm -r clean && shx rm -rf coverage lib *.tsbuildinfo",
         "typecheck": "pnpm -r typecheck",
         "lint": "eslint packages --max-warnings 0",
