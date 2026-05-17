@@ -51,4 +51,7 @@ program
     .description("Compile SysML model to Semantifyr (OXSTS) format")
     .action(compileAction);
 
-program.parse(process.argv);
+program.parseAsync(process.argv).catch((err) => {
+    console.error(err);
+    process.exit(1);
+});
