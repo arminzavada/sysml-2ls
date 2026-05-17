@@ -311,6 +311,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
                 inherited: { visibility: Visibility.private, depth: 1 },
                 imported: { visibility: Visibility.private, depth: 1 },
             });
+            this.preLinkInheritedClosure(redefinitionOwningType as TypeMeta);
             const inheritedScope = new InheritedTypeScope(
                 redefinitionOwningType as TypeMeta,
                 inheritedOpts
@@ -342,10 +343,35 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
     ): SysMLScope {
         const ast = node.ast();
         if (ast && document) this.metamodelBuilder.preLink(ast, document, CancellationToken.None);
+        if (node.is(Type.$type)) this.preLinkInheritedClosure(node as TypeMeta);
         return makeScope(node, {
             ...CHILD_CONTENTS_OPTIONS,
             aliasResolver: aliasResolver,
         });
+    }
+
+    /**
+     * Force-preLinks the inherited heritage closure of {@link root}. Reference
+     * resolution of `redefines`/`subsets` etc. happens as a side-effect of
+     * preLinking the owning type, so a scope walk through `A -> B -> C` would
+     * stall on the intermediate `B` until `B` itself is preLinked.
+     */
+    protected preLinkInheritedClosure(root: TypeMeta): void {
+        const visited = new Set<TypeMeta>();
+        const stack: TypeMeta[] = [root];
+        while (stack.length > 0) {
+            const t = stack.pop() as TypeMeta;
+            if (visited.has(t)) continue;
+            visited.add(t);
+            const doc = t.document;
+            if (doc) this.metamodelBuilder.buildElement(t, doc);
+            for (const s of t.specializations()) {
+                const next = s.finalElement();
+                if (next && next.is(Type.$type) && !visited.has(next as TypeMeta)) {
+                    stack.push(next as TypeMeta);
+                }
+            }
+        }
     }
 
     /**

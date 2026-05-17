@@ -57,6 +57,7 @@ import {
     Relationship,
     ReferenceUsage,
     EndFeatureMembership,
+    ReturnParameterMembership,
     Membership,
     MultiplicityRange,
     LiteralInfinity,
@@ -703,6 +704,34 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
     protected addFeatureImplicits(node: FeatureMeta, document: LangiumDocument): void {
         if (document.buildOptions?.standardLibrary === "none") return;
         this.addImplicits(node, document, Feature.$type);
+    }
+
+    /**
+     * Mirrors the pilot's `getParameterRelevantFeatures` short-circuit for
+     * result parameters (FeatureAdapter:719): an unnamed `return : T` gets its
+     * "result" name through an implicit redefinition of the inherited
+     * `Function::result`.
+     */
+    @builder(Type.$type, 1000)
+    protected redefineResultParameters(node: TypeMeta, document: LangiumDocument): void {
+        const isResult = (m: MembershipMeta<FeatureMeta>): boolean =>
+            m.is(ReturnParameterMembership.$type);
+        const ownResult = stream(node.featureMembers()).filter(isResult).head()?.element();
+        if (!ownResult) return;
+        if (ownResult.specializations(Redefinition.$type).length > 0) return;
+
+        for (const supertype of node.types()) {
+            const baseResult = stream(supertype.featureMembers())
+                .filter(isResult)
+                .head()
+                ?.element();
+            if (!baseResult || baseResult === ownResult) continue;
+            const specialization = RedefinitionMeta.create(this.util.idProvider, document, {
+                isImplied: true,
+            });
+            ownResult.addHeritage([specialization, baseResult]);
+            return;
+        }
     }
 
     /**
