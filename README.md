@@ -1,5 +1,7 @@
 # sysml-2ls
 
+[![CI](https://github.com/arminzavada/sysml-2ls/actions/workflows/ci.yml/badge.svg)](https://github.com/arminzavada/sysml-2ls/actions/workflows/ci.yml)
+
 A community-maintained fork of the
 [SysIDE Editor](https://gitlab.com/sensmetry/public/sysml-2ls) language server
 and VS Code extension for [SysML v2](https://www.omg.org/spec/SysML/2.0/Beta3),
@@ -56,30 +58,30 @@ below. To use a different version at runtime, point the
 Requirements: Node.js ≥ 20.11 and [pnpm](https://pnpm.io/installation).
 
 ```bash
-pnpm install
-pnpm run clone-stdlib       # clone Systems-Modeling/SysML-v2-Release at the pinned tag
+pnpm install                # installs deps + auto-clones the pinned stdlib
 pnpm run build              # compile all TypeScript and the VS Code bundle
 pnpm test                   # run vitest (unit + integration tests)
 ```
 
-`clone-stdlib` is required for the integration test suite and for packaging
-the VS Code extension, since both load the stdlib from `SysML-v2-Release/`.
-The directory only needs to be (re)cloned when bumping to a new pinned tag.
+The stdlib clone is wired as a `postinstall` step and is idempotent — it only
+re-fetches when `SysML-v2-Release/` is missing or pointing at a different
+commit. Run `pnpm run clone-stdlib` explicitly to force a check.
 
 The generated parser sources under
-`packages/syside-languageserver/src/generated/` are checked in, so a
-freshly-cloned repo builds without running `grammar:generate`. Regenerate
-them only when you edit the `.langium` grammar:
+`packages/syside-languageserver/gen/` are regenerated automatically as part
+of every `pnpm typecheck` / `pnpm build`, so a freshly-cloned repo builds
+without an extra step. Regenerate them on demand only when iterating on the
+grammar:
 
 ```bash
-pnpm run grammar:generate   # regenerate parser from the Langium grammar
+pnpm --dir packages/syside-languageserver grammar   # regenerate parser from the Langium grammar
 pnpm run grammar:watch      # ...or watch the grammar
 ```
 
 For day-to-day development:
 
 ```bash
-pnpm run watch              # rebuild TypeScript + esbuild bundles on change
+pnpm run build:watch        # rebuild TypeScript + esbuild bundles on change
 ```
 
 To package the VS Code extension as a `.vsix`:

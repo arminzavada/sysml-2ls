@@ -17,8 +17,7 @@ underlying language services live in
 From the workspace root:
 
 ```bash
-pnpm install
-pnpm run clone-stdlib   # one-time: clone the SysML v2 stdlib
+pnpm install            # installs deps + auto-clones the pinned stdlib
 pnpm run build          # builds all packages including this one
 ```
 
