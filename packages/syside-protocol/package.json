@@ -26,12 +26,15 @@
     "main": "./lib/index.js",
     "scripts": {
         "clean": "shx rm -rf lib coverage *.tsbuildinfo",
-        "build": "tsc",
-        "watch": "tsc --watch",
+        "typecheck": "tsc -b tsconfig.test.json",
+        "typecheck:watch": "tsc -b tsconfig.test.json --watch",
         "lint": "eslint src --max-warnings 0",
-        "test": "vitest run --passWithNoTests",
-        "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
-        "index": "node ../../scripts/generate-index.mjs src"
+        "check": "pnpm typecheck && pnpm lint",
+        "assemble": "tsc",
+        "assemble:watch": "tsc --watch",
+        "build": "pnpm check && pnpm assemble",
+        "build:watch": "pnpm assemble:watch",
+        "test": "vitest run --passWithNoTests"
     },
     "dependencies": {
         "vscode-languageserver": "~9.0.1"

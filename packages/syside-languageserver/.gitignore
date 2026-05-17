@@ -1,2 +1,3 @@
-# local grammar reference files from the pilot implementation
-src/grammar/reference
+gen/
+syntaxes/kerml.tmLanguage.json
+syntaxes/sysml.tmLanguage.json

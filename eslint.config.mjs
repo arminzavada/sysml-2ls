@@ -7,7 +7,7 @@ import globals from "globals";
 export default tseslint.config(
     {
         ignores: [
-            "**/generated/**",
+            "**/gen/**",
             "**/lib/**",
             "**/out/**",
             "**/dist/**",

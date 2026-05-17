@@ -17,7 +17,7 @@
 import child_process from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "node:fs/promises"
+import fs from "fs/promises"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,7 +27,6 @@ const dir = path.join(root, "SysML-v2-Release");
 
 const commit = "cd99f7ca70b96abb38f09dfd25725e3cf259baa3";
 const patchesDir = path.join(__dirname, "patches");
-// const tag = "2024-12";
 
 function run(args, { cwd, allowFailure = false } = {}) {
     return new Promise((resolve, reject) => {
@@ -49,12 +48,11 @@ await run(["remote", "add", "origin", "https://github.com/Systems-Modeling/SysML
 await run(["fetch", "--progress", "--depth=1", "origin", commit], { cwd: dir });
 await run(["checkout", "FETCH_HEAD"], { cwd: dir });
 
-const patchEntries = (await fs.readdir(patchesDir).catch(() => []))
-    .filter((name) => name.endsWith(".patch"))
-    .sort();
-for (const name of patchEntries) {
-    await run(["apply", "--whitespace=nowarn", path.join(patchesDir, name)], { cwd: dir });
+const patchFiles = await fs.readdir(patchesDir).catch(() => []);
+const patchEntries = patchFiles.filter((name) => name.endsWith(".patch")).sort();
+
+for (const patchEntry of patchEntries) {
+    await run(["apply", "--whitespace=nowarn", path.join(patchesDir, patchEntry)], { cwd: dir });
 }
 
-export const SYSMLRELEASE = dir
-;
+export const SYSMLRELEASE = dir;

@@ -16,19 +16,21 @@
         "url": "https://github.com/arminzavada/sysml-2ls/issues"
     },
     "scripts": {
-        "clean": "shx rm -rf packages/*/lib packages/*/out packages/*/dist packages/*/coverage packages/**/*.tsbuildinfo *.tsbuildinfo coverage",
-        "prebuild": "pnpm -r --if-present prebuild",
-        "build": "pnpm prebuild && tsc -b tsconfig.build.json && pnpm --dir packages/syside-vscode build",
-        "watch": "pnpm prebuild && concurrently -n tsc,vscode -c blue,yellow \"tsc -b tsconfig.build.json -w\" \"pnpm --dir packages/syside-vscode watch\"",
+        "clean": "pnpm -r clean && shx rm -rf coverage lib *.tsbuildinfo",
+        "typecheck": "pnpm -r typecheck",
         "lint": "eslint packages --max-warnings 0",
+        "lint:fix": "pnpm lint --fix",
+        "check": "pnpm typecheck && pnpm lint",
+        "assemble": "pnpm -r assemble",
+        "bundle": "pnpm -r --if-present bundle",
+        "build": "pnpm check && pnpm assemble && pnpm bundle",
+        "build:watch": "pnpm -r --parallel build:watch",
         "test": "vitest run",
         "test:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile=junit.xml",
-        "vscode:package": "pnpm --dir packages/syside-vscode run vscode:package",
-        "grammar:generate": "pnpm --dir packages/syside-languageserver grammar:generate",
+        "vscode:package": "pnpm --dir packages/syside-vscode vscode:package",
         "grammar:watch": "pnpm --dir packages/syside-languageserver grammar:watch",
-        "clone-stdlib": "pnpm --dir packages/syside-languageserver clone-stdlib",
-        "update-stdlib": "node ./scripts/update-stdlib.mjs",
-        "index": "pnpm -r --if-present index"
+        "clone-stdlib": "node ./scripts/clone-sysml-release.mjs",
+        "update-stdlib": "node ./scripts/update-stdlib.mjs"
     },
     "pnpm": {
         "overrides": {

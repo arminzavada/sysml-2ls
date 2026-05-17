@@ -22,7 +22,7 @@ import child_process from "child_process";
 import fs from "fs-extra";
 import process from "process";
 import path from "path";
-import { SYSMLRELEASE } from "../../syside-languageserver/scripts/clone-sysml-release.mjs";
+import { SYSMLRELEASE } from "../../../scripts/clone-sysml-release.mjs";
 
 const exec = util.promisify(child_process.exec);
 

@@ -25,30 +25,48 @@
     },
     "type": "module",
     "files": [
-        "bin",
-        "out",
+        "dist",
         "lib",
+        "gen",
         "src"
     ],
     "bin": {
-        "syside": "./bin/syside-languageserver"
+        "syside": "./dist/syside-languageserver.cjs"
     },
-    "main": "./lib/index.js",
+    "main": "./lib/src/index.js",
+    "exports": {
+        ".": "./lib/src/index.js",
+        "./node.js": "./lib/src/node/index.js",
+        "./node/main.js": "./lib/src/node/main.js",
+        "./browser.js": "./lib/src/browser/index.js",
+        "./browser/main.js": "./lib/src/browser/main.js",
+        "./package.json": "./package.json"
+    },
+    "imports": {
+        "#generated/*.js": {
+            "development": "./gen/*.ts",
+            "default": "./lib/gen/*.js"
+        },
+        "#generated/*": {
+            "development": "./gen/*.ts",
+            "default": "./lib/gen/*.js"
+        }
+    },
     "scripts": {
-        "prebuild": "shx rm -rf ../syside-vscode/syntaxes && shx cp -R ./syntaxes ../syside-vscode/syntaxes && cd src && node -p \"'export const Version = ' + JSON.stringify(require('../package.json').version) + ';'\" > version.ts",
-        "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
-        "build": "pnpm prebuild && tsc",
-        "watch": "pnpm prebuild && tsc --watch",
-        "lint": "eslint src --max-warnings 0",
-        "test": "vitest run",
-        "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
-        "index": "node ../../scripts/generate-index.mjs src/model src/testing src/node src/services src/utils src/launch src/browser",
-        "esbuild": "pnpm prebuild && node ../../scripts/build.mjs node src/node/main.ts --sourcemap",
-        "esbuild:watch": "pnpm esbuild --watch",
-        "esbuild:browser": "pnpm prebuild && node ../../scripts/build.mjs browser src/browser/main.ts",
-        "grammar:generate": "langium generate && shx rm -rf ../syside-vscode/syntaxes && shx cp -R ./syntaxes ../syside-vscode/syntaxes",
+        "clean": "shx rm -rf dist lib coverage *.tsbuildinfo gen syntaxes/kerml.tmLanguage.json syntaxes/sysml.tmLanguage.json",
+        "grammar": "langium generate",
         "grammar:watch": "langium generate --watch",
-        "clone-stdlib": "node ./scripts/clone-sysml-release.mjs"
+        "typecheck": "pnpm grammar && tsc -b tsconfig.test.json",
+        "typecheck:watch": "tsc -b tsconfig.test.json --watch",
+        "lint": "eslint src --max-warnings 0",
+        "check": "pnpm typecheck && pnpm lint",
+        "assemble": "pnpm grammar && tsc",
+        "assemble:watch": "tsc --watch",
+        "bundle": "node esbuild.mjs --minify",
+        "bundle:watch": "node esbuild.mjs --sourcemap --watch",
+        "build": "pnpm check && pnpm assemble && pnpm bundle",
+        "build:watch": "concurrently -n tsc,esbuild -c blue,yellow \"pnpm assemble:watch\" \"pnpm bundle:watch\"",
+        "test": "vitest run"
     },
     "dependencies": {
         "chevrotain": "~12.0.0",

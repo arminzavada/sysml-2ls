@@ -20,22 +20,27 @@
     },
     "type": "module",
     "files": [
-        "bin",
-        "out",
+        "dist",
         "lib",
         "src"
     ],
-    "main": "./lib/index.js",
+    "bin": {
+        "syside-cli": "./dist/cli.cjs"
+    },
+    "main": "./lib/src/index.js",
     "scripts": {
-        "prebuild": "cd src && node -p \"'export const Version = ' + JSON.stringify(require('../package.json').version) + ';'\" > version.ts",
-        "clean": "shx rm -rf out lib coverage *.tsbuildinfo",
-        "build": "pnpm prebuild && tsc",
-        "watch": "tsc --watch",
+        "clean": "shx rm -rf dist lib coverage *.tsbuildinfo",
+        "typecheck": "tsc -b tsconfig.test.json",
+        "typecheck:watch": "tsc -b tsconfig.test.json --watch",
         "lint": "eslint src --max-warnings 0",
-        "test": "vitest run --passWithNoTests",
-        "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
-        "esbuild": "node ../../scripts/build.mjs node src/index.ts --sourcemap",
-        "esbuild:watch": "pnpm esbuild --watch"
+        "check": "pnpm typecheck && pnpm lint",
+        "assemble": "tsc",
+        "assemble:watch": "tsc --watch",
+        "bundle": "node esbuild.mjs --minify",
+        "bundle:watch": "node esbuild.mjs --sourcemap --watch",
+        "build": "pnpm check && pnpm assemble && pnpm bundle",
+        "build:watch": "concurrently -n tsc,esbuild -c blue,yellow \"pnpm assemble:watch\" \"pnpm bundle:watch\"",
+        "test": "vitest run --passWithNoTests"
     },
     "dependencies": {
         "chalk": "^5.6.2",

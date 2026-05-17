@@ -119,20 +119,13 @@ export const STDLIB = {
     await fs.writeFile("packages/syside-base/src/stdlib.ts", contents, "utf-8");
 }
 
-async function main() {
-    await Promise.all([
-        updateFile("README.md"),
-        updateFile("packages/syside-languageserver/scripts/clone-sysml-release.mjs")
-            .then(() => {
-                // import the script to execute it, checking out the SysML v2
-                // release repo in the process
-                return import("../packages/syside-languageserver/scripts/clone-sysml-release.mjs");
-            })
-            .then(() => generateStdlibUrls()),
-        updateFile("packages/syside-languageclient/src/sysml-language-client.ts"),
-    ]);
-}
-
 if (fileURLToPath(import.meta.url) === (await fs.promises.realpath(process.argv[1]))) {
-    main();
+    await updateFile("README.md");
+    await updateFile("scripts/clone-sysml-release.mjs").then(() => {
+        // import the script to execute it, checking out the SysML v2
+        // release repo in the process
+        return import("./clone-sysml-release.mjs");
+    });
+    await generateStdlibUrls();
+    await updateFile("packages/syside-languageclient/src/sysml-language-client.ts");
 }

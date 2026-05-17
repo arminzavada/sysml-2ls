@@ -30,7 +30,7 @@ export default defineConfig({
                 "**/__tests__/**",
                 "**/__test__/**",
                 "**/testing/**",
-                "packages/syside-languageserver/src/generated/**",
+                "packages/syside-languageserver/gen/**",
                 "packages/syside-languageserver/src/node/main.ts",
             ],
             reporter: ["html", "text", "text-summary", "cobertura"],
@@ -38,13 +38,29 @@ export default defineConfig({
         },
     },
     resolve: {
-        alias: {
-            "syside-base": here("./packages/syside-base/src/index.ts"),
-            "syside-protocol": here("./packages/syside-protocol/src/index.ts"),
-            "syside-languageclient": here("./packages/syside-languageclient/src/index.ts"),
-            "syside-languageserver/node.js": here("./packages/syside-languageserver/src/node/index.ts"),
-            "syside-languageserver/node": here("./packages/syside-languageserver/src/node/index.ts"),
-            "syside-languageserver": here("./packages/syside-languageserver/src/index.ts"),
-        },
+        alias: [
+            {
+                find: /^#generated\/(.*)\.js$/,
+                replacement: here("./packages/syside-languageserver/gen/$1.ts"),
+            },
+            { find: "syside-base", replacement: here("./packages/syside-base/src/index.ts") },
+            { find: "syside-protocol", replacement: here("./packages/syside-protocol/src/index.ts") },
+            {
+                find: "syside-languageclient",
+                replacement: here("./packages/syside-languageclient/src/index.ts"),
+            },
+            {
+                find: "syside-languageserver/node.js",
+                replacement: here("./packages/syside-languageserver/src/node/index.ts"),
+            },
+            {
+                find: "syside-languageserver/node",
+                replacement: here("./packages/syside-languageserver/src/node/index.ts"),
+            },
+            {
+                find: "syside-languageserver",
+                replacement: here("./packages/syside-languageserver/src/index.ts"),
+            },
+        ],
     },
 });
