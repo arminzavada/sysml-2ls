@@ -9,17 +9,12 @@ import {
     FeatureMembership,
     FeatureReferenceExpression,
     FeatureValue,
-    InvocationExpression,
     isAssignmentActionUsage,
-    isConstructorExpression,
-    isItemDefinition,
     isLiteralNumber,
     isOperatorExpression,
     isPerformActionUsage,
     isSendActionUsage,
-    isTriggerInvocationExpression,
     ParameterMembership,
-    ReferenceUsage,
     TriggerInvocationExpression,
 } from "#generated/ast";
 import { SemantifyrExpressionMapper } from "./SemantifyrExpressionMapper";
@@ -66,27 +61,20 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         acceptAction: ast.AcceptActionUsage,
         kind: FeatureKind
     ): Generated {
-        const payloadTarget = acceptAction.payload.target as ReferenceUsage;
-        const targetClassifier = this.featureClassifier(payloadTarget);
-        if (isItemDefinition(targetClassifier)) {
+        const meta = acceptAction.$meta;
+        if (meta.payloadItemDefinition()) {
             return this.mapAcceptItemActionUsage(featureName, acceptAction, kind);
         }
 
-        const actualTarget = payloadTarget.value?.target;
-
-        if (isTriggerInvocationExpression(actualTarget)) {
-            if (actualTarget.kind === "after") {
-                return this.mapAcceptTimoutActionUsage(
-                    featureName,
-                    acceptAction,
-                    actualTarget,
-                    kind
-                );
+        const trigger = meta.payloadTrigger()?.ast();
+        if (trigger) {
+            if (trigger.kind === "after") {
+                return this.mapAcceptTimoutActionUsage(featureName, acceptAction, trigger, kind);
             }
-            if (actualTarget.kind === "when") {
-                return this.mapAcceptWhenActionUsage(featureName, acceptAction, actualTarget, kind);
+            if (trigger.kind === "when") {
+                return this.mapAcceptWhenActionUsage(featureName, acceptAction, trigger, kind);
             }
-            if (actualTarget.kind === "at") {
+            if (trigger.kind === "at") {
                 return "AT_TRIGGERS_ARE_NOT_SUPPORTED";
             }
         }
@@ -150,27 +138,17 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         acceptAction: ast.AcceptActionUsage,
         kind: FeatureKind
     ): Generated {
-        const payload = acceptAction.payload.target as ReferenceUsage;
-        const payloadClassifier = this.featureClassifier(payload);
-        if (!isItemDefinition(payloadClassifier)) {
-            return undefined;
-        }
-        const payloadItemGlobalName = this.itemMapper.globalItemName(payloadClassifier);
+        const meta = acceptAction.$meta;
+        const payloadItem = meta.payloadItemDefinition()?.ast();
+        if (!payloadItem) return undefined;
 
-        if (!acceptAction.receiver) {
-            throw new Error("AcceptItemActions must have a 'via' port specification!");
-        }
-        const viaPort = acceptAction.receiver.target as ReferenceUsage;
+        const viaPort = meta.receiverFeature()?.ast();
         if (!viaPort) {
-            throw new Error("The 'via' port can not be resolved!");
+            throw new Error("AcceptItemAction must have a 'via' port specification");
         }
-        const viaPortValue = viaPort.value?.target as FeatureReferenceExpression;
-        if (!viaPortValue) {
-            throw new Error("The 'via' port value can not be resolved!");
-        }
-        const viaPortExpression = this.expressionStringifier.stringifyElement(
-            viaPortValue.expression
-        );
+
+        const payloadItemGlobalName = this.itemMapper.globalItemName(payloadItem);
+        const viaPortExpression = this.stableName(viaPort);
 
         return expandToNode`
             ${this.containsFeatureLine(featureName, acceptAction, "AcceptItemAction", kind)} {
@@ -217,37 +195,22 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         kind: FeatureKind
     ): Generated {
         // TODO(phase-2a+): handle empty-payload `send to` and bodied `send { … }` forms
-        if (!sendAction.payload) return undefined;
-        const payloadTarget = sendAction.payload.target as ReferenceUsage;
-        const payloadTargetValue = payloadTarget.value as FeatureValue;
-        const invocationExpression = payloadTargetValue.target as InvocationExpression;
-        const featureTyping = this.featureClassifier(invocationExpression);
-        if (!isItemDefinition(featureTyping)) {
-            return undefined;
-        }
-        const payloadItemGlobalName = this.itemMapper.globalItemName(featureTyping);
+        const meta = sendAction.$meta;
+        const payloadItem = meta.payloadItemDefinition()?.ast();
+        if (!payloadItem) return undefined;
 
-        if (!sendAction.sender) {
-            throw new Error("AcceptItemActions must have a 'via' port specification!");
-        }
-        const viaPort = sendAction.sender.target as ReferenceUsage;
+        const viaPort = meta.senderFeature()?.ast();
         if (!viaPort) {
-            throw new Error("The 'via' port can not be resolved!");
+            throw new Error("Send actions must have a 'via' port specification");
         }
-        const viaPortValue = viaPort.value?.target as FeatureReferenceExpression;
-        if (!viaPortValue) {
-            throw new Error("The 'via' port value can not be resolved!");
-        }
-        const viaPortExpression = this.expressionStringifier.stringifyElement(
-            viaPortValue.expression
-        );
+
+        const payloadItemGlobalName = this.itemMapper.globalItemName(payloadItem);
+        const viaPortExpression = this.stableName(viaPort);
 
         // `send new X(...)` is the spec-compliant form for a freshly-constructed
-        // payload; the bare `send X(...)` form (an InvocationExpression) is
-        // accepted for back-compat but is mapped to the same SendAction.
-        const sendClass = isConstructorExpression(invocationExpression)
-            ? "ConstructorInvocationAction"
-            : "SendAction";
+        // payload; the bare `send X(...)` form is accepted for back-compat but
+        // is mapped to the same SendAction.
+        const sendClass = meta.isConstructor() ? "ConstructorInvocationAction" : "SendAction";
 
         return expandToNode`
             ${this.containsFeatureLine(featureName, sendAction, sendClass, kind)} {

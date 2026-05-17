@@ -15,17 +15,20 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { SendActionUsage } from "#generated/ast.js";
+import { ConstructorExpression, InvocationExpression, SendActionUsage } from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
     ElementParts,
     FeatureMeta,
+    FeatureReferenceExpressionMeta,
+    InvocationExpressionMeta,
     MembershipMeta,
     ParameterMembershipMeta,
 } from "../KerML/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { ItemDefinitionMeta } from "./item-definition.js";
 import { ReferenceUsageMeta } from "./reference-usage.js";
 import { createEmptyParameterMember } from "./reference-usage.js";
 
@@ -74,6 +77,48 @@ export class SendActionUsageMeta extends ActionUsageMeta {
 
     override ast(): SendActionUsage | undefined {
         return this._ast as SendActionUsage;
+    }
+
+    /**
+     * The InvocationExpression sitting under the payload (`send X(...)` or
+     * `send new X(...)`). Returns `undefined` for empty-payload `send to`
+     * forms or when the payload is not an invocation.
+     */
+    payloadInvocation(): InvocationExpressionMeta | undefined {
+        const value = this._payload?.element()?.value?.element();
+        return value?.is(InvocationExpression.$type)
+            ? (value as InvocationExpressionMeta)
+            : undefined;
+    }
+
+    /**
+     * The ItemDefinition the payload constructs / forwards, if the payload's
+     * invocation is typed by one. Resolves through the full qualified-name
+     * chain via the metamodel's typings.
+     */
+    payloadItemDefinition(): ItemDefinitionMeta | undefined {
+        const invocation = this.payloadInvocation();
+        if (!invocation) return undefined;
+        for (const typing of invocation.allTypings()) {
+            if (typing.is("ItemDefinition")) return typing as ItemDefinitionMeta;
+        }
+        return undefined;
+    }
+
+    /** True when the payload uses the spec-compliant `send new X(...)` form. */
+    isConstructor(): boolean {
+        const invocation = this.payloadInvocation();
+        return invocation?.is(ConstructorExpression.$type) ?? false;
+    }
+
+    /**
+     * The Feature referenced by the `via <port>` clause. Resolves through the
+     * FeatureReferenceExpression wrapping the port reference.
+     */
+    senderFeature(): FeatureMeta | undefined {
+        const value = this._sender?.element()?.value?.element();
+        if (!value?.is("FeatureReferenceExpression")) return undefined;
+        return (value as FeatureReferenceExpressionMeta).expression?.element();
     }
 
     override featureMembers(): readonly MembershipMeta<FeatureMeta>[] {

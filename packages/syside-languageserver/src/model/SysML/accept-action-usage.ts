@@ -15,19 +15,26 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { AcceptActionUsage, TransitionFeatureMembership } from "#generated/ast.js";
+import {
+    AcceptActionUsage,
+    TransitionFeatureMembership,
+    TriggerInvocationExpression,
+} from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
     ElementParts,
     FeatureMeta,
+    FeatureReferenceExpressionMeta,
     MembershipMeta,
     ParameterMembershipMeta,
 } from "../KerML/index.js";
 import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
+import { ItemDefinitionMeta } from "./item-definition.js";
 import { ReferenceUsageMeta } from "./reference-usage.js";
 import { createEmptyParameterMember } from "./reference-usage.js";
+import { TriggerInvocationExpressionMeta } from "./expressions/trigger-invocation-expression.js";
 
 export interface AcceptActionUsageOptions extends ActionUsageOptions {
     payload?: Edge<ParameterMembershipMeta, ReferenceUsageMeta>;
@@ -72,6 +79,41 @@ export class AcceptActionUsageMeta extends ActionUsageMeta {
     isTriggerAction(): boolean {
         const parent = this.parent();
         return Boolean(parent?.is(TransitionFeatureMembership.$type) && parent.kind === "trigger");
+    }
+
+    /**
+     * The ItemDefinition referenced by an `accept : Foo via p` payload. Returns
+     * `undefined` when the payload is a trigger expression (`accept after ...`,
+     * `accept when ...`) or when the typing is not an Item.
+     */
+    payloadItemDefinition(): ItemDefinitionMeta | undefined {
+        const payload = this._payload?.element();
+        if (!payload) return undefined;
+        for (const typing of payload.allTypings()) {
+            if (typing.is("ItemDefinition")) return typing as ItemDefinitionMeta;
+        }
+        return undefined;
+    }
+
+    /**
+     * The TriggerInvocationExpression (`after N`, `when expr`, `at time`)
+     * carried by the payload. Returns `undefined` when the payload is a plain
+     * Item reference.
+     */
+    payloadTrigger(): TriggerInvocationExpressionMeta | undefined {
+        const value = this._payload?.element()?.value?.element();
+        return value?.is(TriggerInvocationExpression.$type)
+            ? (value as TriggerInvocationExpressionMeta)
+            : undefined;
+    }
+
+    /**
+     * Feature referenced by the `via <port>` clause (e.g. for `accept : Foo via p`).
+     */
+    receiverFeature(): FeatureMeta | undefined {
+        const value = this._receiver?.element()?.value?.element();
+        if (!value?.is("FeatureReferenceExpression")) return undefined;
+        return (value as FeatureReferenceExpressionMeta).expression?.element();
     }
 
     override featureMembers(): readonly MembershipMeta<FeatureMeta>[] {
