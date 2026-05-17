@@ -51,6 +51,7 @@ import { createSysMLParser } from "./services/parser/parser.js";
 import { DefaultAstNodeLocator } from "langium";
 import { SysMLNodeDescriptionProvider } from "./services/shared/workspace/ast-descriptions.js";
 import { SysMLExecuteCommandHandler } from "./services/lsp/execute-command-handler.js";
+import { SysMLDocumentUpdateHandler } from "./services/shared/workspace/document-update-handler.js";
 import { SysMLWorkspaceManager } from "./services/shared/workspace/workspace-manager.js";
 import { SysMLDocumentFactory, SysMLDocuments } from "./services/shared/workspace/documents.js";
 import { DefaultSysMLConfig, SysMLConfig } from "./services/config.js";
@@ -137,6 +138,7 @@ export const SysMLSharedModule: Module<
     lsp: {
         ExecuteCommandHandler: (services) => new SysMLExecuteCommandHandler(services),
         LanguageServer: (services) => new SysMLLanguageServer(services),
+        DocumentUpdateHandler: (services) => new SysMLDocumentUpdateHandler(services),
     },
     config: () => DefaultSysMLConfig as SysMLConfig,
     Evaluator: (services) => new SysMLExpressionEvaluator(services),
