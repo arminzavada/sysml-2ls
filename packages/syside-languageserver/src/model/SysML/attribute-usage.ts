@@ -14,9 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { AttributeUsage } from "#generated/ast.js";
+import { AttributeUsage, DataType } from "#generated/ast.js";
 import { enumerable } from "../../utils/index.js";
 import { metamodelOf } from "../metamodel.js";
+import type { DataTypeMeta, ExpressionMeta } from "../KerML/_internal.js";
 import { UsageMeta, UsageOptions } from "./usage.js";
 
 export type AttributeUsageOptions = UsageOptions;
@@ -35,6 +36,24 @@ export class AttributeUsageMeta extends UsageMeta {
 
     override ast(): AttributeUsage | undefined {
         return this._ast as AttributeUsage;
+    }
+
+    /**
+     * Resolved {@link DataTypeMeta} the attribute is typed by, walking
+     * specializations so that `attribute x : Integer` returns `Integer`'s
+     * meta. Returns `undefined` when the typing is missing or not a data
+     * type.
+     */
+    dataType(): DataTypeMeta | undefined {
+        for (const typing of this.allTypings()) {
+            if (typing.is(DataType.$type)) return typing as DataTypeMeta;
+        }
+        return undefined;
+    }
+
+    /** Default-value expression (`attribute x = expr`), if any. */
+    defaultExpression(): ExpressionMeta | undefined {
+        return this.value?.element();
     }
 }
 

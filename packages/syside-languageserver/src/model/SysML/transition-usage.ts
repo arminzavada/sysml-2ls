@@ -164,6 +164,26 @@ export class TransitionUsageMeta extends ActionUsageMeta {
         return this.accepter?.element();
     }
 
+    /** The transition's source feature (`first <source>`), or `undefined`. */
+    sourceFeature(): FeatureMeta | undefined {
+        return this.source?.element();
+    }
+
+    /** AcceptActionUsage carried by the `accept` clause. Alias for {@link triggerActions}. */
+    acceptAction(): AcceptActionUsageMeta | undefined {
+        return this.accepter?.element();
+    }
+
+    /** Expression carried by the `if` guard clause. */
+    guardExpression(): ExpressionMeta | undefined {
+        return this.guard?.element();
+    }
+
+    /** ActionUsage carried by the `do` effect clause. */
+    effectAction(): ActionUsageMeta | undefined {
+        return this.effect?.element();
+    }
+
     accepterPayloadParameter(): FeatureMeta | undefined {
         return this.accepter?.element()?.payload?.element();
     }

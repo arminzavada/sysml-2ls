@@ -14,10 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { PartDefinition, PortDefinition, PortUsage } from "#generated/ast.js";
+import { ConjugatedPortTyping, PartDefinition, PortDefinition, PortUsage } from "#generated/ast.js";
 import { enumerable } from "../../utils/common.js";
 import { metamodelOf } from "../metamodel.js";
 import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.js";
+import type { PortDefinitionMeta } from "./port-definition.js";
 
 export type PortUsageOptions = OccurrenceUsageOptions;
 
@@ -57,6 +58,26 @@ export class PortUsageMeta extends OccurrenceUsageMeta {
 
     override ast(): PortUsage | undefined {
         return this._ast as PortUsage;
+    }
+
+    /**
+     * True when this usage is typed via the `~Foo` conjugation form
+     * (a ConjugatedPortTyping appears in heritage).
+     */
+    isConjugated(): boolean {
+        return this.heritage.some((h) => h.is(ConjugatedPortTyping.$type));
+    }
+
+    /**
+     * Resolved {@link PortDefinitionMeta}. Walks the conjugation if present,
+     * otherwise the first matching FeatureTyping. Returns `undefined` when
+     * the port is typed by something other than a PortDefinition.
+     */
+    portDefinition(): PortDefinitionMeta | undefined {
+        for (const typing of this.allTypings()) {
+            if (typing.is(PortDefinition.$type)) return typing as PortDefinitionMeta;
+        }
+        return undefined;
     }
 }
 

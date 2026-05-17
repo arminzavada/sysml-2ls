@@ -21,14 +21,15 @@ export class SemantifyrTransitionMapper extends SemantifyrBaseMapper {
     }
 
     public mapTransitionUsage(transitionUsage: ast.TransitionUsage): Generated {
+        const meta = transitionUsage.$meta;
         const transitionName = this.stableName(transitionUsage);
 
         const node = new CompositeGeneratorNode();
-        node.append(this.mapTransitionAccepter(transitionUsage.accepter));
+        node.append(this.mapTransitionAccepter(meta.acceptAction()?.ast()));
         node.appendNewLineIfNotEmpty();
-        node.append(this.mapTransitionGuard(transitionUsage.guard));
+        node.append(this.mapTransitionGuard(meta.guardExpression()?.ast()));
         node.appendNewLineIfNotEmpty();
-        node.append(this.mapTransitionEffect(transitionUsage.effect));
+        node.append(this.mapTransitionEffect(meta.effectAction()?.ast()));
         node.appendNewLineIfNotEmpty();
 
         return expandToNode`
@@ -40,37 +41,22 @@ export class SemantifyrTransitionMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private mapTransitionAccepter(
-        accepter: ast.TransitionFeatureMembership | undefined
-    ): Generated {
-        if (accepter === undefined) {
-            return undefined;
-        }
-
-        return this.actionMapper.mapAcceptActionUsage(
-            "acceptAction",
-            accepter.target as ast.AcceptActionUsage,
-            "redefines"
-        );
+    private mapTransitionAccepter(accept: ast.AcceptActionUsage | undefined): Generated {
+        if (!accept) return undefined;
+        return this.actionMapper.mapAcceptActionUsage("acceptAction", accept, "redefines");
     }
 
-    private mapTransitionGuard(guard: ast.TransitionFeatureMembership | undefined): Generated {
-        if (guard === undefined) {
-            return undefined;
-        }
-
+    private mapTransitionGuard(guard: ast.Expression | undefined): Generated {
+        if (!guard) return undefined;
         return expandToNode`
             redefine contains guard: Guard {
-                ${this.expressionMapper.mapExpression("expression", guard.target as ast.Expression)}
+                ${this.expressionMapper.mapExpression("expression", guard)}
             }
         `;
     }
 
-    private mapTransitionEffect(effect: ast.TransitionFeatureMembership | undefined): Generated {
-        if (effect === undefined) {
-            return undefined;
-        }
-
-        return this.actionMapper.mapActionUsage("action", effect.target as ast.ActionUsage);
+    private mapTransitionEffect(effect: ast.ActionUsage | undefined): Generated {
+        if (!effect) return undefined;
+        return this.actionMapper.mapActionUsage("action", effect);
     }
 }

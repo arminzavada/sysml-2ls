@@ -2,7 +2,7 @@ import { expandToNode, Generated, JoinOptions, joinToNode } from "langium/genera
 import { StableElementNameProvider } from "./StableNameStore";
 import { ast } from "../../..";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
-import { isClassifier, isFeatureTyping } from "#generated/ast";
+import { isClassifier } from "#generated/ast";
 
 export class SemantifyrBaseMapper {
     private readonly stableNameStore: StableElementNameProvider;
@@ -36,15 +36,17 @@ export class SemantifyrBaseMapper {
         return this.stableNameStore.stableName(element);
     }
 
+    /**
+     * The classifier (`PartDefinition`, `PortDefinition`, ...) of a usage's
+     * first typing. Walks the qualified-name chain via the metamodel's
+     * `allTypings()` so multi-segment references like `pkg::Foo` resolve to
+     * `Foo` rather than the package.
+     */
     protected featureClassifier(feature: ast.Feature): ast.Classifier | undefined {
-        const featureTyping = feature.heritage.find((h) => isFeatureTyping(h));
-
-        const target = featureTyping?.targetRef?.parts[0].ref;
-
-        if (isClassifier(target)) {
-            return target;
+        for (const typing of feature.$meta.allTypings()) {
+            const target = typing.ast();
+            if (target && isClassifier(target)) return target;
         }
-
         return undefined;
     }
 }

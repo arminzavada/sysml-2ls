@@ -19,6 +19,7 @@ import { BindingConnectorAsUsage } from "#generated/ast.js";
 import { BindingConnectorMeta, BindingConnectorOptions } from "../KerML/binding-connector.js";
 import { metamodelOf } from "../metamodel.js";
 import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
+import type { FeatureMeta } from "../KerML/_internal.js";
 
 export interface BindingConnectorAsUsageOptions
     extends BindingConnectorOptions, ConnectorAsUsageOptions {}
@@ -30,6 +31,24 @@ export interface BindingConnectorAsUsageOptions
 export class BindingConnectorAsUsageMeta extends Mixin(BindingConnectorMeta, ConnectorAsUsageMeta) {
     override ast(): BindingConnectorAsUsage | undefined {
         return this._ast as BindingConnectorAsUsage;
+    }
+
+    /**
+     * The resolved feature on the left side of `bind a = b`. For a binding
+     * that rebinds a local port (`bind myPort = parent.somePort`), this is
+     * the local `myPort`. Returns `undefined` if the end has no reference
+     * subsetting.
+     */
+    sourceFeature(): FeatureMeta | undefined {
+        return this.relatedFeatures().at(0) ?? undefined;
+    }
+
+    /**
+     * The resolved feature on the right side of `bind a = b`. For a chained
+     * target (`bind p = q.r`), this is the resolved chained feature `q.r`.
+     */
+    targetFeature(): FeatureMeta | undefined {
+        return this.relatedFeatures().at(1) ?? undefined;
     }
 }
 

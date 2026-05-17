@@ -14,7 +14,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ItemFlowEnd } from "#generated/ast.js";
+import {
+    FeatureMembership,
+    ItemFlowEnd,
+    Redefinition,
+    ReferenceSubsetting,
+} from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { EndFeatureMembershipMeta, FeatureMeta, FeatureOptions } from "./_internal.js";
 
@@ -41,6 +46,30 @@ export class ItemFlowEndMeta extends FeatureMeta {
 
     override ast(): ItemFlowEnd | undefined {
         return this._ast as ItemFlowEnd;
+    }
+
+    /**
+     * The end's "primary" feature: the target of the first ReferenceSubsetting
+     * in its heritage. For `flow from groundStation.commandPort to ...`, the
+     * `from` end's primary is `groundStation`.
+     */
+    primaryFeature(): FeatureMeta | undefined {
+        const subsetting = this.heritage.find((h) => h.is(ReferenceSubsetting.$type));
+        const target = subsetting?.element();
+        return target?.is("Feature") ? (target as FeatureMeta) : undefined;
+    }
+
+    /**
+     * The end's "member" feature: the redefined feature inside the nested
+     * FeatureMembership. For `flow from groundStation.commandPort to ...`,
+     * the `from` end's member is `commandPort`.
+     */
+    memberFeature(): FeatureMeta | undefined {
+        const memberMembership = this.featureMembers().find((m) => m.is(FeatureMembership.$type));
+        const memberTarget = memberMembership?.element();
+        const redefinition = memberTarget?.specializations(Redefinition.$type).at(0);
+        const target = redefinition?.element();
+        return target?.is("Feature") ? (target as FeatureMeta) : undefined;
     }
 }
 

@@ -115,9 +115,7 @@ describe("AcceptActionUsageMeta derived methods", () => {
         `);
         const transitionAccept = accepts.find((a) => a.$meta.payloadItemDefinition());
         expect(transitionAccept).toBeDefined();
-        expect(
-            transitionAccept!.$meta.payloadItemDefinition()?.ast()?.declaredName
-        ).toBe("Ping");
+        expect(transitionAccept!.$meta.payloadItemDefinition()?.ast()?.declaredName).toBe("Ping");
     });
 
     test("payloadTrigger() returns the trigger for `accept after N`", async () => {
