@@ -10,17 +10,10 @@
             "stopAll": true
         }
     ],
-    "inputs": [
-        {
-            "type": "promptString",
-            "id": "cmdArgs",
-            "description": "Script CLI arguments"
-        }
-    ],
     "configurations": [
         {
             "name": "Debug KerML AST",
-            "program": "${workspaceFolder}/packages/syside-cli/bin/cli",
+            "program": "${workspaceFolder}/packages/syside-cli/lib/src/index.js",
             "args": [
                 "dump",
                 "${workspaceFolder}/test.kerml",
@@ -36,7 +29,7 @@
         },
         {
             "name": "Debug SysML AST",
-            "program": "${workspaceFolder}/packages/syside-cli/bin/cli",
+            "program": "${workspaceFolder}/packages/syside-cli/lib/src/index.js",
             "args": [
                 "dump",
                 "${workspaceFolder}/test.sysml",
@@ -49,21 +42,6 @@
                 "<node_internals>/**"
             ],
             "type": "node"
-        },
-        {
-            "name": "tsx",
-            "type": "node",
-            "request": "launch",
-            "args": [
-                "${relativeFile}",
-                "${input:cmdArgs}"
-            ],
-            "runtimeArgs": [
-                "--loader",
-                "tsx"
-            ],
-            "cwd": "${workspaceRoot}",
-            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Run Extension",
@@ -131,24 +109,6 @@
             ],
             "timeout": 120000,
             "restart": true
-        },
-        {
-            "name": "Vitest",
-            "type": "node",
-            "request": "launch",
-            "runtimeExecutable": "pnpm",
-            "args": [
-                "test"
-            ],
-            "cwd": "${workspaceRoot}",
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "sourceMaps": true
         }
-    ],
-    "debug.javascript.terminalOptions": {
-        "skipFiles": [
-            "<node_internals>/**"
-        ]
-    }
+    ]
 }
