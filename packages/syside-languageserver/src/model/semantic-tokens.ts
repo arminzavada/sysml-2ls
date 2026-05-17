@@ -29,7 +29,7 @@ import {
 import { SysMLType } from "../services/index.js";
 import { typeIndex } from "./types.js";
 import { ElementMeta } from "./KerML/index.js";
-import { Type, Classifier, Feature } from "../generated/ast.js";
+import { Type, Classifier, Feature } from "#generated/ast.js";
 import { HighlightCommand } from "../utils/index.js";
 
 /**

@@ -66,7 +66,7 @@ import {
     defaultPrintNotes,
     printModelElement,
 } from "./print.js";
-import * as ast from "../../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import {
     formatPreserved,
     printAstReference,

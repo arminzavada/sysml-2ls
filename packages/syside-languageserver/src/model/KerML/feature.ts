@@ -39,7 +39,7 @@ import {
     Subsetting,
     Type,
     TypeFeaturing,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { FeatureDirectionKind, TypeClassifier } from "../enums.js";
 import {
     BasicMetamodel,
@@ -748,7 +748,7 @@ export class FeatureMeta extends TypeMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Feature {
         $meta: FeatureMeta;
     }

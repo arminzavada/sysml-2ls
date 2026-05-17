@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { GrammarUtils } from "langium";
-import { FeatureMembership, FeatureTyping, Redefinition } from "../../generated/ast.js";
+import { FeatureMembership, FeatureTyping, Redefinition } from "#generated/ast.js";
 import {
     Doc,
     text,

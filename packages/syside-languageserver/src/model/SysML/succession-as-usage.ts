@@ -27,7 +27,7 @@ import {
     TransitionFeatureMembership,
     TransitionUsage,
     Type,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { FeatureMembershipMeta, FeatureMeta, MembershipMeta } from "../KerML/index.js";
 import { SuccessionMeta, SuccessionOptions } from "../KerML/succession.js";
 import { metamodelOf, BasicMetamodel } from "../metamodel.js";
@@ -101,7 +101,7 @@ export class SuccessionAsUsageMeta extends Mixin(SuccessionMeta, ConnectorAsUsag
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface SuccessionAsUsage {
         $meta: SuccessionAsUsageMeta;
     }

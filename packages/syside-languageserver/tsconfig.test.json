@@ -3,7 +3,11 @@
     "compilerOptions": {
         "noEmit": true,
         "rootDir": "..",
-        "types": ["vitest/globals"]
+        "types": ["vitest/globals"],
+        "baseUrl": ".",
+        "paths": {
+            "#generated/*": ["./gen/*"]
+        }
     },
     "references": [
         { "path": "tsconfig.json" },
@@ -12,5 +16,5 @@
     "files": [
         "../syside-vscode/package.json"
     ],
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts", "gen/**/*.ts"]
 }

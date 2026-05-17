@@ -47,7 +47,7 @@ import {
     ViewRenderingMembership,
     OwningMembership,
     Feature,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { SubtypeKeys } from "../../../services/index.js";
 import { parsedNode } from "../../../testing/utils.js";
 

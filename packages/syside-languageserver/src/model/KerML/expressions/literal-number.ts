@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { LiteralNumber } from "../../../generated/ast.js";
+import { LiteralNumber } from "#generated/ast.js";
 import { enumerable } from "../../../utils/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal.js";
@@ -72,7 +72,7 @@ export class LiteralNumberMeta extends LiteralExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface LiteralNumber {
         $meta: LiteralNumberMeta;
     }

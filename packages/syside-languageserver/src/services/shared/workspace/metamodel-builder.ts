@@ -75,7 +75,7 @@ import {
     ItemFlow,
     FlowUsage,
     CrossSubsetting,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import {
     BasicMetamodel,
     FeatureMeta,

@@ -28,7 +28,7 @@ import {
     StateSubactionMembership,
     TerminateActionUsage,
     WhileLoopActionUsage,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { parsedNode } from "../../../testing/utils.js";
 import { ExpressionMeta, FeatureValueMeta, ParameterMembershipMeta } from "../../KerML/index.js";
 import { AssignmentActionUsageMeta, ReferenceUsageMeta } from "../../SysML/index.js";

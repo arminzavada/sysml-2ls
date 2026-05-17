@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { anything, qualifiedTypeReference } from "../../../testing/index.js";
-import { Dependency } from "../../../generated/ast.js";
+import { Dependency } from "#generated/ast.js";
 
 test("relationships are parseable", async () => {
     return expect(`

@@ -7,9 +7,10 @@
  *
  * Not a regression test; remove or repurpose after the question is answered.
  ********************************************************************************/
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { parseKerML } from "../../../testing";
-import { Redefinition } from "../../../generated/ast";
+import { Redefinition } from "#generated/ast.js";
 
 test("PROBE 1: qualified-name redefinition target — A::x with self-collision in B", async () => {
     const result = await parseKerML(`
@@ -21,7 +22,6 @@ test("PROBE 1: qualified-name redefinition target — A::x with self-collision i
         feature :>> A::x;
     }`);
 
-    /* eslint-disable no-console */
     console.log("--- lexer errors ---");
     console.log(result.lexerErrors);
     console.log("--- parser errors ---");
@@ -47,7 +47,6 @@ test("PROBE 1: qualified-name redefinition target — A::x with self-collision i
             resolvedQN: h.targetRef?.$meta?.to?.target?.qualifiedName,
         });
     }
-    /* eslint-enable no-console */
 
     // Pass-through; this probe only logs.
     expect(result.parserErrors).toHaveLength(0);
@@ -71,7 +70,6 @@ test("PROBE 2: redefinition target x::y where B has self x and inherited x — d
         feature :>> X::y;
     }`);
 
-    /* eslint-disable no-console */
     console.log("--- parser errors (probe 2) ---");
     console.log(result.parserErrors);
     console.log("--- linking errors ---");
@@ -95,7 +93,6 @@ test("PROBE 2: redefinition target x::y where B has self x and inherited x — d
             resolvedName: h.targetRef?.$meta?.to?.target?.name,
         });
     }
-    /* eslint-enable no-console */
 
     expect(result.parserErrors).toHaveLength(0);
     expect(heritage).toHaveLength(1);
@@ -115,7 +112,6 @@ test("PROBE 3: control case — same model WITHOUT self-collision (no `classifie
         feature :>> X::y;
     }`);
 
-    /* eslint-disable no-console */
     const root = result.value;
     const bNs = root.children[1].target as any;
     const redefMember = bNs?.children?.at(-1);
@@ -127,7 +123,6 @@ test("PROBE 3: control case — same model WITHOUT self-collision (no `classifie
             resolvedQN: h.targetRef?.$meta?.to?.target?.qualifiedName,
         });
     }
-    /* eslint-enable no-console */
 
     expect(result.parserErrors).toHaveLength(0);
 });

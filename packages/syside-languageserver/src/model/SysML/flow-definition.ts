@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { FlowDefinition } from "../../generated/ast.js";
+import { FlowDefinition } from "#generated/ast.js";
 import { InteractionMeta, InteractionOptions } from "../KerML/interaction.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition.js";
@@ -49,7 +49,7 @@ export class FlowDefinitionMeta extends Mixin(InteractionMeta, ActionDefinitionM
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FlowDefinition {
         $meta: FlowDefinitionMeta;
     }

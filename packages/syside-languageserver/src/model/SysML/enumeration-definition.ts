@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { EnumerationDefinition } from "../../generated/ast.js";
+import { EnumerationDefinition } from "#generated/ast.js";
 import { enumerable } from "../../utils/index.js";
 import { metamodelOf } from "../metamodel.js";
 import { AttributeDefinitionMeta, AttributeDefinitionOptions } from "./attribute-definition.js";
@@ -36,7 +36,7 @@ export class EnumerationDefinitionMeta extends AttributeDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface EnumerationDefinition {
         $meta: EnumerationDefinitionMeta;
     }

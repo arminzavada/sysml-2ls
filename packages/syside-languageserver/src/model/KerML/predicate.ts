@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Predicate } from "../../generated/ast.js";
+import { Predicate } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { FunctionMeta, FunctionOptions } from "./_internal.js";
 
@@ -31,7 +31,7 @@ export class PredicateMeta extends FunctionMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Predicate {
         $meta: PredicateMeta;
     }

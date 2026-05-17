@@ -33,7 +33,7 @@ import {
     defaultSysMLPrinterContext,
     collectUnprintedNotes,
 } from "../print.js";
-import { Element, OwningMembership } from "../../../generated/ast.js";
+import { Element, OwningMembership } from "#generated/ast.js";
 import { parsedNode } from "../../../testing/index.js";
 import { ElementRange, collectPrintRange } from "../utils.js";
 import { attachNotes } from "../../notes/index.js";

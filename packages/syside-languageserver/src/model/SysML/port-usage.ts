@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { PartDefinition, PortDefinition, PortUsage } from "../../generated/ast.js";
+import { PartDefinition, PortDefinition, PortUsage } from "#generated/ast.js";
 import { enumerable } from "../../utils/common.js";
 import { metamodelOf } from "../metamodel.js";
 import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.js";
@@ -60,7 +60,7 @@ export class PortUsageMeta extends OccurrenceUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface PortUsage {
         $meta: PortUsageMeta;
     }

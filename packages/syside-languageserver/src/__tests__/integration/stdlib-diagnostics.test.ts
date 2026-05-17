@@ -35,9 +35,7 @@ function collectDiagnostics(docs: LangiumDocument[]): Record<string, DiagnosticE
         }));
     }
     // sort keys for a stable snapshot regardless of filesystem traversal order
-    return Object.fromEntries(
-        Object.entries(result).sort(([a], [b]) => a.localeCompare(b))
-    );
+    return Object.fromEntries(Object.entries(result).sort(([a], [b]) => a.localeCompare(b)));
 }
 
 describe("stdlib diagnostics", () => {

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { StateDefinition } from "../../generated/ast.js";
+import { StateDefinition } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionDefinitionMeta, ActionDefinitionOptions } from "./action-definition.js";
 
@@ -45,7 +45,7 @@ export class StateDefinitionMeta extends ActionDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface StateDefinition {
         $meta: StateDefinitionMeta;
     }

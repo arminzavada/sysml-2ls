@@ -16,7 +16,7 @@
 
 import { JSONConvertible } from "../utils/common.js";
 import { SubtypeKeys, SysMLInterface, SysMLType } from "../services/index.js";
-import { Element } from "../generated/ast.js";
+import { Element } from "#generated/ast.js";
 import { BasicMetamodel } from "./metamodel.js";
 
 /**

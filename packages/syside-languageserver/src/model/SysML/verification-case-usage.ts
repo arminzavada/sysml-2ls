@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { VerificationCaseUsage, VerificationCaseDefinition } from "../../generated/ast.js";
+import { VerificationCaseUsage, VerificationCaseDefinition } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { CaseUsageMeta, CaseUsageOptions } from "./case-usage.js";
 
@@ -42,7 +42,7 @@ export class VerificationCaseUsageMeta extends CaseUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface VerificationCaseUsage {
         $meta: VerificationCaseUsageMeta;
     }

@@ -31,7 +31,7 @@ interface CompileOptions extends CommandOptions {
     output?: string;
 }
 
-export const SysMLExtensions = SysMLLanguageMetaData.fileExtensions;
+export const SysMLExtensions: string[] = [...SysMLLanguageMetaData.fileExtensions];
 
 export const compileAction = async (
     fileName: string,

@@ -1,13 +1,18 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "rootDir": "src",
+        "rootDir": ".",
         "outDir": "lib",
-        "baseUrl": "."
+        "baseUrl": ".",
+        "paths": {
+            "#generated/*": ["./gen/*"]
+        }
     },
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "gen/**/*.ts"
     ],
+    "files": ["package.json"],
     "exclude": [
         "lib",
         "node_modules",

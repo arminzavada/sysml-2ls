@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ConstructorExpression } from "../../../generated/ast.js";
+import { ConstructorExpression } from "#generated/ast.js";
 import { metamodelOf } from "../../metamodel.js";
 import { InvocationExpressionMeta, InvocationExpressionOptions } from "./invocation-expression.js";
 
@@ -27,7 +27,7 @@ export class ConstructorExpressionMeta extends InvocationExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ConstructorExpression {
         $meta: ConstructorExpressionMeta;
     }

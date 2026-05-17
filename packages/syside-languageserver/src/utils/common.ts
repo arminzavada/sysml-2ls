@@ -17,7 +17,7 @@
 import { AstNode, CstNode, DeepPartial, GrammarAST, OperationCancelled } from "langium";
 const { isAbstractRule, isRuleCall } = GrammarAST;
 import { CancellationToken, Range } from "vscode-languageserver";
-import { Element, isElementReference } from "../generated/ast.js";
+import { Element, isElementReference } from "#generated/ast.js";
 import now from "performance-now";
 import { isMetamodel } from "../model/index.js";
 import path from "path";

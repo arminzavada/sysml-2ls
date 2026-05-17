@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { TerminateActionUsage } from "../../generated/ast.js";
+import { TerminateActionUsage } from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
@@ -87,7 +87,7 @@ export class TerminateActionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface TerminateActionUsage {
         $meta: TerminateActionUsageMeta;
     }

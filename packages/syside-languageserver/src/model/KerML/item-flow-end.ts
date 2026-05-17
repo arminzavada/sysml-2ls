@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ItemFlowEnd } from "../../generated/ast.js";
+import { ItemFlowEnd } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { EndFeatureMembershipMeta, FeatureMeta, FeatureOptions } from "./_internal.js";
 
@@ -44,7 +44,7 @@ export class ItemFlowEndMeta extends FeatureMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ItemFlowEnd {
         $meta: ItemFlowEndMeta;
     }

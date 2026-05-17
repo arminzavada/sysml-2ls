@@ -23,7 +23,7 @@ import {
     MetadataFeature,
     MetadataUsage,
     TextualRepresentation,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { parsedNode } from "../../../testing/utils.js";
 
 describe("comments", () => {

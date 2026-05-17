@@ -68,5 +68,4 @@ describe("Semantifyr SysML test models", () => {
         },
         180_000
     );
-
 });

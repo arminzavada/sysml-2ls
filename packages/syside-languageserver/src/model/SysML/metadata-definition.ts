@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { MetadataDefinition } from "../../generated/ast.js";
+import { MetadataDefinition } from "#generated/ast.js";
 import { MetaclassMeta, MetaclassOptions } from "../KerML/metaclass.js";
 import { metamodelOf } from "../metamodel.js";
 import { ItemDefinitionMeta, ItemDefinitionOptions } from "./item-definition.js";
@@ -31,7 +31,7 @@ export class MetadataDefinitionMeta extends Mixin(MetaclassMeta, ItemDefinitionM
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface MetadataDefinition {
         $meta: MetadataDefinitionMeta;
     }

@@ -23,7 +23,7 @@ import {
     NullExpression,
     OwningMembership,
     Subsetting,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { SysMLType } from "../../../services/index.js";
 import { parseKerML, parseSysML, recursiveObjectContaining } from "../../../testing/index.js";
 import { TextComment } from "../../../utils/index.js";

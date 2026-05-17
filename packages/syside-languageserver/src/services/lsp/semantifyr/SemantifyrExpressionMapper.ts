@@ -1,4 +1,4 @@
-import { expandToNode, Generated } from "langium";
+import { expandToNode, Generated } from "langium/generate";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrExpressionStringifier } from "./SemantifyrExpressionStringifier";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
@@ -20,7 +20,7 @@ import {
     isFeatureChainExpression,
     isOwningMembership,
     isMembership,
-} from "../../../generated/ast";
+} from "#generated/ast";
 
 export type OperatorExpression_Operator =
     | "*"

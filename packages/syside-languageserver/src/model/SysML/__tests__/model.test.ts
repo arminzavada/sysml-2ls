@@ -24,7 +24,7 @@ import {
     SendActionUsage,
     TerminateActionUsage,
     TransitionUsage,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { emptyDocument } from "../../../testing/index.js";
 import {
     ExpressionMeta,

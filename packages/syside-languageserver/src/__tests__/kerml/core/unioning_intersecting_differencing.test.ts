@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { anything, withQualifiedName, qualifiedTypeReference } from "../../../testing/index.js";
-import { Classifier, Unioning } from "../../../generated/ast.js";
+import { Classifier, Unioning } from "#generated/ast.js";
 
 const Common = `
 classifier Adult;

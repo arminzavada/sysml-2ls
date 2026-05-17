@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ViewRenderingMembership } from "../../../generated/ast.js";
+import { ViewRenderingMembership } from "#generated/ast.js";
 import { RelationshipOptionsBody } from "../../KerML/index.js";
 import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
@@ -41,7 +41,7 @@ export class ViewRenderingMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ViewRenderingMembership {
         $meta: ViewRenderingMembershipMeta;
     }

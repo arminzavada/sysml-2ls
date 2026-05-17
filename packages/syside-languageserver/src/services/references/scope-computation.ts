@@ -33,7 +33,7 @@ import {
     Element,
     Membership,
     isMembership,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { MembershipMeta } from "../../model/index.js";
 import { SysMLDefaultServices } from "../services.js";
 import {

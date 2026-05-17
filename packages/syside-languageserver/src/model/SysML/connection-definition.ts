@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConnectionDefinition } from "../../generated/ast.js";
+import { ConnectionDefinition } from "#generated/ast.js";
 import {
     AssociationStructMeta,
     AssociationStructureOptions,
@@ -51,7 +51,7 @@ export class ConnectionDefinitionMeta extends Mixin(AssociationStructMeta, PartD
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ConnectionDefinition {
         $meta: ConnectionDefinitionMeta;
     }

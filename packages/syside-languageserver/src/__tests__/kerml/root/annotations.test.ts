@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Comment, Documentation, TextualRepresentation } from "../../../generated/ast.js";
+import { Comment, Documentation, TextualRepresentation } from "#generated/ast.js";
 import { prettyAnnotationBody } from "../../../model/index.js";
 import { parsedNode } from "../../../testing/utils.js";
 

@@ -17,7 +17,7 @@
 import { LangiumDocument } from "langium";
 import { CstTextComment, TextComment, visitComments } from "../../utils/index.js";
 import { BasicMetamodel } from "../metamodel.js";
-import { ElementReference } from "../../generated/ast.js";
+import { ElementReference } from "#generated/ast.js";
 // import from utils results in a circular import...
 import { AbstractKerMLCommentVisitor } from "../../utils/comments/comments.js";
 

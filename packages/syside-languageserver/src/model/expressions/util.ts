@@ -21,7 +21,7 @@ import {
     MetadataFeature,
     SysMLFunction,
     Type,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import * as meta from "../KerML/index.js";
 import { ElementMeta, FeatureMeta, TypeMeta } from "../KerML/index.js";
 import { BasicMetamodel, isMetamodel } from "../metamodel.js";

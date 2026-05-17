@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { GrammarUtils } from "langium";
-import * as ast from "../../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import { Doc, group, indent, keyword, line, literals } from "../../utils/index.js";
 import { FeatureMeta, ResultExpressionMembershipMeta } from "../KerML/index.js";
 import {

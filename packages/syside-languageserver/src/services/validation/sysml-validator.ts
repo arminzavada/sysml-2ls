@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { stream } from "langium";
-import * as ast from "../../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import {
     AcceptActionUsageMeta,
     ActionUsageMeta,
@@ -169,20 +169,16 @@ export class SysMLValidator extends KerMLValidator {
         that the metamodel keeps mutually exclusive; fires only on programmatic
         AST corruption) */
         if (node.isReference && node.isComposite) {
-            accept(
-                "error",
-                "A Usage cannot be both isReference and isComposite.",
-                { element: node, code: "validateUsageIsReferential" }
-            );
+            accept("error", "A Usage cannot be both isReference and isComposite.", {
+                element: node,
+                code: "validateUsageIsReferential",
+            });
         }
     }
 
     /* istanbul ignore next (ReferenceUsageMeta forces isComposite=false) */
     @validateSysML(ast.ReferenceUsage.$type)
-    validateReferenceUsageIsReferential(
-        node: UsageMeta,
-        accept: ModelValidationAcceptor
-    ): void {
+    validateReferenceUsageIsReferential(node: UsageMeta, accept: ModelValidationAcceptor): void {
         if (!node.isReference) {
             accept("error", "A ReferenceUsage must have isReference = true.", {
                 element: node,
@@ -508,20 +504,16 @@ export class SysMLValidator extends KerMLValidator {
     }
 
     @validateSysML(ast.PortUsage.$type)
-    validatePortUsageIsReference(
-        node: PortUsageMeta,
-        accept: ModelValidationAcceptor
-    ): void {
+    validatePortUsageIsReference(node: PortUsageMeta, accept: ModelValidationAcceptor): void {
         // A PortUsage that is not a subport (i.e. not owned by a PortDefinition
         // or PortUsage) must have isReference = true.
         const owner = node.owningType;
         const isSubport = owner?.isAny(ast.PortDefinition.$type, ast.PortUsage.$type);
         if (!isSubport && !node.isReference) {
-            accept(
-                "error",
-                "A PortUsage that is not a subport must have isReference = true.",
-                { element: node, code: "validatePortUsageIsReference" }
-            );
+            accept("error", "A PortUsage that is not a subport must have isReference = true.", {
+                element: node,
+                code: "validatePortUsageIsReference",
+            });
         }
     }
 

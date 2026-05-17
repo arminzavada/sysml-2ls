@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { LifeClass } from "../../generated/ast.js";
+import { LifeClass } from "#generated/ast.js";
 import { ClassMeta, ClassOptions } from "../KerML/index.js";
 import { metamodelOf } from "../metamodel.js";
 
@@ -34,7 +34,7 @@ export class LifeClassMeta extends ClassMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface LifeClass {
         $meta: LifeClassMeta;
     }

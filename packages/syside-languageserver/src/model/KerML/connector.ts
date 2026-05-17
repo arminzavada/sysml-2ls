@@ -16,7 +16,7 @@
 
 import { AstNode, LangiumDocument, stream } from "langium";
 import { Mixin } from "ts-mixer";
-import { Connector, ReferenceSubsetting } from "../../generated/ast.js";
+import { Connector, ReferenceSubsetting } from "#generated/ast.js";
 import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ConnectorMixin } from "../mixins/connector.js";
 import {
@@ -191,7 +191,7 @@ export class ConnectorMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Connector {
         $meta: ConnectorMeta;
     }

@@ -34,7 +34,7 @@ import {
     FeatureChaining,
     FeatureInverting,
     TypeFeaturing,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { Visibility } from "../../../utils/scope-util.js";
 
 test.concurrent.each([

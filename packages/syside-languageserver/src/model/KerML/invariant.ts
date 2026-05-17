@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Invariant } from "../../generated/ast.js";
+import { Invariant } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { BooleanExpressionMeta, BooleanExpressionOptions } from "./_internal.js";
 
@@ -59,7 +59,7 @@ export class InvariantMeta extends BooleanExpressionMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Invariant {
         $meta: InvariantMeta;
     }

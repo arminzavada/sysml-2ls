@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { MultiMap, Properties, Stream, stream } from "langium";
-import * as ast from "../../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import {
     AnyOperator,
     AssociationMeta,
@@ -308,18 +308,19 @@ export class KerMLValidator {
     }
 
     @validateKerML(ast.EndFeatureMembership.$type)
-    validateEndFeatureMembership(
-        node: MembershipMeta,
-        accept: ModelValidationAcceptor
-    ): void {
+    validateEndFeatureMembership(node: MembershipMeta, accept: ModelValidationAcceptor): void {
         const feature = node.element();
         /* istanbul ignore next */
         if (!feature?.is(ast.Feature.$type)) return;
         if (!feature.isEnd) {
-            accept("error", "The ownedMemberFeature of an EndFeatureMembership must have isEnd = true.", {
-                element: node,
-                code: "validateEndFeatureMembership",
-            });
+            accept(
+                "error",
+                "The ownedMemberFeature of an EndFeatureMembership must have isEnd = true.",
+                {
+                    element: node,
+                    code: "validateEndFeatureMembership",
+                }
+            );
         }
     }
 
@@ -1239,11 +1240,10 @@ export class KerMLValidator {
     validateFlowEndIsEnd(node: ItemFlowMeta, accept: ModelValidationAcceptor): void {
         node.connectorEnds().forEach((end, index) => {
             if (!end.isEnd) {
-                accept(
-                    "error",
-                    `End feature #${index} of an ItemFlow must have isEnd = true.`,
-                    { element: end, code: "validateFlowEndIsEnd" }
-                );
+                accept("error", `End feature #${index} of an ItemFlow must have isEnd = true.`, {
+                    element: end,
+                    code: "validateFlowEndIsEnd",
+                });
             }
         });
     }

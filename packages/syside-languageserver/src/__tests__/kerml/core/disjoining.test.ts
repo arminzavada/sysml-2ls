@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing/index.js";
-import { Class, Disjoining, Documentation, Subclassification } from "../../../generated/ast.js";
+import { Class, Disjoining, Documentation, Subclassification } from "#generated/ast.js";
 
 const Common = `
 class Person {

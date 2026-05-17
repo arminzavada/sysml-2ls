@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Definition, Usage } from "../../generated/ast.js";
+import { Definition, Usage } from "#generated/ast.js";
 import { enumerable } from "../../utils/index.js";
 import { ClassifierMeta, ClassifierOptions } from "../KerML/classifier.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
@@ -74,7 +74,7 @@ export class DefinitionMeta extends ClassifierMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Definition {
         $meta: DefinitionMeta;
     }

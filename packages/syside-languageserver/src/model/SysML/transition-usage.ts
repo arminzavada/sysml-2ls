@@ -21,7 +21,7 @@ import {
     StateDefinition,
     StateUsage,
     TransitionUsage,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
@@ -243,7 +243,7 @@ export class TransitionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface TransitionUsage {
         $meta: TransitionUsageMeta;
     }

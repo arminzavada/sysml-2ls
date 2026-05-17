@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Import } from "../../../generated/ast.js";
+import { Import } from "#generated/ast.js";
 import { enumerable } from "../../../utils/index.js";
 import { Visibility } from "../../../utils/scope-util.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
@@ -116,7 +116,7 @@ export abstract class ImportMeta<T extends Importable = Importable> extends Rela
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Import {
         $meta: ImportMeta;
     }

@@ -26,7 +26,7 @@ import {
     MetadataFeature,
     Namespace,
     TextualRepresentation,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { SubtypeKeys, SysMLInterface, SysMLTypeList } from "../../services/index.js";
 import { KeysMatching, NonNullable, enumerable } from "../../utils/index.js";
 import { BuildState } from "../enums.js";
@@ -282,7 +282,7 @@ export class NamespaceMeta extends ElementMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Namespace {
         $meta: NamespaceMeta;
     }

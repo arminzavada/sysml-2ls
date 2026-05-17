@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { OwningMembership } from "../../../generated/ast.js";
+import { OwningMembership } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ElementMeta,
@@ -62,7 +62,7 @@ export class OwningMembershipMeta<T extends ElementMeta = ElementMeta> extends M
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface OwningMembership {
         $meta: OwningMembershipMeta;
     }

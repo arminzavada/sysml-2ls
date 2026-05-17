@@ -36,7 +36,7 @@ import {
     SysMLType,
     SysMLTypeList,
 } from "../sysml-ast-reflection.js";
-import { Element } from "../../generated/ast.js";
+import { Element } from "#generated/ast.js";
 
 type ModelAst<T extends BasicMetamodel = BasicMetamodel> = NonNullable<ReturnType<T["ast"]>>;
 

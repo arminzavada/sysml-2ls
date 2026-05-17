@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing/index.js";
-import { FeatureInverting, Feature, Classifier } from "../../../generated/ast.js";
+import { FeatureInverting, Feature, Classifier } from "#generated/ast.js";
 
 test("feature inverting can be parsed", async () => {
     return expect(`

@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Feature, Membership, OwningMembership } from "../../../generated/ast.js";
+import { Feature, Membership, OwningMembership } from "#generated/ast.js";
 import { parsedNode, qualifiedTarget } from "../../../testing/index.js";
 
 test("features can be parsed and aliased", async () => {

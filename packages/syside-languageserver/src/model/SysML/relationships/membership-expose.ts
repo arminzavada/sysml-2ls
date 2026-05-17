@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { MembershipExpose } from "../../../generated/ast.js";
+import { MembershipExpose } from "#generated/ast.js";
 import { MembershipMeta } from "../../KerML/relationships/membership.js";
 import { MembershipImportMeta } from "../../KerML/relationships/membership-import.js";
 import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
@@ -53,7 +53,7 @@ export class MembershipExposeMeta<T extends MembershipMeta = MembershipMeta> {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface MembershipExpose {
         $meta: MembershipExposeMeta;
     }

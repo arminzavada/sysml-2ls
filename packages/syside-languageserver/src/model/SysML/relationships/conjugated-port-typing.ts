@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ConjugatedPortTyping } from "../../../generated/ast.js";
+import { ConjugatedPortTyping } from "#generated/ast.js";
 import { FeatureMeta, FeatureTypingMeta, RelationshipOptionsBody } from "../../KerML/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ConjugatedPortDefinitionMeta } from "../port-definition.js";
@@ -39,7 +39,7 @@ export class ConjugatedPortTypingMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ConjugatedPortTyping {
         $meta: ConjugatedPortTypingMeta;
     }

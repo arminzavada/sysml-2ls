@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConjugatedPortDefinition, PortDefinition } from "../../generated/ast.js";
+import { ConjugatedPortDefinition, PortDefinition } from "#generated/ast.js";
 import { StructureMeta, StructureOptions } from "../KerML/structure.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { OccurrenceDefinitionMeta, OccurrenceDefinitionOptions } from "./occurrence-definition.js";
@@ -106,7 +106,7 @@ export class ConjugatedPortDefinitionMeta extends PortDefinitionMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface PortDefinition {
         $meta: PortDefinitionMeta;
     }

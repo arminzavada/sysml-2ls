@@ -71,7 +71,7 @@ import {
     SysMLFunction,
     Expression,
     ItemFlow,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { SysMLEmptyFileSystem, SysMLInterface } from "../../../services/index.js";
 import { testChildProperty, testChildrenArray } from "./utils.js";
 import { createSysMLServices } from "../../../sysml-module.js";

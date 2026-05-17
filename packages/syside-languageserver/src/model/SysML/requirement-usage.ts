@@ -18,7 +18,7 @@ import {
     RequirementDefinition,
     RequirementUsage,
     RequirementVerificationMembership,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { ConstraintUsageMeta, ConstraintUsageOptions } from "./constraint-usage.js";
 
@@ -60,7 +60,7 @@ export class RequirementUsageMeta extends ConstraintUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface RequirementUsage {
         $meta: RequirementUsageMeta;
     }

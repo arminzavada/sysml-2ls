@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { LiteralBoolean } from "../../../generated/ast.js";
+import { LiteralBoolean } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal.js";
 
@@ -51,7 +51,7 @@ export class LiteralBooleanMeta extends LiteralExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface LiteralBoolean {
         $meta: LiteralBooleanMeta;
     }

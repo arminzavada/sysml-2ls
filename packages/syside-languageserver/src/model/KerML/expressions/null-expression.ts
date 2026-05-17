@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { NullExpression } from "../../../generated/ast.js";
+import { NullExpression } from "#generated/ast.js";
 import {
     ElementIDProvider,
     MetatypeProto,
@@ -54,7 +54,7 @@ export class NullExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface NullExpression {
         $meta: NullExpressionMeta;
     }

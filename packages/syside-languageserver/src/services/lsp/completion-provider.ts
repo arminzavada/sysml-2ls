@@ -41,7 +41,7 @@ import {
     isElementReference,
     isFeature,
     MetadataAccessExpression,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import {
     CancellationToken,
     CompletionItem,

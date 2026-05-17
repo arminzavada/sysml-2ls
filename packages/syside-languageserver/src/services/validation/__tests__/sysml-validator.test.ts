@@ -22,7 +22,7 @@ import {
     services,
     TEST_BUILD_OPTIONS,
 } from "../../../testing/index.js";
-import * as ast from "../../../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import { Diagnostic } from "vscode-languageserver";
 import {
     ActionUsageMeta,

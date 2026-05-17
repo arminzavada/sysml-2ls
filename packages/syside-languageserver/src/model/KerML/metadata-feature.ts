@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { MetadataFeature } from "../../generated/ast.js";
+import { MetadataFeature } from "#generated/ast.js";
 import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import {
     AnnotatingElementMeta,
@@ -75,7 +75,7 @@ export class MetadataFeatureMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface MetadataFeature {
         $meta: MetadataFeatureMeta;
     }

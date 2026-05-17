@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { OccurrenceUsage } from "../../generated/ast.js";
+import { OccurrenceUsage } from "#generated/ast.js";
 import { GeneralType, metamodelOf } from "../metamodel.js";
 import { UsageMeta, UsageOptions } from "./usage.js";
 
@@ -43,7 +43,7 @@ export class OccurrenceUsageMeta extends UsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface OccurrenceUsage {
         $meta: OccurrenceUsageMeta;
     }

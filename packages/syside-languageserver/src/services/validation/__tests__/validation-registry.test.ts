@@ -16,7 +16,7 @@
 
 import { Disposable } from "vscode-languageserver";
 import { services } from "../../../testing/index.js";
-import { LibraryPackage, Package } from "../../../generated/ast.js";
+import { LibraryPackage, Package } from "#generated/ast.js";
 import { BaseValidationRegistry } from "../validation-registry.js";
 
 describe("Validation registry", () => {

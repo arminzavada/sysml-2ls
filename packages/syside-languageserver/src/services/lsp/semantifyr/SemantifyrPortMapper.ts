@@ -1,4 +1,4 @@
-import { expandToNode, Generated } from "langium";
+import { expandToNode, Generated } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import {
@@ -8,7 +8,7 @@ import {
     isItemUsage,
     ItemUsage,
     isItemDefinition,
-} from "../../../generated/ast";
+} from "#generated/ast";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
 import { SemantifyrItemMapper } from "./SemantifyrItemMapper";
 
@@ -100,7 +100,7 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
         return `refers ${itemName}: ${classifierName} subsets ${subsets} = ${expression}`;
     }
 
-    private mapOwningMembership(membership: ast.OwningMembership): Generated {
+    private mapOwningMembership(_membership: ast.OwningMembership): Generated {
         return undefined; // skip port members for now
     }
 }

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument, Stream, stream } from "langium";
-import { Dependency } from "../../../generated/ast.js";
+import { Dependency } from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../../utils/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
@@ -170,7 +170,7 @@ export class DependencyMeta extends RelationshipMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Dependency {
         $meta: DependencyMeta;
     }

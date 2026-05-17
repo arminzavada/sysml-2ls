@@ -44,7 +44,7 @@ import {
     PortDefinition,
     Relationship,
     Type,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { SysMLIndexManager } from "../shared/workspace/index-manager.js";
 import { SysMLScopeProvider } from "./scope-provider.js";
 import { SysMLDefaultServices } from "../services.js";

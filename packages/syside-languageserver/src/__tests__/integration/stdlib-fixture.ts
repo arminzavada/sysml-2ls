@@ -73,9 +73,7 @@ export async function setupServicesWithStdlib(
 
     const stdlibUris = await collectStdlibFiles(stdlibPath);
     const stdDocs = await Promise.all(
-        stdlibUris.map((uri) =>
-            services.shared.workspace.LangiumDocuments.getOrCreateDocument(uri)
-        )
+        stdlibUris.map((uri) => services.shared.workspace.LangiumDocuments.getOrCreateDocument(uri))
     );
     for (const d of stdDocs) {
         (d as { isStandard?: boolean }).isStandard = true;

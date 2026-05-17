@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { Association } from "../../generated/ast.js";
+import { Association } from "#generated/ast.js";
 import { TypeClassifier } from "../enums.js";
 import { ElementID, metamodelOf } from "../metamodel.js";
 import { ConnectorMixin } from "../mixins/connector.js";
@@ -63,7 +63,7 @@ export class AssociationMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Association {
         $meta: AssociationMeta;
     }

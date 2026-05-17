@@ -19,7 +19,7 @@ import {
     InvocationExpression,
     ParameterMembership,
     SysMLFunction,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../../utils/common.js";
 import { metamodelOf } from "../../metamodel.js";
 import {
@@ -100,7 +100,7 @@ export class InvocationExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface InvocationExpression {
         $meta: InvocationExpressionMeta;
     }

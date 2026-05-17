@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Specialization } from "../../../generated/ast.js";
+import { Specialization } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 import { InheritanceMeta } from "./inheritance.js";
@@ -39,7 +39,7 @@ export class SpecializationMeta<T extends TypeMeta = TypeMeta> extends Inheritan
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Specialization {
         $meta: SpecializationMeta;
     }

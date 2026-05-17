@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ForLoopActionUsage } from "../../generated/ast.js";
+import { ForLoopActionUsage } from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
@@ -111,7 +111,7 @@ export class ForLoopActionUsageMeta extends LoopActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ForLoopActionUsage {
         $meta: ForLoopActionUsageMeta;
     }

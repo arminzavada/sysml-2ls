@@ -47,7 +47,7 @@ import {
     Namespace,
     OwningMembership,
     Relationship,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { BasicMetamodel } from "../metamodel.js";
 import {
     DefaultElementPrinter,
@@ -70,7 +70,7 @@ import {
 const { findNodeForKeyword } = GrammarUtils;
 const { streamAst } = AstUtils;
 const { isKeyword } = GrammarAST;
-import { KerMLGrammar, SysMLGrammar } from "../../generated/grammar.js";
+import { KerMLGrammar, SysMLGrammar } from "#generated/grammar.js";
 import { PreservableFormatting } from "./format-options.js";
 import assert from "assert";
 import { UsageMeta } from "../SysML/index.js";

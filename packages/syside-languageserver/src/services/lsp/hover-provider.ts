@@ -18,7 +18,7 @@ import { AstNode, AstUtils, LangiumDocument, MaybePromise } from "langium";
 import { AstNodeHoverProvider } from "langium/lsp";
 import { Hover, HoverParams } from "vscode-languageserver";
 import { Utils } from "vscode-uri";
-import { isElement, Membership, Type } from "../../generated/ast.js";
+import { isElement, Membership, Type } from "#generated/ast.js";
 import { ElementMeta } from "../../model/index.js";
 import { LanguageEvents } from "../events.js";
 import { SysMLDefaultServices } from "../services.js";

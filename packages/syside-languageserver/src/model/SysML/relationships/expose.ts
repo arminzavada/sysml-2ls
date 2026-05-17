@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Expose } from "../../../generated/ast.js";
+import { Expose } from "#generated/ast.js";
 import { Visibility } from "../../../utils/index.js";
 import { enumerable } from "../../../utils/index.js";
 import { Importable, ImportMeta, ImportOptions } from "../../KerML/relationships/import.js";
@@ -58,7 +58,7 @@ export abstract class ExposeMeta<T extends Importable = Importable> extends Impo
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Expose {
         $meta: ExposeMeta;
     }

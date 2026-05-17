@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Element } from "../../generated/ast.js";
+import { Element } from "#generated/ast.js";
 import { SubtypeKeys, SysMLInterface, SysMLType } from "../../services/index.js";
 import {
     Doc,
@@ -34,7 +34,7 @@ import {
     text,
 } from "../../utils/index.js";
 import { ElementMeta, ElementReferenceMeta } from "../KerML/index.js";
-import * as ast from "../../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import { SemanticTokenTypes } from "vscode-languageserver";
 import { FormatOptions, DefaultFormatOptions } from "./format-options.js";
 import * as expr from "./expressions.js";

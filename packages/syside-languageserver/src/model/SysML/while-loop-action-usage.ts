@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { WhileLoopActionUsage } from "../../generated/ast.js";
+import { WhileLoopActionUsage } from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
@@ -109,7 +109,7 @@ export class WhileLoopActionUsageMeta extends LoopActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface WhileLoopActionUsage {
         $meta: WhileLoopActionUsageMeta;
     }

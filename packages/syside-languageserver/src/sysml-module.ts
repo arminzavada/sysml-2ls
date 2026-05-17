@@ -25,7 +25,7 @@ import {
     SysMLGeneratedSharedModule,
     KerMLGeneratedModule,
     SysMLGeneratedModule,
-} from "./generated/module.js";
+} from "#generated/module.js";
 import { SysMLValidationRegistry } from "./services/validation/sysml-validation-registry.js";
 import { SysMLScopeComputation } from "./services/references/scope-computation.js";
 import { SysMLNameProvider } from "./services/references/name-provider.js";

@@ -20,7 +20,7 @@ import {
     StateDefinition,
     StateSubactionMembership,
     StateUsage,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { Doc, group, indent, keyword, line, literals } from "../../utils/index.js";
 import {
     ElementMeta,

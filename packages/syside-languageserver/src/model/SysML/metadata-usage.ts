@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { MetadataUsage } from "../../generated/ast.js";
+import { MetadataUsage } from "#generated/ast.js";
 import { MetadataFeatureMeta, MetadataFeatureOptions } from "../KerML/metadata-feature.js";
 import { ElementID, metamodelOf } from "../metamodel.js";
 import { ItemUsageMeta, ItemUsageOptions } from "./item-usage.js";
@@ -41,7 +41,7 @@ export class MetadataUsageMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface MetadataUsage {
         $meta: MetadataUsageMeta;
     }

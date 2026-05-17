@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ViewUsage, ViewDefinition } from "../../generated/ast.js";
+import { ViewUsage, ViewDefinition } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
 
@@ -39,7 +39,7 @@ export class ViewUsageMeta extends PartUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ViewUsage {
         $meta: ViewUsageMeta;
     }

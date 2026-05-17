@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing/index.js";
-import { TypeFeaturing, Feature, FeatureTyping } from "../../../generated/ast.js";
+import { TypeFeaturing, Feature, FeatureTyping } from "#generated/ast.js";
 
 test("type featuring can be parsed", async () => {
     return expect(`

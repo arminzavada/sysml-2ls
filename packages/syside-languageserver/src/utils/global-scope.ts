@@ -17,7 +17,7 @@
 import { Stream, stream, EMPTY_STREAM, LangiumDocument } from "langium";
 import { URI, Utils } from "vscode-uri";
 import { SysMLScope, ExportedMember } from "./scopes.js";
-import { Namespace } from "../generated/ast.js";
+import { Namespace } from "#generated/ast.js";
 import { MembershipMeta, NamespaceMeta, ElementMeta, namedMembership } from "../model/index.js";
 import { erase } from "./common.js";
 import { Visibility } from "./scope-util.js";

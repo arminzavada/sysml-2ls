@@ -16,7 +16,7 @@
 
 import { AstNodeDescription, AstNodeDescriptionProvider, AstUtils, LangiumDocument } from "langium";
 import { AstNodeLocator } from "langium";
-import { Element } from "../../../generated/ast.js";
+import { Element } from "#generated/ast.js";
 import { SysMLSharedServices } from "../../services.js";
 
 export interface SysMLNodeDescription<T extends Element = Element> extends AstNodeDescription {

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureMembership } from "../../../generated/ast.js";
+import { FeatureMembership } from "#generated/ast.js";
 import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
 import { FeatureMeta } from "../feature.js";
 import { FeaturingMeta } from "./featuring.js";
@@ -65,7 +65,7 @@ export class FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta> {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FeatureMembership {
         $meta: FeatureMembershipMeta;
     }

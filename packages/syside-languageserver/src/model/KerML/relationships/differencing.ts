@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Differencing } from "../../../generated/ast.js";
+import { Differencing } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
@@ -41,7 +41,7 @@ export class DifferencingMeta<T extends TypeMeta = TypeMeta> extends Relationshi
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Differencing {
         $meta: DifferencingMeta;
     }

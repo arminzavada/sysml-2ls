@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Element, TransparentElement } from "../generated/ast.js";
+import { Element, TransparentElement } from "#generated/ast.js";
 import { ElementMeta } from "./KerML/element.js";
 import { Metamodel } from "./metamodel.js";
 

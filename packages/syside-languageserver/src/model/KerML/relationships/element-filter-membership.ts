@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ElementFilterMembership, NamespaceImport, Package } from "../../../generated/ast.js";
+import { ElementFilterMembership, NamespaceImport, Package } from "#generated/ast.js";
 import { Visibility, enumerable } from "../../../utils/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
@@ -54,7 +54,7 @@ export class ElementFilterMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ElementFilterMembership {
         $meta: ElementFilterMembershipMeta;
     }

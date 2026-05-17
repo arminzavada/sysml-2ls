@@ -34,7 +34,7 @@ import {
     Redefinition,
     Type,
     TypeReference,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { SysMLType, SysMLTypeList } from "../../services/sysml-ast-reflection.js";
 import { KeysMatching } from "../../utils/common.js";
 import {

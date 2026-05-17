@@ -1,4 +1,4 @@
-import { Generated, expandToNode } from "langium";
+import { Generated, expandToNode } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
@@ -24,7 +24,7 @@ export class SemantifyrItemMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private mapMembership(membership: ast.Membership | ast.Import): Generated {
+    private mapMembership(_membership: ast.Membership | ast.Import): Generated {
         return undefined;
     }
 }

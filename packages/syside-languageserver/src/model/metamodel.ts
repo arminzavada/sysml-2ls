@@ -20,7 +20,7 @@ import { AstNode, CstNode, LangiumDocument } from "langium";
 import { typeIndex, TypeMap } from "./types.js";
 import { BuildState } from "./enums.js";
 import { SubtypeKeys, SysMLType, SysMLTypeList } from "../services/sysml-ast-reflection.js";
-import { Inheritance, NonOwnerType, Specialization } from "../generated/ast.js";
+import { Inheritance, NonOwnerType, Specialization } from "#generated/ast.js";
 import type { ElementMeta } from "./KerML/index.js";
 import * as mixer from "ts-mixer";
 import { Class } from "ts-mixer/dist/types/types";

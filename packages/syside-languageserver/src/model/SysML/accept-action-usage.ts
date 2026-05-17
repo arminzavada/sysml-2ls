@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { AcceptActionUsage, TransitionFeatureMembership } from "../../generated/ast.js";
+import { AcceptActionUsage, TransitionFeatureMembership } from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
@@ -118,7 +118,7 @@ export class AcceptActionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface AcceptActionUsage {
         $meta: AcceptActionUsageMeta;
     }

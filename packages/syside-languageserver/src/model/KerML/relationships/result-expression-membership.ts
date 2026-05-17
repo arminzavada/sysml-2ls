@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ResultExpressionMembership } from "../../../generated/ast.js";
+import { ResultExpressionMembership } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ExpressionMeta,
@@ -42,7 +42,7 @@ export class ResultExpressionMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ResultExpressionMembership {
         $meta: ResultExpressionMembershipMeta;
     }

@@ -19,7 +19,7 @@ import { expect } from "vitest";
 import { getObjectSubset } from "@vitest/expect";
 import type { MatcherState, MatcherHintOptions } from "@vitest/expect";
 import type { IRecognitionException, ILexingError } from "chevrotain";
-import { Namespace } from "../generated/ast.js";
+import { Namespace } from "#generated/ast.js";
 import { parseKerML, ParseResult, parseSysML, TEST_BUILD_OPTIONS } from "./utils.js";
 import { isLinkingError, stream } from "langium";
 import chalk from "chalk";

@@ -16,7 +16,7 @@
 
 import { AstNode } from "langium";
 import { SysMLInterface, SysMLType } from "../services/index.js";
-import * as ast from "../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import {
     ActionUsageMeta,
     AnnotationMeta,

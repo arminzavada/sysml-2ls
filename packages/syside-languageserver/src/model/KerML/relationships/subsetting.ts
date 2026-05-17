@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Subsetting } from "../../../generated/ast.js";
+import { Subsetting } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     FeatureMeta,
@@ -44,7 +44,7 @@ export class SubsettingMeta<T extends FeatureMeta = FeatureMeta> extends Special
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Subsetting {
         $meta: SubsettingMeta;
     }

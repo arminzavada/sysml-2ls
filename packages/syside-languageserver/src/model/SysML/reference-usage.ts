@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { ReferenceUsage, TransitionUsage } from "../../generated/ast.js";
+import { ReferenceUsage, TransitionUsage } from "#generated/ast.js";
 import { enumerable } from "../../utils/common.js";
 import { Edge, ParameterMembershipMeta } from "../KerML/index.js";
 import { ElementIDProvider, GeneralType, metamodelOf } from "../metamodel.js";
@@ -48,7 +48,7 @@ export class ReferenceUsageMeta extends UsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ReferenceUsage {
         $meta: ReferenceUsageMeta;
     }

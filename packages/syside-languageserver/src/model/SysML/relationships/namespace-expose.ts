@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { NamespaceExpose } from "../../../generated/ast.js";
+import { NamespaceExpose } from "#generated/ast.js";
 import { NamespaceMeta } from "../../KerML/namespace.js";
 import { NamespaceImportMeta } from "../../KerML/relationships/namespace-import.js";
 import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
@@ -53,7 +53,7 @@ export class NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta> {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface NamespaceExpose {
         $meta: NamespaceExposeMeta;
     }

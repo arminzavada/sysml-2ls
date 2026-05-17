@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ActionDefinition, ActionUsage, AssertConstraintUsage } from "../../generated/ast.js";
+import { ActionDefinition, ActionUsage, AssertConstraintUsage } from "#generated/ast.js";
 import { InvariantMeta, InvariantOptions } from "../KerML/invariant.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ConstraintUsageMeta, ConstraintUsageOptions } from "./constraint-usage.js";
@@ -58,7 +58,7 @@ export class AssertConstraintUsageMeta extends Mixin(InvariantMeta, ConstraintUs
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface AssertConstraintUsage {
         $meta: AssertConstraintUsageMeta;
     }

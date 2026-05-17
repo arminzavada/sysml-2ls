@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Expression, ReturnParameterMembership, SysMLFunction } from "../../generated/ast.js";
+import { Expression, ReturnParameterMembership, SysMLFunction } from "#generated/ast.js";
 import {
     ExpressionMeta,
     FunctionMeta,

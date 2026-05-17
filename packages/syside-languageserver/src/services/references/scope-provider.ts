@@ -42,7 +42,7 @@ import {
     Subsetting,
     SysMLFunction,
     Type,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import {
     CHILD_CONTENTS_OPTIONS,
     DEFAULT_ALIAS_RESOLVER,
@@ -316,7 +316,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
                 inheritedOpts
             );
             return new ScopeStream(
-                (function* () {
+                (function* (): Generator<typeof inheritedScope | typeof linkingScope> {
                     yield inheritedScope;
                     yield linkingScope;
                 })()

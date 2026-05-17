@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { FlowUsage } from "../../generated/ast.js";
+import { FlowUsage } from "#generated/ast.js";
 import { ItemFlowMeta, ItemFlowOptions } from "../KerML/item-flow.js";
 import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
@@ -142,7 +142,7 @@ export class FlowUsageMeta extends Mixin(ActionUsageMeta, ItemFlowMeta, Connecto
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FlowUsage {
         $meta: FlowUsageMeta;
     }

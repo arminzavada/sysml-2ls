@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { anything, parseKerML, withQualifiedName } from "../../../testing/index.js";
-import { Feature } from "../../../generated/ast.js";
+import { Feature } from "#generated/ast.js";
 
 test("feature chains allow qualified feature names in between chain parts", async () => {
     const result = await parseKerML(`

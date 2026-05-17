@@ -20,7 +20,7 @@ import {
     CaseUsage,
     IncludeUseCaseUsage,
     ReferenceSubsetting,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { FeatureMeta } from "../KerML/index.js";
 import { GeneralType, metamodelOf } from "../metamodel.js";
 import { PerformActionUsageMeta, PerformActionUsageOptions } from "./perform-action-usage.js";
@@ -64,7 +64,7 @@ export class IncludeUseCaseUsageMeta extends Mixin(PerformActionUsageMeta, UseCa
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface IncludeUseCaseUsage {
         $meta: IncludeUseCaseUsageMeta;
     }

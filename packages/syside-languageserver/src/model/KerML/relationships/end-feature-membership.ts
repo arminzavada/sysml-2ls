@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { EndFeatureMembership } from "../../../generated/ast.js";
+import { EndFeatureMembership } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     AssociationMeta,
@@ -43,7 +43,7 @@ export class EndFeatureMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface EndFeatureMembership {
         $meta: EndFeatureMembershipMeta;
     }

@@ -1,4 +1,4 @@
-import { Generated } from "langium";
+import { Generated } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
@@ -10,7 +10,7 @@ import {
     isTransitionUsage,
     isStateSubactionMembership,
     ActionUsage,
-} from "../../../generated/ast";
+} from "#generated/ast";
 import { SemantifyrActionMapper } from "./SemantifyrActionMapper";
 import { SemantifyrTransitionMapper } from "./SemantifyrTransitionMapper";
 
@@ -75,7 +75,7 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
         return undefined;
     }
 
-    private mapOwningMembership(membership: ast.OwningMembership): Generated {
+    private mapOwningMembership(_membership: ast.OwningMembership): Generated {
         return undefined; // skip members for now
     }
 
@@ -113,7 +113,7 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
     }
 
     private mapDoStateSubactionMembership(
-        stateSubactionMembership: ast.StateSubactionMembership
+        _stateSubactionMembership: ast.StateSubactionMembership
     ): Generated {
         throw new Error("Do subaction are not yet supported!");
     }

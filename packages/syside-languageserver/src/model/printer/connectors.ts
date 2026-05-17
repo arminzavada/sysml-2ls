@@ -52,7 +52,7 @@ import {
     shouldIgnoreRef,
     throwError,
 } from "./utils.js";
-import * as ast from "../../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import { GrammarUtils } from "langium";
 import { printTarget } from "./edges.js";
 import {

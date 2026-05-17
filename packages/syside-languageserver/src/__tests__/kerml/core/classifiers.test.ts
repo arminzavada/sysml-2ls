@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Classifier } from "../../../generated/ast.js";
+import { Classifier } from "#generated/ast.js";
 import { anything, parsedNode } from "../../../testing/index.js";
 
 test("specializations can be parsed", async () => {

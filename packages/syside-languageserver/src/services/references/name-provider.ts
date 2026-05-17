@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, CstNode, DefaultNameProvider, GrammarUtils } from "langium";
-import { isElement } from "../../generated/ast.js";
+import { isElement } from "#generated/ast.js";
 import { getName } from "../../model/naming.js";
 
 export class SysMLNameProvider extends DefaultNameProvider {

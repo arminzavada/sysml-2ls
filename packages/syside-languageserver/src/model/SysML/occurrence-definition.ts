@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { OccurrenceDefinition } from "../../generated/ast.js";
+import { OccurrenceDefinition } from "#generated/ast.js";
 import { ClassMeta, ClassOptions } from "../KerML/class.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { DefinitionMeta, DefinitionOptions } from "./definition.js";
@@ -68,7 +68,7 @@ export class OccurrenceDefinitionMeta extends Mixin(ClassMeta, DefinitionMeta) {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface OccurrenceDefinition {
         $meta: OccurrenceDefinitionMeta;
     }

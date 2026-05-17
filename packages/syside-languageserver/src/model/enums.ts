@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { assertUnreachable } from "langium";
-import * as ast from "../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import { stringifyFlags } from "../utils/common.js";
 import { Visibility } from "../utils/scope-util.js";
 

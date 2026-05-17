@@ -18,7 +18,7 @@ import {
     FeatureReferenceExpression,
     isFeature,
     Feature,
-} from "../../../generated/ast";
+} from "#generated/ast";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
 import { StableElementNameProvider } from "./StableNameStore";
 

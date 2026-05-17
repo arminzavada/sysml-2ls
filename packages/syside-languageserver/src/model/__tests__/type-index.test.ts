@@ -38,7 +38,7 @@ import {
     MetadataUsage,
     TextualRepresentation,
     CrossSubsetting,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { typeIndex } from "../types.js";
 
 test.concurrent.each([

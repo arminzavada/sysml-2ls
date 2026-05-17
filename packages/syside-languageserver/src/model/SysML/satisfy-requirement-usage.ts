@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SatisfyRequirementUsage } from "../../generated/ast.js";
+import { SatisfyRequirementUsage } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import {
     AssertConstraintUsageMeta,
@@ -98,7 +98,7 @@ export class SatisfyRequirementUsageMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface SatisfyRequirementUsage {
         $meta: SatisfyRequirementUsageMeta;
     }

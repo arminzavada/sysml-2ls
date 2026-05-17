@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SysMLFunction } from "../../generated/ast.js";
+import { SysMLFunction } from "#generated/ast.js";
 import { isModelLevelEvaluable } from "../expressions/util.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { FunctionMixin } from "../mixins/function.js";
@@ -85,7 +85,7 @@ export class FunctionMeta extends Mixin(BehaviorMeta, FunctionMixin) {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface SysMLFunction {
         $meta: FunctionMeta;
     }

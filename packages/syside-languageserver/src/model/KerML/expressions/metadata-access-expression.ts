@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { MetadataAccessExpression } from "../../../generated/ast.js";
+import { MetadataAccessExpression } from "#generated/ast.js";
 import {
     ElementIDProvider,
     MetatypeProto,
@@ -61,7 +61,7 @@ export class MetadataAccessExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface MetadataAccessExpression {
         $meta: MetadataAccessExpressionMeta;
     }

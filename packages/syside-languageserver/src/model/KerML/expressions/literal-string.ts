@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { LiteralString } from "../../../generated/ast.js";
+import { LiteralString } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { LiteralExpressionMeta, LiteralExpressionOptions } from "../_internal.js";
 
@@ -51,7 +51,7 @@ export class LiteralStringMeta extends LiteralExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface LiteralString {
         $meta: LiteralStringMeta;
     }

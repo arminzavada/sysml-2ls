@@ -39,7 +39,7 @@ describe("SysML release integration", () => {
         const docFactory = shared.workspace.LangiumDocumentFactory;
         const doc = docFactory.fromString(
             "part def Vehicle;",
-            URI.parse("file:///tmp/stdlib-test-vehicle.sysml"),
+            URI.parse("file:///tmp/stdlib-test-vehicle.sysml")
         );
         shared.workspace.LangiumDocuments.addDocument(doc);
         await shared.workspace.DocumentBuilder.build([doc], <SysMLBuildOptions>{
@@ -49,7 +49,10 @@ describe("SysML release integration", () => {
 
         const errors = (doc.diagnostics ?? []).filter((d: Diagnostic) => d.severity === 1);
         if (errors.length > 0) {
-            console.error("Errors:", errors.map((e: Diagnostic) => `${e.range.start.line + 1}: ${e.message}`));
+            console.error(
+                "Errors:",
+                errors.map((e: Diagnostic) => `${e.range.start.line + 1}: ${e.message}`)
+            );
         }
         expect(errors).toHaveLength(0);
     }, 120_000);
@@ -58,7 +61,7 @@ describe("SysML release integration", () => {
         const docFactory = shared.workspace.LangiumDocumentFactory;
         const doc = docFactory.fromString(
             "port def FuelCmdPort;",
-            URI.parse("file:///tmp/stdlib-test-port.sysml"),
+            URI.parse("file:///tmp/stdlib-test-port.sysml")
         );
         shared.workspace.LangiumDocuments.addDocument(doc);
         await shared.workspace.DocumentBuilder.build([doc], <SysMLBuildOptions>{
@@ -68,15 +71,26 @@ describe("SysML release integration", () => {
 
         const errors = (doc.diagnostics ?? []).filter((d: Diagnostic) => d.severity === 1);
         if (errors.length > 0) {
-            console.error("Errors:", errors.map((e: Diagnostic) => `${e.range.start.line + 1}: ${e.message}`));
+            console.error(
+                "Errors:",
+                errors.map((e: Diagnostic) => `${e.range.start.line + 1}: ${e.message}`)
+            );
         }
         expect(errors).toHaveLength(0);
     }, 120_000);
 
     it("parses an Analysis example from SysML-v2-Release (parse errors only)", async () => {
-        const exampleFile = path.join(stdlibExamplesPath, "Analysis Examples", "AnalysisAnnotation.sysml");
-        const doc = await shared.workspace.LangiumDocuments.getOrCreateDocument(URI.file(exampleFile));
-        await shared.workspace.DocumentBuilder.build([doc], <SysMLBuildOptions>{ validation: false });
+        const exampleFile = path.join(
+            stdlibExamplesPath,
+            "Analysis Examples",
+            "AnalysisAnnotation.sysml"
+        );
+        const doc = await shared.workspace.LangiumDocuments.getOrCreateDocument(
+            URI.file(exampleFile)
+        );
+        await shared.workspace.DocumentBuilder.build([doc], <SysMLBuildOptions>{
+            validation: false,
+        });
 
         const parseErrors = doc.parseResult.parserErrors;
         expect(parseErrors).toHaveLength(0);

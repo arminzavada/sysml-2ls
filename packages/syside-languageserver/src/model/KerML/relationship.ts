@@ -23,7 +23,7 @@ import {
     MetadataFeature,
     Relationship,
     TextualRepresentation,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import { Visibility } from "../../utils/scope-util.js";
 import { ElementContainer } from "../containers.js";
@@ -226,7 +226,7 @@ export abstract class RelationshipMeta<
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Relationship {
         $meta: RelationshipMeta;
     }

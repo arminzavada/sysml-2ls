@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument, Stream, stream } from "langium";
-import { Element, Membership, MembershipImport } from "../../generated/ast.js";
+import { Element, Membership, MembershipImport } from "#generated/ast.js";
 import { SysMLNodeDescription } from "../../services/shared/workspace/ast-descriptions.js";
 import {
     BasicMetamodel,
@@ -560,7 +560,7 @@ export abstract class ElementMeta extends BasicMetamodel<Element> {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Element {
         $meta: ElementMeta;
     }

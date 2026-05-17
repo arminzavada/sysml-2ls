@@ -22,7 +22,7 @@ import {
     NO_ERRORS,
     childrenNames,
 } from "../../../testing/index.js";
-import { Redefinition, Feature } from "../../../generated/ast.js";
+import { Redefinition, Feature } from "#generated/ast.js";
 import { Visibility } from "../../../utils/scope-util.js";
 
 test.concurrent.each(["redefines", ":>>"])(

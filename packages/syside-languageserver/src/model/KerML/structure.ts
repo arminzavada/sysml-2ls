@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Structure } from "../../generated/ast.js";
+import { Structure } from "#generated/ast.js";
 import { TypeClassifier } from "../enums.js";
 import { metamodelOf } from "../metamodel.js";
 import { ClassMeta, ClassOptions } from "./_internal.js";
@@ -34,7 +34,7 @@ export class StructureMeta extends ClassMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Structure {
         $meta: StructureMeta;
     }

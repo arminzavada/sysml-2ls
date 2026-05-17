@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConnectionUsage } from "../../generated/ast.js";
+import { ConnectionUsage } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
 import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
@@ -71,7 +71,7 @@ export class ConnectionUsageMeta extends Mixin(ConnectorAsUsageMeta, PartUsageMe
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ConnectionUsage {
         $meta: ConnectionUsageMeta;
     }

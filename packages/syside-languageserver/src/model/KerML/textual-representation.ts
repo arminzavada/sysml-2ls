@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { TextualRepresentation } from "../../generated/ast.js";
+import { TextualRepresentation } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { TextualAnnotatingElementOptions, TextualAnnotatingMeta } from "./_internal.js";
 
@@ -46,7 +46,7 @@ export class TextualRepresentationMeta extends TextualAnnotatingMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface TextualRepresentation {
         $meta: TextualRepresentationMeta;
     }

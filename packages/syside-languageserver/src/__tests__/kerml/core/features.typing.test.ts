@@ -21,7 +21,7 @@ import {
     sanitizeTree,
     anything,
 } from "../../../testing/index.js";
-import { Feature, FeatureTyping } from "../../../generated/ast.js";
+import { Feature, FeatureTyping } from "#generated/ast.js";
 
 test.concurrent.each(["typed by", ":"])(
     "feature typings can be parsed with '%s'",

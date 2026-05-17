@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { AssignmentActionUsage } from "../../generated/ast.js";
+import { AssignmentActionUsage } from "#generated/ast.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
 import {
     Edge,
@@ -114,7 +114,7 @@ export class AssignmentActionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface AssignmentActionUsage {
         $meta: AssignmentActionUsageMeta;
     }

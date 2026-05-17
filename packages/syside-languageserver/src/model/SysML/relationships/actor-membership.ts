@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ActorMembership } from "../../../generated/ast.js";
+import { ActorMembership } from "#generated/ast.js";
 import { RelationshipOptionsBody } from "../../KerML/index.js";
 import { ParameterMembershipMeta } from "../../KerML/relationships/parameter-membership.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
@@ -46,7 +46,7 @@ export class ActorMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ActorMembership {
         $meta: ActorMembershipMeta;
     }

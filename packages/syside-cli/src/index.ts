@@ -21,9 +21,7 @@ import { SysMLExtensions, compileAction } from "./semantifyr-util";
 
 const program = new Command();
 
-program
-
-    .version(Version);
+program.version(Version);
 
 program
     .command("dump")

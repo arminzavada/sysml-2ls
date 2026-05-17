@@ -36,7 +36,6 @@ export async function deactivate(): Promise<void> {
         await runExtensions(data.extensions, "onDeactivate", data.client);
         return data.client.stop();
     }
-    return;
 }
 
 async function startLanguageClient(context: vscode.ExtensionContext): Promise<typeof data> {

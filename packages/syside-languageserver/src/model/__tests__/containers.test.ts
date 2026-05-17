@@ -20,7 +20,7 @@ import { emptyDocument } from "../../testing/utils.js";
 import { CommentMeta, ElementMeta, NamespaceMeta } from "../KerML/index.js";
 import { ElementContainer, removeIfObserved, removeObserved } from "../containers.js";
 import { basicIdProvider } from "../metamodel.js";
-import { Namespace } from "../../generated/ast.js";
+import { Namespace } from "#generated/ast.js";
 
 describe("Containers", () => {
     const id = basicIdProvider();

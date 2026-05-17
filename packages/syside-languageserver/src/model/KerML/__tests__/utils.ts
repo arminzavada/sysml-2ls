@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { OwningMembership } from "../../../generated/ast.js";
+import { OwningMembership } from "#generated/ast.js";
 import { emptyDocument } from "../../../testing/index.js";
 import { ElementIDProvider, basicIdProvider } from "../../metamodel.js";
 import { Edge, ElementMeta } from "../_internal.js";

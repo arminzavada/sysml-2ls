@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Unioning } from "../../../generated/ast.js";
+import { Unioning } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
@@ -40,7 +40,7 @@ export class UnioningMeta<T extends TypeMeta = TypeMeta> extends RelationshipMet
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Unioning {
         $meta: UnioningMeta;
     }

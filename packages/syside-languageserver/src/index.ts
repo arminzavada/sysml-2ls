@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-export * as ast from "./generated/ast.js";
-export * from "./generated/grammar.js";
-export * from "./generated/module.js";
+export * as ast from "#generated/ast.js";
+export * from "#generated/grammar.js";
+export * from "#generated/module.js";
 export * from "./model/index.js";
 export * from "./sysml-module.js";
 export * from "./services/index.js";

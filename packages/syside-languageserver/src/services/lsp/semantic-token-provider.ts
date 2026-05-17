@@ -25,7 +25,7 @@ import {
     TextualRepresentation,
     OperatorExpression,
     Membership,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import {
     CancellationToken,
     SemanticTokens,

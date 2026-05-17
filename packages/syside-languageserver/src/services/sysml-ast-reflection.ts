@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, CstNode, Mutable, PropertyMetaData, TypeMetaData } from "langium";
-import * as ast from "../generated/ast.js";
+import * as ast from "#generated/ast.js";
 import { typeIndex } from "../model/types.js";
 import { AstContainer, AstParent, AstPropertiesFor } from "../utils/ast-util.js";
 import { SysMLReferenceInfo } from "./references/linker.js";

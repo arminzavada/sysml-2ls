@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ConjugatedPortReference } from "../../../generated/ast.js";
+import { ConjugatedPortReference } from "#generated/ast.js";
 import { Target } from "../../../utils/containers.js";
 import { ClassifierReferenceMeta } from "../../KerML/references/classifier-reference.js";
 import { metamodelOf } from "../../metamodel.js";
@@ -29,7 +29,7 @@ export class ConjugatedPortReferenceMeta extends ClassifierReferenceMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ConjugatedPortReference {
         $meta: ConjugatedPortReferenceMeta;
     }

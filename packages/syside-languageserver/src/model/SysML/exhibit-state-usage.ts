@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ExhibitStateUsage, ReferenceSubsetting } from "../../generated/ast.js";
+import { ExhibitStateUsage, ReferenceSubsetting } from "#generated/ast.js";
 import { FeatureMeta } from "../KerML/index.js";
 import { GeneralType, metamodelOf } from "../metamodel.js";
 import { PerformActionUsageMeta, PerformActionUsageOptions } from "./perform-action-usage.js";
@@ -51,7 +51,7 @@ export class ExhibitStateUsageMeta extends Mixin(PerformActionUsageMeta, StateUs
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ExhibitStateUsage {
         $meta: ExhibitStateUsageMeta;
     }

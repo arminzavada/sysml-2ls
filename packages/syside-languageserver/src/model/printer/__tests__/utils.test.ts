@@ -27,7 +27,7 @@ import {
     throwError,
 } from "../utils.js";
 import { emptyDocument, parsedNode } from "../../../testing/index.js";
-import { ElementReference, Package } from "../../../generated/ast.js";
+import { ElementReference, Package } from "#generated/ast.js";
 import { defaultKerMLPrinterContext } from "../print.js";
 
 let provider: ElementIDProvider;

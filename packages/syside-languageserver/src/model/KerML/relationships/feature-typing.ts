@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureTyping } from "../../../generated/ast.js";
+import { FeatureTyping } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     FeatureMeta,
@@ -46,7 +46,7 @@ export class FeatureTypingMeta<T extends TypeMeta = TypeMeta> extends Specializa
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FeatureTyping {
         $meta: FeatureTypingMeta;
     }

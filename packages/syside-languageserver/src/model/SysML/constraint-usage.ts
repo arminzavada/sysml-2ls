@@ -20,7 +20,7 @@ import {
     ItemDefinition,
     ItemUsage,
     RequirementConstraintMembership,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { RequirementConstraintKind } from "../enums.js";
 import { FeatureMeta } from "../KerML/index.js";
 import { BooleanExpressionMeta, BooleanExpressionOptions } from "../KerML/boolean-expression.js";
@@ -100,7 +100,7 @@ export class ConstraintUsageMeta extends Mixin(BooleanExpressionMeta, Occurrence
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ConstraintUsage {
         $meta: ConstraintUsageMeta;
     }

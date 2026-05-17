@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Intersecting } from "../../../generated/ast.js";
+import { Intersecting } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ElementMeta, RelationshipMeta, RelationshipOptions, TypeMeta } from "../_internal.js";
 
@@ -40,7 +40,7 @@ export class IntersectingMeta<T extends TypeMeta = TypeMeta> extends Relationshi
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Intersecting {
         $meta: IntersectingMeta;
     }

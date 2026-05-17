@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureValue } from "../../../generated/ast.js";
+import { FeatureValue } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ExpressionMeta,
@@ -54,7 +54,7 @@ export class FeatureValueMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FeatureValue {
         $meta: FeatureValueMeta;
     }

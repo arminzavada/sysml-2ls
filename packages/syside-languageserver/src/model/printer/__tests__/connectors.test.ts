@@ -31,7 +31,7 @@ import {
     SuccessionFlowUsage,
     AllocationUsage,
     InterfaceUsage,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 
 describe("connectors", () => {
     const expectPrinted = (

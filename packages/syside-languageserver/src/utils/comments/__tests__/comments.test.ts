@@ -32,7 +32,7 @@ import {
 } from "../comments.js";
 import { parseKerML, recursiveObjectContaining } from "../../../testing/index.js";
 import { CstNode, DeepPartial, Mutable } from "langium";
-import { Annotation, Comment, OwningMembership, Package } from "../../../generated/ast.js";
+import { Annotation, Comment, OwningMembership, Package } from "#generated/ast.js";
 import { print } from "../../printer/print.js";
 import {
     brackets,

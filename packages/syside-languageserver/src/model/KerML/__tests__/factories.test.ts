@@ -42,7 +42,7 @@ import {
     TextualRepresentationMeta,
 } from "../_internal.js";
 import { Visibility } from "../../../utils/index.js";
-import { NullExpression } from "../../../generated/ast.js";
+import { NullExpression } from "#generated/ast.js";
 
 describe("Element factories", () => {
     const id = basicIdProvider();

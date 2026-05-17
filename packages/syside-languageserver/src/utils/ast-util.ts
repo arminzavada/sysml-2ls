@@ -16,7 +16,7 @@
 
 import { AstNode, CstNode, TreeStream, TreeStreamImpl } from "langium";
 import { Position, Range } from "vscode-languageserver";
-import { isMembership, Membership } from "../generated/ast.js";
+import { isMembership, Membership } from "#generated/ast.js";
 import { ElementMeta, MembershipMeta, Metamodel } from "../model/index.js";
 import { AssignableKeys } from "./common.js";
 

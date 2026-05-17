@@ -24,7 +24,7 @@ import {
     StateSubactionMembership,
     Usage,
     VariantMembership,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { enumerable } from "../../utils/index.js";
 import { ElementMeta } from "../KerML/index.js";
 import { FeatureMeta, FeatureOptions } from "../KerML/feature.js";
@@ -143,7 +143,7 @@ export class UsageMeta extends FeatureMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Usage {
         $meta: UsageMeta;
     }

@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { TransitionFeatureKind, TransitionFeatureMembership } from "../../../generated/ast.js";
+import { TransitionFeatureKind, TransitionFeatureMembership } from "#generated/ast.js";
 import { ExpressionMeta, RelationshipOptionsBody } from "../../KerML/index.js";
 import { FeatureMembershipMeta } from "../../KerML/relationships/feature-membership.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
@@ -57,7 +57,7 @@ export class TransitionFeatureMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface TransitionFeatureMembership {
         $meta: TransitionFeatureMembershipMeta;
     }

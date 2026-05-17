@@ -30,7 +30,7 @@ import { PortDefinitionMeta } from "../port-definition.js";
 import { StateDefinitionMeta } from "../state-definition.js";
 import { StateUsageMeta } from "../state-usage.js";
 import { TransitionUsageMeta } from "../transition-usage.js";
-import { ReferenceUsage } from "../../../generated/ast.js";
+import { ReferenceUsage } from "#generated/ast.js";
 import { FlowUsageMeta } from "../flow-usage.js";
 import {
     EndFeatureMembershipMeta,

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FeatureChaining } from "../../../generated/ast.js";
+import { FeatureChaining } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { FeatureMeta, RelationshipMeta, RelationshipOptionsBody } from "../_internal.js";
 
@@ -36,7 +36,7 @@ export class FeatureChainingMeta<T extends FeatureMeta = FeatureMeta> extends Re
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FeatureChaining {
         $meta: FeatureChainingMeta;
     }

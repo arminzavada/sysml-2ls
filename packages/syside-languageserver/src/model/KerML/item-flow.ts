@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ItemFlow, ItemFlowEnd } from "../../generated/ast.js";
+import { ItemFlow, ItemFlowEnd } from "#generated/ast.js";
 import {
     BasicMetamodel,
     ElementIDProvider,
@@ -118,7 +118,7 @@ export class ItemFlowMeta extends Mixin(StepMeta, ConnectorMeta) {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ItemFlow {
         $meta: ItemFlowMeta;
     }

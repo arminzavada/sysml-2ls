@@ -1,4 +1,4 @@
-import { CompositeGeneratorNode, expandToNode, Generated } from "langium";
+import { CompositeGeneratorNode, expandToNode, Generated } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrExpressionStringifier } from "./SemantifyrExpressionStringifier";

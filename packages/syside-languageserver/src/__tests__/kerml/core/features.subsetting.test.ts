@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { withQualifiedName, qualifiedTypeReference, anything } from "../../../testing/index.js";
-import { Subsetting } from "../../../generated/ast.js";
+import { Subsetting } from "#generated/ast.js";
 
 test.concurrent.each(["subsets", ":>"])(
     "subsetting can be parsed with '%s'",

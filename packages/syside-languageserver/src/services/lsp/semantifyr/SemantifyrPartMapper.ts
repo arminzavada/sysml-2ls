@@ -1,4 +1,4 @@
-import { expandToNode, Generated } from "langium";
+import { expandToNode, Generated } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
@@ -22,7 +22,7 @@ import {
     isReferenceSubsetting,
     Feature,
     PortUsage,
-} from "../../../generated/ast";
+} from "#generated/ast";
 import { SemantifyrExpressionStringifier } from "./SemantifyrExpressionStringifier";
 import { SemantifyrStateMapper } from "./SemantifyrStateMapper";
 

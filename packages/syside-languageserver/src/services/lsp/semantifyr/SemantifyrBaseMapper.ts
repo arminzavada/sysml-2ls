@@ -1,8 +1,8 @@
-import { expandToNode, Generated, JoinOptions, joinToNode } from "langium";
+import { expandToNode, Generated, JoinOptions, joinToNode } from "langium/generate";
 import { StableElementNameProvider } from "./StableNameStore";
 import { ast } from "../../..";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
-import { isClassifier, isFeatureTyping } from "../../../generated/ast";
+import { isClassifier, isFeatureTyping } from "#generated/ast";
 
 export class SemantifyrBaseMapper {
     private readonly stableNameStore: StableElementNameProvider;

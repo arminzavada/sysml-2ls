@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { StakeholderMembership } from "../../../generated/ast.js";
+import { StakeholderMembership } from "#generated/ast.js";
 import { RelationshipOptionsBody } from "../../KerML/index.js";
 import { ParameterMembershipMeta } from "../../KerML/relationships/parameter-membership.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
@@ -44,7 +44,7 @@ export class StakeholderMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface StakeholderMembership {
         $meta: StakeholderMembershipMeta;
     }

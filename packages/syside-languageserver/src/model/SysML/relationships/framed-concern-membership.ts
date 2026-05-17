@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { FramedConcernMembership } from "../../../generated/ast.js";
+import { FramedConcernMembership } from "#generated/ast.js";
 import { RelationshipOptionsBody } from "../../KerML/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { ConcernUsageMeta } from "../concern-usage.js";
@@ -52,7 +52,7 @@ export class FramedConcernMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FramedConcernMembership {
         $meta: FramedConcernMembershipMeta;
     }

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { AssociationStructure } from "../../generated/ast.js";
+import { AssociationStructure } from "#generated/ast.js";
 import { TypeClassifier } from "../enums.js";
 import { metamodelOf } from "../metamodel.js";
 import {
@@ -41,7 +41,7 @@ export class AssociationStructMeta extends Mixin(StructureMeta, AssociationMeta)
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface AssociationStructure {
         $meta: AssociationStructMeta;
     }

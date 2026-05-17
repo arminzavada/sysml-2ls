@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { MultiplicityRange } from "../../generated/ast.js";
+import { MultiplicityRange } from "#generated/ast.js";
 import { enumerable, LazyGetter } from "../../utils/index.js";
 import { ElementIDProvider, metamodelOf, MetatypeProto } from "../metamodel.js";
 import {
@@ -84,7 +84,7 @@ export class MultiplicityRangeMeta extends MultiplicityMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface MultiplicityRange {
         $meta: MultiplicityRangeMeta;
     }

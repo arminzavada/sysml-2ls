@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Succession } from "../../generated/ast.js";
+import { Succession } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { ConnectorMeta, ConnectorOptions } from "./_internal.js";
 
@@ -31,7 +31,7 @@ export class SuccessionMeta extends ConnectorMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Succession {
         $meta: SuccessionMeta;
     }

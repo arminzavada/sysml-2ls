@@ -1,4 +1,4 @@
-import { Generated, expandToNode, joinToNode } from "langium";
+import { Generated, expandToNode, joinToNode } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
@@ -14,7 +14,7 @@ import {
     isSubjectMembership,
     isUsage,
     RequirementUsage,
-} from "../../../generated/ast";
+} from "#generated/ast";
 import { SemantifyrExpressionMapper } from "./SemantifyrExpressionMapper";
 
 export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
@@ -70,7 +70,7 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
         return undefined;
     }
 
-    private mapOwningMembership(membership: ast.OwningMembership): Generated {
+    private mapOwningMembership(_membership: ast.OwningMembership): Generated {
         return undefined; // skip members for now
     }
 

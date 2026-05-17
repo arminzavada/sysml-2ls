@@ -40,7 +40,7 @@ import {
     Step,
     SysMLFunction,
     OwningMembership,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { expectPrinted as expectPrintedAs } from "./utils.js";
 
 const expectPrinted = (

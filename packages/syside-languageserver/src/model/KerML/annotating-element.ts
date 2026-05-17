@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { AnnotatingElement } from "../../generated/ast.js";
+import { AnnotatingElement } from "#generated/ast.js";
 import { NonNullable } from "../../utils/index.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { AnnotationMeta, Edge, ElementOptions, RelationshipMeta } from "./_internal.js";
@@ -98,7 +98,7 @@ export abstract class AnnotatingElementMeta extends ElementMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface AnnotatingElement {
         $meta: AnnotatingElementMeta;
     }

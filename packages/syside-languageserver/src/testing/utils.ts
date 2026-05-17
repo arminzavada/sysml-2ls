@@ -23,7 +23,7 @@ import {
     ParseResult as LangiumParseResult,
 } from "langium";
 import { URI } from "vscode-uri";
-import { Element, Namespace } from "../../src/generated/ast.js";
+import { Element, Namespace } from "#generated/ast.js";
 import { Diagnostic } from "vscode-languageserver";
 import { SysMLBuildOptions } from "../services/shared/workspace/document-builder.js";
 import { makeLinkingScope, makeScope, SysMLScope } from "../utils/scopes.js";

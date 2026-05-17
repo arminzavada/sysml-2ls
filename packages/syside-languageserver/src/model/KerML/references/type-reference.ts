@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { TypeReference } from "../../../generated/ast.js";
+import { TypeReference } from "#generated/ast.js";
 import { Target } from "../../../utils/containers.js";
 import { metamodelOf } from "../../metamodel.js";
 import { NamespaceReferenceMeta, TypeMeta } from "../_internal.js";
@@ -28,7 +28,7 @@ export class TypeReferenceMeta extends NamespaceReferenceMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface TypeReference {
         $meta: TypeReferenceMeta;
     }

@@ -24,7 +24,7 @@ import {
     Conjugation,
     Namespace,
     Class,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 
 const Common = `
 abstract datatype Anything;

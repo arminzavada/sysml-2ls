@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { ConnectorAsUsage } from "../../generated/ast.js";
+import { ConnectorAsUsage } from "#generated/ast.js";
 import { ConnectorMeta, ConnectorOptions } from "../KerML/connector.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { UsageMeta, UsageOptions } from "./usage.js";
@@ -81,7 +81,7 @@ export class ConnectorAsUsageMeta extends Mixin(ConnectorMeta, UsageMeta) {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ConnectorAsUsage {
         $meta: ConnectorAsUsageMeta;
     }

@@ -43,7 +43,7 @@ import {
     TransitionUsage,
     Usage,
     WhileLoopActionUsage,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { typeIndex, TypeMap } from "../../model/types.js";
 import { SysMLDefaultServices } from "../services.js";
 import { compareRanges } from "../../utils/ast-util.js";
@@ -265,7 +265,7 @@ export function createSysMLParser(services: SysMLDefaultServices): LangiumParser
     return parser;
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ElementReference {
         text?: string;
     }

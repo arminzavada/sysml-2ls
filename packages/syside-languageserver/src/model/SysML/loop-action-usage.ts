@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { LoopActionUsage } from "../../generated/ast.js";
+import { LoopActionUsage } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
 
@@ -27,7 +27,7 @@ export class LoopActionUsageMeta extends ActionUsageMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface LoopActionUsage {
         $meta: LoopActionUsageMeta;
     }

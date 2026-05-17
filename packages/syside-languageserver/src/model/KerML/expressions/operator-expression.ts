@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { OperatorExpression } from "../../../generated/ast.js";
+import { OperatorExpression } from "#generated/ast.js";
 import { OPERATOR_FUNCTIONS, typeArgument, typeOf } from "../../expressions/util.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { InvocationExpressionMeta, InvocationExpressionOptions, TypeMeta } from "../_internal.js";
@@ -134,7 +134,7 @@ export class OperatorExpressionMeta extends InvocationExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface OperatorExpression {
         $meta: OperatorExpressionMeta;
     }

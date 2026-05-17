@@ -24,7 +24,7 @@ import {
     Type,
     TypeRelationship,
     Conjugation,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { SubtypeKeys, SysMLInterface, SysMLTypeList } from "../../services/sysml-ast-reflection.js";
 import { enumerable, KeysMatching } from "../../utils/common.js";
 import { collectRedefinitions } from "../../utils/scope-util.js";
@@ -696,7 +696,7 @@ export class TypeMeta extends Mixin(
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Type {
         $meta: TypeMeta;
     }

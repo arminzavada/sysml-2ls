@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { Expression, FeatureValue, Multiplicity } from "../../generated/ast.js";
+import { Expression, FeatureValue, Multiplicity } from "#generated/ast.js";
 import { isModelLevelEvaluable } from "../expressions/util.js";
 import { ElementIDProvider, GeneralType, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { FunctionMixin } from "../mixins/function.js";
@@ -119,7 +119,7 @@ export class ExpressionMeta extends Mixin(StepMeta, FunctionMixin) {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Expression {
         $meta: ExpressionMeta;
     }

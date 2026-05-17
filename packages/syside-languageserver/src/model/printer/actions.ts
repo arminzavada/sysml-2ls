@@ -28,7 +28,7 @@ import {
     SendActionUsage,
     SuccessionAsUsage,
     TransitionUsage,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import {
     Doc,
     KeysMatching,

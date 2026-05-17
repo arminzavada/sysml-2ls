@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { TriggerInvocationExpression } from "../../../generated/ast.js";
+import { TriggerInvocationExpression } from "#generated/ast.js";
 import {
     InvocationExpressionMeta,
     InvocationExpressionOptions,
@@ -51,7 +51,7 @@ export class TriggerInvocationExpressionMeta extends InvocationExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface TriggerInvocationExpression {
         $meta: TriggerInvocationExpressionMeta;
     }

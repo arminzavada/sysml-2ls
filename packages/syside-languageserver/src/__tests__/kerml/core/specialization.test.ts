@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { qualifiedTypeReference, anything, withQualifiedName } from "../../../testing/index.js";
-import { Specialization, Documentation, Class } from "../../../generated/ast.js";
+import { Specialization, Documentation, Class } from "#generated/ast.js";
 
 const Common = `
 class A;

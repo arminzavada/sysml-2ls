@@ -9,7 +9,6 @@ class UniqueNameProvider {
 
     public getStableName(element: ast.Element): string {
         if (this.nameMap.has(element.$meta.elementId)) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return this.nameMap.get(element.$meta.elementId)!;
         }
 
@@ -42,7 +41,6 @@ export class StableElementNameProvider {
 
     protected getTypeNameProvider(type: ast.Element["$type"]): UniqueNameProvider {
         if (this.uniqueNameProviders.has(type)) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return this.uniqueNameProviders.get(type)!;
         }
 

@@ -24,7 +24,7 @@ import {
 } from "langium";
 import { CancellationToken } from "vscode-languageserver";
 import { URI } from "vscode-uri";
-import { Type, Namespace, Membership } from "../../../generated/ast.js";
+import { Type, Namespace, Membership } from "#generated/ast.js";
 import { ElementMeta, NamedChild, sanitizeName, TypeMeta } from "../../../model/index.js";
 import { getLanguageId, GlobalScope } from "../../../utils/global-scope.js";
 import { makeScope, SysMLScope } from "../../../utils/scopes.js";

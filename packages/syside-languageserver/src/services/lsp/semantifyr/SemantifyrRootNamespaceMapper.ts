@@ -1,4 +1,4 @@
-import { expandToNode, joinToNode, toString, Generated } from "langium";
+import { expandToNode, joinToNode, toString, Generated } from "langium/generate";
 import { ast } from "../../..";
 import {
     isImport,
@@ -8,7 +8,7 @@ import {
     isPortDefinition,
     isItemDefinition,
     isVerificationCaseDefinition,
-} from "../../../generated/ast";
+} from "#generated/ast";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
 import { SemantifyrPartMapper } from "./SemantifyrPartMapper";
@@ -72,7 +72,7 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
         return undefined;
     }
 
-    private mapGlobalFeatureMembership(membership: ast.FeatureMembership): Generated {
+    private mapGlobalFeatureMembership(_membership: ast.FeatureMembership): Generated {
         return undefined; // skip global features for now
     }
 

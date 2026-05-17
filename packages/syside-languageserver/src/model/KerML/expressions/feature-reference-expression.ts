@@ -20,7 +20,7 @@ import {
     FeatureMembership,
     FeatureReferenceExpression,
     SysMLFunction,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     Edge,
@@ -87,7 +87,7 @@ export class FeatureReferenceExpressionMeta extends ExpressionMeta {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface FeatureReferenceExpression {
         $meta: FeatureReferenceExpressionMeta;
     }

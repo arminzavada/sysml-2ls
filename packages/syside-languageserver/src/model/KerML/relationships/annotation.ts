@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { AnnotatingElement, Annotation } from "../../../generated/ast.js";
+import { AnnotatingElement, Annotation } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     AnnotatingElementMeta,
@@ -80,7 +80,7 @@ export class AnnotationMeta<T extends ElementMeta = ElementMeta> extends Relatio
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Annotation {
         $meta: AnnotationMeta;
     }

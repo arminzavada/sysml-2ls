@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Comment } from "../../generated/ast.js";
+import { Comment } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { TextualAnnotatingElementOptions, TextualAnnotatingMeta } from "./_internal.js";
 
@@ -43,7 +43,7 @@ export class CommentMeta extends TextualAnnotatingMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Comment {
         $meta: CommentMeta;
     }

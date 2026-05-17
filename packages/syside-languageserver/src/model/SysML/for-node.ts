@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ForkNode } from "../../generated/ast.js";
+import { ForkNode } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import { ControlNodeMeta, ControlNodeOptions } from "./control-node.js";
 
@@ -29,7 +29,7 @@ export class ForkNodeMeta extends ControlNodeMeta {
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ForkNode {
         $meta: ForkNodeMeta;
     }

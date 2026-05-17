@@ -20,7 +20,7 @@ import {
     RequirementVerificationMembership,
     VerificationCaseDefinition,
     VerificationCaseUsage,
-} from "../../../generated/ast.js";
+} from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import { RequirementConstraintMembershipMeta } from "./requirement-constraint-membership.js";
 import { RequirementUsageMeta } from "../requirement-usage.js";
@@ -65,7 +65,7 @@ export class RequirementVerificationMembershipMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface RequirementVerificationMembership {
         $meta: RequirementVerificationMembershipMeta;
     }

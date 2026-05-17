@@ -16,12 +16,7 @@
 
 import { Assertion } from "vitest";
 import { DeepPartial } from "langium";
-import {
-    Namespace,
-    StateDefinition,
-    SuccessionAsUsage,
-    TransitionUsage,
-} from "../../../generated/ast.js";
+import { Namespace, StateDefinition, SuccessionAsUsage, TransitionUsage } from "#generated/ast.js";
 import { printDoc } from "../../../utils/index.js";
 import { StateUsageMeta } from "../../SysML/index.js";
 import { defaultSysMLPrinterContext, printModelElement } from "../print.js";

@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { CalculationDefinition, CalculationUsage } from "../../generated/ast.js";
+import { CalculationDefinition, CalculationUsage } from "#generated/ast.js";
 import { ExpressionMeta, ExpressionOptions } from "../KerML/expression.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
@@ -61,7 +61,7 @@ export class CalculationUsageMeta extends Mixin(ExpressionMeta, ActionUsageMeta)
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface CalculationUsage {
         $meta: CalculationUsageMeta;
     }

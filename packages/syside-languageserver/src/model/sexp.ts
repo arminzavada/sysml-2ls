@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { ElementMeta } from "./KerML/index.js";
-import { Relationship } from "../generated/ast.js";
+import { Relationship } from "#generated/ast.js";
 
 interface SExpOptions {
     includeElementId: boolean;

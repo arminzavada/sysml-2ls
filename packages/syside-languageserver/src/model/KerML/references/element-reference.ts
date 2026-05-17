@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { ElementReference } from "../../../generated/ast.js";
+import { ElementReference } from "#generated/ast.js";
 import { Target } from "../../../utils/containers.js";
 import {
     BasicMetamodel,
@@ -62,7 +62,7 @@ export class ElementReferenceMeta extends BasicMetamodel<ElementReference> {
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface ElementReference {
         $meta: ElementReferenceMeta;
     }

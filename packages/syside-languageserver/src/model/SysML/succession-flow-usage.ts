@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { Mixin } from "ts-mixer";
-import { SuccessionFlowUsage } from "../../generated/ast.js";
+import { SuccessionFlowUsage } from "#generated/ast.js";
 import {
     SuccessionItemFlowMeta,
     SuccessionItemFlowOptions,
@@ -38,7 +38,7 @@ export class SuccessionFlowUsageMeta extends Mixin(SuccessionItemFlowMeta, FlowU
     }
 }
 
-declare module "../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface SuccessionFlowUsage {
         $meta: SuccessionFlowUsageMeta;
     }

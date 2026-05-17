@@ -48,7 +48,7 @@ import {
     isElement,
     isNamespace,
     Type,
-} from "../../generated/ast.js";
+} from "#generated/ast.js";
 import { JSONMetaReplacer, JSONreplacer, toJSON } from "../../utils/common.js";
 import { SysMLSharedServices } from "../services.js";
 import { FeatureMeta, Metamodel } from "../../model/index.js";
@@ -495,7 +495,7 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
             return;
         }
 
-        const document = this.documents.getOrCreateDocument(uri);
+        const document = await this.documents.getOrCreateDocument(uri);
         const rootNode = document.parseResult.value;
         if (!isNamespace(rootNode)) {
             return;

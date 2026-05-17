@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { Subclassification } from "../../../generated/ast.js";
+import { Subclassification } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
 import {
     ClassifierMeta,
@@ -46,7 +46,7 @@ export class SubclassificationMeta<
     }
 }
 
-declare module "../../../generated/ast.js" {
+declare module "#generated/ast.js" {
     interface Subclassification {
         $meta: SubclassificationMeta;
     }

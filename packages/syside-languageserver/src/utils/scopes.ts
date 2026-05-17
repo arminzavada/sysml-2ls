@@ -31,7 +31,7 @@ import {
     MembershipImport,
     Namespace,
     OwningMembership,
-} from "../generated/ast.js";
+} from "#generated/ast.js";
 import {
     ElementMeta,
     NamespaceMeta,
