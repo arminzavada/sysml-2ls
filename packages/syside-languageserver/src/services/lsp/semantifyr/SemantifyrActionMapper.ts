@@ -199,6 +199,14 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         if (!payloadItem) {
             throw new Error("Send actions must have an Item payload");
         }
+        // Only the spec-compliant `send new X(...)` form is accepted. Bare
+        // `send X(...)` parses as an invocation of a function named X and
+        // does not produce an Item-construction the OXSTS encoding can use.
+        if (!meta.isConstructor()) {
+            throw new Error(
+                `Send action payload must use 'send new ${payloadItem.declaredName ?? "X"}(...)' (constructor form)`
+            );
+        }
         const viaPort = meta.senderFeature()?.ast();
         if (!viaPort) {
             throw new Error("Send actions must have a 'via' port specification");

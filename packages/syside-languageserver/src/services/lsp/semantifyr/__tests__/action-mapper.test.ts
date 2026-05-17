@@ -1,6 +1,7 @@
 /********************************************************************************
  * Unit tests for the Semantifyr action mapper. Standalone (no stdlib) tests
- * confirming send/accept mapping for the common shapes used in TestModels.
+ * confirming send/accept mapping for the spec-compliant `send new X(...)`
+ * form. Bare `send X(...)` is no longer accepted.
  ********************************************************************************/
 
 import { describe, expect, it } from "vitest";
@@ -20,22 +21,7 @@ async function compile(modelBody: string): Promise<string> {
 }
 
 describe("SendActionUsage mapping", () => {
-    it("maps `send X()` to SendItemAction", async () => {
-        const oxsts = await compile(`
-            part def P {
-                port p: CommandPort;
-                exhibit state S {
-                    state s1 {
-                        entry send Ping() via p;
-                    }
-                }
-            }
-        `);
-        expect(oxsts).toContain("SendItemAction");
-        expect(oxsts).toContain("global_Ping");
-    });
-
-    it("maps `send new X()` to SendItemAction as well (constructor form is sugar)", async () => {
+    it("maps `send new X()` to SendItemAction", async () => {
         const oxsts = await compile(`
             part def P {
                 port p: CommandPort;
@@ -48,8 +34,19 @@ describe("SendActionUsage mapping", () => {
         `);
         expect(oxsts).toContain("SendItemAction");
         expect(oxsts).toContain("global_Ping");
-        // ConstructorInvocationAction was prototyped then dropped; the
-        // constructor form collapses to SendItemAction at the OXSTS level.
-        expect(oxsts).not.toContain("ConstructorInvocationAction");
+    });
+
+    it("rejects bare `send X()` form (constructor required)", async () => {
+        const promise = compile(`
+            part def P {
+                port p: CommandPort;
+                exhibit state S {
+                    state s1 {
+                        entry send Ping() via p;
+                    }
+                }
+            }
+        `);
+        await expect(promise).rejects.toThrow(/constructor form/);
     });
 });
