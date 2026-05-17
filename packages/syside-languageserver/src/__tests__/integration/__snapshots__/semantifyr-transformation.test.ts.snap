@@ -1,0 +1,2699 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Semantifyr OXSTS transformation > OXSTS output for compressedspacecraft.sysml matches the recorded snapshot 1`] = `
+"package semantifyr::sysml::model
+
+import semantifyr::sysml::expressions
+import semantifyr::sysml::attributes
+import semantifyr::sysml::states
+import semantifyr::sysml::parts
+import semantifyr::sysml::ports
+import semantifyr::sysml::items
+import semantifyr::sysml::actions
+import semantifyr::sysml::triggers
+import semantifyr::sysml::verification
+
+class GroundStation : Part {
+    contains commandPort: CommandPort subsets ports
+    contains spacecraftCommandPort: ConjugatedCommandPort subsets ports
+    contains dataPort: ConjugatedDataPort subsets ports
+    contains receivedData: IntegerAttribute subsets attributes {
+        redefine refers defaultValue: int = 0
+    }
+    contains Behaviour: State redefines exhibitState {
+        contains UnnamedTransitionUsage0: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Idle
+        }
+        contains Idle: State subsets states
+        contains UnnamedTransitionUsage1: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = Operation
+            redefine contains acceptAction: AcceptTimeoutAction {
+                redefine refers afterTime: int = 30
+            }
+        }
+        contains UnnamedTransitionUsage2: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = Operation
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = commandPort
+                redefine refers payload: Item = global_StartCommand
+            }
+        }
+        contains Operation: State subsets states {
+            redefine contains entryAction: SendAction {
+                redefine refers viaPort: Port = spacecraftCommandPort
+                redefine refers payload: Item = global_PingCommand
+            }
+            contains UnnamedTransitionUsage3: Transition subsets transitions {
+                redefine refers from: StateNode = start
+                redefine refers to: StateNode = Waiting
+            }
+            contains Waiting: State subsets states
+            contains UnnamedTransitionUsage4: Transition subsets transitions {
+                redefine refers from: StateNode = Waiting
+                redefine refers to: StateNode = Waiting
+                redefine contains acceptAction: AcceptItemAction {
+                    redefine refers viaPort: Port = dataPort
+                    redefine refers payload: Item = global_Data
+                }
+                redefine contains guard: Guard {
+                    redefine contains expression: LessThanOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = receivedData
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 100
+                        }
+                    }
+                }
+                redefine contains action: AssignmentAction {
+                    redefine refers attribute: Attribute = receivedData
+                    redefine contains expression: PlusOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = receivedData
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 10
+                        }
+                    }
+                }
+            }
+        }
+        contains UnnamedTransitionUsage5: Transition subsets transitions {
+            redefine refers from: StateNode = Operation
+            redefine refers to: StateNode = Operation
+            redefine contains acceptAction: AcceptTimeoutAction {
+                redefine refers afterTime: int = 10
+            }
+        }
+    }
+}
+class Spacecraft : Part {
+    contains commandPort: CommandPort subsets ports
+    contains dataPort: DataPort subsets ports
+    contains batteryCharge: IntegerAttribute subsets attributes {
+        redefine refers defaultValue: int = 100
+    }
+    contains recharging: BooleanAttribute subsets attributes {
+        redefine refers defaultValue: bool = false
+    }
+    contains data: IntegerAttribute subsets attributes {
+        redefine refers defaultValue: int = 100
+    }
+    contains Behaviour: ParallelState redefines exhibitState {
+        contains Communication: State subsets states {
+            contains UnnamedTransitionUsage6: Transition subsets transitions {
+                redefine refers from: StateNode = start
+                redefine refers to: StateNode = WaitingPing
+            }
+            contains WaitingPing: State subsets states
+            contains UnnamedTransitionUsage7: Transition subsets transitions {
+                redefine refers from: StateNode = WaitingPing
+                redefine refers to: StateNode = Transmitting
+                redefine contains acceptAction: AcceptItemAction {
+                    redefine refers viaPort: Port = commandPort
+                    redefine refers payload: Item = global_PingCommand
+                }
+                redefine contains guard: Guard {
+                    redefine contains expression: AndOperatorExpression {
+                        redefine contains left: EqualityOperatorExpression {
+                            redefine contains left: AttributeReferenceExpression {
+                                redefine refers attribute: Attribute = recharging
+                            }
+                            redefine contains right: LiteralBooleanExpression {
+                                redefine refers value: bool = false
+                            }
+                        }
+                        redefine contains right: UnaryNotExpression {
+                            redefine contains operand: OrOperatorExpression {
+                                redefine contains left: LessThanOrEqualsOperatorExpression {
+                                    redefine contains left: AttributeReferenceExpression {
+                                        redefine refers attribute: Attribute = data
+                                    }
+                                    redefine contains right: LiteralIntegerExpression {
+                                        redefine refers value: int = 0
+                                    }
+                                }
+                                redefine contains right: LessThanOrEqualsOperatorExpression {
+                                    redefine contains left: AttributeReferenceExpression {
+                                        redefine refers attribute: Attribute = batteryCharge
+                                    }
+                                    redefine contains right: LiteralIntegerExpression {
+                                        redefine refers value: int = 40
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            contains Transmitting: ParallelState subsets states {
+                contains SendData: State subsets states {
+                    contains UnnamedTransitionUsage8: Transition subsets transitions {
+                        redefine refers from: StateNode = start
+                        redefine refers to: StateNode = Sending
+                    }
+                    contains Sending: State subsets states
+                    contains UnnamedTransitionUsage9: Transition subsets transitions {
+                        redefine refers from: StateNode = Sending
+                        redefine refers to: StateNode = Sending
+                        redefine contains acceptAction: AcceptTimeoutAction {
+                            redefine refers afterTime: int = 4
+                        }
+                        redefine contains guard: Guard {
+                            redefine contains expression: UnaryNotExpression {
+                                redefine contains operand: OrOperatorExpression {
+                                    redefine contains left: LessThanOrEqualsOperatorExpression {
+                                        redefine contains left: AttributeReferenceExpression {
+                                            redefine refers attribute: Attribute = data
+                                        }
+                                        redefine contains right: LiteralIntegerExpression {
+                                            redefine refers value: int = 0
+                                        }
+                                    }
+                                    redefine contains right: LessThanOrEqualsOperatorExpression {
+                                        redefine contains left: AttributeReferenceExpression {
+                                            redefine refers attribute: Attribute = batteryCharge
+                                        }
+                                        redefine contains right: LiteralIntegerExpression {
+                                            redefine refers value: int = 40
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        redefine contains action: CompositeAction {
+                            contains UnnamedAssignmentActionUsage0: AssignmentAction subsets children {
+                                redefine refers attribute: Attribute = data
+                                redefine contains expression: MinusOperatorExpression {
+                                    redefine contains left: AttributeReferenceExpression {
+                                        redefine refers attribute: Attribute = data
+                                    }
+                                    redefine contains right: LiteralIntegerExpression {
+                                        redefine refers value: int = 10
+                                    }
+                                }
+                            }
+                            contains UnnamedSendActionUsage0: SendAction subsets children {
+                                redefine refers viaPort: Port = dataPort
+                                redefine refers payload: Item = global_Data
+                            }
+                        }
+                    }
+                }
+                contains ConsumePower: State subsets states {
+                    contains UnnamedTransitionUsage10: Transition subsets transitions {
+                        redefine refers from: StateNode = start
+                        redefine refers to: StateNode = Consuming
+                    }
+                    contains Consuming: State subsets states
+                    contains UnnamedTransitionUsage11: Transition subsets transitions {
+                        redefine refers from: StateNode = Consuming
+                        redefine refers to: StateNode = Consuming
+                        redefine contains acceptAction: AcceptTimeoutAction {
+                            redefine refers afterTime: int = 2
+                        }
+                        redefine contains guard: Guard {
+                            redefine contains expression: UnaryNotExpression {
+                                redefine contains operand: LessThanOrEqualsOperatorExpression {
+                                    redefine contains left: AttributeReferenceExpression {
+                                        redefine refers attribute: Attribute = batteryCharge
+                                    }
+                                    redefine contains right: LiteralIntegerExpression {
+                                        redefine refers value: int = 40
+                                    }
+                                }
+                            }
+                        }
+                        redefine contains action: AssignmentAction {
+                            redefine refers attribute: Attribute = batteryCharge
+                            redefine contains expression: MinusOperatorExpression {
+                                redefine contains left: AttributeReferenceExpression {
+                                    redefine refers attribute: Attribute = batteryCharge
+                                }
+                                redefine contains right: LiteralIntegerExpression {
+                                    redefine refers value: int = 10
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            contains UnnamedTransitionUsage12: Transition subsets transitions {
+                redefine refers from: StateNode = Transmitting
+                redefine refers to: StateNode = WaitingPing
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 4
+                }
+                redefine contains guard: Guard {
+                    redefine contains expression: OrOperatorExpression {
+                        redefine contains left: LessThanOrEqualsOperatorExpression {
+                            redefine contains left: AttributeReferenceExpression {
+                                redefine refers attribute: Attribute = data
+                            }
+                            redefine contains right: LiteralIntegerExpression {
+                                redefine refers value: int = 0
+                            }
+                        }
+                        redefine contains right: LessThanOrEqualsOperatorExpression {
+                            redefine contains left: AttributeReferenceExpression {
+                                redefine refers attribute: Attribute = batteryCharge
+                            }
+                            redefine contains right: LiteralIntegerExpression {
+                                redefine refers value: int = 40
+                            }
+                        }
+                    }
+                }
+            }
+            contains UnnamedTransitionUsage13: Transition subsets transitions {
+                redefine refers from: StateNode = Transmitting
+                redefine refers to: StateNode = WaitingPing
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 4
+                }
+                redefine contains guard: Guard {
+                    redefine contains expression: LessThanOrEqualsOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = batteryCharge
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 40
+                        }
+                    }
+                }
+            }
+        }
+        contains Battery: State subsets states {
+            contains UnnamedTransitionUsage14: Transition subsets transitions {
+                redefine refers from: StateNode = start
+                redefine refers to: StateNode = NotRecharging
+            }
+            contains NotRecharging: State subsets states {
+                redefine contains entryAction: AssignmentAction {
+                    redefine refers attribute: Attribute = recharging
+                    redefine contains expression: LiteralBooleanExpression {
+                        redefine refers value: bool = false
+                    }
+                }
+            }
+            contains Recharging: State subsets states {
+                redefine contains entryAction: AssignmentAction {
+                    redefine refers attribute: Attribute = recharging
+                    redefine contains expression: LiteralBooleanExpression {
+                        redefine refers value: bool = true
+                    }
+                }
+            }
+            contains UnnamedTransitionUsage15: Transition subsets transitions {
+                redefine refers from: StateNode = NotRecharging
+                redefine refers to: StateNode = Recharging
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 3
+                }
+                redefine contains guard: Guard {
+                    redefine contains expression: LessThanOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = batteryCharge
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 80
+                        }
+                    }
+                }
+            }
+            contains UnnamedTransitionUsage16: Transition subsets transitions {
+                redefine refers from: StateNode = Recharging
+                redefine refers to: StateNode = Recharging
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 3
+                }
+                redefine contains guard: Guard {
+                    redefine contains expression: LessThanOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = batteryCharge
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 100
+                        }
+                    }
+                }
+                redefine contains action: AssignmentAction {
+                    redefine refers attribute: Attribute = batteryCharge
+                    redefine contains expression: PlusOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = batteryCharge
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 10
+                        }
+                    }
+                }
+            }
+            contains UnnamedTransitionUsage17: Transition subsets transitions {
+                redefine refers from: StateNode = Recharging
+                redefine refers to: StateNode = NotRecharging
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 3
+                }
+                redefine contains guard: Guard {
+                    redefine contains expression: GreaterThanOrEqualsOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = batteryCharge
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 100
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+class Data : Item
+global containment global_Data: Data[1]
+class Command : Item
+global containment global_Command: Command[1]
+class PingCommand : Item
+global containment global_PingCommand: PingCommand[1]
+class StopCommand : Item
+global containment global_StopCommand: StopCommand[1]
+class StartCommand : Item
+global containment global_StartCommand: StartCommand[1]
+class CommandPort : NormalPort {
+}
+class ConjugatedCommandPort : ConjugatedPort {
+}
+class DataPort : NormalPort {
+}
+class ConjugatedDataPort : ConjugatedPort {
+}
+class Mission : Part {
+    contains groundStation: GroundStation subsets parts
+    contains spacecraft: Spacecraft subsets parts
+    refers commandPort: CommandPort subsets ports = groundStation.commandPort
+    contains UnnamedFlowUsage0: Flow subsets flows {
+        redefine refers inputPort: Port = groundStation.spacecraftCommandPort
+        redefine refers outputPort: Port = spacecraft.commandPort
+    }
+    contains UnnamedFlowUsage1: Flow subsets flows {
+        redefine refers inputPort: Port = spacecraft.dataPort
+        redefine refers outputPort: Port = groundStation.dataPort
+    }
+}
+@VerificationCase
+class StationBehaviorIdleReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.groundStation.Behaviour.Idle
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class StationBehaviorOperationReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.groundStation.Behaviour.Operation
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class StationBehaviorOperationWaitingReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.groundStation.Behaviour.Operation.Waiting
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorCommunicationWaitingPingReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.WaitingPing
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorCommunicationTransmittingReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorCommunicationTransmittingSendDataReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.SendData
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorCommunicationTransmittingSendDataSendingReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.SendData.Sending
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorCommunicationTransmittingConsumePowerReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.ConsumePower
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorCommunicationTransmittingConsumePowerConsumingReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.ConsumePower.Consuming
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorBatteryNotRechargingReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Battery.NotRecharging
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBehaviorBatteryRechargingReachable : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = mission.spacecraft.Behaviour.Battery.Recharging
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach0 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 0
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach10 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 10
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach20 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 20
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach30 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 30
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach40 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 40
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach50 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 50
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach60 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 60
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach70 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 70
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach80 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 80
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach90 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 90
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class GroundStationReceivedDataCanReach100 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: GreaterThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.groundStation.receivedData
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 100
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach100 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 100
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach90 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 90
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach80 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 80
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach70 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 70
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach60 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 60
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach50 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 50
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach40 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 40
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach30 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 30
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach20 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 20
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach10 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 10
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftDataCanReach0 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: LessThanOrEqualsOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = mission.spacecraft.data
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 0
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBatteryAlwaysAbove0 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: GreaterThanOrEqualsOperatorExpression {
+                redefine contains left: AttributeReferenceExpression {
+                    redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
+                }
+                redefine contains right: LiteralIntegerExpression {
+                    redefine refers value: int = 0
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBatteryAlwaysAbove10 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: GreaterThanOrEqualsOperatorExpression {
+                redefine contains left: AttributeReferenceExpression {
+                    redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
+                }
+                redefine contains right: LiteralIntegerExpression {
+                    redefine refers value: int = 10
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBatteryAlwaysAbove20 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: GreaterThanOrEqualsOperatorExpression {
+                redefine contains left: AttributeReferenceExpression {
+                    redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
+                }
+                redefine contains right: LiteralIntegerExpression {
+                    redefine refers value: int = 20
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBatteryAlwaysAbove30 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: GreaterThanOrEqualsOperatorExpression {
+                redefine contains left: AttributeReferenceExpression {
+                    redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
+                }
+                redefine contains right: LiteralIntegerExpression {
+                    redefine refers value: int = 30
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SpacecraftBatteryAlwaysAbove40 : VerificationCaseDefinition {
+    contains mission: Mission[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: GreaterThanOrEqualsOperatorExpression {
+                redefine contains left: AttributeReferenceExpression {
+                    redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
+                }
+                redefine contains right: LiteralIntegerExpression {
+                    redefine refers value: int = 40
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`Semantifyr OXSTS transformation > OXSTS output for crossroads.sysml matches the recorded snapshot 1`] = `
+"package semantifyr::sysml::model
+
+import semantifyr::sysml::expressions
+import semantifyr::sysml::attributes
+import semantifyr::sysml::states
+import semantifyr::sysml::parts
+import semantifyr::sysml::ports
+import semantifyr::sysml::items
+import semantifyr::sysml::actions
+import semantifyr::sysml::triggers
+import semantifyr::sysml::verification
+
+class Police : Item
+global containment global_Police: Police[1]
+class Toggle : Item
+global containment global_Toggle: Toggle[1]
+class RedL : Item
+global containment global_RedL: RedL[1]
+class YellowL : Item
+global containment global_YellowL: YellowL[1]
+class GreenL : Item
+global containment global_GreenL: GreenL[1]
+class NoneL : Item
+global containment global_NoneL: NoneL[1]
+class CentralControl : NormalPort {
+}
+class ConjugatedCentralControl : ConjugatedPort {
+}
+class LightControl : NormalPort {
+}
+class ConjugatedLightControl : ConjugatedPort {
+}
+class CentralController : Part {
+    contains control: ConjugatedCentralControl subsets ports
+    contains controlA: CentralControl subsets ports
+    contains controlB: CentralControl subsets ports
+    contains Behaviour: State redefines exhibitState {
+        contains UnnamedTransitionUsage0: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Operating
+        }
+        contains Operating: State subsets states {
+            contains UnnamedTransitionUsage1: Transition subsets transitions {
+                redefine refers from: StateNode = start
+                redefine refers to: StateNode = BothYellow
+            }
+            contains BothYellow: State subsets states
+            contains UnnamedTransitionUsage2: Transition subsets transitions {
+                redefine refers from: StateNode = BothYellow
+                redefine refers to: StateNode = BothRed
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 1
+                }
+                redefine contains action: CompositeAction {
+                    contains UnnamedSendActionUsage0: SendAction subsets children {
+                        redefine refers viaPort: Port = controlA
+                        redefine refers payload: Item = global_Toggle
+                    }
+                    contains UnnamedSendActionUsage1: SendAction subsets children {
+                        redefine refers viaPort: Port = controlB
+                        redefine refers payload: Item = global_Toggle
+                    }
+                }
+            }
+            contains BothRed: State subsets states
+            contains UnnamedTransitionUsage3: Transition subsets transitions {
+                redefine refers from: StateNode = BothRed
+                redefine refers to: StateNode = TrafficOnA
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 2
+                }
+                redefine contains action: CompositeAction {
+                    contains UnnamedSendActionUsage2: SendAction subsets children {
+                        redefine refers viaPort: Port = controlA
+                        redefine refers payload: Item = global_Toggle
+                    }
+                }
+            }
+            contains TrafficOnA: State subsets states
+            contains UnnamedTransitionUsage4: Transition subsets transitions {
+                redefine refers from: StateNode = TrafficOnA
+                redefine refers to: StateNode = StoppingA
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 2
+                }
+                redefine contains action: CompositeAction {
+                    contains UnnamedSendActionUsage3: SendAction subsets children {
+                        redefine refers viaPort: Port = controlA
+                        redefine refers payload: Item = global_Toggle
+                    }
+                }
+            }
+            contains StoppingA: State subsets states
+            contains UnnamedTransitionUsage5: Transition subsets transitions {
+                redefine refers from: StateNode = StoppingA
+                redefine refers to: StateNode = TrafficOnB
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 1
+                }
+                redefine contains action: CompositeAction {
+                    contains UnnamedSendActionUsage4: SendAction subsets children {
+                        redefine refers viaPort: Port = controlA
+                        redefine refers payload: Item = global_Toggle
+                    }
+                    contains UnnamedSendActionUsage5: SendAction subsets children {
+                        redefine refers viaPort: Port = controlB
+                        redefine refers payload: Item = global_Toggle
+                    }
+                }
+            }
+            contains TrafficOnB: State subsets states
+            contains UnnamedTransitionUsage6: Transition subsets transitions {
+                redefine refers from: StateNode = TrafficOnB
+                redefine refers to: StateNode = StoppingB
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 2
+                }
+                redefine contains action: CompositeAction {
+                    contains UnnamedSendActionUsage6: SendAction subsets children {
+                        redefine refers viaPort: Port = controlB
+                        redefine refers payload: Item = global_Toggle
+                    }
+                }
+            }
+            contains StoppingB: State subsets states
+            contains UnnamedTransitionUsage7: Transition subsets transitions {
+                redefine refers from: StateNode = StoppingB
+                redefine refers to: StateNode = TrafficOnA
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 1
+                }
+                redefine contains action: CompositeAction {
+                    contains UnnamedSendActionUsage7: SendAction subsets children {
+                        redefine refers viaPort: Port = controlA
+                        redefine refers payload: Item = global_Toggle
+                    }
+                    contains UnnamedSendActionUsage8: SendAction subsets children {
+                        redefine refers viaPort: Port = controlB
+                        redefine refers payload: Item = global_Toggle
+                    }
+                }
+            }
+        }
+        contains UnnamedTransitionUsage8: Transition subsets transitions {
+            redefine refers from: StateNode = Operating
+            redefine refers to: StateNode = Interrupted
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = control
+                redefine refers payload: Item = global_Police
+            }
+        }
+        contains UnnamedTransitionUsage9: Transition subsets transitions {
+            redefine refers from: StateNode = Interrupted
+            redefine refers to: StateNode = Operating
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = control
+                redefine refers payload: Item = global_Police
+            }
+        }
+        contains Interrupted: State subsets states {
+            redefine contains entryAction: CompositeAction {
+                contains UnnamedSendActionUsage9: SendAction subsets children {
+                    redefine refers viaPort: Port = controlA
+                    redefine refers payload: Item = global_Police
+                }
+                contains UnnamedSendActionUsage10: SendAction subsets children {
+                    redefine refers viaPort: Port = controlB
+                    redefine refers payload: Item = global_Police
+                }
+            }
+            redefine contains exitAction: CompositeAction {
+                contains UnnamedSendActionUsage11: SendAction subsets children {
+                    redefine refers viaPort: Port = controlA
+                    redefine refers payload: Item = global_Police
+                }
+                contains UnnamedSendActionUsage12: SendAction subsets children {
+                    redefine refers viaPort: Port = controlB
+                    redefine refers payload: Item = global_Police
+                }
+            }
+        }
+    }
+}
+class TrafficLightController : Part {
+    contains control: ConjugatedCentralControl subsets ports
+    contains lightControl: LightControl subsets ports
+    contains Behaviour: State redefines exhibitState {
+        contains UnnamedTransitionUsage10: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Normal
+        }
+        contains Normal: State subsets states {
+            contains UnnamedTransitionUsage11: Transition subsets transitions {
+                redefine refers from: StateNode = start
+                redefine refers to: StateNode = Yellow
+            }
+            contains Yellow: State subsets states {
+                redefine contains entryAction: SendAction {
+                    redefine refers viaPort: Port = lightControl
+                    redefine refers payload: Item = global_YellowL
+                }
+            }
+            contains UnnamedTransitionUsage12: Transition subsets transitions {
+                redefine refers from: StateNode = Yellow
+                redefine refers to: StateNode = Red
+                redefine contains acceptAction: AcceptItemAction {
+                    redefine refers viaPort: Port = control
+                    redefine refers payload: Item = global_Toggle
+                }
+            }
+            contains Red: State subsets states {
+                redefine contains entryAction: SendAction {
+                    redefine refers viaPort: Port = lightControl
+                    redefine refers payload: Item = global_RedL
+                }
+            }
+            contains UnnamedTransitionUsage13: Transition subsets transitions {
+                redefine refers from: StateNode = Red
+                redefine refers to: StateNode = Green
+                redefine contains acceptAction: AcceptItemAction {
+                    redefine refers viaPort: Port = control
+                    redefine refers payload: Item = global_Toggle
+                }
+            }
+            contains Green: State subsets states {
+                redefine contains entryAction: SendAction {
+                    redefine refers viaPort: Port = lightControl
+                    redefine refers payload: Item = global_GreenL
+                }
+            }
+            contains UnnamedTransitionUsage14: Transition subsets transitions {
+                redefine refers from: StateNode = Green
+                redefine refers to: StateNode = Yellow
+                redefine contains acceptAction: AcceptItemAction {
+                    redefine refers viaPort: Port = control
+                    redefine refers payload: Item = global_Toggle
+                }
+            }
+        }
+        contains UnnamedTransitionUsage15: Transition subsets transitions {
+            redefine refers from: StateNode = Normal
+            redefine refers to: StateNode = Interrupted
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = control
+                redefine refers payload: Item = global_Police
+            }
+        }
+        contains UnnamedTransitionUsage16: Transition subsets transitions {
+            redefine refers from: StateNode = Interrupted
+            redefine refers to: StateNode = Normal
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = control
+                redefine refers payload: Item = global_Police
+            }
+        }
+        contains Interrupted: State subsets states {
+            contains UnnamedTransitionUsage17: Transition subsets transitions {
+                redefine refers from: StateNode = start
+                redefine refers to: StateNode = Yellow
+            }
+            contains Yellow: State subsets states {
+                redefine contains entryAction: SendAction {
+                    redefine refers viaPort: Port = lightControl
+                    redefine refers payload: Item = global_YellowL
+                }
+            }
+            contains UnnamedTransitionUsage18: Transition subsets transitions {
+                redefine refers from: StateNode = Yellow
+                redefine refers to: StateNode = Black
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 1
+                }
+            }
+            contains UnnamedTransitionUsage19: Transition subsets transitions {
+                redefine refers from: StateNode = Black
+                redefine refers to: StateNode = Yellow
+                redefine contains acceptAction: AcceptTimeoutAction {
+                    redefine refers afterTime: int = 1
+                }
+            }
+            contains Black: State subsets states {
+                redefine contains entryAction: SendAction {
+                    redefine refers viaPort: Port = lightControl
+                    redefine refers payload: Item = global_NoneL
+                }
+            }
+        }
+    }
+}
+class CrossroadSystem : Part {
+    contains controller: CentralController subsets parts
+    contains trafficLightA: TrafficLightController subsets parts
+    contains trafficLightB: TrafficLightController subsets parts
+    refers control: ConjugatedCentralControl subsets ports = controller.control
+    contains UnnamedFlowUsage0: Flow subsets flows {
+        redefine refers inputPort: Port = controller.controlA
+        redefine refers outputPort: Port = trafficLightA.control
+    }
+    contains UnnamedFlowUsage1: Flow subsets flows {
+        redefine refers inputPort: Port = controller.controlB
+        redefine refers outputPort: Port = trafficLightB.control
+    }
+}
+@VerificationCase
+class ControllerOperatingReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Operating
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ControllerOperatingBothYellowReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Operating.BothYellow
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ControllerOperatingBothRedReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Operating.BothRed
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ControllerOperatingTrafficOnAReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Operating.TrafficOnA
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ControllerOperatingStoppingAReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Operating.StoppingA
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ControllerOperatingTrafficOnBReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Operating.TrafficOnB
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ControllerOperatingStoppingBReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Operating.StoppingB
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ControllerInterruptedReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.controller.Behaviour.Interrupted
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightABehaviorNormalReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightABehaviorNormalYellowReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Yellow
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightABehaviorNormalRedReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightABehaviorNormalGreenReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Green
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightABehaviorInterruptedReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightA.Behaviour.Interrupted
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightABehaviorInterruptedYellowReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightA.Behaviour.Interrupted.Yellow
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightABehaviorInterruptedBlackReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightA.Behaviour.Interrupted.Black
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightBBehaviorNormalReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightBBehaviorNormalYellowReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Yellow
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightBBehaviorNormalRedReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Red
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightBBehaviorNormalGreenReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Green
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightBBehaviorInterruptedReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightB.Behaviour.Interrupted
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightBBehaviorInterruptedYellowReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightB.Behaviour.Interrupted.Yellow
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class TrafficLightBBehaviorInterruptedBlackReachable : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.trafficLightB.Behaviour.Interrupted.Black
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ReachableRedRed : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Red
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ReachableRedGreen : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Green
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ReachableRedYellow : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Yellow
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ReachableGreenRed : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Green
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Red
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class UnreachableGreenGreen : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: MustAlways {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: AndOperatorExpression {
+                        redefine contains left: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Green
+                        }
+                        redefine contains right: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Green
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class UnreachableGreenYellow : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: UnaryNotExpression {
+                redefine contains operand: Eventually {
+                    redefine contains body: AndOperatorExpression {
+                        redefine contains left: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Green
+                        }
+                        redefine contains right: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Yellow
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ReachableYellowRed : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Yellow
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Red
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class UnreachableYellowGreen : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: UnaryNotExpression {
+                redefine contains operand: Eventually {
+                    redefine contains body: AndOperatorExpression {
+                        redefine contains left: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Yellow
+                        }
+                        redefine contains right: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Green
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class ReachableYellowYellow : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Yellow
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Yellow
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`Semantifyr OXSTS transformation > OXSTS output for door_access.sysml matches the recorded snapshot 1`] = `
+"package semantifyr::sysml::model
+
+import semantifyr::sysml::expressions
+import semantifyr::sysml::attributes
+import semantifyr::sysml::states
+import semantifyr::sysml::parts
+import semantifyr::sysml::ports
+import semantifyr::sysml::items
+import semantifyr::sysml::actions
+import semantifyr::sysml::triggers
+import semantifyr::sysml::verification
+
+class BadgeScanned : Item
+global containment global_BadgeScanned: BadgeScanned[1]
+class AccessGranted : Item
+global containment global_AccessGranted: AccessGranted[1]
+class DoorOpened : Item
+global containment global_DoorOpened: DoorOpened[1]
+class DoorClosed : Item
+global containment global_DoorClosed: DoorClosed[1]
+class AccessPort : NormalPort {
+}
+class ConjugatedAccessPort : ConjugatedPort {
+}
+class AccessController : Part {
+    contains step: IntegerAttribute subsets attributes {
+        redefine refers defaultValue: int = 0
+    }
+    contains accessPort: AccessPort subsets ports
+    contains Behaviour: State redefines exhibitState {
+        contains Locked: State subsets states
+        contains Checking: State subsets states
+        contains Unlocked: State subsets states
+        contains Open: State subsets states
+        contains UnnamedTransitionUsage0: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Locked
+        }
+        contains UnnamedTransitionUsage1: Transition subsets transitions {
+            redefine refers from: StateNode = Locked
+            redefine refers to: StateNode = Checking
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = accessPort
+                redefine refers payload: Item = global_BadgeScanned
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedAssignmentActionUsage0: AssignmentAction subsets children {
+                    redefine refers attribute: Attribute = step
+                    redefine contains expression: LiteralIntegerExpression {
+                        redefine refers value: int = 1
+                    }
+                }
+            }
+        }
+        contains UnnamedTransitionUsage2: Transition subsets transitions {
+            redefine refers from: StateNode = Checking
+            redefine refers to: StateNode = Unlocked
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = accessPort
+                redefine refers payload: Item = global_AccessGranted
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedAssignmentActionUsage1: AssignmentAction subsets children {
+                    redefine refers attribute: Attribute = step
+                    redefine contains expression: LiteralIntegerExpression {
+                        redefine refers value: int = 2
+                    }
+                }
+            }
+        }
+        contains UnnamedTransitionUsage3: Transition subsets transitions {
+            redefine refers from: StateNode = Unlocked
+            redefine refers to: StateNode = Open
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = accessPort
+                redefine refers payload: Item = global_DoorOpened
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedAssignmentActionUsage2: AssignmentAction subsets children {
+                    redefine refers attribute: Attribute = step
+                    redefine contains expression: LiteralIntegerExpression {
+                        redefine refers value: int = 3
+                    }
+                }
+            }
+        }
+        contains UnnamedTransitionUsage4: Transition subsets transitions {
+            redefine refers from: StateNode = Open
+            redefine refers to: StateNode = Locked
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = accessPort
+                redefine refers payload: Item = global_DoorClosed
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedAssignmentActionUsage3: AssignmentAction subsets children {
+                    redefine refers attribute: Attribute = step
+                    redefine contains expression: LiteralIntegerExpression {
+                        redefine refers value: int = 4
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class LockedReachable : VerificationCaseDefinition {
+    contains system: AccessController[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.Behaviour.Locked
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class CheckingReachable : VerificationCaseDefinition {
+    contains system: AccessController[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.Behaviour.Checking
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class UnlockedReachable : VerificationCaseDefinition {
+    contains system: AccessController[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.Behaviour.Unlocked
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class OpenReachable : VerificationCaseDefinition {
+    contains system: AccessController[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.Behaviour.Open
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class LockedAndCheckingNeverSimultaneous : VerificationCaseDefinition {
+    contains system: AccessController[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: MustAlways {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: AndOperatorExpression {
+                        redefine contains left: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour.Locked
+                        }
+                        redefine contains right: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour.Checking
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class UnlockedAndOpenNeverSimultaneous : VerificationCaseDefinition {
+    contains system: AccessController[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: MustAlways {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: AndOperatorExpression {
+                        redefine contains left: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour.Unlocked
+                        }
+                        redefine contains right: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour.Open
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`Semantifyr OXSTS transformation > OXSTS output for orion_protocol.sysml matches the recorded snapshot 1`] = `
+"package semantifyr::sysml::model
+
+import semantifyr::sysml::expressions
+import semantifyr::sysml::attributes
+import semantifyr::sysml::states
+import semantifyr::sysml::parts
+import semantifyr::sysml::ports
+import semantifyr::sysml::items
+import semantifyr::sysml::actions
+import semantifyr::sysml::triggers
+import semantifyr::sysml::verification
+
+class Operation_Call_SendData : Item
+global containment global_Operation_Call_SendData: Operation_Call_SendData[1]
+class Operation_Call_Invalid : Item
+global containment global_Operation_Call_Invalid: Operation_Call_Invalid[1]
+class OrionDisconn : Item
+global containment global_OrionDisconn: OrionDisconn[1]
+class OrionDisconnCause : Item
+global containment global_OrionDisconnCause: OrionDisconnCause[1]
+class OrionConnReq : Item
+global containment global_OrionConnReq: OrionConnReq[1]
+class OrionAppData : Item
+global containment global_OrionAppData: OrionAppData[1]
+class OrionKeepAlive : Item
+global containment global_OrionKeepAlive: OrionKeepAlive[1]
+class OrionConnConf : Item
+global containment global_OrionConnConf: OrionConnConf[1]
+class OrionConnResp : Item
+global containment global_OrionConnResp: OrionConnResp[1]
+class Operation_Call_Connect : Item
+global containment global_Operation_Call_Connect: Operation_Call_Connect[1]
+class Operation_Call_Disconn : Item
+global containment global_Operation_Call_Disconn: Operation_Call_Disconn[1]
+class Block_Interface_ForOrion : NormalPort {
+}
+class ConjugatedBlock_Interface_ForOrion : ConjugatedPort {
+}
+class StateMachine_Interface_For_Orion : NormalPort {
+}
+class ConjugatedStateMachine_Interface_For_Orion : ConjugatedPort {
+}
+class Connection_Interface_For_Orion : NormalPort {
+}
+class ConjugatedConnection_Interface_For_Orion : ConjugatedPort {
+}
+class Orion_Master_SM : Part {
+    contains Block_Port: ConjugatedBlock_Interface_ForOrion subsets ports
+    contains Connection_Port: ConjugatedConnection_Interface_For_Orion subsets ports
+    contains StateMachine_Port: ConjugatedStateMachine_Interface_For_Orion subsets ports
+    contains Send_StateMachine_Port: StateMachine_Interface_For_Orion subsets ports
+    contains Process_StateMachine_Port: StateMachine_Interface_For_Orion subsets ports
+    contains is_Connected: BooleanAttribute subsets attributes {
+        redefine refers defaultValue: bool = false
+    }
+    contains Behaviour: State redefines exhibitState {
+        contains Closed: State subsets states
+        contains Connecting: State subsets states
+        contains Connected: ParallelState subsets states {
+            redefine contains entryAction: CompositeAction {
+                contains UnnamedAssignmentActionUsage0: AssignmentAction subsets children {
+                    redefine refers attribute: Attribute = is_Connected
+                    redefine contains expression: LiteralBooleanExpression {
+                        redefine refers value: bool = true
+                    }
+                }
+            }
+            redefine contains exitAction: CompositeAction {
+                contains UnnamedAssignmentActionUsage1: AssignmentAction subsets children {
+                    redefine refers attribute: Attribute = is_Connected
+                    redefine contains expression: LiteralBooleanExpression {
+                        redefine refers value: bool = false
+                    }
+                }
+            }
+            contains Region1: State subsets states {
+                contains KeepAliveSendTimeout: State subsets states
+                contains UnnamedTransitionUsage0: Transition subsets transitions {
+                    redefine refers from: StateNode = start
+                    redefine refers to: StateNode = KeepAliveSendTimeout
+                }
+                contains UnnamedTransitionUsage1: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveSendTimeout
+                    redefine refers to: StateNode = KeepAliveSendTimeout
+                    redefine contains acceptAction: AcceptTimeoutAction {
+                        redefine refers afterTime: int = 4
+                    }
+                    redefine contains action: CompositeAction {
+                        contains UnnamedSendActionUsage0: SendAction subsets children {
+                            redefine refers viaPort: Port = Send_StateMachine_Port
+                            redefine refers payload: Item = global_OrionKeepAlive
+                        }
+                    }
+                }
+                contains UnnamedTransitionUsage2: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveSendTimeout
+                    redefine refers to: StateNode = KeepAliveSendTimeout
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = Block_Port
+                        redefine refers payload: Item = global_Operation_Call_SendData
+                    }
+                    redefine contains action: CompositeAction {
+                        contains UnnamedSendActionUsage1: SendAction subsets children {
+                            redefine refers viaPort: Port = Send_StateMachine_Port
+                            redefine refers payload: Item = global_OrionAppData
+                        }
+                    }
+                }
+            }
+            contains Region2: State subsets states {
+                contains KeepAliveReceiveTimeout: State subsets states
+                contains UnnamedTransitionUsage3: Transition subsets transitions {
+                    redefine refers from: StateNode = start
+                    redefine refers to: StateNode = KeepAliveReceiveTimeout
+                }
+                contains UnnamedTransitionUsage4: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveReceiveTimeout
+                    redefine refers to: StateNode = MasterMerge
+                    redefine contains acceptAction: AcceptTimeoutAction {
+                        redefine refers afterTime: int = 5
+                    }
+                }
+                contains UnnamedTransitionUsage5: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveReceiveTimeout
+                    redefine refers to: StateNode = KeepAliveReceiveTimeout
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = StateMachine_Port
+                        redefine refers payload: Item = global_OrionAppData
+                    }
+                    redefine contains action: CompositeAction {
+                        contains UnnamedSendActionUsage2: SendAction subsets children {
+                            redefine refers viaPort: Port = Process_StateMachine_Port
+                            redefine refers payload: Item = global_OrionAppData
+                        }
+                    }
+                }
+                contains UnnamedTransitionUsage6: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveReceiveTimeout
+                    redefine refers to: StateNode = KeepAliveReceiveTimeout
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = StateMachine_Port
+                        redefine refers payload: Item = global_OrionKeepAlive
+                    }
+                }
+            }
+        }
+        contains MasterMerge: State subsets states
+        contains MasterMerge2: State subsets states
+        contains UnnamedTransitionUsage7: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Closed
+        }
+        contains UnnamedTransitionUsage8: Transition subsets transitions {
+            redefine refers from: StateNode = Closed
+            redefine refers to: StateNode = Connecting
+            redefine contains acceptAction: AcceptTimeoutAction {
+                redefine refers afterTime: int = 5
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage3: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionConnReq
+                }
+            }
+        }
+        contains UnnamedTransitionUsage9: Transition subsets transitions {
+            redefine refers from: StateNode = Closed
+            redefine refers to: StateNode = Connecting
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = Connection_Port
+                redefine refers payload: Item = global_Operation_Call_Connect
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage4: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionConnReq
+                }
+            }
+        }
+        contains UnnamedTransitionUsage10: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = Connected
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnResp
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage5: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionConnConf
+                }
+            }
+        }
+        contains UnnamedTransitionUsage11: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = MasterMerge2
+            redefine contains acceptAction: AcceptTimeoutAction {
+                redefine refers afterTime: int = 5
+            }
+        }
+        contains UnnamedTransitionUsage12: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionDisconnCause
+            }
+        }
+        contains UnnamedTransitionUsage13: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = MasterMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = Block_Port
+                redefine refers payload: Item = global_Operation_Call_Invalid
+            }
+        }
+        contains UnnamedTransitionUsage14: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = MasterMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnConf
+            }
+        }
+        contains UnnamedTransitionUsage15: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = MasterMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionKeepAlive
+            }
+        }
+        contains UnnamedTransitionUsage16: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = MasterMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionAppData
+            }
+        }
+        contains UnnamedTransitionUsage17: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = MasterMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnReq
+            }
+        }
+        contains UnnamedTransitionUsage18: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = MasterMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = Connection_Port
+                redefine refers payload: Item = global_Operation_Call_Disconn
+            }
+        }
+        contains UnnamedTransitionUsage19: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = MasterMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnReq
+            }
+        }
+        contains UnnamedTransitionUsage20: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionDisconnCause
+            }
+        }
+        contains UnnamedTransitionUsage21: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = MasterMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = Block_Port
+                redefine refers payload: Item = global_Operation_Call_Invalid
+            }
+        }
+        contains UnnamedTransitionUsage22: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = MasterMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnResp
+            }
+        }
+        contains UnnamedTransitionUsage23: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = MasterMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnConf
+            }
+        }
+        contains UnnamedTransitionUsage24: Transition subsets transitions {
+            redefine refers from: StateNode = MasterMerge
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptWhenAction {
+                redefine contains expression: LiteralBooleanExpression {
+                    redefine refers value: bool = true
+                }
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage6: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionDisconn
+                }
+            }
+        }
+        contains UnnamedTransitionUsage25: Transition subsets transitions {
+            redefine refers from: StateNode = MasterMerge2
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptWhenAction {
+                redefine contains expression: LiteralBooleanExpression {
+                    redefine refers value: bool = true
+                }
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage7: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionDisconn
+                }
+            }
+        }
+    }
+}
+class Orion_Slave_SM : Part {
+    contains Block_Port: ConjugatedBlock_Interface_ForOrion subsets ports
+    contains Connection_Port: ConjugatedConnection_Interface_For_Orion subsets ports
+    contains StateMachine_Port: ConjugatedStateMachine_Interface_For_Orion subsets ports
+    contains Send_StateMachine_Port: StateMachine_Interface_For_Orion subsets ports
+    contains Process_StateMachine_Port: StateMachine_Interface_For_Orion subsets ports
+    contains Handle_StateMachine_Port: StateMachine_Interface_For_Orion subsets ports
+    contains Behaviour: State redefines exhibitState {
+        contains Closed: State subsets states
+        contains Connecting: State subsets states
+        contains Connected: ParallelState subsets states {
+            contains Region1: State subsets states {
+                contains KeepAliveSendTimeout: State subsets states
+                contains UnnamedTransitionUsage26: Transition subsets transitions {
+                    redefine refers from: StateNode = start
+                    redefine refers to: StateNode = KeepAliveSendTimeout
+                }
+                contains UnnamedTransitionUsage27: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveSendTimeout
+                    redefine refers to: StateNode = KeepAliveSendTimeout
+                    redefine contains acceptAction: AcceptTimeoutAction {
+                        redefine refers afterTime: int = 4
+                    }
+                    redefine contains action: CompositeAction {
+                        contains UnnamedSendActionUsage8: SendAction subsets children {
+                            redefine refers viaPort: Port = Send_StateMachine_Port
+                            redefine refers payload: Item = global_OrionKeepAlive
+                        }
+                    }
+                }
+                contains UnnamedTransitionUsage28: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveSendTimeout
+                    redefine refers to: StateNode = KeepAliveSendTimeout
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = Block_Port
+                        redefine refers payload: Item = global_Operation_Call_SendData
+                    }
+                    redefine contains action: CompositeAction {
+                        contains UnnamedSendActionUsage9: SendAction subsets children {
+                            redefine refers viaPort: Port = Send_StateMachine_Port
+                            redefine refers payload: Item = global_OrionAppData
+                        }
+                    }
+                }
+            }
+            contains Region2: State subsets states {
+                contains KeepAliveReceiveTimeout: State subsets states
+                contains UnnamedTransitionUsage29: Transition subsets transitions {
+                    redefine refers from: StateNode = start
+                    redefine refers to: StateNode = KeepAliveReceiveTimeout
+                }
+                contains UnnamedTransitionUsage30: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveReceiveTimeout
+                    redefine refers to: StateNode = SlaveMerge
+                    redefine contains acceptAction: AcceptTimeoutAction {
+                        redefine refers afterTime: int = 5
+                    }
+                }
+                contains UnnamedTransitionUsage31: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveReceiveTimeout
+                    redefine refers to: StateNode = KeepAliveReceiveTimeout
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = StateMachine_Port
+                        redefine refers payload: Item = global_OrionAppData
+                    }
+                    redefine contains action: CompositeAction {
+                        contains UnnamedSendActionUsage10: SendAction subsets children {
+                            redefine refers viaPort: Port = Process_StateMachine_Port
+                            redefine refers payload: Item = global_OrionAppData
+                        }
+                    }
+                }
+                contains UnnamedTransitionUsage32: Transition subsets transitions {
+                    redefine refers from: StateNode = KeepAliveReceiveTimeout
+                    redefine refers to: StateNode = KeepAliveReceiveTimeout
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = StateMachine_Port
+                        redefine refers payload: Item = global_OrionKeepAlive
+                    }
+                }
+            }
+        }
+        contains SlaveMerge: State subsets states
+        contains SlaveMerge2: State subsets states
+        contains UnnamedTransitionUsage33: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Closed
+        }
+        contains UnnamedTransitionUsage34: Transition subsets transitions {
+            redefine refers from: StateNode = Closed
+            redefine refers to: StateNode = Connecting
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnReq
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage11: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionConnResp
+                }
+            }
+        }
+        contains UnnamedTransitionUsage35: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = Connected
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnConf
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage12: SendAction subsets children {
+                    redefine refers viaPort: Port = Handle_StateMachine_Port
+                    redefine refers payload: Item = global_OrionConnConf
+                }
+            }
+        }
+        contains UnnamedTransitionUsage36: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = SlaveMerge2
+            redefine contains acceptAction: AcceptTimeoutAction {
+                redefine refers afterTime: int = 5
+            }
+        }
+        contains UnnamedTransitionUsage37: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionDisconnCause
+            }
+        }
+        contains UnnamedTransitionUsage38: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = SlaveMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnResp
+            }
+        }
+        contains UnnamedTransitionUsage39: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = SlaveMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnReq
+            }
+        }
+        contains UnnamedTransitionUsage40: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = SlaveMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionAppData
+            }
+        }
+        contains UnnamedTransitionUsage41: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = SlaveMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = Block_Port
+                redefine refers payload: Item = global_Operation_Call_Invalid
+            }
+        }
+        contains UnnamedTransitionUsage42: Transition subsets transitions {
+            redefine refers from: StateNode = Connecting
+            redefine refers to: StateNode = SlaveMerge2
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionKeepAlive
+            }
+        }
+        contains UnnamedTransitionUsage43: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = SlaveMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = Block_Port
+                redefine refers payload: Item = global_Operation_Call_Invalid
+            }
+        }
+        contains UnnamedTransitionUsage44: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = SlaveMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnResp
+            }
+        }
+        contains UnnamedTransitionUsage45: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = SlaveMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnReq
+            }
+        }
+        contains UnnamedTransitionUsage46: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = SlaveMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionConnConf
+            }
+        }
+        contains UnnamedTransitionUsage47: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = StateMachine_Port
+                redefine refers payload: Item = global_OrionDisconnCause
+            }
+        }
+        contains UnnamedTransitionUsage48: Transition subsets transitions {
+            redefine refers from: StateNode = Connected
+            redefine refers to: StateNode = SlaveMerge
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = Connection_Port
+                redefine refers payload: Item = global_Operation_Call_Disconn
+            }
+        }
+        contains UnnamedTransitionUsage49: Transition subsets transitions {
+            redefine refers from: StateNode = SlaveMerge
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptWhenAction {
+                redefine contains expression: LiteralBooleanExpression {
+                    redefine refers value: bool = true
+                }
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage13: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionDisconn
+                }
+            }
+        }
+        contains UnnamedTransitionUsage50: Transition subsets transitions {
+            redefine refers from: StateNode = SlaveMerge2
+            redefine refers to: StateNode = Closed
+            redefine contains acceptAction: AcceptWhenAction {
+                redefine contains expression: LiteralBooleanExpression {
+                    redefine refers value: bool = true
+                }
+            }
+            redefine contains action: CompositeAction {
+                contains UnnamedSendActionUsage14: SendAction subsets children {
+                    redefine refers viaPort: Port = Send_StateMachine_Port
+                    redefine refers payload: Item = global_OrionDisconn
+                }
+            }
+        }
+    }
+}
+class OrionSystem : Part {
+    contains master: Orion_Master_SM subsets parts
+    contains slave: Orion_Slave_SM subsets parts
+    refers Connection_Port: ConjugatedConnection_Interface_For_Orion subsets ports = master.Connection_Port
+    contains UnnamedFlowUsage0: Flow subsets flows {
+        redefine refers inputPort: Port = master.Send_StateMachine_Port
+        redefine refers outputPort: Port = slave.StateMachine_Port
+    }
+    contains UnnamedFlowUsage1: Flow subsets flows {
+        redefine refers inputPort: Port = slave.Send_StateMachine_Port
+        redefine refers outputPort: Port = master.StateMachine_Port
+    }
+}
+@VerificationCase
+class MasterClosedReachable : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.master.Behaviour.Closed
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class MasterConnectingReachable : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.master.Behaviour.Connecting
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class MasterConnectedReachable : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.master.Behaviour.Connected
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SlaveClosedReachable : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.slave.Behaviour.Closed
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class SlaveConnectedReachable : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.slave.Behaviour.Connected
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class MasterConnectedAndClosedNeverSimultaneous : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: MustAlways {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: AndOperatorExpression {
+                        redefine contains left: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.master.Behaviour.Connected
+                        }
+                        redefine contains right: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.master.Behaviour.Closed
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class BothMasterAndSlaveConnectedReachable : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.master.Behaviour.Connected
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.slave.Behaviour.Connected
+                    }
+                }
+            }
+        }
+    }
+}
+@VerificationCase
+class MasterIsConnectedReachable : VerificationCaseDefinition {
+    contains system: OrionSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        redefine contains verifyRequirement : Constraint[1] {
+            redefine contains requiredConstraint: Eventually {
+                redefine contains body: AttributeReferenceExpression {
+                    redefine refers attribute: Attribute = system.master.is_Connected
+                }
+            }
+        }
+    }
+}
+"
+`;
