@@ -42,8 +42,7 @@ export class SysMLServiceRegistry extends DefaultServiceRegistry {
         const byLanguage = languageId ? this.languageIdMap.get(languageId) : undefined;
         if (byLanguage) return byLanguage as SysMLDefaultServices;
 
-        const fallback =
-            this.all.length === 1 ? this.all[0] : this.fileExtensionMap.get(".sysml");
+        const fallback = this.all.length === 1 ? this.all[0] : this.fileExtensionMap.get(".sysml");
         if (!fallback) throw new Error("No services registered!");
         return fallback as SysMLDefaultServices;
     }

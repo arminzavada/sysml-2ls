@@ -11,6 +11,7 @@ import {
     FeatureValue,
     InvocationExpression,
     isAssignmentActionUsage,
+    isConstructorExpression,
     isItemDefinition,
     isLiteralNumber,
     isOperatorExpression,
@@ -241,8 +242,15 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
             viaPortValue.expression
         );
 
+        // `send new X(...)` is the spec-compliant form for a freshly-constructed
+        // payload; the bare `send X(...)` form (an InvocationExpression) is
+        // accepted for back-compat but is mapped to the same SendAction.
+        const sendClass = isConstructorExpression(invocationExpression)
+            ? "ConstructorInvocationAction"
+            : "SendAction";
+
         return expandToNode`
-            ${this.containsFeatureLine(featureName, sendAction, "SendAction", kind)} {
+            ${this.containsFeatureLine(featureName, sendAction, sendClass, kind)} {
                 redefine refers viaPort: Port = ${viaPortExpression}
                 redefine refers payload: Item = ${payloadItemGlobalName}
             }
