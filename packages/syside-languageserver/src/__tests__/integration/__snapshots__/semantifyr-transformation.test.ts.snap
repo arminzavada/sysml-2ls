@@ -42,7 +42,7 @@ class GroundStation : Part {
             }
         }
         contains Operation: State subsets states {
-            redefine contains entryAction: SendAction {
+            redefine contains entryAction: SendItemAction {
                 redefine refers viaPort: Port = spacecraftCommandPort
                 redefine refers payload: Item = global_PingCommand
             }
@@ -196,7 +196,7 @@ class Spacecraft : Part {
                                     }
                                 }
                             }
-                            contains UnnamedSendActionUsage0: SendAction subsets children {
+                            contains UnnamedSendActionUsage0: SendItemAction subsets children {
                                 redefine refers viaPort: Port = dataPort
                                 redefine refers payload: Item = global_Data
                             }
@@ -1080,11 +1080,11 @@ class CentralController : Part {
                     redefine refers afterTime: int = 1
                 }
                 redefine contains action: CompositeAction {
-                    contains UnnamedSendActionUsage0: SendAction subsets children {
+                    contains UnnamedSendActionUsage0: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlA
                         redefine refers payload: Item = global_Toggle
                     }
-                    contains UnnamedSendActionUsage1: SendAction subsets children {
+                    contains UnnamedSendActionUsage1: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlB
                         redefine refers payload: Item = global_Toggle
                     }
@@ -1098,7 +1098,7 @@ class CentralController : Part {
                     redefine refers afterTime: int = 2
                 }
                 redefine contains action: CompositeAction {
-                    contains UnnamedSendActionUsage2: SendAction subsets children {
+                    contains UnnamedSendActionUsage2: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlA
                         redefine refers payload: Item = global_Toggle
                     }
@@ -1112,7 +1112,7 @@ class CentralController : Part {
                     redefine refers afterTime: int = 2
                 }
                 redefine contains action: CompositeAction {
-                    contains UnnamedSendActionUsage3: SendAction subsets children {
+                    contains UnnamedSendActionUsage3: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlA
                         redefine refers payload: Item = global_Toggle
                     }
@@ -1126,11 +1126,11 @@ class CentralController : Part {
                     redefine refers afterTime: int = 1
                 }
                 redefine contains action: CompositeAction {
-                    contains UnnamedSendActionUsage4: SendAction subsets children {
+                    contains UnnamedSendActionUsage4: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlA
                         redefine refers payload: Item = global_Toggle
                     }
-                    contains UnnamedSendActionUsage5: SendAction subsets children {
+                    contains UnnamedSendActionUsage5: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlB
                         redefine refers payload: Item = global_Toggle
                     }
@@ -1144,7 +1144,7 @@ class CentralController : Part {
                     redefine refers afterTime: int = 2
                 }
                 redefine contains action: CompositeAction {
-                    contains UnnamedSendActionUsage6: SendAction subsets children {
+                    contains UnnamedSendActionUsage6: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlB
                         redefine refers payload: Item = global_Toggle
                     }
@@ -1158,11 +1158,11 @@ class CentralController : Part {
                     redefine refers afterTime: int = 1
                 }
                 redefine contains action: CompositeAction {
-                    contains UnnamedSendActionUsage7: SendAction subsets children {
+                    contains UnnamedSendActionUsage7: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlA
                         redefine refers payload: Item = global_Toggle
                     }
-                    contains UnnamedSendActionUsage8: SendAction subsets children {
+                    contains UnnamedSendActionUsage8: SendItemAction subsets children {
                         redefine refers viaPort: Port = controlB
                         redefine refers payload: Item = global_Toggle
                     }
@@ -1187,21 +1187,21 @@ class CentralController : Part {
         }
         contains Interrupted: State subsets states {
             redefine contains entryAction: CompositeAction {
-                contains UnnamedSendActionUsage9: SendAction subsets children {
+                contains UnnamedSendActionUsage9: SendItemAction subsets children {
                     redefine refers viaPort: Port = controlA
                     redefine refers payload: Item = global_Police
                 }
-                contains UnnamedSendActionUsage10: SendAction subsets children {
+                contains UnnamedSendActionUsage10: SendItemAction subsets children {
                     redefine refers viaPort: Port = controlB
                     redefine refers payload: Item = global_Police
                 }
             }
             redefine contains exitAction: CompositeAction {
-                contains UnnamedSendActionUsage11: SendAction subsets children {
+                contains UnnamedSendActionUsage11: SendItemAction subsets children {
                     redefine refers viaPort: Port = controlA
                     redefine refers payload: Item = global_Police
                 }
-                contains UnnamedSendActionUsage12: SendAction subsets children {
+                contains UnnamedSendActionUsage12: SendItemAction subsets children {
                     redefine refers viaPort: Port = controlB
                     redefine refers payload: Item = global_Police
                 }
@@ -1223,7 +1223,7 @@ class TrafficLightController : Part {
                 redefine refers to: StateNode = Yellow
             }
             contains Yellow: State subsets states {
-                redefine contains entryAction: SendAction {
+                redefine contains entryAction: SendItemAction {
                     redefine refers viaPort: Port = lightControl
                     redefine refers payload: Item = global_YellowL
                 }
@@ -1237,7 +1237,7 @@ class TrafficLightController : Part {
                 }
             }
             contains Red: State subsets states {
-                redefine contains entryAction: SendAction {
+                redefine contains entryAction: SendItemAction {
                     redefine refers viaPort: Port = lightControl
                     redefine refers payload: Item = global_RedL
                 }
@@ -1251,7 +1251,7 @@ class TrafficLightController : Part {
                 }
             }
             contains Green: State subsets states {
-                redefine contains entryAction: SendAction {
+                redefine contains entryAction: SendItemAction {
                     redefine refers viaPort: Port = lightControl
                     redefine refers payload: Item = global_GreenL
                 }
@@ -1287,7 +1287,7 @@ class TrafficLightController : Part {
                 redefine refers to: StateNode = Yellow
             }
             contains Yellow: State subsets states {
-                redefine contains entryAction: SendAction {
+                redefine contains entryAction: SendItemAction {
                     redefine refers viaPort: Port = lightControl
                     redefine refers payload: Item = global_YellowL
                 }
@@ -1307,7 +1307,7 @@ class TrafficLightController : Part {
                 }
             }
             contains Black: State subsets states {
-                redefine contains entryAction: SendAction {
+                redefine contains entryAction: SendItemAction {
                     redefine refers viaPort: Port = lightControl
                     redefine refers payload: Item = global_NoneL
                 }
@@ -2075,7 +2075,7 @@ class Orion_Master_SM : Part {
                         redefine refers afterTime: int = 4
                     }
                     redefine contains action: CompositeAction {
-                        contains UnnamedSendActionUsage0: SendAction subsets children {
+                        contains UnnamedSendActionUsage0: SendItemAction subsets children {
                             redefine refers viaPort: Port = Send_StateMachine_Port
                             redefine refers payload: Item = global_OrionKeepAlive
                         }
@@ -2089,7 +2089,7 @@ class Orion_Master_SM : Part {
                         redefine refers payload: Item = global_Operation_Call_SendData
                     }
                     redefine contains action: CompositeAction {
-                        contains UnnamedSendActionUsage1: SendAction subsets children {
+                        contains UnnamedSendActionUsage1: SendItemAction subsets children {
                             redefine refers viaPort: Port = Send_StateMachine_Port
                             redefine refers payload: Item = global_OrionAppData
                         }
@@ -2117,7 +2117,7 @@ class Orion_Master_SM : Part {
                         redefine refers payload: Item = global_OrionAppData
                     }
                     redefine contains action: CompositeAction {
-                        contains UnnamedSendActionUsage2: SendAction subsets children {
+                        contains UnnamedSendActionUsage2: SendItemAction subsets children {
                             redefine refers viaPort: Port = Process_StateMachine_Port
                             redefine refers payload: Item = global_OrionAppData
                         }
@@ -2146,7 +2146,7 @@ class Orion_Master_SM : Part {
                 redefine refers afterTime: int = 5
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage3: SendAction subsets children {
+                contains UnnamedSendActionUsage3: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionConnReq
                 }
@@ -2160,7 +2160,7 @@ class Orion_Master_SM : Part {
                 redefine refers payload: Item = global_Operation_Call_Connect
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage4: SendAction subsets children {
+                contains UnnamedSendActionUsage4: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionConnReq
                 }
@@ -2174,7 +2174,7 @@ class Orion_Master_SM : Part {
                 redefine refers payload: Item = global_OrionConnResp
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage5: SendAction subsets children {
+                contains UnnamedSendActionUsage5: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionConnConf
                 }
@@ -2292,7 +2292,7 @@ class Orion_Master_SM : Part {
                 }
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage6: SendAction subsets children {
+                contains UnnamedSendActionUsage6: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionDisconn
                 }
@@ -2307,7 +2307,7 @@ class Orion_Master_SM : Part {
                 }
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage7: SendAction subsets children {
+                contains UnnamedSendActionUsage7: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionDisconn
                 }
@@ -2339,7 +2339,7 @@ class Orion_Slave_SM : Part {
                         redefine refers afterTime: int = 4
                     }
                     redefine contains action: CompositeAction {
-                        contains UnnamedSendActionUsage8: SendAction subsets children {
+                        contains UnnamedSendActionUsage8: SendItemAction subsets children {
                             redefine refers viaPort: Port = Send_StateMachine_Port
                             redefine refers payload: Item = global_OrionKeepAlive
                         }
@@ -2353,7 +2353,7 @@ class Orion_Slave_SM : Part {
                         redefine refers payload: Item = global_Operation_Call_SendData
                     }
                     redefine contains action: CompositeAction {
-                        contains UnnamedSendActionUsage9: SendAction subsets children {
+                        contains UnnamedSendActionUsage9: SendItemAction subsets children {
                             redefine refers viaPort: Port = Send_StateMachine_Port
                             redefine refers payload: Item = global_OrionAppData
                         }
@@ -2381,7 +2381,7 @@ class Orion_Slave_SM : Part {
                         redefine refers payload: Item = global_OrionAppData
                     }
                     redefine contains action: CompositeAction {
-                        contains UnnamedSendActionUsage10: SendAction subsets children {
+                        contains UnnamedSendActionUsage10: SendItemAction subsets children {
                             redefine refers viaPort: Port = Process_StateMachine_Port
                             redefine refers payload: Item = global_OrionAppData
                         }
@@ -2411,7 +2411,7 @@ class Orion_Slave_SM : Part {
                 redefine refers payload: Item = global_OrionConnReq
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage11: SendAction subsets children {
+                contains UnnamedSendActionUsage11: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionConnResp
                 }
@@ -2425,7 +2425,7 @@ class Orion_Slave_SM : Part {
                 redefine refers payload: Item = global_OrionConnConf
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage12: SendAction subsets children {
+                contains UnnamedSendActionUsage12: SendItemAction subsets children {
                     redefine refers viaPort: Port = Handle_StateMachine_Port
                     redefine refers payload: Item = global_OrionConnConf
                 }
@@ -2543,7 +2543,7 @@ class Orion_Slave_SM : Part {
                 }
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage13: SendAction subsets children {
+                contains UnnamedSendActionUsage13: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionDisconn
                 }
@@ -2558,7 +2558,7 @@ class Orion_Slave_SM : Part {
                 }
             }
             redefine contains action: CompositeAction {
-                contains UnnamedSendActionUsage14: SendAction subsets children {
+                contains UnnamedSendActionUsage14: SendItemAction subsets children {
                     redefine refers viaPort: Port = Send_StateMachine_Port
                     redefine refers payload: Item = global_OrionDisconn
                 }

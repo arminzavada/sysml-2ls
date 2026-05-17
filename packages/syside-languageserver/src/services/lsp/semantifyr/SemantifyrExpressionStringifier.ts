@@ -1,27 +1,33 @@
 import { ast } from "../../..";
 import {
-    isOwningMembership,
     Connector,
-    ReferenceUsage,
-    LiteralExpression,
-    isLiteralNumber,
-    isLiteralBoolean,
-    LiteralNumber,
-    LiteralBoolean,
-    isMembership,
-    isExpression,
     Expression,
-    isLiteralExpression,
-    isFeatureChainExpression,
-    FeatureChainExpression,
-    isFeatureReferenceExpression,
-    FeatureReferenceExpression,
-    isFeature,
     Feature,
+    FeatureChainExpression,
+    FeatureReferenceExpression,
+    isExpression,
+    isFeature,
+    isFeatureChainExpression,
+    isFeatureReferenceExpression,
+    isLiteralBoolean,
+    isLiteralExpression,
+    isLiteralNumber,
+    isMembership,
+    isOwningMembership,
+    LiteralBoolean,
+    LiteralExpression,
+    LiteralNumber,
+    ReferenceUsage,
 } from "#generated/ast";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
 import { StableElementNameProvider } from "./StableNameStore";
 
+/**
+ * Renders selected AST nodes into the dotted-path / literal forms that the
+ * OXSTS surface expects. Throws on inputs it cannot translate; emitting a
+ * `"UNDEFINED_*"` placeholder string would produce OXSTS that resolves to
+ * the wrong target downstream.
+ */
 export class SemantifyrExpressionStringifier {
     private readonly elementNameProvider: StableElementNameProvider;
 
@@ -31,9 +37,8 @@ export class SemantifyrExpressionStringifier {
 
     protected stableName(element: ast.Element | undefined): string {
         if (element === undefined) {
-            return "UNDEFINED_ELEMENT";
+            throw new Error("Cannot stringify a missing element");
         }
-
         return this.elementNameProvider.stableName(element);
     }
 
@@ -47,8 +52,7 @@ export class SemantifyrExpressionStringifier {
         if (isFeature(element)) {
             return this.stringifyFeatureExpression(element);
         }
-
-        return "UNEXPECTED_ELEMENT";
+        throw new Error(`Cannot stringify element of type '${element.$type}'`);
     }
 
     private stringifyExpression(expression: Expression): string {
@@ -61,8 +65,7 @@ export class SemantifyrExpressionStringifier {
         if (isFeatureReferenceExpression(expression)) {
             return this.stringifyFeatureReferenceExpression(expression);
         }
-
-        return "UNEXPECTED_EXPRESSION";
+        throw new Error(`Cannot stringify expression of type '${expression.$type}'`);
     }
 
     private stringifyLiteralExpression(expression: LiteralExpression): string {
@@ -72,8 +75,7 @@ export class SemantifyrExpressionStringifier {
         if (isLiteralBoolean(expression)) {
             return this.stringifyLiteralBooleanExpression(expression);
         }
-
-        return "UNEXPECTED_LITERAL_EXPRESSION";
+        throw new Error(`Cannot stringify literal expression of type '${expression.$type}'`);
     }
 
     private stringifyLiteralNumberExpression(expression: LiteralNumber): string {
@@ -87,54 +89,59 @@ export class SemantifyrExpressionStringifier {
     private stringifyFeatureChainExpression(expression: FeatureChainExpression): string {
         const operand = this.stringifyElement(expression.operands[0]);
         const current = this.stringifyElement(expression.children[0]);
-
         return `${operand}.${current}`;
     }
 
     private stringifyFeatureReferenceExpression(expression: FeatureReferenceExpression): string {
-        const member = expression.expression;
-        const parts = member.targetRef?.parts;
-        if (parts === undefined) {
-            return "EMPTY_PARTS";
+        const parts = expression.expression.targetRef?.parts;
+        if (parts === undefined || parts.length === 0) {
+            throw new Error("FeatureReferenceExpression has no reference parts");
         }
-        if (parts.length !== 1) {
-            return "UNEXPECTED_AMOUNT_OF_PARTS";
-        }
-        const relevantPart = parts[0];
-
-        return this.stableName(relevantPart.ref);
+        // Join every segment of the qualified name; single-segment refs render
+        // as the bare name, multi-segment as `pkg.foo`.
+        return parts.map((p) => this.stableName(p.ref)).join(".");
     }
 
     public stringifyMembershipReference(membership: ast.Membership | undefined): string {
         if (membership === undefined) {
-            return "UNDEFINED_MEMBERSHIP";
+            throw new Error("Cannot stringify a missing membership");
         }
         if (isOwningMembership(membership)) {
             return this.stringifyOwningMembershipReference(membership);
         }
         const parts = membership.targetRef?.parts;
-        if (parts === undefined) {
-            return "EMPTY_PARTS";
+        if (parts === undefined || parts.length === 0) {
+            throw new Error("Membership reference has no parts");
         }
-        return parts.map((e) => this.stableName(e.ref)).join(".");
+        return parts.map((p) => this.stableName(p.ref)).join(".");
     }
 
     private stringifyOwningMembershipReference(membership: ast.OwningMembership): string {
-        const connector = membership.target as Connector;
-        if (connector?.ends === undefined) {
-            return this.stringifyFeatureExpression(connector);
+        const connector = membership.target as Connector | undefined;
+        if (!connector) {
+            throw new Error("Owning membership has no target");
         }
-        const thenEnd = connector?.ends[1]?.target as ReferenceUsage;
+        if (connector.ends === undefined) {
+            return this.stringifyFeatureExpression(connector as unknown as Feature);
+        }
+        // For a SuccessionAsUsage (the AST of `then X`), ends[1] is the target
+        // end's ReferenceUsage; its first ReferenceSubsetting's targetRef path
+        // is the qualified name we render.
+        const thenEnd = connector.ends[1]?.target as ReferenceUsage | undefined;
         const parts = thenEnd?.heritage[0]?.targetRef?.parts;
-        if (parts === undefined) {
-            return "EMPTY_PARTS";
+        if (parts === undefined || parts.length === 0) {
+            throw new Error("Owning membership target has no resolvable reference");
         }
-        return parts.map((e) => this.stableName(e.ref)).join(".");
+        return parts.map((p) => this.stableName(p.ref)).join(".");
     }
 
     private stringifyFeatureExpression(feature: Feature): string {
-        const typeRelationships = feature.typeRelationships.map((r) => r.targetRef);
-        const parts = typeRelationships.flatMap((r) => r?.parts);
-        return parts.map((e) => this.stableName(e?.ref)).join(".");
+        const segments = feature.typeRelationships
+            .flatMap((r) => r.targetRef?.parts ?? [])
+            .map((p) => this.stableName(p.ref));
+        if (segments.length === 0) {
+            throw new Error("Feature expression has no type-relationship parts");
+        }
+        return segments.join(".");
     }
 }

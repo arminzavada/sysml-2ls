@@ -194,11 +194,11 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         sendAction: ast.SendActionUsage,
         kind: FeatureKind
     ): Generated {
-        // TODO(phase-2a+): handle empty-payload `send to` and bodied `send { … }` forms
         const meta = sendAction.$meta;
         const payloadItem = meta.payloadItemDefinition()?.ast();
-        if (!payloadItem) return undefined;
-
+        if (!payloadItem) {
+            throw new Error("Send actions must have an Item payload");
+        }
         const viaPort = meta.senderFeature()?.ast();
         if (!viaPort) {
             throw new Error("Send actions must have a 'via' port specification");
@@ -207,13 +207,8 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         const payloadItemGlobalName = this.itemMapper.globalItemName(payloadItem);
         const viaPortExpression = this.stableName(viaPort);
 
-        // `send new X(...)` is the spec-compliant form for a freshly-constructed
-        // payload; the bare `send X(...)` form is accepted for back-compat but
-        // is mapped to the same SendAction.
-        const sendClass = meta.isConstructor() ? "ConstructorInvocationAction" : "SendAction";
-
         return expandToNode`
-            ${this.containsFeatureLine(featureName, sendAction, sendClass, kind)} {
+            ${this.containsFeatureLine(featureName, sendAction, "SendItemAction", kind)} {
                 redefine refers viaPort: Port = ${viaPortExpression}
                 redefine refers payload: Item = ${payloadItemGlobalName}
             }

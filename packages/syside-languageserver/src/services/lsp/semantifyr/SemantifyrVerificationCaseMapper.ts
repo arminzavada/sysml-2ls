@@ -76,29 +76,25 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
 
     private mapSubjectMembership(membership: ast.SubjectMembership): Generated {
         const element = membership.target;
-        if (element === undefined) {
-            return undefined;
+        if (!element || !isUsage(element)) {
+            throw new Error("Verification case subject must be a Usage");
         }
-
-        if (!isUsage(element)) {
-            return undefined;
+        const subjectType = element.$meta.allTypings().at(0)?.ast();
+        if (!subjectType) {
+            throw new Error(
+                `Verification case subject '${element.declaredName ?? "<anonymous>"}' has no resolved type`
+            );
         }
-
-        const subjectName = this.stableName(element);
-        const subjectType = this.featureClassifier(element);
-        const subjectTypeName = this.stableName(subjectType);
-
         return expandToNode`
-            contains ${subjectName}: ${subjectTypeName}[1] redefines subject
+            contains ${this.stableName(element)}: ${this.stableName(subjectType)}[1] redefines subject
         `;
     }
 
     private mapObjectiveMembership(membership: ast.ObjectiveMembership): Generated {
-        const element = membership.target as RequirementUsage;
-        if (element === undefined) {
-            return undefined;
+        const element = membership.target as RequirementUsage | undefined;
+        if (!element) {
+            throw new Error("Verification case objective is empty");
         }
-
         return expandToNode`
             redefine contains objective: Requirement[1] {
                 ${joinToNode(element.children, (e) => this.mapMembership(e), { appendNewLineIfNotEmpty: true })}
@@ -109,11 +105,10 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
     private mapRequirementVerificationMembership(
         membership: ast.RequirementVerificationMembership
     ): Generated {
-        const element = membership.target as RequirementUsage;
-        if (element === undefined) {
-            return undefined;
+        const element = membership.target as RequirementUsage | undefined;
+        if (!element) {
+            throw new Error("Verification requirement is empty");
         }
-
         return expandToNode`
             redefine contains verifyRequirement : Constraint[1] {
                 ${joinToNode(element.children, (e) => this.mapMembership(e), { appendNewLineIfNotEmpty: true })}
@@ -124,13 +119,16 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
     private mapRequirementConstraintMembership(
         membership: ast.RequirementConstraintMembership
     ): Generated {
-        const element = membership.target as ConstraintUsage;
-        if (element === undefined) {
-            return undefined;
+        const element = membership.target as ConstraintUsage | undefined;
+        if (!element) {
+            throw new Error("Constraint membership has no target");
         }
-
-        const resultExpression = element.result?.target as Expression;
-
+        const resultExpression = element.$meta.result?.element()?.ast() as Expression | undefined;
+        if (!resultExpression) {
+            throw new Error(
+                `Constraint '${element.declaredName ?? "<anonymous>"}' has no result expression`
+            );
+        }
         return this.expressionMapper.mapExpression("requiredConstraint", resultExpression);
     }
 }
