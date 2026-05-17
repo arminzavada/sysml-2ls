@@ -11,7 +11,7 @@
     "version": "0.9.1",
     "icon": "icons/logo.png",
     "engines": {
-        "vscode": "^1.56.0"
+        "vscode": "^1.91.0"
     },
     "categories": [
         "Programming Languages",
@@ -44,7 +44,10 @@
     "type": "module",
     "files": [
         "dist",
-        "src"
+        "syntaxes",
+        "sysml.library",
+        "icons",
+        "language-configuration.json"
     ],
     "main": "./dist/node/extension.cjs",
     "browser": "./dist/browser/extension.cjs",

@@ -88,28 +88,24 @@ async function updateTextMateGrammar(filename, lang) {
     await fs.writeFile(filename, JSON.stringify(grammar, null, 2));
 }
 
-exec("pnpm run esbuild")
-    .then(() =>
-        Promise.all(
-            [
-                ["../../LICENSE", "LICENSE"],
-                ["../../CHANGELOG.md", "CHANGELOG.md"],
-                ["README.md", ".README"],
-            ].map(([src, dst]) => fs.copyFile(src, dst))
-        )
-    )
-    .then(() =>
-        Promise.all([
-            fs.copyFile("../../README.md", "README.md"),
-            fs
-                .mkdirp("icons")
-                .then(() => fs.copyFile("../../docs/images/logo.png", "icons/logo.png")),
-            fs.copy("../syside-languageserver/syntaxes", "syntaxes"),
-        ])
-    )
-    .then(() =>
-        Promise.all([
-            updateTextMateGrammar("syntaxes/kerml.tmLanguage.json", "kerml"),
-            updateTextMateGrammar("syntaxes/sysml.tmLanguage.json", "sysml"),
-        ])
-    );
+await exec("pnpm run bundle");
+
+await Promise.all(
+    [
+        ["../../LICENSE", "LICENSE"],
+        ["../../CHANGELOG.md", "CHANGELOG.md"],
+        ["README.md", ".README"],
+    ].map(([src, dst]) => fs.copyFile(src, dst))
+);
+
+await fs.mkdirp("icons");
+await Promise.all([
+    fs.copyFile("../../README.md", "README.md"),
+    fs.copyFile("../../docs/images/logo.png", "icons/logo.png"),
+    fs.copy("../syside-languageserver/syntaxes", "syntaxes"),
+]);
+
+await Promise.all([
+    updateTextMateGrammar("syntaxes/kerml.tmLanguage.json", "kerml"),
+    updateTextMateGrammar("syntaxes/sysml.tmLanguage.json", "sysml"),
+]);

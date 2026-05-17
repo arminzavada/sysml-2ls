@@ -26,27 +26,24 @@ import { SYSMLRELEASE } from "../../../scripts/clone-sysml-release.mjs";
 
 const exec = util.promisify(child_process.exec);
 
-fs.removeSync("sysml.library")
-fs.mkdirp("sysml.library");
+await fs.remove("sysml.library");
+await fs.mkdirp("sysml.library");
 
-fs.copy(
-    path.join(SYSMLRELEASE, "LICENSE"),
-    path.join("sysml.library", "LICENSE.LGPLv3"),
-);
+await Promise.all([
+    fs.copy(path.join(SYSMLRELEASE, "LICENSE"), path.join("sysml.library", "LICENSE.LGPLv3")),
+    fs.copy(path.join(SYSMLRELEASE, "LICENSE-GPL"), path.join("sysml.library", "LICENSE.GPLv3")),
+    fs.copy(path.join(SYSMLRELEASE, "sysml.library"), "sysml.library", {
+        filter: (src) => !src.split("/").pop().startsWith("."),
+    }),
+]);
 
-fs.copy(
-    path.join(SYSMLRELEASE, "LICENSE-GPL"),
-    path.join("sysml.library", "LICENSE.GPLv3"),
-);
-
-fs.copy(
-    path.join(SYSMLRELEASE, "sysml.library"),
-    "sysml.library",
-    {filter: (src, _) => {
-        return !src.split("/").pop().startsWith(".");
-    }}
-);
-
-exec("pnpm vsce package " + process.argv.slice(2).join(" "))
-    .then(() => fs.copyFile(".README", "README.md"))
-    .then(() => fs.unlink(".README"));
+try {
+    await exec("pnpm vsce package " + process.argv.slice(2).join(" "));
+} finally {
+    // Always restore the per-package README that prepublish swapped out for
+    // the root README during packaging, even if vsce failed.
+    if (await fs.pathExists(".README")) {
+        await fs.copyFile(".README", "README.md");
+        await fs.unlink(".README");
+    }
+}
