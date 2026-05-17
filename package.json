@@ -29,7 +29,7 @@
         "build:watch": "pnpm -r --parallel build:watch",
         "test": "vitest run",
         "test:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile=junit.xml",
-        "vscode:package": "pnpm --dir packages/syside-vscode vscode:package",
+        "vscode:package": "pnpm -F syside-languageserver assemble && pnpm -F syside-languageclient assemble && pnpm --dir packages/syside-vscode vscode:package",
         "cli": "pnpm -F syside-languageserver assemble && pnpm -F syside-cli bundle",
         "grammar:watch": "pnpm --dir packages/syside-languageserver grammar:watch",
         "clone-stdlib": "node ./scripts/clone-sysml-release.mjs",
