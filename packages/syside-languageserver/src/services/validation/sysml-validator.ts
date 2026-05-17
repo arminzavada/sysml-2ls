@@ -191,17 +191,20 @@ export class SysMLValidator extends KerMLValidator {
     validateUsageOwningType(node: UsageMeta, accept: ModelValidationAcceptor): void {
         const owningType = node.owningType;
         if (!owningType) return;
-        // KerML Features (e.g. synthetic ItemFlowEnd ends on a FlowUsage)
-        // can legitimately own Usages. Walk up the KerML-Feature chain to find
-        // the enclosing SysML Definition/Usage that the spec's owningType refers
-        // to (see SysML 2026-03 §8.3.6.4: owningType = owningDefinition ∪ owningUsage).
-        let current: TypeMeta | undefined = owningType;
+        // KerML Features can transparently own Usages. Examples: synthetic
+        // ItemFlowEnd ends on a FlowUsage; Expression bodies acting as lambdas
+        // (`->collect { in x; ... }`) owning `in x` parameters; nested
+        // InvocationExpressions in FeatureValues. Walk up via owner() — which
+        // skips Memberships and OwningMemberships (including FeatureValue) —
+        // until we reach a SysML Definition/Usage (valid) or a non-Feature
+        // owner (invalid). Spec: SysML 2026-03 §8.3.6.4.
+        let current: ElementMeta | undefined = owningType;
         while (
             current &&
             current.is(ast.Feature.$type) &&
             !current.isAny(ast.Definition.$type, ast.Usage.$type)
         ) {
-            current = (current as FeatureMeta).owningType;
+            current = current.owner();
         }
         if (!current || !current.isAny(ast.Definition.$type, ast.Usage.$type)) {
             accept("error", "The owningType of a Usage must be a Definition or a Usage.", {

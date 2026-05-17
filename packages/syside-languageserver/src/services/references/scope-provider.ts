@@ -67,6 +67,7 @@ import { getPreviousNode } from "../../utils/cst-util.js";
 import {
     ElementMeta,
     ElementReferenceMeta,
+    ExpressionMeta,
     FeatureChainExpressionMeta,
     FeatureMeta,
     Metamodel,
@@ -164,14 +165,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         // FeatureChainExpression: scope it in the local scope of `a`.
         if (owner?.is(FeatureChainExpression.$type)) {
             const previous = (owner as FeatureChainExpressionMeta).operands.at(0);
-            let resolvedPrevious: Metamodel | undefined;
-            if (previous?.is(FeatureReferenceExpression.$type)) {
-                resolvedPrevious = previous.expression?.element();
-            } else if (previous?.is(FeatureChainExpression.$type)) {
-                resolvedPrevious = (previous as FeatureChainExpressionMeta).targetFeature();
-            } else {
-                resolvedPrevious = previous;
-            }
+            const resolvedPrevious = this.resolveChainPrevious(previous);
             if (resolvedPrevious) {
                 return this.localScope(resolvedPrevious, document, options.aliasResolver);
             }
@@ -206,14 +200,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             const chainOwner = parentFeature?.owner();
             if (chainOwner?.is(FeatureChainExpression.$type)) {
                 const previous = (chainOwner as FeatureChainExpressionMeta).operands.at(0);
-                let resolvedPrevious: Metamodel | undefined;
-                if (previous?.is(FeatureReferenceExpression.$type)) {
-                    resolvedPrevious = previous.expression?.element();
-                } else if (previous?.is(FeatureChainExpression.$type)) {
-                    resolvedPrevious = (previous as FeatureChainExpressionMeta).targetFeature();
-                } else {
-                    resolvedPrevious = previous;
-                }
+                const resolvedPrevious = this.resolveChainPrevious(previous);
                 if (resolvedPrevious) {
                     return this.localScope(resolvedPrevious, document, options.aliasResolver);
                 }
@@ -348,6 +335,29 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             ...CHILD_CONTENTS_OPTIONS,
             aliasResolver: aliasResolver,
         });
+    }
+
+    /**
+     * Resolve the left-hand operand of a `.`-style FeatureChainExpression to
+     * the element whose scope should be used for the right-hand reference.
+     * Handles bare FeatureReferenceExpression, nested FeatureChainExpression,
+     * and other InlineExpressions (e.g. `(x as T).foo`) by following the
+     * expression's returnType to its type.
+     */
+    protected resolveChainPrevious(previous: Metamodel | undefined): Metamodel | undefined {
+        if (!previous) return;
+        if (previous.is(FeatureReferenceExpression.$type)) {
+            return previous.expression?.element();
+        }
+        if (previous.is(FeatureChainExpression.$type)) {
+            return (previous as FeatureChainExpressionMeta).targetFeature();
+        }
+        if (previous.isAny(InlineExpression.$type, Expression.$type)) {
+            const target = (previous as ExpressionMeta).returnType();
+            const resolved = this.indexManager.findType(target);
+            if (resolved) return resolved;
+        }
+        return previous;
     }
 
     /**
