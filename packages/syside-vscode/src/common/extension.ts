@@ -154,11 +154,17 @@ export async function initialize(
 
     // Options to control the language client
     const clientOptions: LanguageClientOptions = {
-        // Use sysml by default, no scheme to work on the web and untitled
-        // files. KerML requires pattern to not accidentally parse KerML files
-        // as SysML for untitled files. Blame langium for using extension to
-        // infer language when TextDocument already has it...
-        documentSelector: [{ language: "sysml" }, { language: "kerml", scheme: "file" }],
+        // Match by both language id and file extension so the server is not
+        // fed unrelated files that other extensions or `files.associations`
+        // happen to label as "sysml" / "kerml" (e.g. generated `.oxsts`
+        // siblings of `.sysml` sources). Untitled buffers have no extension,
+        // so allow them via a scheme-only selector.
+        documentSelector: [
+            { language: "sysml", pattern: "**/*.sysml" },
+            { language: "sysml", scheme: "untitled" },
+            { language: "kerml", pattern: "**/*.kerml" },
+            { language: "kerml", scheme: "untitled" },
+        ],
         synchronize: {},
     };
 
