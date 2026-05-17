@@ -502,8 +502,16 @@ DefaultReferenceUsage returns ReferenceUsage:
     End? RefPrefix UsageSuffix
 ;
 
+// `End (crossingFeature)?` is ambiguous with the trailing `'ref'` because
+// `OwnedCrossingFeature` starts with `BasicUsagePrefix` whose `Reference?` can
+// itself consume a `ref` keyword (greedy LL prediction would attach `ref` to
+// the crossing feature, leaving the outer `'ref'` unsatisfied). The pilot
+// grammar relies on Xtext's syntactic backtracking; Langium/Chevrotain is
+// LL(k) without backtracking, so split the two cases explicitly.
 ReferenceUsage returns ReferenceUsage:
-    (EndUsagePrefix | RefPrefix) 'ref' UsageSuffix
+    End 'ref' UsageSuffix
+    | End crossingFeature=OwnedCrossingFeatureMember 'ref' UsageSuffix
+    | RefPrefix 'ref' UsageSuffix
 ;
 
 VariantReference returns ReferenceUsage:
