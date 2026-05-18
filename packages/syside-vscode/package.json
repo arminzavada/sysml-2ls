@@ -1,12 +1,10 @@
 {
-    "name": "sysml-2ls",
+    "name": "sysml-langium-editor",
     "displayName": "SysIDE Editor (community fork)",
     "description": "SysML v2 language support in VS Code.",
-    "publisher": "Sensmetry",
+    "publisher": "ftsrg",
     "author": {
-        "name": "Sensmetry",
-        "url": "https://sensmetry.com/",
-        "email": "opensource@sensmetry.com"
+        "name": "ftsrg"
     },
     "version": "0.9.1",
     "icon": "icons/logo.png",
