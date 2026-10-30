@@ -107,7 +107,7 @@ describe("transition usages", () => {
         const expectPrintedAs = (
             text: string,
             options: DeepPartial<Omit<PrinterTestContext, "lang" | "node">> = {}
-        ): Assertion<Promise<string>> => {
+        ): Assertion<void, Promise<string>> => {
             return expectPrinted(`action { ${text} }`, {
                 lang: "sysml",
                 node: TransitionUsage.$type,
@@ -185,7 +185,7 @@ then some_long_then_succession_here {
         const expectPrintedAs = (
             text: string,
             options: DeepPartial<Omit<PrinterTestContext, "lang" | "node">> = {}
-        ): Assertion<Promise<string>> => {
+        ): Assertion<void, Promise<string>> => {
             return expectPrinted(`state { ${text} }`, {
                 lang: "sysml",
                 node: TransitionUsage.$type,
@@ -357,7 +357,7 @@ describe("succession actions", () => {
     const expectPrintedAs = (
         text: string,
         options: DeepPartial<Omit<PrinterTestContext, "lang" | "node">> = {}
-    ): Assertion<Promise<string>> => {
+    ): Assertion<void, Promise<string>> => {
         return expectPrinted(text, {
             lang: "sysml",
             node: Namespace.$type,

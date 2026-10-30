@@ -18,7 +18,7 @@ import {
     BrowserMessageReader,
     BrowserMessageWriter,
     createConnection,
-} from "vscode-languageserver/browser.js";
+} from "vscode-languageserver/browser";
 import { createSysMLServices } from "../sysml-module.js";
 import { VirtualFileSystem } from "./virtual-file-system-provider.js";
 import { startServer as _startServer } from "../launch/index.js";

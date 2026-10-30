@@ -37,7 +37,6 @@ export interface IncludeUseCaseUsageOptions
 })
 export class IncludeUseCaseUsageMeta extends Mixin(PerformActionUsageMeta, UseCaseUsageMeta) {
     @enumerable
-    // @ts-expect-error issue with mixins
     override get isComposite(): boolean {
         return false;
     }

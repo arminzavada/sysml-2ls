@@ -37,7 +37,7 @@ import {
     ProposedFeatures,
     StreamMessageReader,
     StreamMessageWriter,
-} from "vscode-languageserver/node.js";
+} from "vscode-languageserver/node";
 import { DeepPartial } from "langium";
 import { InitializeRequest } from "vscode-languageserver";
 import { ClientParams } from "../../../testing/server-initialize-params.js";
@@ -269,6 +269,8 @@ describe("Language server registration tests", () => {
     let services: Services;
 
     beforeAll(async () => {
+        // tests assert on mock calls recorded during initialization
+        vi.setConfig({ clearMocks: false });
         services = await getLanguageServices();
         await initializeServices(services);
 
@@ -278,6 +280,8 @@ describe("Language server registration tests", () => {
         await asyncWhile(() => services.extender.configurationRequest.mock.calls.length === 0);
         await asyncWhile(() => services.extender.selectStdlibPath.mock.calls.length === 0);
     }, 30000);
+
+    afterAll(() => vi.resetConfig());
 
     test("custom semantic token types and modifiers are registered", () => {
         expect(services.initialized).toBeDefined();

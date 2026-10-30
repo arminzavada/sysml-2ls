@@ -35,7 +35,6 @@ export interface ConnectorAsUsageOptions extends UsageOptions, ConnectorOptions 
 @metamodelOf(ConnectorAsUsage.$type, "abstract")
 export class ConnectorAsUsageMeta extends Mixin(ConnectorMeta, UsageMeta) {
     @enumerable
-    // @ts-expect-error issue with mixins
     override get isComposite(): boolean {
         return false;
     }

@@ -69,22 +69,22 @@
         "test": "vitest run"
     },
     "dependencies": {
-        "chevrotain": "~12.0.0",
-        "commander": "^14.0.3",
-        "langium": "~4.2.4",
+        "chevrotain": "~13.2.0",
+        "commander": "^15.0.0",
+        "langium": "~4.4.0",
         "node-fetch": "^3.3.2",
         "performance-now": "^2.1.0",
         "string-width": "^8.3.0",
         "syside-base": "workspace:*",
         "syside-protocol": "workspace:*",
         "ts-mixer": "^6.0.4",
-        "vscode-languageserver": "~9.0.1",
+        "vscode-languageserver": "~10.1.2",
         "vscode-languageserver-textdocument": "~1.0.16",
         "vscode-uri": "~3.1.0"
     },
     "devDependencies": {
-        "chalk": "^5.6.2",
-        "langium-cli": "~4.2.1",
+        "chalk": "^6.0.1",
+        "langium-cli": "~4.4.0",
         "syside-languageclient": "workspace:*",
         "typescript-string-operations": "^1.6.1"
     }

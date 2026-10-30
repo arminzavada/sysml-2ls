@@ -1,27 +1,26 @@
+import { defineConfig, globalIgnores } from "eslint/config";
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import prettierRecommended from "eslint-plugin-prettier/recommended";
 import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
 
-export default tseslint.config(
-    {
-        ignores: [
-            "**/gen/**",
-            "**/lib/**",
-            "**/out/**",
-            "**/dist/**",
-            "**/scripts/**",
-            "**/coverage/**",
-            "**/node_modules/**",
-            "**/syntaxes/**",
-            "**/*.cjs",
-            "**/*.mjs",
-            "**/*.js",
-        ],
-    },
+export default defineConfig(
+    globalIgnores([
+        "**/gen/**",
+        "**/lib/**",
+        "**/out/**",
+        "**/dist/**",
+        "**/scripts/**",
+        "**/coverage/**",
+        "**/node_modules/**",
+        "**/syntaxes/**",
+        "**/*.cjs",
+        "**/*.mjs",
+        "**/*.js",
+    ]),
     js.configs.recommended,
-    ...tseslint.configs.recommended,
+    tseslint.configs.recommended,
     prettierRecommended,
     {
         plugins: {

@@ -69,13 +69,13 @@ async function expectVisit(
     text: string,
     calls?: number,
     retVal?: "matcher"
-): Promise<Assertion<Mock>>;
+): Promise<Assertion<void, Mock>>;
 async function expectVisit(text: string, calls: number, retVal: "mock"): Promise<Mock>;
 async function expectVisit(
     text: string,
     calls = 1,
     retVal: "matcher" | "mock" = "matcher"
-): Promise<Assertion<Mock> | Mock> {
+): Promise<Assertion<void, Mock> | Mock> {
     const visitor = new Visitor();
     const ns = await parseKerML(text);
     visitComments(ns.value.$cstNode as CstNode, visitor);

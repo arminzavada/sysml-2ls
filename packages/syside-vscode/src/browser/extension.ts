@@ -45,8 +45,8 @@ async function startLanguageClient(context: vscode.ExtensionContext): Promise<ty
     const client = new LanguageClient(
         "syside.editor",
         "SysIDE Editor",
-        clientOptions,
-        new Worker(serverModule.toString(true))
+        new Worker(serverModule.toString(true)),
+        clientOptions
     );
 
     // Start the client. This will also launch the server

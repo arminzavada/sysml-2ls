@@ -97,7 +97,7 @@ export function expectPrinted(
         node: SubtypeKeys<Element>;
         index?: number;
     }
-): Assertion<Promise<string>> {
+): Assertion<void, Promise<string>> {
     const lang = options.lang ?? "kerml";
     return expect(
         parsedNode(text, options).then((node) =>

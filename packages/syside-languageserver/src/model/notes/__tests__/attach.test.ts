@@ -36,7 +36,7 @@ async function expectNotes(
         node: SysMLType;
         index?: number;
     }
-): Promise<Assertion<TextComment[] | undefined>> {
+): Promise<Assertion<void, TextComment[] | undefined>> {
     const lang = options.lang ?? "kerml";
     const doc = await (lang === "kerml" ? parseKerML : parseSysML)(text, {
         document: true,

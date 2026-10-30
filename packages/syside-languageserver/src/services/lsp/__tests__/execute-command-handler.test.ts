@@ -29,7 +29,6 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    mockLock.mockClear();
     console.log = log;
 });
 
@@ -61,7 +60,7 @@ describe("simple commands can be executed", () => {
     const handler = services.shared.lsp.ExecuteCommandHandler;
 
     test.each(SimpleCommands)("command: $command", async ({ command, expected }) => {
-        expect(handler?.executeCommand(command, [])).resolves.toEqual(expected);
+        await expect(handler?.executeCommand(command, [])).resolves.toEqual(expected);
 
         const result = await handler?.executeCommand(command + ".console", []);
         expect(result).toEqual(expected);
@@ -85,8 +84,7 @@ describe("document commands can be executed", () => {
     afterAll(() => (builder.update = update));
 
     test("syside.editor.updateDocument triggers document update", async () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        expect(handler?.executeCommand("syside.editor.updateDocument", [uri?.toJSON()])).resolves;
+        await handler?.executeCommand("syside.editor.updateDocument", [uri?.toJSON()]);
         expect(mock).toHaveBeenCalledTimes(1);
         expect(mock).toHaveBeenCalledWith(
             // jest somehow puts an extra `external` property on plain URI...

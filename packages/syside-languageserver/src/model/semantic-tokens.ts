@@ -60,6 +60,7 @@ export const SysMLSemanticTokenTypes = {
     typeParameter: SemanticTokenTypes.typeParameter,
     variable: SemanticTokenTypes.variable,
     decorator: SemanticTokenTypes.decorator,
+    label: SemanticTokenTypes.label,
 
     // custom, need to be registered in package.json
     annotation: "annotation",

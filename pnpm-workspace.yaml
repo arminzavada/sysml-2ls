@@ -6,7 +6,7 @@ packages:
   - "packages/syside-protocol"
   - "packages/syside-vscode"
 overrides:
-  typescript: 5.8.3
+  typescript: 6.0.3
 allowBuilds:
   '@swc/core': true
   '@vscode/vsce-sign': true

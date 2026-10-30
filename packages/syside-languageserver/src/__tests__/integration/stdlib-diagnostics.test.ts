@@ -18,7 +18,7 @@ interface DiagnosticEntry {
     code: Diagnostic["code"];
     source: Diagnostic["source"];
     range: Diagnostic["range"];
-    message: string;
+    message: Diagnostic["message"];
 }
 
 function collectDiagnostics(docs: LangiumDocument[]): Record<string, DiagnosticEntry[]> {

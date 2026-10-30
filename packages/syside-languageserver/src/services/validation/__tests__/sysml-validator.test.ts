@@ -63,7 +63,7 @@ function expectValidations(
     text: string,
     code: string | (string | number | undefined)[],
     buildOptions = BUILD_OPTIONS
-): Assertion<Promise<Diagnostic[]>> {
+): Assertion<void, Promise<Diagnostic[]>> {
     return expect(
         parseSysML(text, { ...BUILD_OPTIONS, ...buildOptions }).then((result) => {
             expect(result.parserErrors).toHaveLength(0);
@@ -76,7 +76,7 @@ function expectValidations(
 function expectModelValidations(
     root: ElementMeta,
     code: string | (string | number | undefined)[]
-): Assertion<Promise<ModelDiagnostic[]>> {
+): Assertion<void, Promise<ModelDiagnostic[]>> {
     return expect(
         services.SysML.validation.DocumentValidator.validateModel(root, root.document).then(
             (ds) => {
@@ -89,7 +89,7 @@ function expectModelValidations(
 
 function expectOwningType<
     T extends { create(id: ElementIDProvider, doc: LangiumDocument): BasicMetamodel | undefined },
->(meta: T, code: string): Assertion<Promise<ModelDiagnostic[]>> {
+>(meta: T, code: string): Assertion<void, Promise<ModelDiagnostic[]>> {
     const doc = emptyDocument();
     const id = basicIdProvider();
 

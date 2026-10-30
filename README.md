@@ -55,7 +55,7 @@ below. To use a different version at runtime, point the
 
 ## Building from source
 
-Requirements: Node.js ≥ 20.11 and [pnpm](https://pnpm.io/installation).
+Requirements: Node.js ≥ 22.13 and [pnpm](https://pnpm.io/installation).
 
 ```bash
 pnpm install                # installs deps + auto-clones the pinned stdlib

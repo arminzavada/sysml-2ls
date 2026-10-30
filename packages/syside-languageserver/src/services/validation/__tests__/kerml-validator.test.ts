@@ -52,7 +52,7 @@ export function expectValidations(
     text: string,
     code: string | (string | number | undefined)[],
     buildOptions = BUILD_OPTIONS
-): Assertion<Promise<Diagnostic[]>> {
+): Assertion<void, Promise<Diagnostic[]>> {
     return expect(
         parseKerML(text, { ...BUILD_OPTIONS, ...buildOptions }).then((result) => {
             expect(result.parserErrors).toHaveLength(0);
@@ -67,7 +67,7 @@ const Validator = services.KerML.validation.KerMLValidator;
 export function expectModelValidations(
     root: ElementMeta,
     code: string | (string | number | undefined)[]
-): Assertion<Promise<ModelDiagnostic[]>> {
+): Assertion<void, Promise<ModelDiagnostic[]>> {
     return expect(
         services.KerML.validation.DocumentValidator.validateModel(root, root.document).then(
             (ds) => {

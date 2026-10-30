@@ -16,8 +16,9 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from "vitest";
+import type { MatcherState } from "vitest";
 import { getObjectSubset } from "@vitest/expect";
-import type { MatcherState, MatcherHintOptions } from "@vitest/expect";
+import type { MatcherHintOptions } from "@vitest/expect";
 import type { IRecognitionException, ILexingError } from "chevrotain";
 import { Namespace } from "#generated/ast.js";
 import { parseKerML, ParseResult, parseSysML, TEST_BUILD_OPTIONS } from "./utils.js";
@@ -272,7 +273,7 @@ expect.extend({
     async toParseKerML(
         this: MatcherState,
         received: any,
-        value: DeepPartial<Namespace> | object,
+        value?: DeepPartial<Namespace> | object,
         {
             parserErrors = [],
             lexerErrors = [],
@@ -291,7 +292,7 @@ expect.extend({
     async toParseSysML(
         this: MatcherState,
         received: any,
-        value: DeepPartial<Namespace> | object,
+        value?: DeepPartial<Namespace> | object,
         {
             parserErrors = [],
             lexerErrors = [],
@@ -320,16 +321,12 @@ export type DeepPartial<T> = T[keyof T] extends Function
           -readonly [P in keyof T]?: DeepPartial<T[P]>;
       };
 
-interface CustomMatchers<R = unknown> {
-    toParseKerML(ast?: DeepPartial<Namespace> | object, options?: MatchOptions): R;
-    toParseSysML(ast?: DeepPartial<Namespace> | object, options?: MatchOptions): R;
-}
-
 declare module "vitest" {
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    interface Assertion<T = any> extends CustomMatchers<T> {}
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    interface AsymmetricMatchersContaining extends CustomMatchers {}
+    // eslint-disable-next-line unused-imports/no-unused-vars -- type parameters must match vitest's declaration
+    interface Matchers<R, T> {
+        toParseKerML(ast?: DeepPartial<Namespace> | object, options?: MatchOptions): Promise<void>;
+        toParseSysML(ast?: DeepPartial<Namespace> | object, options?: MatchOptions): Promise<void>;
+    }
 }
 
 /**

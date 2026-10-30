@@ -10,7 +10,7 @@
     },
     {
       "name": "keyword.control.kerml",
-      "match": "\\b(about|abstract|alias|all|and|as|assoc|behavior|binding|bool|by|chains|class|classifier|comment|composite|conjugate|conjugates|conjugation|connector|const|crosses|datatype|default|dependency|derived|differences|disjoining|disjoint|doc|else|end|expr|false|feature|featured|featuring|filter|first|flow|for|from|function|hastype|if|implies|import|in|inout|interaction|intersects|inv|inverse|inverting|istype|language|library|locale|member|meta|metaclass|metadata|multiplicity|namespace|new|nonunique|not|null|of|or|ordered|out|package|portion|predicate|private|protected|public|redefines|redefinition|references|rep|return|specialization|specializes|standard|step|struct|subclassifier|subset|subsets|subtype|succession|then|to|true|type|typed|typing|unions|var|xor)\\b"
+      "match": "\\b(specialization|subclassifier|multiplicity|redefinition|conjugation|differences|interaction|specializes|classifier|conjugates|dependency|disjoining|intersects|references|succession|composite|conjugate|connector|featuring|inverting|metaclass|namespace|nonunique|predicate|protected|redefines|abstract|behavior|datatype|disjoint|featured|function|language|metadata|standard|binding|comment|crosses|default|derived|feature|hastype|implies|inverse|library|ordered|package|portion|private|subsets|subtype|chains|filter|import|istype|locale|member|public|return|struct|subset|typing|unions|about|alias|assoc|class|const|false|first|inout|typed|bool|else|expr|flow|from|meta|null|step|then|true|type|all|and|doc|end|for|inv|new|not|out|rep|var|xor|as|by|if|in|of|or|to)\\b"
     }
   ],
   "repository": {

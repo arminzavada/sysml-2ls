@@ -29,7 +29,6 @@ export interface ExhibitStateUsageOptions extends PerformActionUsageOptions, Sta
 })
 export class ExhibitStateUsageMeta extends Mixin(PerformActionUsageMeta, StateUsageMeta) {
     @enumerable
-    // @ts-expect-error issue with mixins
     override get isComposite(): boolean {
         return false;
     }

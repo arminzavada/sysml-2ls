@@ -72,15 +72,15 @@
         "syside-languageclient": "workspace:*",
         "syside-languageserver": "workspace:*",
         "syside-protocol": "workspace:*",
-        "vscode-languageclient": "~9.0.1",
-        "vscode-languageserver": "~9.0.1",
+        "vscode-languageclient": "~10.1.2",
+        "vscode-languageserver": "~10.1.2",
         "vscode-uri": "~3.1.0"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.4",
         "@types/vscode": "~1.109.0",
-        "@vscode/vsce": "^3.9.2",
-        "typescript-json-schema": "^0.67.4"
+        "@vscode/vsce": "^4.1.0",
+        "typescript-json-schema": "^0.68.0"
     },
     "vsce": {
         "dependencies": false,

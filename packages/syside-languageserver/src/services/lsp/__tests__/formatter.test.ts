@@ -81,7 +81,7 @@ const DefaultFormattingOptions: FormattingOptions = {
 function expectFormatted(
     text: string,
     options: DeepPartial<TestFormattingOptions> = DefaultFormattingOptions
-): Assertion<Promise<string>> {
+): Assertion<void, Promise<string>> {
     return expect(
         getDocument(text, options)
             .then(async (document) => ({
@@ -110,7 +110,7 @@ async function formatDocumentRange(
 function expectFormattedRange(
     source: string,
     options: DeepPartial<TestFormattingOptions> = DefaultFormattingOptions
-): Assertion<Promise<string>> {
+): Assertion<void, Promise<string>> {
     const { text, range } = getRange(source);
     return expect(
         getDocument(text, options)
@@ -138,7 +138,7 @@ async function formatDocumentOnType(
 function expectFormattedOnType(
     source: string,
     options: DeepPartial<TestFormattingOptions> = DefaultFormattingOptions
-): Assertion<Promise<string>> {
+): Assertion<void, Promise<string>> {
     const { text, range } = getRange(source);
     return expect(
         getDocument(text, options)

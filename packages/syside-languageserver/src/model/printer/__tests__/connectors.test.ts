@@ -37,7 +37,7 @@ describe("connectors", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): Assertion<Promise<string>> => {
+    ): Assertion<void, Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "kerml",
@@ -123,7 +123,7 @@ describe.each([
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): Assertion<Promise<string>> => {
+    ): Assertion<void, Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang,
@@ -211,7 +211,7 @@ describe("messages", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): Assertion<Promise<string>> => {
+    ): Assertion<void, Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
@@ -246,7 +246,7 @@ describe("binding connectors as usage", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): Assertion<Promise<string>> => {
+    ): Assertion<void, Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
@@ -305,7 +305,7 @@ describe.each([
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): Assertion<Promise<string>> => {
+    ): Assertion<void, Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",
@@ -364,7 +364,7 @@ describe("interface usage", () => {
     const expectPrinted = (
         text: string,
         context?: DeepPartial<PrinterTestContext> & { node?: SubtypeKeys<Element> }
-    ): Assertion<Promise<string>> => {
+    ): Assertion<void, Promise<string>> => {
         return expectPrintedAs(text, {
             ...context,
             lang: "sysml",

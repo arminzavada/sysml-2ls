@@ -159,7 +159,7 @@ export abstract class SysMLClientExtender {
      * Perform client initialization
      */
     private async initializeClient(): Promise<void> {
-        let config = await this.loadConfig();
+        const config = await this.loadConfig();
 
         if (
             !config ||
@@ -175,8 +175,7 @@ export abstract class SysMLClientExtender {
             }
         }
 
-        if (!config) config = this.config;
-        else this.config = config;
+        if (config) this.config = config;
 
         await this.onInitialize();
         await this.saveConfig(this.config);

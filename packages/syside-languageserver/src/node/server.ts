@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { createConnection, ProposedFeatures } from "vscode-languageserver/node.js";
+import { createConnection, ProposedFeatures } from "vscode-languageserver/node";
 import { createSysMLServices } from "../sysml-module.js";
 import { createTransport, NodeLauncherOptions } from "./cli.js";
 import { SysMLNodeFileSystem } from "./node-file-system-provider.js";

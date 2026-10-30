@@ -36,7 +36,6 @@ export interface ConnectionUsageOptions extends PartUsageOptions, ConnectorAsUsa
 })
 export class ConnectionUsageMeta extends Mixin(ConnectorAsUsageMeta, PartUsageMeta) {
     @enumerable
-    // @ts-expect-error issue with mixins
     override get isComposite(): boolean {
         return false;
     }

@@ -46,7 +46,7 @@ import { expectPrinted as expectPrintedAs } from "./utils.js";
 const expectPrinted = (
     text: string,
     context?: Partial<Parameters<typeof expectPrintedAs>[1]>
-): Assertion<Promise<string>> => {
+): Assertion<void, Promise<string>> => {
     return expectPrintedAs(text, {
         ...context,
         lang: context?.lang ?? "kerml",

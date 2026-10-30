@@ -346,7 +346,7 @@ part P {}\n`
 });
 
 describe("printing ranges", () => {
-    const expectPrintedRange = (text: string): Assertion<Promise<string>> => {
+    const expectPrintedRange = (text: string): Assertion<void, Promise<string>> => {
         return expect(
             getPrintRange(text, { lang: "sysml" }).then((range) => {
                 expect(range).toBeDefined();

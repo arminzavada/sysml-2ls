@@ -30,7 +30,6 @@ export interface PerformActionUsageOptions
 })
 export class PerformActionUsageMeta extends Mixin(EventOccurrenceUsageMeta, ActionUsageMeta) {
     @enumerable
-    // @ts-expect-error issue with mixins
     override get isComposite(): boolean {
         return false;
     }

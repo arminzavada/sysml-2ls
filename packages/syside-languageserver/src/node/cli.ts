@@ -26,7 +26,7 @@ import {
     RAL,
     SocketMessageReader,
     SocketMessageWriter,
-} from "vscode-languageserver/node.js";
+} from "vscode-languageserver/node";
 import { ArgParser, DefaultLauncherOptions } from "./arg-parser.js";
 import { LauncherOptions } from "../launch/index.js";
 import { Version } from "../version.js";
