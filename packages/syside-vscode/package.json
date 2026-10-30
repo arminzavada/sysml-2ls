@@ -66,11 +66,11 @@
         "generate:schema": "node ./scripts/generate-schemas.mjs"
     },
     "dependencies": {
-        "fs-extra": "^11.3.5",
+        "fs-extra": "^11.4.1",
         "node-fetch": "^3.3.2",
+        "syside-base": "workspace:*",
         "syside-languageclient": "workspace:*",
         "syside-languageserver": "workspace:*",
-        "syside-base": "workspace:*",
         "syside-protocol": "workspace:*",
         "vscode-languageclient": "~9.0.1",
         "vscode-languageserver": "~9.0.1",
@@ -78,9 +78,9 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.4",
-        "@types/vscode": "^1.91.0",
-        "@vscode/vsce": "^3.9.1",
-        "typescript-json-schema": "^0.67.2"
+        "@types/vscode": "^1.144.0",
+        "@vscode/vsce": "^3.9.2",
+        "typescript-json-schema": "^0.67.4"
     },
     "vsce": {
         "dependencies": false,
