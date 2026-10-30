@@ -574,8 +574,7 @@ export class SysMLLinker extends DefaultLinker {
                     // A candidate has been found before, but it is not loaded yet.
                     // linked node will always be an element, no other node types can be referenced
                     const linkedNode = linker.loadAstNode(this._nodeDescription) as
-                        | Element
-                        | undefined;
+                        Element | undefined;
                     this._ref =
                         linkedNode ??
                         linker.createLinkingError(
@@ -617,8 +616,7 @@ export class SysMLLinker extends DefaultLinker {
             // the computed children may have also been reset completely, add
             // back children from the scope computation phase
             const children = document.localSymbols?.getStream(node) as
-                | Stream<SysMLNodeDescription>
-                | undefined;
+                Stream<SysMLNodeDescription> | undefined;
             children?.forEach((child) => {
                 const meta = child.node?.$meta;
                 if (!meta?.is(Membership.$type)) return;

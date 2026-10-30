@@ -78,8 +78,7 @@ export class AssignmentActionUsageMeta extends ActionUsageMeta {
         const baseFeatures = super.featureMembers();
         return (
             [this.target, this.targetMember, this.assignedValue] as (
-                | MembershipMeta<FeatureMeta>
-                | undefined
+                MembershipMeta<FeatureMeta> | undefined
             )[]
         )
             .filter(NonNullable)

@@ -77,9 +77,8 @@ export type ModelValidationCheck<T extends ElementMeta = ElementMeta> = (
 
 export type ModelValidationChecks = {
     [K in SysMLType]?: SysMLInterface<K> extends Element
-        ?
-              | ModelValidationCheck<SysMLInterface<K>["$meta"]>
-              | Array<ModelValidationCheck<SysMLInterface<K>["$meta"]>>
+        ? | ModelValidationCheck<SysMLInterface<K>["$meta"]>
+          | Array<ModelValidationCheck<SysMLInterface<K>["$meta"]>>
         : never;
 };
 
@@ -271,23 +270,20 @@ export class BaseValidationRegistry extends ValidationRegistry {
     override getChecks(type: string): Stream<ValidationCheck> {
         // only for compatibility with langium
         return stream(
-            this.getModelChecks(type).map(
-                (check): ValidationCheck =>
-                    (node, accept, token) => {
-                        return check(
-                            node.$meta as ElementMeta,
-                            (severity, message, info) => {
-                                const node = info.element.ast();
-                                if (!node) return;
-                                accept(severity, message, {
-                                    node: node,
-                                    ...this.getSharedInfo(info as ModelDiagnosticInfo<ElementMeta>),
-                                });
-                            },
-                            token
-                        );
-                    }
-            )
+            this.getModelChecks(type).map((check): ValidationCheck => (node, accept, token) => {
+                return check(
+                    node.$meta as ElementMeta,
+                    (severity, message, info) => {
+                        const node = info.element.ast();
+                        if (!node) return;
+                        accept(severity, message, {
+                            node: node,
+                            ...this.getSharedInfo(info as ModelDiagnosticInfo<ElementMeta>),
+                        });
+                    },
+                    token
+                );
+            })
         );
     }
 

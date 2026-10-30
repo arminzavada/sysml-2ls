@@ -278,11 +278,7 @@ function printTransitionSuccession(node: SuccessionAsUsageMeta, context: ModelPr
 }
 
 type TransitionUsageKind =
-    | "default-target"
-    | "guarded-target"
-    | "guarded-succession"
-    | "transition"
-    | "target-transition";
+    "default-target" | "guarded-target" | "guarded-succession" | "transition" | "target-transition";
 
 function transitionUsageKind(
     node: TransitionUsageMeta,

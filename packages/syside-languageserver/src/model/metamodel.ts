@@ -53,8 +53,7 @@ type ImplicitGeneralizations = {
 };
 
 export type Property<T extends object | undefined, K extends keyof NonNullable<T>> =
-    | NonNullable<T>[K]
-    | (undefined extends T ? undefined : never);
+    NonNullable<T>[K] | (undefined extends T ? undefined : never);
 
 // cannot use $meta since base classes may have subclasses as their owners
 // leading to circular dependencies
@@ -64,8 +63,7 @@ type Container<T extends AstNode> = T["$container"];
 // namespaces are entry types but Langium doesn't generate optional `$container` yet
 // TODO: add `| (Namespace extends T ? undefined : never)`
 export type ModelContainer<T extends AstNode> =
-    | Meta<NonNullable<Container<T>>>
-    | (undefined extends Container<T> ? undefined : never);
+    Meta<NonNullable<Container<T>>> | (undefined extends Container<T> ? undefined : never);
 
 export type ParentModel<T extends AstNode> = Property<Container<T>, "$meta">;
 

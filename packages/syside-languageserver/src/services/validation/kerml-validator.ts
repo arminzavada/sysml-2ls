@@ -922,8 +922,7 @@ export class KerMLValidator {
             // no guarantee that the user has correctly used only a single
             // reference subsetting so only check the head
             const related = end.specializations(ast.ReferenceSubsetting.$type).at(0)?.element() as
-                | FeatureMeta
-                | undefined;
+                FeatureMeta | undefined;
 
             if (
                 !related ||

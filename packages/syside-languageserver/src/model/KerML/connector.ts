@@ -161,8 +161,7 @@ export class ConnectorMeta extends Mixin(
             .map(
                 (end) =>
                     end.specializations(ReferenceSubsetting.$type).at(0) as
-                        | ReferenceSubsettingMeta
-                        | undefined
+                        ReferenceSubsettingMeta | undefined
             )
             .nonNullable()
             .map((sub) => sub.element())

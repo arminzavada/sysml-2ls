@@ -125,8 +125,7 @@ export class SendActionUsageMeta extends ActionUsageMeta {
         const baseFeatures = FeatureMeta.prototype.featureMembers.call(this);
         return (
             [this.payload, this.sender, this.receiver] as (
-                | MembershipMeta<FeatureMeta>
-                | undefined
+                MembershipMeta<FeatureMeta> | undefined
             )[]
         )
             .filter(NonNullable)
