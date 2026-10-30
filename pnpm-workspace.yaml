@@ -5,6 +5,8 @@ packages:
   - "packages/syside-languageclient"
   - "packages/syside-protocol"
   - "packages/syside-vscode"
+overrides:
+  typescript: 5.8.3
 allowBuilds:
   '@swc/core': true
   '@vscode/vsce-sign': true
