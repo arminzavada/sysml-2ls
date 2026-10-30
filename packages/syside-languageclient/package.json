@@ -30,7 +30,7 @@
         "typecheck:watch": "tsc -b tsconfig.test.json --watch",
         "lint": "eslint src --max-warnings 0",
         "check": "pnpm typecheck && pnpm lint",
-        "assemble": "tsc",
+        "assemble": "tsc -b",
         "assemble:watch": "tsc --watch",
         "build": "pnpm check && pnpm assemble",
         "build:watch": "pnpm assemble:watch",

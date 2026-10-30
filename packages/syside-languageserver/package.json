@@ -60,7 +60,7 @@
         "typecheck:watch": "tsc -b tsconfig.test.json --watch",
         "lint": "eslint src --max-warnings 0",
         "check": "pnpm typecheck && pnpm lint",
-        "assemble": "pnpm grammar && tsc",
+        "assemble": "pnpm grammar && tsc -b",
         "assemble:watch": "tsc --watch",
         "bundle": "node esbuild.mjs --minify",
         "bundle:watch": "node esbuild.mjs --sourcemap --watch",
