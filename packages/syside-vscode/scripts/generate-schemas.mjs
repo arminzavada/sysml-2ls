@@ -113,7 +113,7 @@ async function main() {
     let schema = tjs.generateSchema(program, "ConfigurationSchema", settings, files, generator);
     const properties = cfg.contributes.configuration.properties;
     if (schema) {
-        for (const [name, prop] of flattenSchema(schema, ["syside"])) {
+        for (const [name, prop] of flattenSchema(schema, ["syside", "editor"])) {
             properties[name] = merge(cfg.contributes.configuration.properties[name], prop);
             if (!("scope" in properties[name])) properties[name].scope = ServerScope;
         }

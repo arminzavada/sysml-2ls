@@ -2004,6 +2004,51 @@
                     "default": 120,
                     "type": "integer",
                     "scope": "window"
+                },
+                "syside.editor.defaultBuildOptions.eagerLinking": {
+                    "description": "Control the linking and references indexing phase with this option. The default if not specified is `true`.\nIf set to `false`, references can still be resolved - that's done lazily when you access the `ref` property of\na reference. But you won't get any diagnostics for linking errors and the references won't be considered\nwhen updating other documents.",
+                    "type": "boolean",
+                    "scope": "window"
+                },
+                "syside.editor.formatting.declaration_cross_subsetting.default": {
+                    "description": "Controls cross subsetting formatting in feature declarations.\n\nControls formatting in majority of cases.\n* `preserve`: element preserves source text formatting",
+                    "default": "preserve",
+                    "enum": [
+                        "keyword",
+                        "preserve",
+                        "token"
+                    ],
+                    "type": "string",
+                    "scope": "window"
+                },
+                "syside.editor.formatting.declaration_cross_subsetting.fallback": {
+                    "description": "Controls cross subsetting formatting in feature declarations.\n\nControls `preserve` formatting for cases when there is no associated\nsource text.",
+                    "enum": [
+                        "keyword",
+                        "token"
+                    ],
+                    "type": "string",
+                    "scope": "window"
+                },
+                "syside.editor.formatting.interface_port_keyword.default": {
+                    "description": "Controls `port` keyword formatting inside interface definitions:\n* `always`: `port` is always printed\n* `never`: `port` is never printed\n\nControls formatting in majority of cases.\n* `preserve`: element preserves source text formatting",
+                    "default": "preserve",
+                    "enum": [
+                        "always",
+                        "never",
+                        "preserve"
+                    ],
+                    "type": "string",
+                    "scope": "window"
+                },
+                "syside.editor.formatting.interface_port_keyword.fallback": {
+                    "description": "Controls `port` keyword formatting inside interface definitions:\n* `always`: `port` is always printed\n* `never`: `port` is never printed\n\nControls `preserve` formatting for cases when there is no associated\nsource text.",
+                    "enum": [
+                        "always",
+                        "never"
+                    ],
+                    "type": "string",
+                    "scope": "window"
                 }
             }
         }

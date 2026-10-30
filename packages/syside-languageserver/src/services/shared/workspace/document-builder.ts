@@ -64,9 +64,7 @@ export interface SysMLBuildOptions extends BuildOptions {
     standalone?: boolean;
 
     /**
-     * Langium 1.x-style validation toggle. `"all"` runs every check, `"none"`
-     * disables validation entirely. Translates to `BuildOptions.validation`
-     * (`true`/`false`) when the build runs. Kept for backwards compatibility.
+     * Which validation checks are enabled for files
      */
     validationChecks?: ValidationChecks;
 }
