@@ -24,12 +24,13 @@ import {
     Type,
     TypeRelationship,
     Conjugation,
+    ConjugatedPortTyping,
 } from "#generated/ast.js";
 import { SubtypeKeys, SysMLInterface, SysMLTypeList } from "../../services/sysml-ast-reflection.js";
 import { enumerable, KeysMatching } from "../../utils/common.js";
 import { collectRedefinitions } from "../../utils/scope-util.js";
 import { ElementContainer } from "../containers.js";
-import { FeatureDirectionKind, getTypeClassifierString, TypeClassifier } from "../enums.js";
+import { FeatureDirectionKind } from "../enums.js";
 import {
     BasicMetamodel,
     ElementID,
@@ -89,6 +90,10 @@ export interface TypeOptions extends NamespaceOptions {
     typeRelationships?: EdgeContainer<TypeRelationshipMeta>;
 }
 
+function conjugateDirection(direction: FeatureDirectionKind): FeatureDirectionKind {
+    return direction == "in" ? "out" : direction == "out" ? "in" : direction;
+}
+
 @metamodelOf(Type.$type, ImplicitTypes)
 export class TypeMeta extends Mixin(
     InputParametersMixin,
@@ -97,7 +102,6 @@ export class TypeMeta extends Mixin(
     protected readonly _heritage = new ElementContainer<Inheritance>();
     protected readonly _typeRelationships = new ElementContainer<FeatureRelationship>();
     protected _isAbstract = false;
-    protected _classifier: TypeClassifier = TypeClassifier.None;
 
     protected _multiplicity: OwningMembershipMeta<MultiplicityRangeMeta> | undefined;
     protected _isSufficient = false;
@@ -210,20 +214,6 @@ export class TypeMeta extends Mixin(
      */
     removeTypeRelationshipIf(predicate: (value: FeatureRelationshipMeta) => boolean): number {
         return this.removeDeclaredRelationshipIf(this._typeRelationships, predicate);
-    }
-
-    /**
-     * Cached type classifiers
-     */
-    get classifier(): TypeClassifier {
-        return this._classifier;
-    }
-
-    /**
-     * Human readable string of classifier flags
-     */
-    get classifierString(): string {
-        return getTypeClassifierString(this.classifier);
     }
 
     override ast(): Type | undefined {
@@ -581,8 +571,7 @@ export class TypeMeta extends Mixin(
                 return "none";
             }
 
-            const direction = original.directionOf(feature, visited);
-            return direction == "in" ? "out" : direction == "out" ? "in" : direction;
+            return conjugateDirection(original.directionOf(feature, visited));
         }
 
         for (const spec of this.specializations()) {
@@ -590,7 +579,10 @@ export class TypeMeta extends Mixin(
             if (general && !visited.has(general)) {
                 const direction = general.directionOf(feature, visited);
                 if (direction != "none") {
-                    return direction;
+                    // `~P` typings target `P` itself
+                    return spec.is(ConjugatedPortTyping.$type)
+                        ? conjugateDirection(direction)
+                        : direction;
                 }
             }
         }

@@ -38,8 +38,7 @@ export class EventOccurrenceUsageMeta extends OccurrenceUsageMeta {
     }
 
     protected override isSuboccurrence(): boolean {
-        const parent = this.owner();
-        return Boolean(parent?.isAny(OccurrenceUsage.$type, OccurrenceDefinition.$type));
+        return Boolean(this.owningType?.isAny(OccurrenceUsage.$type, OccurrenceDefinition.$type));
     }
 
     override ast(): EventOccurrenceUsage | undefined {

@@ -18,15 +18,20 @@ import { AstNode, LangiumDocument } from "langium";
 import {
     ActionDefinition,
     ActionUsage,
+    AttributeDefinition,
+    AttributeUsage,
+    Behavior,
+    FeatureMembership,
     PartDefinition,
     PartUsage,
     PortionKind,
     StateSubactionMembership,
+    Step,
     Usage,
     VariantMembership,
 } from "#generated/ast.js";
 import { enumerable } from "../../utils/index.js";
-import { ElementMeta } from "../KerML/index.js";
+import { ElementMeta, TypeMeta } from "../KerML/index.js";
 import { FeatureMeta, FeatureOptions } from "../KerML/feature.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 
@@ -65,9 +70,13 @@ export class UsageMeta extends FeatureMeta {
 
     @enumerable
     override get isComposite(): boolean {
+        const featuringType = this.expectedFeaturingType();
         return (
             super.isComposite &&
-            Boolean(this.direction === "none" && !this.isEnd && this.owningType)
+            this.direction === "none" &&
+            !this.isEnd &&
+            Boolean(featuringType) &&
+            !featuringType?.isAny(AttributeDefinition.$type, AttributeUsage.$type)
         );
     }
     override set isComposite(value) {
@@ -77,12 +86,54 @@ export class UsageMeta extends FeatureMeta {
         return super.isComposite;
     }
 
+    expectedFeaturingType(): TypeMeta | undefined {
+        if (this.parent()?.is(FeatureMembership.$type)) return this.owningType;
+        const owner = this.owner();
+        return owner?.is(Usage.$type) && owner.isVariation
+            ? owner.expectedFeaturingType()
+            : undefined;
+    }
+
+    get mayTimeVary(): boolean {
+        return Boolean(
+            this.owningType?.conforms("Occurrences::Occurrence") &&
+            !(
+                this.isPortion ||
+                this.conforms("Links::SelfLink") ||
+                this.conforms("Occurrences::HappensLink") ||
+                (this.isComposite && this.conforms("Actions::Action"))
+            )
+        );
+    }
+
+    @enumerable
+    override get isVariable(): boolean {
+        return this.mayTimeVary;
+    }
+    override set isVariable(value) {
+        // empty
+    }
+
+    @enumerable
+    override get isConstant(): boolean {
+        return this._isConstant || (this.isEnd && this.mayTimeVary);
+    }
+    override set isConstant(value) {
+        this._isConstant = value;
+    }
+    get isConstantExplicitly(): boolean {
+        return this._isConstant;
+    }
+
     @enumerable
     override get isAbstract(): boolean {
         return this._isAbstract || this.isVariation;
     }
     override set isAbstract(value) {
         this._isAbstract = value;
+    }
+    get isAbstractExplicitly(): boolean {
+        return this._isAbstract;
     }
 
     override ast(): Usage | undefined {
@@ -101,6 +152,10 @@ export class UsageMeta extends FeatureMeta {
         return super.namingFeature();
     }
 
+    protected override isBehaviorOwned(): boolean {
+        return Boolean(this.owningType?.isAny(Behavior.$type, Step.$type));
+    }
+
     isNonEntryExitComposite(): boolean {
         return this.isComposite && !this.isEntryExitAction();
     }
@@ -109,13 +164,13 @@ export class UsageMeta extends FeatureMeta {
         return Boolean(
             this.isComposite &&
             !this.isEntryExitAction() &&
-            this.owner()?.isAny(ActionDefinition.$type, ActionUsage.$type)
+            this.owningType?.isAny(ActionDefinition.$type, ActionUsage.$type)
         );
     }
 
     isPartOwnedComposite(): boolean {
         return Boolean(
-            this.isComposite && this.owner()?.isAny(PartDefinition.$type, PartUsage.$type)
+            this.isComposite && this.owningType?.isAny(PartDefinition.$type, PartUsage.$type)
         );
     }
 

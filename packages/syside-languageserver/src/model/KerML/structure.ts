@@ -15,7 +15,6 @@
  ********************************************************************************/
 
 import { Structure } from "#generated/ast.js";
-import { TypeClassifier } from "../enums.js";
 import { metamodelOf } from "../metamodel.js";
 import { ClassMeta, ClassOptions } from "./_internal.js";
 
@@ -27,8 +26,6 @@ export type StructureOptions = ClassOptions;
 
 @metamodelOf(Structure.$type, ImplicitStructures)
 export class StructureMeta extends ClassMeta {
-    protected override _classifier = TypeClassifier.Structure;
-
     override ast(): Structure | undefined {
         return this._ast as Structure;
     }

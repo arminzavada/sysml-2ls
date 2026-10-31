@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument } from "langium";
-import { StateDefinition, StateUsage } from "#generated/ast.js";
+import { StateDefinition, StateSubactionMembership, StateUsage } from "#generated/ast.js";
 import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ActionUsageMeta, ActionUsageOptions } from "./action-usage.js";
 
@@ -33,22 +33,18 @@ export class StateUsageMeta extends ActionUsageMeta {
     isParallel = false;
 
     override getSubactionType(): string | undefined {
-        if (this.isExclusiveState()) return "exclusiveState";
-        if (this.isSubstate()) return "substate";
+        if (this.isSubstateUsage(false)) return "exclusiveState";
+        if (this.isSubstateUsage(true)) return "substate";
         return super.getSubactionType();
     }
 
-    isExclusiveState(): boolean {
-        const parent = this.owner();
+    isSubstateUsage(isParallel: boolean): boolean {
+        const owningType = this.owningType;
         return Boolean(
-            parent?.isAny(StateDefinition.$type, StateUsage.$type) && !parent.isParallel
-        );
-    }
-
-    isSubstate(): boolean {
-        return Boolean(
-            this.isNonEntryExitComposite() &&
-            this.owner()?.isAny(StateDefinition.$type, StateUsage.$type)
+            this.isComposite &&
+            owningType?.isAny(StateDefinition.$type, StateUsage.$type) &&
+            owningType.isParallel === isParallel &&
+            !this.parent()?.is(StateSubactionMembership.$type)
         );
     }
 

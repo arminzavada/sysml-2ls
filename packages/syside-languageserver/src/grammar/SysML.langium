@@ -52,10 +52,6 @@ OwnedAnnotation returns Annotation:
     source=AnnotatingElement
 ;
 
-AnnotatingMember returns OwningMembership:
-    target=AnnotatingElement
-;
-
 AnnotatingElement returns AnnotatingElement:
     Comment 
     | Documentation
@@ -630,7 +626,7 @@ fragment EnumerationBody:
 ;
 
 fragment EnumerationItems:
-    ( children+=AnnotatingMember
+    ( children+=VisibleAnnotatingMember
     | children+=EnumerationUsageMember
     )*
 ;
@@ -1014,7 +1010,7 @@ InterfaceUsage returns InterfaceUsage:
 ;
 
 fragment InterfaceUsageDeclaration:
-    UsageDeclaration? ( 'connect' InterfacePart )? | InterfacePart
+    UsageDeclaration? ValuePart? ( 'connect' InterfacePart )? | InterfacePart
 ;
 
 fragment InterfacePart:
@@ -1109,7 +1105,7 @@ TargetSuccessionMember returns FeatureMembership:
 ;
 
 GuardedSuccessionMember returns FeatureMembership:
-    target=GuardedSuccession
+    Visibility? target=GuardedSuccession
 ;
 
 // Action Usages
@@ -1205,14 +1201,17 @@ ArgumentExpressionValue returns FeatureValue:
 ;
 
 SendNode returns SendActionUsage:
-    OccurrenceUsagePrefix SendNodeDeclaration ActionBody
+    OccurrenceUsagePrefix ActionNodeUsageDeclaration? 'send'
+    ( ActionBody
+    | ( payload=NodeParameterMember SenderReceiverPart?
+      | SenderReceiverPart
+      )
+      ActionBody
+    )
 ;
 
 fragment SendNodeDeclaration:
-    ActionNodeUsageDeclaration? 'send'
-    ( payload=NodeParameterMember SenderReceiverPart?
-    | 'to' receiver=NodeParameterMember
-    )?
+    ActionNodeUsageDeclaration? 'send' payload=NodeParameterMember SenderReceiverPart?
 ;
 
 fragment SenderReceiverPart:
@@ -1696,7 +1695,7 @@ RequirementConstraintMember returns RequirementConstraintMembership:
 ;
 
 RequirementConstraintUsage returns ConstraintUsage:
-    heritage+=OwnedReferenceSubsetting FeatureSpecialization* CalculationBody
+    heritage+=OwnedReferenceSubsetting FeatureSpecializationPart? CalculationBody
     | ( UsageExtensionKeyword* 'constraint' | UsageExtensionKeyword+ ) ConstraintUsageDeclaration CalculationBody
 ;
 
@@ -1705,9 +1704,8 @@ FramedConcernMember returns FramedConcernMembership:
 ;
 
 FramedConcernUsage returns ConcernUsage:
-    (heritage+=OwnedReferenceSubsetting FeatureSpecialization* RequirementBody
-    | ( UsageExtensionKeyword* 'concern' | UsageExtensionKeyword+ ) ConstraintUsageDeclaration CalculationBody
-    )
+    heritage+=OwnedReferenceSubsetting FeatureSpecializationPart? RequirementBody
+    | ( UsageExtensionKeyword* 'concern' | UsageExtensionKeyword+ ) ConstraintUsageDeclaration RequirementBody
 ;
 
 ActorMember returns ActorMembership:
@@ -1879,7 +1877,7 @@ ViewRenderingMember returns ViewRenderingMembership:
 ;
 
 ViewRenderingUsage returns RenderingUsage:
-    heritage+=OwnedReferenceSubsetting FeatureSpecialization* UsageBody
+    heritage+=OwnedReferenceSubsetting FeatureSpecializationPart? UsageBody
     | (PrefixMetadata? 'rendering' | PrefixMetadata ) UsageSuffix
 ;
 

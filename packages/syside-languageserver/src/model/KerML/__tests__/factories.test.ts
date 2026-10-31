@@ -15,15 +15,10 @@
  ********************************************************************************/
 
 import { LangiumDocument } from "langium";
-import { TypeClassifier } from "../../enums.js";
 import { basicIdProvider } from "../../metamodel.js";
-import { AssociationStructMeta } from "../association-structure.js";
 import { emptyDocument } from "../../../testing/utils.js";
-import { DataTypeMeta } from "../data-type.js";
 import { TypeMeta } from "../type.js";
 import { ClassMeta } from "../class.js";
-import { StructureMeta } from "../structure.js";
-import { AssociationMeta } from "../association.js";
 import {
     DependencyMeta,
     DocumentationMeta,
@@ -50,21 +45,6 @@ describe("Element factories", () => {
 
     beforeAll(() => {
         document = emptyDocument("factory_test", ".kerml");
-    });
-
-    it.each([
-        ["assoc", AssociationMeta, TypeClassifier.Association],
-        ["assoc struct", AssociationStructMeta, TypeClassifier.AssociationStruct],
-        ["data type", DataTypeMeta, TypeClassifier.DataType],
-        ["class", ClassMeta, TypeClassifier.Class],
-        ["struct", StructureMeta, TypeClassifier.Structure],
-    ])("should construct %1 with the correct classifier flag", (_, proto, classifier) => {
-        // TS 5.8 enforces strict assignability between the per-meta-class
-        // `create` static signatures; the test only cares about the
-        // runtime return value, so erase to a callable.
-        expect(
-            (proto.create as unknown as (...args: unknown[]) => object)(id, document)
-        ).toMatchObject({ classifier });
     });
 
     it("should construct relationships", () => {

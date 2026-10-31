@@ -143,14 +143,12 @@ export class TransitionUsageMeta extends ActionUsageMeta {
 
     isActionTransition(): boolean {
         if (!this.isComposite) return false;
-        const parent = this.owner();
-        return Boolean(parent?.isAny(ActionUsage.$type, ActionDefinition.$type));
+        return Boolean(this.owningType?.isAny(ActionUsage.$type, ActionDefinition.$type));
     }
 
     isStateTransition(): boolean {
         if (!this.isComposite) return false;
-        const parent = this.owner();
-        return Boolean(parent?.isAny(StateDefinition.$type, StateUsage.$type));
+        return Boolean(this.owningType?.isAny(StateDefinition.$type, StateUsage.$type));
     }
 
     override ast(): TransitionUsage | undefined {

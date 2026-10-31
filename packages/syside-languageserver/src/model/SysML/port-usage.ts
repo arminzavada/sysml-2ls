@@ -14,9 +14,15 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { ConjugatedPortTyping, PartDefinition, PortDefinition, PortUsage } from "#generated/ast.js";
+import {
+    ConjugatedPortTyping,
+    PartDefinition,
+    PartUsage,
+    PortDefinition,
+    PortUsage,
+} from "#generated/ast.js";
 import { enumerable } from "../../utils/common.js";
-import { metamodelOf } from "../metamodel.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
 import { OccurrenceUsageMeta, OccurrenceUsageOptions } from "./occurrence-usage.js";
 import type { PortDefinitionMeta } from "./port-definition.js";
 
@@ -30,12 +36,18 @@ export type PortUsageOptions = OccurrenceUsageOptions;
 export class PortUsageMeta extends OccurrenceUsageMeta {
     @enumerable
     override get isComposite(): boolean {
-        return this.owningType?.isAny(PortDefinition.$type, PortUsage.$type)
+        return this.expectedFeaturingType()?.isAny(PortDefinition.$type, PortUsage.$type)
             ? super.isComposite
             : false;
     }
     override set isComposite(value) {
         super.isComposite = value;
+    }
+
+    override defaultGeneralTypes(): GeneralType[] {
+        const supertypes = super.defaultGeneralTypes();
+        if (this.isStructureOwnedComposite()) supertypes.push("subobject");
+        return supertypes;
     }
 
     override defaultSupertype(): string {
@@ -45,14 +57,12 @@ export class PortUsageMeta extends OccurrenceUsageMeta {
     }
 
     isOwnedPort(): boolean {
-        return Boolean(
-            this.isComposite && this.owner()?.isAny(PartDefinition.$type, PortUsage.$type)
-        );
+        return Boolean(this.owningType?.isAny(PartDefinition.$type, PartUsage.$type));
     }
 
     isSubport(): boolean {
         return Boolean(
-            this.isComposite && this.owner()?.isAny(PortDefinition.$type, PortUsage.$type)
+            this.isComposite && this.owningType?.isAny(PortDefinition.$type, PortUsage.$type)
         );
     }
 

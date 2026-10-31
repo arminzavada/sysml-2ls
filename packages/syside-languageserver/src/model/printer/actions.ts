@@ -500,16 +500,18 @@ export function printSendAction(
     context: ModelPrinterContext,
     declarationOnly?: boolean
 ): Doc {
-    const suffix: Doc[] = [];
-    suffix.push(printNodeParameter(node, "payload", context, "payload"));
+    const parts: Doc[] = [];
+    if (!node.payload.isImplied)
+        parts.push(printNodeParameter(node, "payload", context, "payload"));
     if (!node.sender.isImplied)
-        suffix.push(indent([line, keyword("via "), printNodeParameter(node, "sender", context)]));
+        parts.push([keyword("via "), printNodeParameter(node, "sender", context)]);
     if (!node.receiver.isImplied)
-        suffix.push(indent([line, keyword("to "), printNodeParameter(node, "receiver", context)]));
+        parts.push([keyword("to "), printNodeParameter(node, "receiver", context)]);
 
+    const [first, ...rest] = parts;
     return printActionSubtype(node, context, {
         keyword: "send",
-        suffix,
+        suffix: first && [first, ...rest.map((part) => indent([line, part]))],
         declarationOnly,
     });
 }

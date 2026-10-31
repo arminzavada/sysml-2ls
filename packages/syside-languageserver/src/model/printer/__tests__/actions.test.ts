@@ -388,6 +388,38 @@ describe("send actions", () => {
         via some_long_sender_name
         to some_long_receiver_name;\n`);
     });
+
+    it.each(["send;", "send via r;", "send to r;", "send via r to s;"])(
+        "should print '%s' without payload",
+        async (text) => {
+            return expectPrinted(`action { ${text} }`, {
+                node: SendActionUsage.$type,
+                lang: "sysml",
+            }).resolves.toEqual(`${text}\n`);
+        }
+    );
+
+    it("should print bodied actions", async () => {
+        return expectPrinted(`action { action snd send { in :>> payload = s; } }`, {
+            node: SendActionUsage.$type,
+            lang: "sysml",
+        }).resolves.toEqual(`action snd send {
+    in :>> payload = s;
+}\n`);
+    });
+
+    it("should break long actions without payload", async () => {
+        return expectPrinted(
+            `action { action some_long_action_name send via some_long_sender_name to some_long_receiver_name; }`,
+            {
+                node: SendActionUsage.$type,
+                lang: "sysml",
+                options: { lineWidth: 40 },
+            }
+        ).resolves.toEqual(`action some_long_action_name
+    send via some_long_sender_name
+        to some_long_receiver_name;\n`);
+    });
 });
 
 describe.each(["entry", "exit", "do"])("state %s subactions", (kind) => {

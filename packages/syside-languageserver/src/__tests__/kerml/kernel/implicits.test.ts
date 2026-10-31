@@ -17,8 +17,10 @@
 import { formatString } from "typescript-string-operations";
 import { parseKerML, NO_ERRORS, sanitizeTree, anything } from "../../../testing/index.js";
 import { SysMLBuildOptions } from "../../../services/shared/workspace/document-builder.js";
-import { Feature, Subclassification, Subsetting, Type } from "#generated/ast.js";
+import { Feature, Redefinition, Subclassification, Subsetting, Type } from "#generated/ast.js";
 import { DocumentValidator } from "langium";
+import { FeatureMeta } from "../../../model/index.js";
+import { streamModel } from "../../../utils/ast-util.js";
 
 const Base = `
 package {0} {
@@ -198,4 +200,34 @@ test("Implicitly redefined features are hidden in the scope", async () => {
     expect(
         result.diagnostics.filter((d) => d.code === DocumentValidator.LinkingError)
     ).toHaveLength(0);
+});
+
+test("parameters implicitly redefine the general parameters by position", async () => {
+    const result = await parseKerML(`package P {
+        behavior A { in a; out b; }
+        behavior B specializes A { in x; out y; }
+        step s : A { in p; }
+        function f { in i; }
+        feature v = f(1);
+    }`);
+    expect(result.parserErrors).toHaveLength(0);
+    const redefinitions = streamModel(result.value.$meta)
+        .filter((e) => e.is(Feature.$type))
+        .map((f) =>
+            [
+                f.qualifiedName,
+                ...(f as FeatureMeta)
+                    .specializations(Redefinition.$type)
+                    .filter((s) => s.isImplied)
+                    .map((s) => s.element()?.qualifiedName),
+            ].join(" -> ")
+        )
+        .filter((line) => line.includes(" -> "))
+        .toArray();
+    expect(redefinitions).toEqual([
+        "P::B::x -> P::A::a",
+        "P::B::y -> P::A::b",
+        "P::s::p -> P::A::a",
+        "::i -> P::f::i",
+    ]);
 });

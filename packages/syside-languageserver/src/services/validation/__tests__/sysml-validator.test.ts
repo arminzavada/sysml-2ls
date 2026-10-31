@@ -23,20 +23,25 @@ import {
     TEST_BUILD_OPTIONS,
 } from "../../../testing/index.js";
 import * as ast from "#generated/ast.js";
-import { Diagnostic } from "vscode-languageserver";
+import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver";
 import {
     ActionUsageMeta,
     ActorMembershipMeta,
+    AttributeDefinitionMeta,
+    AttributeUsageMeta,
     basicIdProvider,
     BasicMetamodel,
     ConjugatedPortDefinitionMeta,
+    ConnectionDefinitionMeta,
     ConstraintUsageMeta,
     EdgeContainer,
     ElementIDProvider,
     ElementMeta,
+    EndFeatureMembershipMeta,
     ExpressionMeta,
     FeatureMembershipMeta,
     FeatureMeta,
+    FlowDefinitionMeta,
     LifeClassMeta,
     MembershipExposeMeta,
     MergeNodeMeta,
@@ -156,12 +161,65 @@ describe("Usage validation", () => {
     });
 });
 
+describe.each([
+    ["definition", AttributeDefinitionMeta, "validateAttributeDefinitionFeatures", "attribute def"],
+    ["usage", AttributeUsageMeta, "validateAttributeUsageFeatures", "attribute"],
+])("Attribute %s features", (_, meta, code, kw) => {
+    test("composite features trigger validation", () => {
+        const doc = emptyDocument();
+        const id = basicIdProvider();
+        const root = (meta as typeof AttributeUsageMeta).create(id, doc, {
+            children: EdgeContainer.make([
+                FeatureMembershipMeta.create(id, doc),
+                FeatureMeta.create(id, doc, { isComposite: true }),
+            ]),
+        });
+        return expectModelValidations(root, code).resolves.toHaveLength(1);
+    });
+
+    test("usages are referential", () => {
+        return expectValidations(
+            `${kw} A { part p; item i; action a; }`,
+            code
+        ).resolves.toHaveLength(0);
+    });
+});
+
 describe("Attribute usage validation", () => {
     test("Attribute usages typed by non-datatypes trigger validation", async () => {
         return expectValidations(
             "part def P; attribute a : P;",
             "validateAttributeUsageTyping"
         ).resolves.toHaveLength(1);
+    });
+
+    test.each([
+        ["attribute a1 : E;", 0],
+        ["attribute a2 : E, A;", 1],
+        ["attribute a3 : E, EE;", 1],
+        ["attribute a4 : A, B;", 0],
+    ])(
+        "enumeration typed attributes with more than one type trigger validation: %s",
+        (usage, n) => {
+            return expectValidations(
+                `attribute def A; attribute def B; enum def E { a; } enum def EE; ${usage}`,
+                "validateAttributeUsageEnumerationType_"
+            ).resolves.toHaveLength(n);
+        }
+    );
+});
+
+describe("Usage typing", () => {
+    test.each([
+        ["ref r : A;", 0],
+        ["ref r : a;", 1],
+        ["ref r : a, A;", 1],
+        ["attribute r : a;", 0],
+    ])("usages typed by non-definitions trigger validation: %s", (usage, n) => {
+        return expectValidations(
+            `attribute def A; attribute a; ${usage}`,
+            "validateUsageType_"
+        ).resolves.toHaveLength(n);
     });
 });
 
@@ -295,18 +353,125 @@ test("Non-sub ports are referential", () => {
     expect(port.isReference).toBeTruthy();
 });
 
-describe("Flow connection definition ends", () => {
-    test("more than 2 ends trigger validation", async () => {
+describe("Flow definition ends", () => {
+    test("owned ends after the second trigger validation", async () => {
+        const text = "abstract flow def H { end a; } flow def F :> H { end a; end b; end c; }";
         return expectValidations(
-            "flow def F { end item a; end item b; end item c; }",
-            "validateFlowEnd"
-        ).resolves.toHaveLength(3);
+            text,
+            "validateFlowDefinitionConnectionEnds"
+        ).resolves.toMatchObject([{ range: { start: { character: text.indexOf("end c;") } } }]);
+    });
+
+    test("more than 2 inherited ends trigger validation on the definition", async () => {
+        const text = "abstract flow def F { end a; end b; end c; } flow def G :> F;";
+        return expectValidations(
+            text,
+            "validateFlowDefinitionConnectionEnds"
+        ).resolves.toMatchObject([
+            { range: { start: { character: text.indexOf("end c;") } } },
+            { range: { start: { character: text.indexOf("flow def G") } } },
+        ]);
     });
 
     test("2 ends don't trigger validation", async () => {
         return expectValidations(
             "flow def F { end item a; end item b; }",
-            "validateFlowEnd"
+            "validateFlowDefinitionConnectionEnds"
+        ).resolves.toHaveLength(0);
+    });
+
+    test("redefined inherited ends are not counted", async () => {
+        const text =
+            "abstract flow def H { end a; end b; end c; } flow def K :> H { end z :>> c; }";
+        return expectValidations(
+            text,
+            "validateFlowDefinitionConnectionEnds"
+        ).resolves.toMatchObject([{ range: { start: { character: text.indexOf("end c;") } } }]);
+    });
+});
+
+describe("Redefinition direction", () => {
+    test("implicitly redefined parameters trigger validation on the redefining parameter", async () => {
+        const text = "action def A { in x; } action def B :> A { out y; }";
+        return expectValidations(
+            text,
+            "validateRedefinitionDirectionConformance"
+        ).resolves.toMatchObject([{ range: { start: { character: text.indexOf("out y;") } } }]);
+    });
+
+    test("conjugated port typings reverse the redefined direction", async () => {
+        const text =
+            "port def P { in z; } part def Q { port p : ~P { in :>> z; } port q : ~P { out :>> z; } }";
+        return expectValidations(
+            text,
+            "validateRedefinitionDirectionConformance"
+        ).resolves.toMatchObject([
+            { range: { start: { character: text.indexOf("z; } port q") } } },
+        ]);
+    });
+
+    test("flow end features do not trigger validation", async () => {
+        return expectValidations(
+            `port def PP { in ref pub; }
+            part producer {
+                port pp : ~PP { out ref :>> pub; }
+                action beh { out ref req; }
+                flow f from beh.req to pp.pub;
+            }`,
+            "validateRedefinitionDirectionConformance"
+        ).resolves.toHaveLength(0);
+    });
+});
+
+describe("Connection usage related features", () => {
+    const base = `
+        connection def C { end part a; end part b; }
+        port def Pt;
+        interface def I { end port a : Pt; end port b : Pt; }
+        part def P {
+            part x; part y; port px : Pt; port py : Pt;
+            connection c1 : C connect x to y;
+            interface i1 : I connect px to py;`;
+
+    test.each([
+        ["connection c : C;", 1],
+        ["connection c2 = c1;", 1],
+        ["interface i = i1;", 1],
+        ["abstract interface i = i1;", 0],
+        ["connection c3 :> c1;", 0],
+    ])("%s", (usage, n) => {
+        return expectValidations(
+            `${base} ${usage} }`,
+            "validateConnectorRelatedFeatures"
+        ).resolves.toHaveLength(n);
+    });
+
+    test("redefined connections keep their related features", async () => {
+        return expectValidations(
+            `${base} } part def P2 :> P { connection :>> c1; }`,
+            "validateConnectorRelatedFeatures"
+        ).resolves.toHaveLength(0);
+    });
+});
+
+describe.each([
+    ["connection", ConnectionDefinitionMeta, "validateConnectionDefinitionEndsAreUsages_"],
+    ["flow", FlowDefinitionMeta, "validateFlowDefinitionEndsAreUsages_"],
+])("%s definition ends", (type, meta, code) => {
+    test("owned non-usage ends trigger validation", () => {
+        const doc = emptyDocument();
+        const id = basicIdProvider();
+        const end = FeatureMeta.create(id, doc, { isEnd: true });
+        const root = (meta as typeof ConnectionDefinitionMeta).create(id, doc, {
+            children: EdgeContainer.make([EndFeatureMembershipMeta.create(id, doc), end]),
+        });
+        return expectModelValidations(root, code).resolves.toMatchObject([{ element: end }]);
+    });
+
+    test("usage ends do not trigger validation", () => {
+        return expectValidations(
+            `${type} def D { end part a; end part b; }`,
+            code
         ).resolves.toHaveLength(0);
     });
 });
@@ -341,13 +506,6 @@ describe("Perform action usage", () => {
 });
 
 describe("Send action usage validation", () => {
-    test("no sender and receiver trigger a validation", async () => {
-        return expectValidations(
-            "action def A { send 1; }",
-            "validateSendActionParameters"
-        ).resolves.toHaveLength(0);
-    });
-
     test("port receiver triggers a validation", async () => {
         return expectValidations(
             "action def A { port a; send 1 to a; }",
@@ -361,6 +519,26 @@ describe("Send action usage validation", () => {
             "validateSendActionReceiver"
         ).resolves.toHaveLength(1);
     });
+
+    test.each(["send {} ;", "send {1} via r;", "send {} to r;", "send //* note */ {1};"])(
+        "payload starting with a body triggers a validation: %s",
+        async (send) => {
+            return expectValidations(
+                `action def A { ref r; ${send} }`,
+                "validateSendActionPayloadNotBody"
+            ).resolves.toHaveLength(1);
+        }
+    );
+
+    test.each(["send {}", "send;", "send 1 via r;", "send (1) to r;", "send x { }"])(
+        "payload not starting with a body is accepted: %s",
+        async (send) => {
+            return expectValidations(
+                `action def A { ref r; ref x; ${send} }`,
+                "validateSendActionPayloadNotBody"
+            ).resolves.toHaveLength(0);
+        }
+    );
 });
 
 describe("Exhibit state usage", () => {
@@ -464,6 +642,34 @@ describe("Transition usage", () => {
         return expectValidations(
             "state S { action a; transition then a; }",
             "validateTransitionUsageSuccession"
+        ).resolves.toHaveLength(0);
+    });
+
+    test.each([
+        "transition first a accept Sig then s;",
+        "do action d; accept Sig then s;",
+        "entry action e; transition e accept Sig then s;",
+    ])("'%s' with a non-state source triggers validation", (member) => {
+        const text = `item def Sig; state def S { state s; action a; ${member} }`;
+        return expectValidations(
+            text,
+            "validateTransitionUsageTriggerActions"
+        ).resolves.toMatchObject([
+            {
+                severity: DiagnosticSeverity.Error,
+                range: { start: { character: text.lastIndexOf("accept Sig") } },
+            },
+        ]);
+    });
+
+    test.each([
+        "transition first s accept Sig then s;",
+        "state t; accept Sig then s;",
+        "transition first a then s;",
+    ])("'%s' does not trigger validation", (member) => {
+        return expectValidations(
+            `item def Sig; state def S { state s; action a; ${member} }`,
+            "validateTransitionUsageTriggerActions"
         ).resolves.toHaveLength(0);
     });
 });
@@ -655,8 +861,8 @@ describe("Quantity expressions", () => {
 
 describe.each([
     [ast.OccurrenceUsage.$type, "occurrence", ast.Class.$type, "validateOccurrenceUsageTyping"],
-    [ast.ItemUsage.$type, "item", ast.Structure.$type, "validateItemUsageTyping"],
-    [ast.PartUsage.$type, "part", ast.Structure.$type, "validatePartUsageTyping"],
+    [ast.ItemUsage.$type, "item", ast.Class.$type, "validateOccurrenceUsageTyping"],
+    [ast.PartUsage.$type, "part", ast.Class.$type, "validateOccurrenceUsageTyping"],
     [ast.ActionUsage.$type, "action", ast.Behavior.$type, "validateActionUsageTyping"],
     [
         ast.ConnectionUsage.$type,
@@ -741,12 +947,13 @@ describe("TriggerInvocationExpression validation", () => {
     });
 });
 
-describe("PartUsage validation", () => {
-    test("usages not typed by part defs trigger validation", async () => {
-        return expectValidations(
-            "item def C; part p : C;",
-            "validatePartUsagePartDefinition"
-        ).resolves.toHaveLength(1);
+describe("Occurrence usage typing", () => {
+    test.each([
+        "occurrence def O; part p : O;",
+        "occurrence def O; item i : O;",
+        "item def I; part p : I;",
+    ])("usages typed by classes do not trigger validation: %s", (text) => {
+        return expectValidations(text, "validateOccurrenceUsageTyping").resolves.toHaveLength(0);
     });
 });
 

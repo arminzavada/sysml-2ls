@@ -16,7 +16,6 @@
 
 import { Mixin } from "ts-mixer";
 import { AssociationStructure } from "#generated/ast.js";
-import { TypeClassifier } from "../enums.js";
 import { metamodelOf } from "../metamodel.js";
 import {
     AssociationMeta,
@@ -34,8 +33,6 @@ export interface AssociationStructureOptions extends StructureOptions, Associati
 
 @metamodelOf(AssociationStructure.$type, ImplicitAssociationStructures)
 export class AssociationStructMeta extends Mixin(StructureMeta, AssociationMeta) {
-    protected override _classifier = TypeClassifier.AssociationStruct;
-
     override ast(): AssociationStructure | undefined {
         return this._ast as AssociationStructure;
     }

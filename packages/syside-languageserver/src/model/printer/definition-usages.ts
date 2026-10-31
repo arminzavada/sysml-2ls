@@ -59,9 +59,9 @@ function usageBasicModifiers(node: UsageMeta, ignoreRef = false): Doc[] {
 
     // variation implies abstract so print it first
     if (node.isVariation) modifiers.push(keyword("variation"));
-    else if (node.isAbstract) modifiers.push(keyword("abstract"));
+    else if (node.isAbstractExplicitly) modifiers.push(keyword("abstract"));
 
-    if (node.isConstant) modifiers.push(keyword("constant"));
+    if (node.isConstantExplicitly) modifiers.push(keyword("constant"));
     if (node.isEndExplicitly) modifiers.push(keyword("end"));
 
     if (!ignoreRef && node.isReferenceExplicitly && node.nodeType() !== ast.ReferenceUsage.$type)
@@ -513,7 +513,8 @@ export function printReferenceUsage(node: ReferenceUsageMeta, context: ModelPrin
 
 export function canPrintShorthandUsage(
     node: UsageMeta,
-    firstSpec: SubtypeKeys<ast.Inheritance> = ast.ReferenceSubsetting.$type
+    firstSpec: SubtypeKeys<ast.Inheritance> = ast.ReferenceSubsetting.$type,
+    allowMultiplicity = false
 ): boolean {
     return (
         node.prefixes.length === 0 &&
@@ -521,9 +522,8 @@ export function canPrintShorthandUsage(
         !node.value &&
         !node.declaredName &&
         !node.declaredShortName &&
-        !node.multiplicity &&
-        !node.isOrderedExplicitly &&
-        !node.isNonUnique &&
+        (allowMultiplicity ||
+            (!node.multiplicity && !node.isOrderedExplicitly && !node.isNonUnique)) &&
         node
             .specializations()
             .find((s) => !s.isImplied)
@@ -539,7 +539,6 @@ export function printShorthandUsage(node: UsageMeta, context: ModelPrinterContex
                 const explicit = node.specializations().filter((s) => !s.isImplied);
                 return [[explicit[0]], explicit.slice(1)];
             },
-            ignoreMultiplicity: true,
         }),
         printChildrenBlock(node, node.children, context, {
             insertSpaceBeforeBrackets: true,

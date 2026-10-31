@@ -35,7 +35,8 @@ import {
     Classifier,
     RequirementUsage,
     ActionUsage,
-    ActionDefinition,
+    Behavior,
+    Step,
     TransitionUsage,
     Metaclass,
     MetadataFeature,
@@ -46,7 +47,6 @@ import {
     Subsetting,
     Conjugation,
     Redefinition,
-    FeatureTyping,
     Expression,
     SubjectMembership,
     ObjectiveMembership,
@@ -61,8 +61,6 @@ import {
     Membership,
     MultiplicityRange,
     LiteralInfinity,
-    OccurrenceUsage,
-    OccurrenceDefinition,
     ItemFlowEnd,
     OwningMembership,
     FeatureMembership,
@@ -104,7 +102,6 @@ import {
     MetaclassMeta,
     ConnectorMeta,
     DefinitionMeta,
-    ActionDefinitionMeta,
     ActionUsageMeta,
     ReferenceUsageMeta,
     RequirementUsageMeta,
@@ -114,7 +111,6 @@ import {
     OperatorExpressionMeta,
     RelationshipMeta,
     MultiplicityRangeMeta,
-    OccurrenceUsageMeta,
     VariantMembershipMeta,
     ItemFlowEndMeta,
     SuccessionAsUsageMeta,
@@ -585,18 +581,11 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
     }
 
     /**
-     * Setup explicit feature relationships
-     */
-    @builder(Feature.$type)
-    protected collectFeatureClassifiers(node: FeatureMeta, _document: LangiumDocument): void {
-        node.allTypes().forEach((t) => (node["_classifier"] |= t.classifier));
-    }
-
-    /**
      * Setup implicit specializations from Metaobjects::SemanticMetadata
      */
     @builder(Type.$type)
     protected addSemanticMetadata(node: TypeMeta, document: LangiumDocument): void {
+        if (node.is(MetadataFeature.$type)) return;
         for (const metadata of node.metadata) {
             this.buildTree(metadata, document);
             const baseTypes = metadata
@@ -626,14 +615,27 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
 
                 for (const annotated of meta.annotatedElements()) {
                     if (!annotated.is(Type.$type)) continue;
-                    const specialization = this.constructMetamodel(
-                        node.specializationKind(),
-                        document
-                    ) as InheritanceMeta;
-                    // can't get the factory options generically so will set
-                    // up properties manually
-                    specialization["_isImplied"] = true;
-                    node.addHeritage([specialization, annotated]);
+                    let generals: TypeMeta[] = [annotated];
+                    if (node.is(Classifier.$type)) {
+                        if (annotated.is(Feature.$type)) {
+                            this.preLinkModel(annotated);
+                            generals = annotated.allTypings();
+                        }
+                        generals = generals.filter(BasicMetamodel.is(Classifier.$type));
+                    } else if (node.is(Feature.$type)) {
+                        generals = generals.filter(BasicMetamodel.is(Feature.$type));
+                    }
+
+                    for (const general of generals) {
+                        const specialization = this.constructMetamodel(
+                            node.specializationKind(),
+                            document
+                        ) as InheritanceMeta;
+                        // can't get the factory options generically so will set
+                        // up properties manually
+                        specialization["_isImplied"] = true;
+                        node.addHeritage([specialization, general]);
+                    }
                 }
             }
         }
@@ -1011,36 +1013,26 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
     }
 
     /**
-     * Setup implicit action parameter redefinitions
+     * Setup implicit parameter redefinitions
      */
-    @builder([ActionUsage.$type, ActionDefinition.$type], 1000)
-    protected redefineActionParameters(
-        action: ActionUsageMeta | ActionDefinitionMeta,
-        document: LangiumDocument
-    ): void {
-        const baseActions = action
-            .specializationsMatching([ActionUsage.$type, ActionDefinition.$type])
-            .toArray();
+    @builder([Behavior.$type, Step.$type], 1000)
+    protected redefineParameters(type: TypeMeta, document: LangiumDocument): void {
+        const baseTypes = type.specializationsMatching([Behavior.$type, Step.$type]).toArray();
 
-        if (baseActions.length === 0) return; // no action typings
+        if (baseTypes.length === 0) return;
 
-        const ownedParameters = stream(action.featureMembers())
-            .map((member) => member.element())
-            .nonNullable()
-            .filter((f) => f.isParameter)
-            .filter((f) => !f.isIgnoredParameter());
-        const baseParameterIterators = baseActions.map((action) =>
-            stream(action.element()?.featureMembers() ?? [])
-                .map((member) => member.element())
-                .nonNullable()
-                .filter((f) => f.isParameter)
+        const ownedParameters = type.ownedParameters().filter((f) => !f.isIgnoredParameter());
+        const baseParameterIterators = baseTypes.map((base) =>
+            (base.element()?.ownedParameters() ?? stream([]))
                 .filter((f) => !f.isIgnoredParameter())
                 .iterator()
         );
 
         for (const parameter of ownedParameters) {
-            this.preLinkModel(parameter, document);
-            const explicit = parameter.specializations(Redefinition.$type).length > 0;
+            // subjects are redefined by `redefineSubject`
+            const explicit =
+                parameter.parent()?.is(SubjectMembership.$type) ||
+                parameter.specializations(Redefinition.$type).length > 0;
 
             // can't continue if redefines explicitly, have to advance iterators
             for (const baseIter of baseParameterIterators) {
@@ -1322,32 +1314,6 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
                 ? SubsettingMeta.create(this.util.idProvider, document, options)
                 : FeatureTypingMeta.create(this.util.idProvider, document, options);
             element.addHeritage([specialization, owner]);
-        }
-    }
-
-    @builder(OccurrenceUsage.$type, 5)
-    protected addImplicitOccurrenceUsageTyping(
-        node: OccurrenceUsageMeta,
-        document: LangiumDocument
-    ): void {
-        if (!node.portionKind || node.specializations(FeatureTyping.$type).length !== 0) return;
-
-        const owner = node.owner();
-
-        const options: RelationshipOptions<UsageMeta, FeatureMeta> = {
-            isImplied: true,
-        };
-
-        if (owner?.is(OccurrenceDefinition.$type)) {
-            node.addHeritage([
-                FeatureTypingMeta.create(this.util.idProvider, document, options),
-                owner,
-            ]);
-        } else if (owner?.is(OccurrenceUsage.$type)) {
-            node.addHeritage([
-                SubsettingMeta.create(this.util.idProvider, document, options),
-                owner,
-            ]);
         }
     }
 
@@ -1716,6 +1682,7 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
         document: LangiumDocument
     ): GeneralType[] {
         const names: GeneralType[] = [];
+        const added = new Set<string>();
 
         for (const general of node.defaultGeneralTypes()) {
             const name = typeof general == "string" ? general : general.type;
@@ -1730,6 +1697,11 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
                 });
                 continue;
             }
+
+            const specialization = typeof general == "string" ? "" : general.specialization;
+            const key = `${specialization}:${implicitName}`;
+            if (added.has(key)) continue;
+            added.add(key);
 
             names.push(
                 typeof general == "string"

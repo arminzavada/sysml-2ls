@@ -496,7 +496,9 @@ export function printGenericFlowUsage(
     return printGenericItemFlow(
         occurrenceUsageModifiers(
             node,
-            shouldIgnoreRef(node, context.format.connection_usage_reference_keyword)
+            // ref decides compositeness of a featured flow, so it is never dropped
+            !node.expectedFeaturingType() &&
+                shouldIgnoreRef(node, context.format.connection_usage_reference_keyword)
         ),
         kw,
         printSysmlOwnedCrossFeature(node, context),
@@ -539,7 +541,9 @@ export function printConnectorAsUsage(
     return printGenericConnector(
         sysmlUsageModifiers(
             node,
-            shouldIgnoreRef(node, context.format.connector_as_usage_reference_keyword)
+            // ref decides compositeness of a featured connection, so it is never dropped
+            !(node.is(ast.ConnectionUsage.$type) && node.expectedFeaturingType()) &&
+                shouldIgnoreRef(node, context.format.connector_as_usage_reference_keyword)
         ),
         kw,
         printSysmlOwnedCrossFeature(node, context),
@@ -644,20 +648,21 @@ export function printConnector(node: ConnectorMeta, context: ModelPrinterContext
 }
 
 export function printInterfaceUsage(node: InterfaceUsageMeta, context: ModelPrinterContext): Doc {
-    const connect = selectDeclarationKeyword(
-        node,
-        "connect",
-        context.format.interface_usage_connect_keyword
-    );
+    // the grammar requires `connect` after a feature value
+    const connectFormat = node.value
+        ? SourceFormatAlways
+        : context.format.interface_usage_connect_keyword;
+    const connect = selectDeclarationKeyword(node, "connect", connectFormat);
     return printConnectorAsUsage("interface", node, context, {
         binding: keyword("to"),
         format: context.format.binary_interface_usages,
         naryPrefix: connect ? keyword(connect) : undefined,
         source: {
             keyword: "connect",
-            format: context.format.interface_usage_connect_keyword,
+            format: connectFormat,
         },
         printer: printConnectorEndMember,
+        suffix: node.value ? featureValueAppender(node, context) : undefined,
     });
 }
 

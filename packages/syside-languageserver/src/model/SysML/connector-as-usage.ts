@@ -27,21 +27,12 @@ import {
     TypeMeta,
     ElementParts,
 } from "../KerML/index.js";
-import { enumerable } from "../../utils/index.js";
 
 export interface ConnectorAsUsageOptions extends UsageOptions, ConnectorOptions {}
 
 // never returned from the textual syntax so make it abstract
 @metamodelOf(ConnectorAsUsage.$type, "abstract")
 export class ConnectorAsUsageMeta extends Mixin(ConnectorMeta, UsageMeta) {
-    @enumerable
-    override get isComposite(): boolean {
-        return false;
-    }
-    override set isComposite(value) {
-        // empty
-    }
-
     override ast(): ConnectorAsUsage | undefined {
         return this._ast as ConnectorAsUsage;
     }

@@ -17,13 +17,15 @@
 import { createSysMLServices } from "../sysml-module.js";
 import { SysMLNodeFileSystem } from "../node/node-file-system-provider.js";
 import {
+    AstNode,
+    AstUtils,
     DeepPartial,
     DocumentValidator,
     LangiumDocument,
     ParseResult as LangiumParseResult,
 } from "langium";
 import { URI } from "vscode-uri";
-import { Element, Namespace } from "#generated/ast.js";
+import { Element, isElementReference, Namespace } from "#generated/ast.js";
 import { Diagnostic } from "vscode-languageserver";
 import { SysMLBuildOptions } from "../services/shared/workspace/document-builder.js";
 import { makeLinkingScope, makeScope, SysMLScope } from "../utils/scopes.js";
@@ -140,6 +142,13 @@ export function defaultLinkingErrorTo(name: string): object {
             new RegExp(`Could not resolve reference to [\\w_\\d]+ named '${name}'.*$`)
         ),
     };
+}
+
+export function referenceTargets(root: AstNode): string[] {
+    return AstUtils.streamAst(root)
+        .filter(isElementReference)
+        .map((ref) => `${ref.$cstNode?.text} -> ${ref.$meta.to.target?.qualifiedName}`)
+        .toArray();
 }
 
 function collectNames(scope: SysMLScope): string[] {

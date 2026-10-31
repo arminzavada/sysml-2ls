@@ -299,7 +299,7 @@ export class KerMLValidator {
             .tail(node.multiplicity ? 0 : 1);
 
         this.apply(
-            "warning",
+            "error",
             multiplicities,
             "A Type may have at most one ownedMember that is a Multiplicity.",
             accept,
@@ -490,38 +490,55 @@ export class KerMLValidator {
         if (!node.isEnd) return;
         const cross = node.findOwnedCrossFeature();
         if (cross && node.crossFeature && cross !== node.crossFeature) {
-            accept("error", "Must cross the owned cross feature.", {
-                element: node.ownedCrossSubsetting as CrossSubsettingMeta,
+            accept("error", "Must be the cross feature", {
+                element: cross,
                 code: "checkFeatureCrossingSpecialization",
             });
         }
     }
 
     @validateKerML(ast.Feature.$type)
-    validateFeatureEndMultiplicity(node: FeatureMeta, accept: ModelValidationAcceptor): void {
-        if (node.isEnd && node.multiplicity) {
-            const bounds = node.multiplicity.element()?.bounds;
-            if (bounds && (bounds.lower !== 1 || bounds.upper !== 1)) {
-                accept("warning", "End feature must have a multiplicity 1..1.", {
-                    element: node.multiplicity,
-                    code: "validateFeatureEndMultiplicity",
-                });
-            }
-        }
+    validateFeatureEndFeatureMultiplicity(
+        node: FeatureMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (!node.isEnd) return;
+        // the pilot gives end usages without a multiplicity a default [1..1]
+        if (!node.multiplicity && node.is(ast.Usage.$type)) return;
+        const isOne = (m: MultiplicityRangeMeta): boolean =>
+            m.bounds?.lower === 1 && m.bounds.upper === 1;
+        if (this.multiplicitiesOf(node).some(isOne)) return;
+        accept("warning", "End feature must have multiplicity 1", {
+            element: node,
+            code: "validateFeatureEndFeatureMultiplicity",
+        });
+    }
+
+    // pilot `TypeUtil.getMultiplicitiesOf`
+    protected multiplicitiesOf(
+        type: TypeMeta,
+        visited = new Set<TypeMeta>()
+    ): MultiplicityRangeMeta[] {
+        const owned = type.multiplicity?.element();
+        if (owned) return [owned];
+        visited.add(type);
+        const generals = type.types(ast.Specialization.$type).toArray();
+        const lastChaining = type.is(ast.Feature.$type) ? type.chainingFeatures.at(-1) : undefined;
+        if (lastChaining) generals.push(lastChaining);
+        return generals
+            .filter((general) => !visited.has(general))
+            .flatMap((general) => this.multiplicitiesOf(general, visited));
     }
 
     @validateKerML(ast.Feature.$type)
     validateFeatureOwnedCrossSubsetting(node: FeatureMeta, accept: ModelValidationAcceptor): void {
-        const cross = node.specializations(ast.CrossSubsetting.$type);
-        if (cross.length > 1) {
-            this.apply(
-                "error",
-                cross,
-                "A Feature must have at most one ownedSubsetting that is a CrossSubsetting.",
-                accept,
-                { code: "validateFeatureOwnedCrossSubsetting" }
-            );
-        }
+        this.apply(
+            "error",
+            node.specializations(ast.CrossSubsetting.$type).slice(1),
+            "A Feature must have at most one ownedSubsetting that is a CrossSubsetting.",
+            accept,
+            { code: "validateFeatureOwnedCrossSubsetting" }
+        );
     }
 
     @validateKerML(ast.Feature.$type)
@@ -529,44 +546,70 @@ export class KerMLValidator {
         node: FeatureMeta,
         accept: ModelValidationAcceptor
     ): void {
-        const refs = node.specializations(ast.ReferenceSubsetting.$type);
-        if (refs.length > 1) {
-            this.apply(
-                "warning",
-                refs,
-                "A Feature must have at most one ownedSubsetting that is a ReferenceSubsetting.",
-                accept,
-                { code: "validateFeatureOwnedReferenceSubsetting" }
-            );
+        this.apply(
+            "error",
+            node.specializations(ast.ReferenceSubsetting.$type).slice(1),
+            "A Feature must have at most one ownedSubsetting that is a ReferenceSubsetting.",
+            accept,
+            { code: "validateFeatureOwnedReferenceSubsetting" }
+        );
+    }
+
+    @validateKerML(ast.Feature.$type)
+    validateFeatureConstantIsVariable(node: FeatureMeta, accept: ModelValidationAcceptor): void {
+        if (node.isConstant && !node.isVariable) {
+            accept("error", "Only a variable feature can be constant", {
+                element: node,
+                code: "validateFeatureConstantIsVariable",
+            });
         }
     }
 
-    // this is broken until linking can be done to our custom model structures w/o langium AstNode
-    // @validateKerML(ast.Redefinition)
-    // validateRedefinitionDirectionConformance(
-    //     node: RedefinitionMeta,
-    //     accept: ModelValidationAcceptor
-    // ): void {
-    //     const redefining = node.source() as FeatureMeta | undefined;
-    //     const redefined = node.element();
+    @validateKerML(ast.Feature.$type)
+    validateFeatureIsVariable(node: FeatureMeta, accept: ModelValidationAcceptor): void {
+        if (node.isVariable && !node.owningType?.conforms("Occurrences::Occurrence")) {
+            accept("error", "Must be owned by an occurrence type", {
+                element: node,
+                code: "validateFeatureIsVariable",
+            });
+        }
+    }
 
-    //     if (!redefining || !redefined || redefined.parent() === node) return;
+    @validateKerML(ast.Feature.$type)
+    validateFeaturePortionNotVariable(node: FeatureMeta, accept: ModelValidationAcceptor): void {
+        if (node.isPortion && node.isVariable) {
+            accept("error", "A portion cannot be variable", {
+                element: node,
+                code: "validateFeaturePortionNotVariable",
+            });
+        }
+    }
 
-    //     const dstFeaturings = redefined.featuredBy;
-    //     const direction = redefining.direction;
-    //     for (const featuring of dstFeaturings) {
-    //         const redefinedDir = featuring.directionOf(redefined);
-    //         if (
-    //             ((redefinedDir == "in" || redefinedDir == "out") && direction != redefinedDir) ||
-    //             (redefinedDir == "inout" && direction == "none")
-    //         ) {
-    //             accept("error", "Redefining feature must have a compatible direction", {
-    //                 element: node,
-    //                 code: "validateRedefinitionDirectionConformance",
-    //             });
-    //         }
-    //     }
-    // }
+    @validateKerML(ast.Redefinition.$type)
+    validateRedefinitionDirectionConformance(
+        node: RedefinitionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const redefining = node.source() as FeatureMeta | undefined;
+        const redefined = node.element();
+        // the pilot derives a flow end feature's direction from the feature it redefines
+        if (!redefining || !redefined || redefining.owner()?.is(ast.ItemFlowEnd.$type)) return;
+
+        const direction = redefining.direction;
+        for (const featuring of this.effectiveFeaturingTypes(redefining)) {
+            const redefinedDirection = featuring.directionOf(redefined);
+            if (
+                ((redefinedDirection === "in" || redefinedDirection === "out") &&
+                    direction !== redefinedDirection) ||
+                (redefinedDirection === "inout" && direction === "none")
+            ) {
+                accept("error", "Redefining feature must have a compatible direction", {
+                    element: node.isImplied ? redefining : node,
+                    code: "validateRedefinitionDirectionConformance",
+                });
+            }
+        }
+    }
 
     @validateKerML(ast.FeatureChaining.$type)
     validateFeatureChainingFeatureConformance(
@@ -599,20 +642,67 @@ export class KerMLValidator {
         const redefining = node.source() as FeatureMeta | undefined;
         const redefined = node.element();
 
-        if (!redefining || !redefined || redefined.parent() === node) return;
+        if (node.isImplied || !redefining || !redefined || redefined.parent() === node) return;
 
-        const srcFeaturings = redefining.featuredBy;
-        const dstFeaturings = redefined.featuredBy;
-        if (srcFeaturings.every((t) => dstFeaturings.includes(t))) {
+        const srcFeaturings = new Set(this.effectiveFeaturingTypes(redefining));
+        const dstFeaturings = new Set(this.effectiveFeaturingTypes(redefined));
+        if (
+            srcFeaturings.size === dstFeaturings.size &&
+            Array.from(srcFeaturings).every((t) => dstFeaturings.has(t))
+        ) {
             accept(
                 "error",
-                srcFeaturings.length === 0
-                    ? "A package level Feature cannot redefine other Features."
-                    : "Owner of redefining feature cannot be the same as owner of the redefined feature.",
+                srcFeaturings.size === 0
+                    ? "A package-level feature cannot be redefined"
+                    : "Featuring types of redefining feature and redefined feature cannot be the same",
                 {
                     element: node,
                     code: "validateRedefinitionFeaturingTypes",
                 }
+            );
+        }
+    }
+
+    protected effectiveFeaturingTypes(feature: FeatureMeta): readonly TypeMeta[] {
+        return feature.isVariable && feature.owningType ? [feature.owningType] : feature.featuredBy;
+    }
+
+    @validateKerML(ast.Redefinition.$type)
+    validateRedefinitionEndConformance(
+        node: RedefinitionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const redefining = node.source() as FeatureMeta | undefined;
+        if (
+            !node.isImplied &&
+            node.element()?.isEnd &&
+            redefining &&
+            !redefining.isEnd &&
+            redefining.owningType?.isAny(ast.Association.$type, ast.Connector.$type)
+        ) {
+            accept("error", "Redefining feature must be an end feature", {
+                element: node,
+                code: "validateRedefinitionEndConformance",
+            });
+        }
+    }
+
+    @validateKerML(ast.Subsetting.$type)
+    validateSubsettingConstantConformance(
+        node: SubsettingMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const subsetting = node.source() as FeatureMeta | undefined;
+        if (
+            !node.isImplied &&
+            node.element()?.isConstant &&
+            subsetting?.isVariable &&
+            !subsetting.isConstant
+        ) {
+            accept(
+                "error",
+                "Subsetting/redefining feature must be constant if subsetted/redefined feature is constant",
+                { element: node, code: "validateSubsettingConstantConformance" }
             );
         }
     }
@@ -700,29 +790,30 @@ export class KerMLValidator {
         subsetted: FeatureMeta,
         accept: ModelValidationAcceptor
     ): void {
-        const subsettedTypes = subsetted.featuredBy;
-        if (
-            subsettedTypes.length > 0 &&
-            !subsettedTypes.every((t) => this.isAccessibleFrom(subsetting, t))
-        ) {
-            accept(
-                subsetting.owner()?.is(ast.ItemFlowEnd.$type) ? "error" : "warning",
-                "Invalid subsetting, must be an accessible feature (use dot notation for nesting).",
-                { element: node, code: "validateSubsettingFeaturingTypes" }
-            );
-        }
+        if (subsetted.featuredBy.length > 0 && !this.canAccess(subsetting, subsetted))
+            accept("error", "Must be an accessible feature (use dot notation for nesting)", {
+                element: node,
+                code: "validateSubsettingFeaturingTypes",
+            });
     }
 
-    protected isAccessibleFrom(feature: FeatureMeta, type: TypeMeta): boolean {
-        const featurings = feature.featuredBy;
+    // pilot `FeatureUtil.canAccess`
+    protected canAccess(
+        feature: FeatureMeta,
+        accessed: FeatureMeta,
+        visited = new Set<FeatureMeta>()
+    ): boolean {
+        visited.add(feature);
+        const featuringTypes = feature.featuredBy;
         return (
-            (featurings.length == 0 && type.qualifiedName == "Base::Anything") ||
-            featurings.some((featuring) => {
-                return (
-                    featuring.conforms(type) ||
-                    (featuring.is(ast.Feature.$type) && this.isAccessibleFrom(featuring, type))
-                );
-            })
+            (featuringTypes.length === 0 && accessed.isFeaturedWithin(undefined)) ||
+            featuringTypes.some(
+                (t) =>
+                    accessed.isFeaturedWithin(t) ||
+                    (t.is(ast.Feature.$type) &&
+                        !visited.has(t) &&
+                        this.canAccess(t, accessed, visited))
+            )
         );
     }
 
@@ -734,6 +825,8 @@ export class KerMLValidator {
         const subsetted = node.element();
         if (!subsetting || !subsetted) return;
 
+        this.validateSubsettingFeaturingTypes(node, subsetting, subsetted, accept);
+
         // connectors have separate validation
         if (
             subsetting.owner()?.is(ast.Connector.$type) ||
@@ -743,7 +836,6 @@ export class KerMLValidator {
 
         this.validateSubsettingMultiplicityConformance(node, subsetting, subsetted, accept);
         this.validateSubsettingUniquenessConformance(node, subsetting, subsetted, accept);
-        this.validateSubsettingFeaturingTypes(node, subsetting, subsetted, accept);
     }
 
     @validateKerML(ast.DataType.$type, { sysml: false })
@@ -809,56 +901,61 @@ export class KerMLValidator {
         );
     }
 
-    @validateKerML(ast.Connector.$type)
     @validateKerML(ast.Association.$type)
-    validateBinarySpecialization(
-        node: AssociationMeta | ConnectorMeta,
+    validateAssociationBinarySpecialization(
+        node: AssociationMeta,
         accept: ModelValidationAcceptor
     ): void {
-        // only checking owned ends so that the error doesn't propagate to all
-        // subtypes
         const ends = node.ownedEnds();
         if (ends.length > 2 && node.conforms("Links::BinaryLink")) {
-            const isConn = node.is(ast.Connector.$type);
-            accept(
-                "error",
-                `Invalid binary ${
-                    isConn ? ast.Connector.$type : ast.Association.$type
-                } - cannot have more than two ends.`,
-                {
-                    element: node,
-                    code: isConn
-                        ? "validateConnectorBinarySpecialization"
-                        : "validateAssociationBinarySpecialization",
-                }
-            );
+            this.apply("error", ends.slice(2), "Cannot have more than two ends", accept, {
+                code: "validateAssociationBinarySpecialization",
+            });
         }
     }
 
     @validateKerML(ast.Connector.$type)
-    @validateKerML(ast.Association.$type)
-    validateRelatedTypes(
-        node: AssociationMeta | ConnectorMeta,
+    validateConnectorBinarySpecialization(
+        node: ConnectorMeta,
         accept: ModelValidationAcceptor
     ): void {
-        // abstract connectors can have less than 2 ends
-        if (node.isAbstract) return;
+        const ends = node.allEnds();
+        if (ends.length <= 2 || !node.conforms("Links::BinaryLink")) return;
+        const message = "Cannot have more than two ends";
+        const code = "validateConnectorBinarySpecialization";
+        if (node.ownedEnds().length <= 2) accept("error", message, { element: node, code });
+        else this.apply("error", ends.slice(2), message, accept, { code });
+    }
 
-        if (node.allEnds().length < 2) {
-            const isConn = node.is(ast.Connector.$type);
-            accept(
-                "error",
-                `Invalid concrete  ${
-                    isConn ? ast.Connector.$type : ast.Association.$type
-                }, must have at least 2 related elements`,
-                {
-                    element: node,
-                    code: isConn
-                        ? "validateConnectorRelatedFeatures"
-                        : "validateAssociationRelatedTypes",
-                }
-            );
+    @validateKerML(ast.Association.$type)
+    validateAssociationRelatedTypes(node: AssociationMeta, accept: ModelValidationAcceptor): void {
+        if (!node.isAbstract && node.allEnds().flatMap((end) => end.allTypings()).length < 2) {
+            accept("error", "Must have at least two related elements", {
+                element: node,
+                code: "validateAssociationRelatedTypes",
+            });
         }
+    }
+
+    @validateKerML(ast.Connector.$type)
+    validateConnectorRelatedFeatures(node: ConnectorMeta, accept: ModelValidationAcceptor): void {
+        if (!node.isAbstract && node.relatedFeatures().length < 2) {
+            accept("error", "Must have at least two related elements", {
+                element: node,
+                code: "validateConnectorRelatedFeatures",
+            });
+        }
+    }
+
+    @validateKerML(ast.Association.$type)
+    validateAssociationEndTypes(node: AssociationMeta, accept: ModelValidationAcceptor): void {
+        this.apply(
+            "error",
+            node.ownedEnds().filter((end) => end.allTypings().length !== 1),
+            "An association end must have exactly one type",
+            accept,
+            { code: "validateAssociationEndTypes" }
+        );
     }
 
     // validateAssociationStructureIntersection - is implicitly ensured by the
@@ -918,7 +1015,7 @@ export class KerMLValidator {
         const skip =
             !node.owningType && node.is(ast.ItemFlow.$type) && node.owner()?.is(ast.Feature.$type);
         if (skip) return;
-        ends.forEach((end, index) => {
+        ends.forEach((end) => {
             // no guarantee that the user has correctly used only a single
             // reference subsetting so only check the head
             const related = end.specializations(ast.ReferenceSubsetting.$type).at(0)?.element() as
@@ -928,19 +1025,17 @@ export class KerMLValidator {
                 !related ||
                 (featuringTypes.length == 0
                     ? related.isFeaturedWithin(undefined)
-                    : featuringTypes.every((t) => related?.isFeaturedWithin(t)))
+                    : featuringTypes.every((t) => related?.isFeaturedWithin(t))) ||
+                // otherwise reported by validateSubsettingFeaturingTypes
+                !this.canAccess(end, related)
             ) {
                 return;
             }
 
-            accept(
-                "warning",
-                `Invalid connector end #${index}, should be an accessible feature (use dot notation for nesting)`,
-                {
-                    element: end,
-                    code: "checkConnectorTypeFeaturing",
-                }
-            );
+            accept("error", "Must be an accessible feature (use dot notation for nesting)", {
+                element: end,
+                code: "validateConnectorTypeFeaturing",
+            });
         });
     }
 
@@ -1136,6 +1231,23 @@ export class KerMLValidator {
             });
     }
 
+    @validateKerML(ast.InvocationExpression.$type, { bounds: [ast.ConstructorExpression.$type] })
+    validateInvocationExpressionInstantiatedType(
+        node: InvocationExpressionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const type = node.invokes();
+        if (type?.is(ast.Behavior.$type)) return;
+        if (type?.is(ast.Feature.$type)) {
+            const types = (type as FeatureMeta).allTypings();
+            if (types.length === 1 && types[0].is(ast.Behavior.$type)) return;
+        }
+        accept("error", "Must invoke a behavior or a behavioral feature", {
+            element: node,
+            code: "validateInvocationExpressionInstantiatedType",
+        });
+    }
+
     @validateKerML(ast.InvocationExpression.$type)
     validateInvocationExpressionArgs(
         node: InvocationExpressionMeta,
@@ -1225,21 +1337,21 @@ export class KerMLValidator {
 
     // implicitly ensured by the grammar but not the type system
     @validateKerML(ast.ItemFlow.$type)
-    validateItemFlowItemFeature(node: ItemFlowMeta, accept: ModelValidationAcceptor): void {
-        this.atMostOne(
+    validateFlowItemFeature(node: ItemFlowMeta, accept: ModelValidationAcceptor): void {
+        this.apply(
             "error",
-            node.ownedFeatures().filter(BasicMetamodel.is(ast.ItemFeature.$type)),
+            node.ownedFeatures().filter(BasicMetamodel.is(ast.ItemFeature.$type)).tail(1),
+            "Only one item feature is allowed",
             accept,
-            "An ItemFlow must have at most one ownedFeature that is an ItemFeature.",
-            { code: "validateItemFlowItemFeature" }
+            { code: "validateFlowItemFeature" }
         );
     }
 
     @validateKerML(ast.ItemFlow.$type)
     validateFlowEndIsEnd(node: ItemFlowMeta, accept: ModelValidationAcceptor): void {
-        node.connectorEnds().forEach((end, index) => {
+        node.connectorEnds().forEach((end) => {
             if (!end.isEnd) {
-                accept("error", `End feature #${index} of an ItemFlow must have isEnd = true.`, {
+                accept("error", "Must be an end feature", {
                     element: end,
                     code: "validateFlowEndIsEnd",
                 });
@@ -1249,44 +1361,44 @@ export class KerMLValidator {
 
     // implicitly ensured by the grammar but not the type system
     @validateKerML(ast.ItemFlowEnd.$type)
-    validateItemFlowEndNestedFeature(node: ItemFlowEndMeta, accept: ModelValidationAcceptor): void {
+    validateFlowEndNestedFeature(node: ItemFlowEndMeta, accept: ModelValidationAcceptor): void {
         const features = node.ownedFeatureMemberships().count();
         if (features !== 1) {
-            accept("error", "An ItemFlowEnd must have exactly one ownedFeature.", {
+            accept("error", "Flow end must have a nested input or output feature", {
                 element: node,
-                code: "validateItemFlowEndNestedFeature",
+                code: "validateFlowEndNestedFeature",
             });
         }
     }
 
     // implicitly ensured by the grammar but not the type system
     @validateKerML(ast.ItemFlowEnd.$type)
-    validateItemFlowEndOwningType(node: ItemFlowEndMeta, accept: ModelValidationAcceptor): void {
+    validateFlowEndOwningType(node: ItemFlowEndMeta, accept: ModelValidationAcceptor): void {
         if (!node.owningType?.is(ast.ItemFlow.$type)) {
-            accept("error", "The owningType of an ItemFlowEnd must be an ItemFlow.", {
+            accept("error", "Flow end not allowed", {
                 element: node,
-                code: "validateItemFlowEndOwningType",
+                code: "validateFlowEndOwningType",
             });
         }
     }
 
     @validateKerML(ast.ItemFlowEnd.$type)
-    validateItemFlowEndSubsetting(node: ItemFlowEndMeta, accept: ModelValidationAcceptor): void {
+    validateFlowEndSubsetting(node: ItemFlowEndMeta, accept: ModelValidationAcceptor): void {
         if (
             !node
                 .specializations(ast.Subsetting.$type)
                 .some((sub) => sub.nodeType() !== ast.Redefinition.$type)
         ) {
-            accept("error", "Cannot identify ItemFlowEnd (use dot notation).", {
+            accept("error", "Cannot identify flow end (use dot notation)", {
                 element: node,
-                code: "validateItemFlowEndSubsetting",
+                code: "validateFlowEndSubsetting",
             });
         } else if (!node.specializations(ast.Subsetting.$type).some((sub) => !sub.isImplied)) {
             const child = node.ownedFeatures().head();
             if (child && child.specializations(ast.Redefinition.$type).some((r) => !r.isImplied))
-                accept("warning", "ItemFlowEnd should use dot notation.", {
+                accept("warning", "Flow ends should use dot notation", {
                     element: node,
-                    code: "validateItemFlowEndImplicitSubsetting",
+                    code: "validateFlowEndImplicitSubsetting",
                 });
         }
     }
@@ -1307,6 +1419,17 @@ export class KerMLValidator {
             accept("error", "Cannot override a non-default feature value.", {
                 element: node,
                 code: "validateFeatureValueOverriding",
+            });
+        }
+    }
+
+    @validateKerML(ast.FeatureValue.$type)
+    validateFeatureValueIsInitial(node: FeatureValueMeta, accept: ModelValidationAcceptor): void {
+        const feature = node.owner();
+        if (node.isInitial && feature?.is(ast.Feature.$type) && !feature.isVariable) {
+            accept("error", "Initialized feature must be variable", {
+                element: node,
+                code: "validateFeatureValueIsInitial",
             });
         }
     }
@@ -1446,17 +1569,12 @@ export class KerMLValidator {
 
     @validateKerML(ast.LibraryPackage.$type)
     checkStandardLibraryPackage(node: LibraryPackageMeta, accept: ModelValidationAcceptor): void {
-        if (!node.isStandard) return;
-        const emit = (): void => {
-            accept("error", "User library packages should not be marked as standard.", {
+        if (node.isStandard && !node.document.isStandard) {
+            accept("warning", "User library packages should not be marked as standard", {
                 element: node,
                 property: "isStandard",
-                code: "validateLibraryPackageNotStandard",
+                code: "validateLibraryPackageNotStandard_",
             });
-        };
-
-        if (!node.document.isStandard) {
-            emit();
         }
     }
 

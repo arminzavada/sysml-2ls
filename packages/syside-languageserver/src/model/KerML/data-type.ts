@@ -15,7 +15,6 @@
  ********************************************************************************/
 
 import { DataType } from "#generated/ast.js";
-import { TypeClassifier } from "../enums.js";
 import { metamodelOf } from "../metamodel.js";
 import { ClassifierMeta, ClassifierOptions } from "./_internal.js";
 
@@ -27,8 +26,6 @@ export type DataTypeOptions = ClassifierOptions;
 
 @metamodelOf(DataType.$type, ImplicitDataTypes)
 export class DataTypeMeta extends ClassifierMeta {
-    protected override _classifier = TypeClassifier.DataType;
-
     override ast(): DataType | undefined {
         return this._ast as DataType;
     }

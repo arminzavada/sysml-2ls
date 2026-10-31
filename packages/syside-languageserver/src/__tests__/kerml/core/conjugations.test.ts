@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Class, Conjugation } from "#generated/ast.js";
+import { Class, Conjugation, Feature } from "#generated/ast.js";
 import { parsedNode } from "../../../testing/index.js";
 
 const Common = `
@@ -55,5 +55,27 @@ test.each(["conjugates", "~"])(
         ).resolves.toMatchObject({
             heritage: [expect.objectContaining({ $type: Conjugation.$type })],
         });
+    }
+);
+
+test.each(["conjugates", "~"])(
+    "feature can conjugate a feature chain with '%s'",
+    async (token: string) => {
+        const node = await parsedNode(`feature a { feature b; } feature x ${token} a.b;`, {
+            node: Feature.$type,
+            index: 2,
+            build: true,
+        });
+        expect(node).toMatchObject({
+            heritage: [
+                {
+                    $type: Conjugation.$type,
+                    targetChain: { $type: Feature.$type },
+                },
+            ],
+        });
+        expect(
+            node.heritage[0].targetChain?.$meta.chainingFeatures.map((f) => f.name)
+        ).toStrictEqual(["a", "b"]);
     }
 );

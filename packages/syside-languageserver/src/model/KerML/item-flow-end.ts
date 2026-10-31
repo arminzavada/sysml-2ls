@@ -20,7 +20,7 @@ import {
     Redefinition,
     ReferenceSubsetting,
 } from "#generated/ast.js";
-import { metamodelOf } from "../metamodel.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
 import { EndFeatureMembershipMeta, FeatureMeta, FeatureOptions } from "./_internal.js";
 
 export const ImplicitItemFlowEnds = {
@@ -42,6 +42,11 @@ export class ItemFlowEndMeta extends FeatureMeta {
     }
     override get isEndExplicitly(): boolean {
         return false;
+    }
+
+    // the pilot's FlowEndAdapter adds only computed redefinitions, no default supertype
+    override defaultGeneralTypes(): GeneralType[] {
+        return [];
     }
 
     override ast(): ItemFlowEnd | undefined {

@@ -830,13 +830,18 @@ function printSpecialRequirementMember(
         previousSibling?: ElementMeta;
         memberKeyword: string;
         targetKeyword: string;
+        shorthandMultiplicity: boolean;
     }
 ): Doc {
     assertSysML(context, node.nodeType());
     return printGenericMembership(options.memberKeyword, node, context, {
         previousSibling: options.previousSibling,
         printer(node, context) {
-            const allowShorthand = canPrintShorthandUsage(node, ast.ReferenceSubsetting.$type);
+            const allowShorthand = canPrintShorthandUsage(
+                node,
+                ast.ReferenceSubsetting.$type,
+                options.shorthandMultiplicity
+            );
 
             const kw = formatPreserved(node, context.format.framed_concern_keyword, "always", {
                 find: (node) => GrammarUtils.findNodeForKeyword(node, options.targetKeyword),
@@ -868,6 +873,7 @@ export function printFramedConcernMembership(
         previousSibling,
         memberKeyword: "frame",
         targetKeyword: "concern",
+        shorthandMultiplicity: true,
     });
 }
 
@@ -880,6 +886,7 @@ export function printRequirementConstraintMembership(
         previousSibling,
         memberKeyword: node.kind === "assumption" ? "assume" : "require",
         targetKeyword: "constraint",
+        shorthandMultiplicity: true,
     });
 }
 
@@ -892,6 +899,7 @@ export function printRequirementVerificationMembership(
         previousSibling,
         memberKeyword: "verify",
         targetKeyword: "requirement",
+        shorthandMultiplicity: false,
     });
 }
 
@@ -921,5 +929,6 @@ export function printViewRenderingMembership(
         previousSibling,
         memberKeyword: "render",
         targetKeyword: "rendering",
+        shorthandMultiplicity: true,
     });
 }

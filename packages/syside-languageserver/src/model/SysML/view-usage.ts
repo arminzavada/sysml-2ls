@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { ViewUsage, ViewDefinition } from "#generated/ast.js";
-import { metamodelOf } from "../metamodel.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
 import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
 
 export type ViewUsageOptions = PartUsageOptions;
@@ -23,15 +23,21 @@ export type ViewUsageOptions = PartUsageOptions;
 @metamodelOf(ViewUsage.$type, {
     base: "Views::views",
     subview: "Views::View::subviews",
+    subpart: "Items::Item::subparts",
 })
 export class ViewUsageMeta extends PartUsageMeta {
+    override defaultGeneralTypes(): GeneralType[] {
+        const supertypes = super.defaultGeneralTypes();
+        if (this.isSubitem()) supertypes.push("subpart");
+        return supertypes;
+    }
+
     override defaultSupertype(): string {
         return this.isSubview() ? "subview" : "base";
     }
 
     isSubview(): boolean {
-        const parent = this.owner();
-        return Boolean(parent?.isAny(ViewDefinition.$type, ViewUsage.$type));
+        return Boolean(this.owningType?.isAny(ViewDefinition.$type, ViewUsage.$type));
     }
 
     override ast(): ViewUsage | undefined {

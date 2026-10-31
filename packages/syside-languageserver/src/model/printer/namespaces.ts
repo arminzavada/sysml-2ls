@@ -729,10 +729,9 @@ export function printSpecializationPart<T extends TypeMeta>(
     options: {
         skipFirstKeyword?: boolean;
         specializations: SpecializationGrouper<T>;
-        ignoreMultiplicity?: boolean;
     }
 ): Doc[] {
-    const multi = options.ignoreMultiplicity ? undefined : printMultiplicityPart(node, context);
+    const multi = printMultiplicityPart(node, context);
 
     let skipFirstKeyword = Boolean(options.skipFirstKeyword);
     const groups = options.specializations(node).map((group) => {
@@ -947,11 +946,10 @@ export function kermlBasicFeatureModifiers(node: FeatureMeta): Doc[] {
     if (node.isDerived) modifiers.push(keyword("derived"));
     if (node.isAbstract) modifiers.push(keyword("abstract"));
 
-    // portion implies composite so print it first
     if (node.isPortion) modifiers.push(keyword("portion"));
     else if (node.isComposite) modifiers.push(keyword("composite"));
-    if (node.isVariable) modifiers.push(keyword("var"));
-    else if (node.isConstant) modifiers.push(keyword("const"));
+    if (node.isConstant) modifiers.push(keyword("const"));
+    else if (node.isVariable) modifiers.push(keyword("var"));
 
     return modifiers;
 }

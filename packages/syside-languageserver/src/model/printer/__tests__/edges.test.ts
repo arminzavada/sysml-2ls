@@ -503,6 +503,39 @@ describe("membership", () => {
         });
     });
 
+    it.each([
+        ["frame", FramedConcernMembership.$type],
+        ["assume", RequirementConstraintMembership.$type],
+        ["require", RequirementConstraintMembership.$type],
+    ] as const)("should print %s shorthand with multiplicity", async (member, type) => {
+        return expectPrinted(`requirement def { ${member} f [0..*] ordered :> g {}  }`, {
+            node: type,
+            lang: "sysml",
+        }).resolves.toEqual(`${member} f [0..*] ordered :> g {}\n`);
+    });
+
+    it.each([
+        ["frame", "concern", FramedConcernMembership.$type],
+        ["require", "constraint", RequirementConstraintMembership.$type],
+    ] as const)(
+        "should drop %s %s keyword with multiplicity if not needed",
+        async (member, target, type) => {
+            return expectPrinted(`requirement def { ${member} ${target} ::> f [1] {}  }`, {
+                node: type,
+                lang: "sysml",
+                format: { framed_concern_keyword: { default: "as_needed" } },
+            }).resolves.toEqual(`${member} f [1] {}\n`);
+        }
+    );
+
+    it("should keep verify requirement keyword with multiplicity", async () => {
+        return expectPrinted(`requirement def { verify requirement ::> f [1] {}  }`, {
+            node: RequirementVerificationMembership.$type,
+            lang: "sysml",
+            format: { framed_concern_keyword: { default: "as_needed" } },
+        }).resolves.toEqual(`verify requirement ::> f [1] {}\n`);
+    });
+
     it("should print objective memberships", async () => {
         return expectPrinted("case def { protected objective #prefix a = 1 {}  }", {
             node: ObjectiveMembership.$type,
@@ -571,6 +604,13 @@ describe("membership", () => {
             node: ViewRenderingMembership.$type,
             lang: "sysml",
         }).resolves.toEqual("render x :> xx;\n");
+    });
+
+    it("should print view rendering shorthand with multiplicity", async () => {
+        return expectPrinted("view def { render r [0..*]; }", {
+            node: ViewRenderingMembership.$type,
+            lang: "sysml",
+        }).resolves.toEqual("render r [0..*];\n");
     });
 });
 

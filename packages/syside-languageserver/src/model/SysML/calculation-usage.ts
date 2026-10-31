@@ -37,7 +37,7 @@ export class CalculationUsageMeta extends Mixin(ExpressionMeta, ActionUsageMeta)
     }
 
     isSubcalculation(): boolean {
-        const parent = this.owner();
+        const parent = this.owningType;
         return Boolean(
             this.isNonEntryExitComposite() &&
             parent?.isAny(CalculationUsage.$type, CalculationDefinition.$type)

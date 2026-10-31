@@ -16,7 +16,6 @@
 
 import { Mixin } from "ts-mixer";
 import { Association } from "#generated/ast.js";
-import { TypeClassifier } from "../enums.js";
 import { ElementID, metamodelOf } from "../metamodel.js";
 import { ConnectorMixin } from "../mixins/connector.js";
 import {
@@ -42,10 +41,8 @@ export class AssociationMeta extends Mixin(
     RelationshipMeta as Class<[ElementID], RelationshipMeta, typeof RelationshipMeta>,
     ClassifierMeta
 ) {
-    protected override _classifier = TypeClassifier.Association;
-
     override defaultSupertype(): string {
-        return this.isBinary() ? "binary" : "base";
+        return this.ownedEnds().length === 2 ? "binary" : "base";
     }
 
     override ast(): Association | undefined {

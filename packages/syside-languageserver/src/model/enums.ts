@@ -16,7 +16,6 @@
 
 import { assertUnreachable } from "langium";
 import * as ast from "#generated/ast.js";
-import { stringifyFlags } from "../utils/common.js";
 import { Visibility } from "../utils/scope-util.js";
 
 /**
@@ -54,28 +53,6 @@ export function conjugateDirectionKind(kind: FeatureDirectionKind): FeatureDirec
         case "none":
             return "none";
     }
-}
-
-export const enum TypeClassifier {
-    None = 0,
-    DataType = 1 << 0,
-    Class = 1 << 1,
-    Structure = 1 << 2,
-    Association = 1 << 3,
-    AssociationStruct = Structure | Association,
-}
-
-const TypeClassifierNames = new Map([
-    [TypeClassifier.None, "None"],
-    [TypeClassifier.DataType, "DataType"],
-    [TypeClassifier.Class, "Class"],
-    [TypeClassifier.Structure, "Structure"],
-    [TypeClassifier.Association, "Association"],
-    [TypeClassifier.AssociationStruct, "AssociationStruct"],
-]);
-
-export function getTypeClassifierString(v: number): string {
-    return stringifyFlags(v, TypeClassifierNames);
 }
 
 export type RequirementConstraintKind = "assumption" | "requirement";

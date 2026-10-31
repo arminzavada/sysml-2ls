@@ -455,16 +455,6 @@ export function flagNames(v: number, names: Map<number, string>): string[] {
 }
 
 /**
- * Convert {@link v} to a string of flags
- * @param v Value
- * @param names Map of flag values to names
- * @returns string representation of the flags
- */
-export function stringifyFlags(v: number, names: Map<number, string>): string {
-    return flagNames(v, names).join(" | ");
-}
-
-/**
  * Remove {@link value} from {@link array}
  * @param array Array to erase {@link value} from
  * @param value Value to erase from {@link array}

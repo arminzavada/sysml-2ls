@@ -33,8 +33,7 @@ export class AssertConstraintUsageMeta extends Mixin(InvariantMeta, ConstraintUs
     }
 
     protected override isBehaviorOwned(): boolean {
-        const parent = this.owner();
-        return Boolean(parent?.isAny(ActionDefinition.$type, ActionUsage.$type));
+        return Boolean(this.owningType?.isAny(ActionDefinition.$type, ActionUsage.$type));
     }
 
     override ast(): AssertConstraintUsage | undefined {

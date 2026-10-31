@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { vi, Assertion } from "vitest";
-import { Diagnostic } from "vscode-languageserver";
+import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver";
 import {
     emptyDocument,
     parseKerML,
@@ -197,7 +197,14 @@ describe("Multiplicity", () => {
         return expectValidations(
             "class C [1] { multiplicity m [2]; }",
             "validateTypeOwnedMultiplicity"
-        ).resolves.toHaveLength(1);
+        ).resolves.toMatchObject([{ severity: DiagnosticSeverity.Error }]);
+    });
+
+    test("multiplicity aliases do not trigger validation", async () => {
+        return expectValidations(
+            "class T; class K { feature f : T { multiplicity m [1..2]; } } class C [0..1] { alias m for K::f::m; }",
+            "validateTypeOwnedMultiplicity"
+        ).resolves.toHaveLength(0);
     });
 
     it("multiplicities with featuring types owned by non-features trigger validation", () => {
@@ -220,11 +227,90 @@ describe("Feature validations", () => {
         return expectValidations("feature a;", "validateFeatureTyping").resolves.toHaveLength(1);
     });
 
-    test("multiple reference subsettings trigger validation", async () => {
+    test("reference subsettings after the first trigger validation", async () => {
+        const text = "feature a references b references c;";
         return expectValidations(
-            "feature a references b references c;",
+            text,
             "validateFeatureOwnedReferenceSubsetting"
-        ).resolves.toHaveLength(2);
+        ).resolves.toMatchObject([
+            {
+                severity: DiagnosticSeverity.Error,
+                range: { start: { character: text.indexOf("c;") } },
+            },
+        ]);
+    });
+
+    test("constant features that are not variable trigger validation", async () => {
+        return expectModelValidations(
+            FeatureMeta.create(basicIdProvider(), emptyDocument(), { isConstant: true }),
+            "validateFeatureConstantIsVariable"
+        ).resolves.toHaveLength(1);
+    });
+
+    test("const features are variable", async () => {
+        return expectValidations(
+            "class C { const feature c; }",
+            "validateFeatureConstantIsVariable"
+        ).resolves.toHaveLength(0);
+    });
+
+    test.each([
+        ["var feature v;", 1],
+        ["datatype D { var feature v; const feature c; }", 2],
+    ])(
+        "variable features not owned by an occurrence type trigger validation: %s",
+        async (text, expected) => {
+            return expectValidations(text, "validateFeatureIsVariable").resolves.toHaveLength(
+                expected
+            );
+        }
+    );
+
+    test("variable features owned by an occurrence type do not trigger validation", async () => {
+        return expectValidations(
+            "package Occurrences { class Occurrence; } class C :> Occurrences::Occurrence { var feature v; const feature c; }",
+            "validateFeatureIsVariable"
+        ).resolves.toHaveLength(0);
+    });
+
+    test.each([
+        ["portion var feature p;", 1],
+        ["portion feature p;", 0],
+    ])("variable portions trigger validation: %s", async (feature, expected) => {
+        return expectValidations(
+            `class C { ${feature} }`,
+            "validateFeaturePortionNotVariable"
+        ).resolves.toHaveLength(expected);
+    });
+});
+
+describe("Redefinition end conformance", () => {
+    const base = `
+        classifier A { end feature e; }
+        assoc R { end feature a : A; end feature b : A; }
+        abstract connector r : R { end a; end b; }`;
+
+    test.each([
+        "abstract assoc R1 :> R { feature a1 :>> a; }",
+        "abstract connector r1 :> r { feature a1 :>> a; }",
+    ])(
+        "non-end features of associations and connectors redefining ends trigger validation: %s",
+        async (text) => {
+            return expectValidations(
+                base + text,
+                "validateRedefinitionEndConformance"
+            ).resolves.toHaveLength(1);
+        }
+    );
+
+    test.each([
+        "classifier B :> A { feature :>> e; }",
+        "abstract assoc R1 :> R { end feature a1 :>> a; }",
+    ])("other redefinitions of ends do not trigger validation: %s", async (text) => {
+        return expectValidations(
+            base + text,
+            "validateRedefinitionEndConformance"
+        ).resolves.toHaveLength(0);
     });
 });
 
@@ -243,6 +329,22 @@ describe("Feature chaining", () => {
 });
 
 describe("Subsettings", () => {
+    test.each([
+        ["feature f subsets c;", 0],
+        ["const feature f subsets c;", 0],
+        ["var feature f subsets c;", 1],
+        ["var feature f redefines c;", 1],
+        ["var feature f = c;", 0],
+    ])(
+        "variable features specializing constant features must be constant: %s",
+        async (feature, expected) => {
+            return expectValidations(
+                `struct S { const feature c; } struct T :> S { ${feature} }`,
+                "validateSubsettingConstantConformance"
+            ).resolves.toHaveLength(expected);
+        }
+    );
+
     test.each(["subsets a;", "; subset b :> a;"])(
         "nonunique feature subsetting unique feature issues a diagnostic",
         async (suffix: string) => {
@@ -346,14 +448,55 @@ describe("Subsettings", () => {
             }
             feature b :>> A::a;`,
             "validateSubsettingFeaturingTypes"
-        ).resolves.toHaveLength(1);
+        ).resolves.toMatchObject([{ severity: DiagnosticSeverity.Error }]);
     });
 
-    test.fails(
-        "redefining features with incompatible directions triggers validation ",
-        async () => {
-            return expectValidations(
-                `
+    test("features featured by snapshot features redefining a common feature can access each other", async () => {
+        return expectValidations(
+            `
+            class Occurrence { feature snapshots; }
+            class Car specializes Occurrence {
+                member abstract feature carParts featured by snapshots1 {
+                    member feature snapshots1 :>> Occurrence::snapshots featured by Car;
+                }
+                member feature engine :> carParts featured by snapshots2 {
+                    member feature snapshots2 :>> Occurrence::snapshots featured by Car;
+                }
+                member feature transmission :> carParts featured by snapshots3 {
+                    member feature snapshots3 :>> Occurrence::snapshots featured by Car;
+                }
+                member connector drive featured by snapshots4 from engine to transmission {
+                    member feature snapshots4 :>> Occurrence::snapshots featured by Car;
+                }
+            }`,
+            ["validateSubsettingFeaturingTypes", "validateConnectorTypeFeaturing"]
+        ).resolves.toHaveLength(0);
+    });
+
+    test("behavior parameters implicitly redefine the general parameters by position", async () => {
+        return expectValidations(
+            `
+            behavior A {
+                in x;
+                inout y;
+                composite step b : B {
+                    in x1;
+                }
+            }
+            behavior B specializes A {
+                out x1;
+                out y1;
+            }`,
+            "validateRedefinitionDirectionConformance"
+        ).resolves.toMatchObject([
+            { range: { start: { line: 5 } } },
+            { range: { start: { line: 9 } } },
+        ]);
+    });
+
+    test("redefining features with incompatible directions triggers validation ", async () => {
+        return expectValidations(
+            `
         function A {
             in feature a;
             out feature b;
@@ -364,10 +507,34 @@ describe("Subsettings", () => {
             :>> b = 2;
             :>> c = 2;
         }`,
-                "validateRedefinitionDirectionConformance"
-            ).resolves.toHaveLength(3);
-        }
-    );
+            "validateRedefinitionDirectionConformance"
+        ).resolves.toHaveLength(3);
+    });
+
+    test("redefining features with compatible directions do not trigger validation", async () => {
+        return expectValidations(
+            "class C { in z; out w; inout v; } class D :> C { in :>> z; out :>> w; in :>> v; }",
+            "validateRedefinitionDirectionConformance"
+        ).resolves.toHaveLength(0);
+    });
+
+    test("conjugation reverses the redefined direction", async () => {
+        const text =
+            "class C { in z; } class C1 conjugates C; class D1 :> C1 { in :>> z; } class D2 :> C1 { out :>> z; }";
+        return expectValidations(
+            text,
+            "validateRedefinitionDirectionConformance"
+        ).resolves.toMatchObject([
+            { range: { start: { character: text.indexOf("z; } class D2") } } },
+        ]);
+    });
+
+    test("redefining features featured by a subset of the featuring types do not trigger validation", async () => {
+        return expectValidations(
+            "class A; class B; feature f featured by A, B; feature g :>> f featured by A;",
+            "validateRedefinitionFeaturingTypes"
+        ).resolves.toHaveLength(0);
+    });
 });
 
 describe("CrossSubsettings", () => {
@@ -519,13 +686,23 @@ describe("Cross features", () => {
         }
     );
 
-    test("multiple cross subsettings trigger validation", async () => {
+    test("cross subsettings do not contribute types to redefining ends", async () => {
         return expectValidations(
             `
-        feature x;
-        feature a => x => x;`,
+        class C1 { feature a : C2; }
+        class C2 { feature b : C1; feature c subsets b; }
+        assoc A1 { end x : C1 crosses y.b; end y : C2 crosses y.b; }
+        assoc A2 :> A1 { end x : C1 crosses y.c; end y : C2 crosses x.a; }`,
+            "validateFeatureCrossFeatureType"
+        ).resolves.toMatchObject([{ range: { start: { line: 3 } } }]);
+    });
+
+    test("cross subsettings after the first trigger validation", async () => {
+        const text = "feature x; feature y; feature a => x => y;";
+        return expectValidations(
+            text,
             "validateFeatureOwnedCrossSubsetting"
-        ).resolves.toHaveLength(2);
+        ).resolves.toMatchObject([{ range: { start: { character: text.lastIndexOf("y") } } }]);
     });
 
     test("explicit cross subsetting with an owned cross feature triggers validation", async () => {
@@ -537,7 +714,7 @@ describe("Cross features", () => {
           end [1] feature c :A [1] => b.c;
         }`,
             "checkFeatureCrossingSpecialization"
-        ).resolves.toHaveLength(1);
+        ).resolves.toMatchObject([{ range: { start: { line: 4, character: 14 } } }]);
     });
 
     test("end feature with [1..1] multiplicity does not trigger validation", async () => {
@@ -545,7 +722,7 @@ describe("Cross features", () => {
             `
         end feature x [1..1];
         end feature y [1];`,
-            "validateFeatureEndMultiplicity"
+            "validateFeatureEndFeatureMultiplicity"
         ).resolves.toHaveLength(0);
     });
 
@@ -553,8 +730,20 @@ describe("Cross features", () => {
         return expectValidations(
             `
         end feature x [0..1];`,
-            "validateFeatureEndMultiplicity"
+            "validateFeatureEndFeatureMultiplicity"
         ).resolves.toHaveLength(1);
+    });
+
+    test("end feature inheriting no [1..1] multiplicity triggers validation", async () => {
+        return expectValidations(
+            `
+        assoc A { end feature a [0..*]; end feature b [1]; }
+        assoc B specializes A { end feature x; end feature y; }`,
+            "validateFeatureEndFeatureMultiplicity"
+        ).resolves.toMatchObject([
+            { range: { start: { line: 1 } } },
+            { range: { start: { line: 2, character: 32 } } },
+        ]);
     });
 
     test("implicit n-ary cross features do not trigger validation", async () => {
@@ -679,12 +868,12 @@ describe.each([
     ["connector", ":", "validateConnectorBinarySpecialization"],
     ["assoc", ":>", "validateAssociationBinarySpecialization"],
 ])("Invalid binary %s", (tok, spec, code) => {
-    it("nary ends should trigger validation", () => {
+    it("owned ends after the second trigger validation", () => {
         return expectValidations(
-            `package Links { class BinaryLink; } ${tok} A ${spec} Links::BinaryLink {end a; end b; end c;}`,
+            `package Links { class BinaryLink; } ${tok} A ${spec} Links::BinaryLink {end a; end b; end c; end d;}`,
             code,
             { standardLibrary: "local" }
-        ).resolves.toHaveLength(1);
+        ).resolves.toHaveLength(2);
     });
 
     it("binary ends should not trigger validation", () => {
@@ -694,13 +883,43 @@ describe.each([
             { standardLibrary: "local" }
         ).resolves.toHaveLength(0);
     });
+});
 
-    it("inherited ends should not trigger validation", () => {
+describe("Binary specialization with inherited ends", () => {
+    const links = "package Links { class BinaryLink; }";
+
+    test("associations only count owned ends", () => {
         return expectValidations(
-            `package Links { class BinaryLink; } ${tok} A ${spec} Links::BinaryLink {end a; end b; end c;} ${tok} B :> A;`,
-            code,
+            `${links} assoc A :> Links::BinaryLink { end a; end b; end c; } assoc B :> A { end x; }`,
+            "validateAssociationBinarySpecialization",
             { standardLibrary: "local" }
         ).resolves.toHaveLength(1);
+    });
+
+    test("connectors with at most two owned ends but more ends trigger validation on the connector", () => {
+        return expectValidations(
+            `${links} assoc A :> Links::BinaryLink { end a; end b; end c; }
+            connector k : A { end x; end y; }`,
+            "validateConnectorBinarySpecialization",
+            { standardLibrary: "local" }
+        ).resolves.toMatchObject([{ range: { start: { line: 1 } } }]);
+    });
+
+    test("connectors subsetting connectors with more than two ends trigger validation", () => {
+        return expectValidations(
+            `${links} connector k1 : Links::BinaryLink { end a; end b; end c; } connector k2 :> k1;`,
+            "validateConnectorBinarySpecialization",
+            { standardLibrary: "local" }
+        ).resolves.toHaveLength(2);
+    });
+
+    test("explicitly redefined ends are not counted", () => {
+        return expectValidations(
+            `${links} assoc A :> Links::BinaryLink { end a; end b; end c; }
+            connector k : A { end x; end y :>> c; }`,
+            "validateConnectorBinarySpecialization",
+            { standardLibrary: "local" }
+        ).resolves.toHaveLength(0);
     });
 });
 
@@ -714,6 +933,66 @@ describe.each([
 
     test("abstract types do not trigger validation", async () => {
         return expectValidations(`abstract ${tok} A;`, code).resolves.toHaveLength(0);
+    });
+});
+
+describe("Connector related features", () => {
+    const base = "feature f; feature g; connector c1 from f to g;";
+
+    test("ends without reference subsettings trigger validation", async () => {
+        return expectValidations(
+            "assoc A { end a; end b; } connector c : A;",
+            "validateConnectorRelatedFeatures"
+        ).resolves.toHaveLength(1);
+    });
+
+    test("ends inherited from subsetted connectors do not trigger validation", async () => {
+        return expectValidations(
+            `${base} connector c2 :> c1;`,
+            "validateConnectorRelatedFeatures"
+        ).resolves.toHaveLength(0);
+    });
+
+    test("ends of a bound connector trigger validation", async () => {
+        return expectValidations(
+            `${base} connector c2 = c1;`,
+            "validateConnectorRelatedFeatures"
+        ).resolves.toHaveLength(1);
+    });
+});
+
+describe("Association related types", () => {
+    test("ends with less than 2 types in total trigger validation", async () => {
+        return expectValidations(
+            "class X; assoc A { end a : X; end b; }",
+            "validateAssociationRelatedTypes"
+        ).resolves.toHaveLength(1);
+    });
+
+    test("ends with 2 types in total do not trigger validation", async () => {
+        return expectValidations(
+            "class X; assoc A { end a : X; end b : X; }",
+            "validateAssociationRelatedTypes"
+        ).resolves.toHaveLength(0);
+    });
+});
+
+describe("Association end types", () => {
+    test("ends with more than one type trigger validation", async () => {
+        return expectValidations(
+            "class C1; class C2; assoc A { end x : C1; end y : C1, C2; }",
+            "validateAssociationEndTypes"
+        ).resolves.toHaveLength(1);
+    });
+
+    test("ends redefining ends of unrelated types trigger validation", async () => {
+        return expectValidations(
+            `class C1; class C2; class C3 :> C1;
+            assoc A1 { end x : C1; end y : C1; }
+            assoc A2 :> A1 { end x : C2; }
+            assoc A3 :> A1 { end x : C3; }`,
+            "validateAssociationEndTypes"
+        ).resolves.toMatchObject([{ range: { start: { line: 2 } } }]);
     });
 });
 
@@ -740,22 +1019,43 @@ describe("Connectors", () => {
     test("referenced features without featuring types don't trigger validation", async () => {
         return expectValidations(
             "feature a; feature b; connector C from a to b;",
-            "checkConnectorTypeFeaturing"
+            "validateConnectorTypeFeaturing"
         ).resolves.toHaveLength(0);
     });
 
     test("referenced features featured by conforming types trigger validation", async () => {
         return expectValidations(
             "class A; feature a featured by A; feature b featured by A; connector C featured by A from a to b;",
-            "checkConnectorTypeFeaturing"
+            "validateConnectorTypeFeaturing"
         ).resolves.toHaveLength(0);
     });
 
-    test("referenced features featured by different types trigger validation", async () => {
-        return expectValidations(
-            "feature a; feature b featured by a; connector C from a to b;",
-            "checkConnectorTypeFeaturing"
-        ).resolves.toHaveLength(1);
+    test("inaccessible referenced features trigger the subsetting validation on the end", async () => {
+        return expectValidations("feature a; feature b featured by a; connector C from a to b;", [
+            "validateConnectorTypeFeaturing",
+            "validateSubsettingFeaturingTypes",
+        ]).resolves.toMatchObject([
+            { code: "validateSubsettingFeaturingTypes", severity: DiagnosticSeverity.Error },
+        ]);
+    });
+
+    test("referenced features not featured within every connector featuring type trigger validation", async () => {
+        const text =
+            "class A; class B; feature a featured by A; feature b featured by A; connector C featured by A, B from a to b;";
+        return expectValidations(text, [
+            "validateConnectorTypeFeaturing",
+            "validateSubsettingFeaturingTypes",
+        ]).resolves.toMatchObject([
+            {
+                code: "validateConnectorTypeFeaturing",
+                severity: DiagnosticSeverity.Error,
+                range: { start: { character: text.indexOf("a to b") } },
+            },
+            {
+                code: "validateConnectorTypeFeaturing",
+                range: { start: { character: text.indexOf("b;", text.indexOf("a to b")) } },
+            },
+        ]);
     });
 });
 
@@ -827,6 +1127,21 @@ describe("Feature chain expressions", () => {
 });
 
 describe("Invocation expressions", () => {
+    test("invoking a non-behavior triggers validation", async () => {
+        const text = `
+        behavior B; class K;
+        feature b : B; feature k : K;
+        feature x1 = B(); feature x2 = b(); feature x3 = new K();
+        feature y1 = K(); feature y2 = k();`;
+        return expectValidations(
+            text,
+            "validateInvocationExpressionInstantiatedType"
+        ).resolves.toMatchObject([
+            { range: { start: { character: text.split("\n")[4].indexOf("K()") } } },
+            { range: { start: { character: text.split("\n")[4].indexOf("k()") } } },
+        ]);
+    });
+
     test("redefining the same parameter twice triggers validation", async () => {
         return expectValidations(
             `
@@ -884,7 +1199,7 @@ describe("Item flows", () => {
             ]),
         });
 
-        return expectModelValidations(ns, "validateItemFlowItemFeature").resolves.toHaveLength(2);
+        return expectModelValidations(ns, "validateFlowItemFeature").resolves.toHaveLength(1);
     });
 
     it("should trigger validation for item flow ends without owned features", () => {
@@ -892,9 +1207,7 @@ describe("Item flows", () => {
         const id = basicIdProvider();
         const ns = ItemFlowEndMeta.create(id, doc, {});
 
-        return expectModelValidations(ns, "validateItemFlowEndNestedFeature").resolves.toHaveLength(
-            1
-        );
+        return expectModelValidations(ns, "validateFlowEndNestedFeature").resolves.toHaveLength(1);
     });
 
     it("should trigger validation for invalid item feature owning type", () => {
@@ -907,7 +1220,7 @@ describe("Item flows", () => {
             ]),
         });
 
-        return expectModelValidations(ns, "validateItemFlowEndOwningType").resolves.toHaveLength(1);
+        return expectModelValidations(ns, "validateFlowEndOwningType").resolves.toHaveLength(1);
     });
 
     test("invalid implicit subsetting triggers validation", async () => {
@@ -927,7 +1240,7 @@ describe("Item flows", () => {
             feature a { feature x; }
             feature b { feature y; }
             flow from a::x to b::y;`,
-            "validateItemFlowEndImplicitSubsetting",
+            "validateFlowEndImplicitSubsetting",
             { standardLibrary: "local" }
         ).resolves.toHaveLength(2);
     });
@@ -938,7 +1251,7 @@ describe("Item flows", () => {
             feature a;
             feature b;
             flow from a to b;`,
-            "validateItemFlowEndSubsetting"
+            "validateFlowEndSubsetting"
         ).resolves.toHaveLength(2);
     });
 
@@ -960,9 +1273,10 @@ describe("Item flows", () => {
             feature b { feature y; }
             flow from a.x to b.y;`,
             [
-                "checkConnectorTypeFeaturing",
-                "validateItemFlowEndSubsetting",
-                "validateItemFlowEndImplicitSubsetting",
+                "validateConnectorTypeFeaturing",
+                "validateSubsettingFeaturingTypes",
+                "validateFlowEndSubsetting",
+                "validateFlowEndImplicitSubsetting",
             ]
         ).resolves.toHaveLength(0);
     });
@@ -982,6 +1296,20 @@ describe("feature values", () => {
             "validateFeatureValueOverriding"
         ).resolves.toHaveLength(1);
     });
+
+    it.each([
+        ["feature x := 1;", 1],
+        ["var feature x := 1;", 0],
+        ["feature x = 1;", 0],
+    ])(
+        "initial values of non-variable features trigger validation: %s",
+        async (feature, expected) => {
+            return expectValidations(
+                `class C { ${feature} }`,
+                "validateFeatureValueIsInitial"
+            ).resolves.toHaveLength(expected);
+        }
+    );
 });
 
 describe("multiplicity range return type", () => {
@@ -1131,17 +1459,17 @@ describe("Standard library package validation", () => {
         })
     );
 
-    test("no standard library path triggers validation", async () => {
+    test("no standard library path triggers a warning", async () => {
         return expectValidations(
             "standard library package P {}",
-            "validateLibraryPackageNotStandard"
-        ).resolves.toHaveLength(1);
+            "validateLibraryPackageNotStandard_"
+        ).resolves.toMatchObject([{ severity: DiagnosticSeverity.Warning }]);
     });
 
     test("non standard library packages don't trigger validation", async () => {
         return expectValidations(
             "library package P {}",
-            "validateLibraryPackageNotStandard"
+            "validateLibraryPackageNotStandard_"
         ).resolves.toHaveLength(0);
     });
 
@@ -1153,7 +1481,7 @@ describe("Standard library package validation", () => {
         });
         return expectValidations(
             "standard library package P {}",
-            "validateLibraryPackageNotStandard"
+            "validateLibraryPackageNotStandard_"
         ).resolves.toHaveLength(1);
     });
 });

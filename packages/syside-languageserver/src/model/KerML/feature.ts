@@ -21,6 +21,7 @@ import {
     Conjugation,
     Connector,
     CrossSubsetting,
+    DataType,
     EndFeatureMembership,
     Feature,
     FeatureChaining,
@@ -40,7 +41,7 @@ import {
     Type,
     TypeFeaturing,
 } from "#generated/ast.js";
-import { FeatureDirectionKind, TypeClassifier } from "../enums.js";
+import { FeatureDirectionKind } from "../enums.js";
 import {
     BasicMetamodel,
     ElementIDProvider,
@@ -169,15 +170,26 @@ export class FeatureMeta extends TypeMeta {
      */
     isPortion = false;
 
+    protected _isConstant = false;
     /**
      * Whether this feature is declared with the `const` (KerML) / `constant` (SysML) keyword.
      */
-    isConstant = false;
+    @enumerable
+    get isConstant(): boolean {
+        return this._isConstant;
+    }
+    set isConstant(value) {
+        this._isConstant = value;
+    }
 
-    /**
-     * Whether this feature is declared with the `var` keyword (KerML only).
-     */
-    isVariable = false;
+    protected _isVariable = false;
+    @enumerable
+    get isVariable(): boolean {
+        return this._isVariable;
+    }
+    set isVariable(value) {
+        this._isVariable = value;
+    }
 
     /**
      * Whether this feature is derived
@@ -329,7 +341,7 @@ export class FeatureMeta extends TypeMeta {
         if (this.hasClassType())
             return this.isSuboccurrence()
                 ? "suboccurrence"
-                : this.isPortion
+                : this.isPortionImpl()
                   ? "portion"
                   : "occurrence";
         if (this.hasDataType()) return "dataValue";
@@ -386,34 +398,18 @@ export class FeatureMeta extends TypeMeta {
     override ast(): Feature | undefined {
         return this._ast as Feature;
     }
-    /**
-     * @returns true if this feature specializes any structure type, false
-     * otherwise
-     */
+
+    // the pilot reads owned (and implied) typings here, not inherited types
     hasStructureType(): boolean {
-        return (this.classifier & TypeClassifier.Structure) === TypeClassifier.Structure;
+        return this.types(FeatureTyping.$type).some((t) => t.is(Structure.$type));
     }
 
-    /**
-     * @returns true if this feature specializes any class type, false otherwise
-     */
     hasClassType(): boolean {
-        return (this.classifier & TypeClassifier.Class) === TypeClassifier.Class;
+        return this.types(FeatureTyping.$type).some((t) => t.is(Class.$type));
     }
 
-    /**
-     * @returns true if this feature specializes any data type, false otherwise
-     */
     hasDataType(): boolean {
-        return (this.classifier & TypeClassifier.DataType) === TypeClassifier.DataType;
-    }
-
-    /**
-     * @returns true if this feature specializes any association type, false
-     * otherwise
-     */
-    hasAssociation(): boolean {
-        return (this.classifier & TypeClassifier.Association) === TypeClassifier.Association;
+        return this.types(FeatureTyping.$type).some((t) => t.is(DataType.$type));
     }
 
     /**
@@ -430,35 +426,36 @@ export class FeatureMeta extends TypeMeta {
      * false otherwise
      */
     protected isBehaviorOwnedComposite(): boolean {
-        return this.isComposite && this.isBehaviorOwned();
+        // composite variants are owned by their variation but have no owning type
+        return this.isComposite && Boolean(this.owningType) && this.isBehaviorOwned();
     }
 
     /**
      * @returns true if this feature is composite and is owned by a structure
-     * type or a feature specializing a structure type, false otherwise
+     * type or a feature typed by a structure type, false otherwise
      */
-    protected isSubobject(): boolean {
+    protected isStructureOwnedComposite(): boolean {
         if (!this.isComposite) return false;
-        const owner = this.owner();
+        const owner = this.owningType;
         return Boolean(
             owner?.is(Structure.$type) || (owner?.is(Feature.$type) && owner.hasStructureType())
         );
     }
 
     /**
-     * @returns same as {@link FeatureMeta.isSubobject isSubobject}
+     * @returns same as {@link FeatureMeta.isStructureOwnedComposite isStructureOwnedComposite}
      */
-    protected isStructureOwnedComposite(): boolean {
-        return this.isSubobject();
+    protected isSubobject(): boolean {
+        return this.isStructureOwnedComposite();
     }
 
     /**
      * @returns true if this feature is composite and is owned by a class type
-     * or a feature specializing a class type, false otherwise
+     * or a feature typed by a class type, false otherwise
      */
     protected isSuboccurrence(): boolean {
         if (!this.isComposite) return false;
-        const owner = this.owner();
+        const owner = this.owningType;
         return Boolean(
             owner?.is(Class.$type) || (owner?.is(Feature.$type) && owner.hasClassType())
         );
@@ -483,21 +480,16 @@ export class FeatureMeta extends TypeMeta {
     }
 
     isFeaturedWithin(type: TypeMeta | undefined): boolean {
-        if (type === undefined) {
-            return (
-                this.featuredBy.length == 0 ||
-                (this.featuredBy.length == 1 &&
-                    this.featuredBy[0].qualifiedName == "Base::Anything")
-            );
-        }
-
-        if (this.featuredBy.length == 0) {
-            // implicitly featured by Base::Anything which every type is subtype of
-            // we do not add implicit featuring yet
-            return true;
-        }
-
-        return this.featuredBy.every((f) => type.specializes(f));
+        const featuringTypes = this.featuredBy;
+        if (featuringTypes.length === 0) return true;
+        if (!type) return featuringTypes.every((t) => t.qualifiedName === "Base::Anything");
+        const owner = this.owningType;
+        const first = this.chainingFeatures.at(0);
+        return (
+            featuringTypes.every((t) => isCompatible(type, t)) ||
+            (this.isVariable && !!owner && (type.conforms(owner) || isSnapshotsOf(type, owner))) ||
+            (!!first?.isVariable && !!first.owningType && type.conforms(first.owningType))
+        );
     }
 
     allRedefinitions(): Stream<RedefinitionMeta> {
@@ -666,7 +658,9 @@ export class FeatureMeta extends TypeMeta {
         return stream(
             this.collectDirectTypes(visited),
             ...([Conjugation.$type, Subsetting.$type] as const).map((kind) =>
-                this.types(kind)
+                stream(this.specializations(kind))
+                    .filter((s) => !s.is(CrossSubsetting.$type))
+                    .map((s) => s.finalElement())
                     .filter(BasicMetamodel.is(Feature.$type))
                     .flatMap((f) => (f as FeatureMeta).collectInheritedTypes(visited))
             )
@@ -746,6 +740,36 @@ export class FeatureMeta extends TypeMeta {
         if (options) FeatureMeta.applyFeatureOptions(model, options);
         return model;
     }
+}
+
+// pilot `TypeUtil.isCompatible`: features redefining a common feature (e.g.
+// explicit snapshot features) are compatible if their featuring types are
+function isCompatible(subtype: TypeMeta, supertype: TypeMeta): boolean {
+    if (subtype.conforms(supertype)) return true;
+    if (
+        !subtype.is(Feature.$type) ||
+        !supertype.is(Feature.$type) ||
+        !subtype.ownedFeatures().isEmpty() ||
+        !supertype.ownedFeatures().isEmpty()
+    )
+        return false;
+    const redefined = new Set([subtype, ...subtype.allRedefinedFeatures()]);
+    if (!stream([supertype], supertype.allRedefinedFeatures()).some((f) => redefined.has(f)))
+        return false;
+    return subtype.featuredBy.some((t) => supertype.isFeaturedWithin(t));
+}
+
+// the pilot features a variable feature by a snapshots feature of its owning
+// type, which we do not model: emulate `isCompatible(type, <owner>_snapshots)`
+function isSnapshotsOf(type: TypeMeta, owner: TypeMeta): boolean {
+    return (
+        type.is(Feature.$type) &&
+        type.ownedFeatures().isEmpty() &&
+        stream([type], type.allRedefinedFeatures()).some(
+            (f) => f.qualifiedName === "Occurrences::Occurrence::snapshots"
+        ) &&
+        type.featuredBy.some((t) => isCompatible(t, owner))
+    );
 }
 
 declare module "#generated/ast.js" {

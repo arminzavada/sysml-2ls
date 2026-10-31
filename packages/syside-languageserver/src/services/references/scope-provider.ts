@@ -32,15 +32,19 @@ import {
     FeatureChaining,
     FeatureInverting,
     FeatureReferenceExpression,
+    FeatureTyping,
+    FeatureValue,
     InlineExpression,
     InvocationExpression,
     Membership,
     Namespace,
     ParameterMembership,
     Redefinition,
+    ReferenceSubsetting,
     Specialization,
     Subsetting,
     SysMLFunction,
+    TransitionUsage,
     Type,
 } from "#generated/ast.js";
 import {
@@ -71,6 +75,8 @@ import {
     FeatureChainExpressionMeta,
     FeatureMeta,
     Metamodel,
+    SuccessionAsUsageMeta,
+    TransitionUsageMeta,
     TypeMeta,
 } from "../../model/index.js";
 import { SysMLType } from "../sysml-ast-reflection.js";
@@ -128,7 +134,12 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             if (context) {
                 parent = context;
             } else {
-                return this.initialScope(container.owner(), container.document, { aliasResolver });
+                const relationship = container.parent();
+                return this.initialScope(
+                    this.isTransitionSource(relationship) ? relationship : container.owner(),
+                    container.document,
+                    { aliasResolver }
+                );
             }
         } else {
             // even if the reference was discarded due to the wrong type,
@@ -172,6 +183,7 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             return;
         }
 
+        if (owner?.is(FeatureReferenceExpression.$type)) owner = this.nonExpressionNamespace(owner);
         while (owner?.is(InlineExpression.$type)) {
             // unwrap all the expressions to get the real parent
             owner = owner.owner();
@@ -206,7 +218,10 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
                 }
                 return;
             }
-            owner = chaining.owner()?.owner();
+            const relationship = chaining.owner()?.parent();
+            owner = this.isTransitionSource(relationship)
+                ? relationship?.owner()?.owner()
+                : chaining.owner()?.owner();
         }
 
         // Pilot conformance (`KerMLScope.xtend:213`): when resolving the first
@@ -257,11 +272,23 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
             // source == parent if this relationship is a part of declaration,
             // in that case skip the owner since specialization itself makes no
             // sense
+            const relationship = owner;
             owner = owner.source() === parent ? parent?.owner() : parent;
 
             if (options.skip?.parent()?.is(EndFeatureMembership.$type)) {
                 // connector ends cannot reference connector scope
+                const connector = owner;
                 owner = owner?.owner();
+                if (
+                    relationship.is(ReferenceSubsetting.$type) &&
+                    this.isTransitionSuccession(connector, options.skip)
+                )
+                    owner = owner?.owner();
+            } else if (relationship.is(FeatureTyping.$type)) {
+                // our invocations reference their type by a typing, the pilot's by a membership
+                owner = this.nonExpressionNamespace(
+                    parent?.is(InvocationExpression.$type) ? parent : owner
+                );
             }
         } else if (owner?.parent()?.is(ParameterMembership.$type)) {
             if (owner.owner()?.is(InvocationExpression.$type)) {
@@ -271,7 +298,11 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
         } else if (owner?.is(Membership.$type)) {
             // skip the alias scope since resolution tries to follow aliases to
             // their final destination
+            const membership = owner;
             owner = owner.owner();
+            owner = this.isTransitionSource(membership)
+                ? owner?.owner()
+                : this.nonExpressionNamespace(owner);
         }
 
         if (!owner) return;
@@ -382,6 +413,40 @@ export class SysMLScopeProvider extends DefaultScopeProvider {
                 }
             }
         }
+    }
+
+    // pilot `SysMLScopeProvider`: a transition's source and target resolve in
+    // the transition's owning namespace
+    protected isTransitionSource(relationship: Metamodel | undefined): boolean {
+        const transition = relationship?.owner();
+        return (
+            !!transition?.is(TransitionUsage.$type) &&
+            (transition as TransitionUsageMeta).source === relationship
+        );
+    }
+
+    protected isTransitionSuccession(
+        connector: Metamodel | undefined,
+        end: Metamodel | undefined
+    ): boolean {
+        const transition = connector?.owner();
+        if (!transition?.is(TransitionUsage.$type)) return false;
+        const { then, else: otherwise } = transition as TransitionUsageMeta;
+        return (
+            (then ?? otherwise)?.element() === connector &&
+            (connector as SuccessionAsUsageMeta).ownedEnds().indexOf(end as FeatureMeta) === 1
+        );
+    }
+
+    // pilot `NamespaceUtil.getNonExpressionNamespaceFor`: skips invocations,
+    // feature references, and any feature an expression is the value of
+    protected nonExpressionNamespace(namespace: Metamodel | undefined): Metamodel | undefined {
+        while (namespace?.isAny(InvocationExpression.$type, FeatureReferenceExpression.$type)) {
+            const isValue = namespace.parent()?.is(FeatureValue.$type);
+            namespace = namespace.owner();
+            if (isValue) namespace = namespace?.owner();
+        }
+        return namespace;
     }
 
     /**

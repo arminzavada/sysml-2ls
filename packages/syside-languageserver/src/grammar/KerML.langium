@@ -607,7 +607,7 @@ fragment FeatureConjugationPart:
 ;
 
 FeatureConjugation returns Conjugation:
-    targetRef=FeatureReference
+    targetRef=FeatureReference | targetChain=OwnedFeatureChain
 ;
 
 /* FEATURE VALUES */
@@ -921,7 +921,7 @@ MetadataFeature returns MetadataFeature:
 ;
 
 fragment MetadataFeatureDeclaration:
-    ( Identification TypedByToken )? heritage+=MetadataTyping
+    ( Identification? TypedByToken )? heritage+=MetadataTyping
 ;
 
 fragment MetadataBody:

@@ -30,7 +30,7 @@ export class VerificationCaseUsageMeta extends CaseUsageMeta {
     }
 
     isSubVerificationCase(): boolean {
-        const parent = this.owner();
+        const parent = this.owningType;
         return Boolean(
             this.isNonEntryExitComposite() &&
             parent?.isAny(VerificationCaseUsage.$type, VerificationCaseDefinition.$type)

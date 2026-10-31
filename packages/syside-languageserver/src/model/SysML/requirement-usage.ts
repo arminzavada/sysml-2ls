@@ -15,6 +15,7 @@
  ********************************************************************************/
 
 import {
+    RequirementConstraintMembership,
     RequirementDefinition,
     RequirementUsage,
     RequirementVerificationMembership,
@@ -42,10 +43,10 @@ export class RequirementUsageMeta extends ConstraintUsageMeta {
     }
 
     isSubrequirement(): boolean {
-        if (this.requirementConstraintKind() === "assumption") return false;
+        if (this.parent()?.is(RequirementConstraintMembership.$type)) return false;
         return Boolean(
             this.isComposite &&
-            this.owner()?.isAny(RequirementUsage.$type, RequirementDefinition.$type)
+            this.owningType?.isAny(RequirementUsage.$type, RequirementDefinition.$type)
         );
     }
 

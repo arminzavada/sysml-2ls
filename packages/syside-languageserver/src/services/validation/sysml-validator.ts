@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { stream } from "langium";
+import { CstUtils, stream } from "langium";
 import * as ast from "#generated/ast.js";
 import {
     AcceptActionUsageMeta,
@@ -25,6 +25,7 @@ import {
     AssertConstraintUsageMeta,
     AssignmentActionUsageMeta,
     AssociationStructMeta,
+    AttributeDefinitionMeta,
     AttributeUsageMeta,
     BasicMetamodel,
     CalculationUsageMeta,
@@ -32,6 +33,7 @@ import {
     CaseUsageMeta,
     ClassMeta,
     ConjugatedPortDefinitionMeta,
+    ConnectionDefinitionMeta,
     ConnectionUsageMeta,
     ConstraintUsageMeta,
     ControlNodeMeta,
@@ -50,7 +52,7 @@ import {
     InteractionMeta,
     InterfaceDefinitionMeta,
     InterfaceUsageMeta,
-    ItemUsageMeta,
+    MembershipMeta,
     MetadataUsageMeta,
     OPERATORS,
     ObjectiveMembershipMeta,
@@ -58,7 +60,6 @@ import {
     OccurrenceUsageMeta,
     OperatorExpressionMeta,
     ParameterMembershipMeta,
-    PartUsageMeta,
     PerformActionUsageMeta,
     PortDefinitionMeta,
     PortUsageMeta,
@@ -176,6 +177,17 @@ export class SysMLValidator extends KerMLValidator {
         }
     }
 
+    @validateSysML(ast.Usage.$type, [ast.AttributeUsage.$type, ast.OccurrenceUsage.$type])
+    validateUsageType_(node: UsageMeta, accept: ModelValidationAcceptor): void {
+        this.validateAllTypings(
+            node,
+            ast.Classifier.$type,
+            accept,
+            "A usage must be typed by definitions.",
+            { code: "validateUsageType_" }
+        );
+    }
+
     /* istanbul ignore next (ReferenceUsageMeta forces isComposite=false) */
     @validateSysML(ast.ReferenceUsage.$type)
     validateReferenceUsageIsReferential(node: UsageMeta, accept: ModelValidationAcceptor): void {
@@ -233,8 +245,23 @@ export class SysMLValidator extends KerMLValidator {
         }
     }
 
-    // TODO: validateAttributeUsageFeatures - seems to be blocked by KERML-4
-    // TODO: validateAttributeDefinitionFeatures - seems to be blocked by KERML-4
+    @validateSysML(ast.AttributeDefinition.$type)
+    @validateSysML(ast.AttributeUsage.$type)
+    validateAttributeFeatures(
+        node: AttributeDefinitionMeta | AttributeUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const [type, code] = node.is(ast.AttributeDefinition.$type)
+            ? ["definition", "validateAttributeDefinitionFeatures"]
+            : ["usage", "validateAttributeUsageFeatures"];
+        this.apply(
+            "error",
+            node.ownedFeatures().filter((f) => f.isComposite),
+            `Features of an attribute ${type} must be referential.`,
+            accept,
+            { code }
+        );
+    }
 
     /* istanbul ignore next (AttributeUsageMeta forces isComposite=false) */
     @validateSysML(ast.AttributeUsage.$type)
@@ -259,6 +286,20 @@ export class SysMLValidator extends KerMLValidator {
             "An AttributeUsage must be typed by DataTypes only.",
             { code: "validateAttributeUsageTyping" }
         );
+    }
+
+    @validateSysML(ast.AttributeUsage.$type, [ast.EnumerationUsage.$type])
+    validateAttributeUsageEnumerationType_(
+        node: AttributeUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const types = node.allTypings();
+        if (types.length > 1 && types.some((t) => t.is(ast.EnumerationDefinition.$type))) {
+            accept("error", "An enumeration attribute cannot have more than one type.", {
+                element: node,
+                code: "validateAttributeUsageEnumerationType_",
+            });
+        }
     }
 
     /* istanbul ignore next (EnumerationDefinitionMeta forces isVariation=true) */
@@ -350,8 +391,9 @@ export class SysMLValidator extends KerMLValidator {
     }
 
     @validateSysML(ast.OccurrenceUsage.$type, [
-        ast.ItemUsage.$type,
         ast.PortUsage.$type,
+        ast.ConnectionUsage.$type,
+        ast.MetadataUsage.$type,
         ast.Step.$type,
     ])
     validateOccurrenceUsageTyping(
@@ -362,7 +404,7 @@ export class SysMLValidator extends KerMLValidator {
             node,
             ast.Class.$type,
             accept,
-            "OccurrenceDefinition must be typed by Classes only.",
+            "An occurrence, item or part must be typed by occurrence definitions.",
             { code: "validateOccurrenceUsageTyping" }
         );
     }
@@ -388,42 +430,6 @@ export class SysMLValidator extends KerMLValidator {
                 element: node,
                 code: "validateOccurrenceUsageIndividualUsage",
             });
-        }
-    }
-
-    @validateSysML(ast.ItemUsage.$type, [
-        ast.PartUsage.$type,
-        ast.PortUsage.$type,
-        ast.MetadataUsage.$type,
-    ])
-    validateItemUsageTyping(node: ItemUsageMeta, accept: ModelValidationAcceptor): void {
-        this.validateAllTypings(
-            node,
-            ast.Structure.$type,
-            accept,
-            "ItemUsage must be typed by Structures only.",
-            { code: "validateItemUsageTyping" }
-        );
-    }
-
-    @validateSysML(ast.PartUsage.$type, [ast.ConnectionUsage.$type])
-    validatePartUsageTyping(node: PartUsageMeta, accept: ModelValidationAcceptor): void {
-        if (
-            this.validateAllTypings(
-                node,
-                ast.Structure.$type,
-                accept,
-                "PartUsage must be typed by Structures only",
-                { code: "validatePartUsageTyping" }
-            )
-        ) {
-            this.validateAtLeastTyping(
-                node,
-                ast.PartDefinition.$type,
-                accept,
-                "At least one of the itemDefinitions of a PartUsage must be a PartDefinition.",
-                { code: "validatePartUsagePartDefinition" }
-            );
         }
     }
 
@@ -538,13 +544,33 @@ export class SysMLValidator extends KerMLValidator {
         );
     }
 
+    @validateSysML(ast.ConnectionDefinition.$type)
     @validateSysML(ast.FlowDefinition.$type)
-    validateFlowEnd(node: FlowDefinitionMeta, accept: ModelValidationAcceptor): void {
-        const ends = node.ownedEnds();
+    validateDefinitionEndsAreUsages(
+        node: ConnectionDefinitionMeta | FlowDefinitionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const [type, code] = node.is(ast.FlowDefinition.$type)
+            ? ["flow", "validateFlowDefinitionEndsAreUsages_"]
+            : ["connection", "validateConnectionDefinitionEndsAreUsages_"];
+        const message = `A ${type} definition end must be a usage.`;
+        const ends = node.allEnds().filter((end) => !end.is(ast.Usage.$type));
+        const owned = ends.filter((end) => end.owner() === node);
+        if (owned.length > 0) this.apply("error", owned, message, accept, { code });
+        else if (ends.length > 0) accept("error", message, { element: node, code });
+    }
+
+    @validateSysML(ast.FlowDefinition.$type)
+    validateFlowDefinitionConnectionEnds(
+        node: FlowDefinitionMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const ends = node.allEnds();
         if (ends.length <= 2) return;
-        this.apply("error", ends, "FlowDefinition can have at most 2 ends.", accept, {
-            code: "validateFlowEnd",
-        });
+        const message = "A flow definition can have at most two ends.";
+        const code = "validateFlowDefinitionConnectionEnds";
+        if (node.ownedEnds().length <= 2) accept("error", message, { element: node, code });
+        else this.apply("error", ends.slice(2), message, accept, { code });
     }
 
     @validateSysML(ast.FlowUsage.$type)
@@ -606,7 +632,7 @@ export class SysMLValidator extends KerMLValidator {
         node: AcceptActionUsageMeta,
         accept: ModelValidationAcceptor
     ): void {
-        this.checkParameters(node, ["payload", "receiver"], accept, {
+        this.checkParameters(node, ["payload"], accept, {
             type: ast.AcceptActionUsage.$type,
             info: { code: "validateAcceptActionUsageParameters" },
         });
@@ -636,6 +662,23 @@ export class SysMLValidator extends KerMLValidator {
             accept("error", `An assignment must have a Feature referent.`, {
                 element: node,
                 code: "validateAssignmentActionUsageReferent",
+            });
+        }
+    }
+
+    @validateSysML(ast.AssignmentActionUsage.$type)
+    validateAssignmentActionUsageReferentIsTimeVarying(
+        node: AssignmentActionUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const member = node.targetMember;
+        const referent = member?.element();
+        if (!member || !referent || referent.chainingFeatures.length < referent.chainings.length)
+            return;
+        if (!referent.featureTarget.isVariable) {
+            accept("error", "Referent must be time varying.", {
+                element: referent.chainings.at(-1) ?? member,
+                code: "validateAssignmentActionUsageReferentIsTimeVarying",
             });
         }
     }
@@ -752,14 +795,6 @@ export class SysMLValidator extends KerMLValidator {
     }
 
     @validateSysML(ast.SendActionUsage.$type)
-    validateSendActionParameters(node: SendActionUsageMeta, accept: ModelValidationAcceptor): void {
-        this.checkParameters(node, ["payload", "sender", "receiver"], accept, {
-            type: ast.SendActionUsage.$type,
-            info: { code: "validateSendActionParameters" },
-        });
-    }
-
-    @validateSysML(ast.SendActionUsage.$type)
     validateSendActionReceiver(node: SendActionUsageMeta, accept: ModelValidationAcceptor): void {
         const receiver = node.receiver?.element()?.value?.element();
         if (
@@ -771,6 +806,21 @@ export class SysMLValidator extends KerMLValidator {
             accept("warning", "Sending to a port should be done through 'via' instead of 'to'", {
                 element: node.receiver,
                 code: "validateSendActionReceiver",
+            });
+        }
+    }
+
+    // the pilot parses '{' after 'send' as the action body; our grammar cannot exclude it from the payload expression
+    @validateSysML(ast.SendActionUsage.$type)
+    validateSendActionPayloadNotBody(
+        node: SendActionUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        const cst = node.payload.ast()?.$cstNode;
+        if (cst && CstUtils.flattenCst(cst).find((leaf) => !leaf.hidden)?.text === "{") {
+            accept("error", "'{' after 'send' starts the action body, not a payload.", {
+                element: node.payload,
+                code: "validateSendActionPayloadNotBody",
             });
         }
     }
@@ -971,6 +1021,40 @@ export class SysMLValidator extends KerMLValidator {
                 { element: succession ?? node, code: "validateTransitionUsageSuccession" }
             );
         }
+    }
+
+    @validateSysML(ast.TransitionUsage.$type)
+    validateTransitionUsageTriggerActions(
+        node: TransitionUsageMeta,
+        accept: ModelValidationAcceptor
+    ): void {
+        if (!node.accepter) return;
+        const source = (node.source ? node.sourceFeature() : this.previousFeature(node))
+            ?.featureTarget;
+        if (source?.is(ast.ActionUsage.$type) && !source.is(ast.StateUsage.$type))
+            accept("error", "A transition with an accepter must have a state as its source.", {
+                element: node.accepter,
+                code: "validateTransitionUsageTriggerActions",
+            });
+    }
+
+    // pilot `UsageUtil.getPreviousFeature`, the source of a transition without `first`
+    protected previousFeature(feature: FeatureMeta): FeatureMeta | undefined {
+        const owner = feature.owner();
+        if (!owner?.is(ast.Type.$type)) return;
+        const memberships = owner.children.filter(BasicMetamodel.is(ast.Membership.$type));
+        for (let i = memberships.indexOf(feature.parent() as MembershipMeta) - 1; i >= 0; --i) {
+            const element = memberships[i].element();
+            if (
+                element?.is(ast.Feature.$type) &&
+                !element.isParameter &&
+                !element.is(ast.TransitionUsage.$type) &&
+                (!element.is(ast.Connector.$type) ||
+                    (element.is(ast.FlowUsage.$type) && element.isMessage))
+            )
+                return element;
+        }
+        return;
     }
 
     @validateSysML(ast.CalculationUsage.$type, [ast.CaseUsage.$type])
@@ -1508,28 +1592,10 @@ export class SysMLValidator extends KerMLValidator {
         accept: ModelValidationAcceptor,
         message: string,
         info?: Omit<ModelDiagnosticInfo<T>, "element">
-    ): boolean {
+    ): void {
         if (node.allTypings().some((t) => !t.is(bound))) {
             accept("error", message, { ...info, element: node });
-            return false;
         }
-
-        return true;
-    }
-
-    protected validateAtLeastTyping<T extends FeatureMeta>(
-        node: T,
-        bound: SysMLType,
-        accept: ModelValidationAcceptor,
-        message: string,
-        info?: Omit<ModelDiagnosticInfo<T>, "element">
-    ): boolean {
-        if (!node.allTypings().find((t) => t.is(bound))) {
-            accept("error", message, { ...info, element: node });
-            return false;
-        }
-
-        return true;
     }
 
     protected checkReferencing(

@@ -240,6 +240,12 @@ describe("kerml feature formatting", () => {
         }).resolves.toEqual("out derived abstract composite const feature c;\n");
     });
 
+    it("should print var features", async () => {
+        return expectPrinted("var feature c;", {
+            node: Feature.$type,
+        }).resolves.toEqual("var feature c;\n");
+    });
+
     it("should print end features", async () => {
         return expectPrinted("end feature c;", {
             node: Feature.$type,

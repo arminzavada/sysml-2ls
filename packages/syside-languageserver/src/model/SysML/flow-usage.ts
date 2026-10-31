@@ -30,6 +30,7 @@ import {
     ParameterMembershipMeta,
 } from "../KerML/index.js";
 import { EventOccurrenceUsageMeta } from "./event-occurrence-usage.js";
+import { OccurrenceUsageMeta } from "./occurrence-usage.js";
 import { enumerable } from "../../utils/index.js";
 
 export interface FlowUsageOptions
@@ -72,6 +73,18 @@ export class FlowUsageMeta extends Mixin(ActionUsageMeta, ItemFlowMeta, Connecto
         return this._messages.length > 0;
     }
 
+    get isMessage(): boolean {
+        return this.ownedEnds().length === 0;
+    }
+
+    @enumerable
+    override get isAbstract(): boolean {
+        return super.isAbstract || (this.isMessage && this.relatedFeatures().length < 2);
+    }
+    override set isAbstract(value) {
+        this._isAbstract = value;
+    }
+
     /**
      * Adds owned message members and returns the new number of message members.
      * Any messages will be used in place of `ends`.
@@ -95,19 +108,26 @@ export class FlowUsageMeta extends Mixin(ActionUsageMeta, ItemFlowMeta, Connecto
     }
 
     override defaultGeneralTypes(): GeneralType[] {
-        const supertypes = super.defaultGeneralTypes();
-        if (this.isPartOwnedComposite()) supertypes.push("ownedAction");
-        else if (this.isStructureOwnedComposite()) supertypes.push("ownedPerformance");
+        const supertypes = FeatureMeta.prototype.defaultGeneralTypes.call(this);
+        if (this.isSuboccurrence()) supertypes.push("suboccurrence");
+        if (this.portionKind) supertypes.push(this.portionKind);
 
         if (this.isActionOwnedComposite()) supertypes.push("subaction");
+        else if (this.isPartOwnedComposite()) supertypes.push("ownedAction");
+
+        if (this.isStructureOwnedComposite()) supertypes.push("ownedPerformance");
         else if (this.isBehaviorOwnedComposite()) supertypes.push("subperformance");
         else if (this.isBehaviorOwned()) supertypes.push("enclosedPerformance");
 
         return supertypes;
     }
 
+    protected override isSuboccurrence(): boolean {
+        return OccurrenceUsageMeta.prototype["isSuboccurrence"].call(this);
+    }
+
     override defaultSupertype(): string {
-        return this.isMessageConnection ? "message" : "base";
+        return this.isMessage ? "message" : "base";
     }
 
     override ast(): FlowUsage | undefined {

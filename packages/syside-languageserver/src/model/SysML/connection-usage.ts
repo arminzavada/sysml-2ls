@@ -16,7 +16,7 @@
 
 import { Mixin } from "ts-mixer";
 import { ConnectionUsage } from "#generated/ast.js";
-import { metamodelOf } from "../metamodel.js";
+import { GeneralType, metamodelOf } from "../metamodel.js";
 import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
 import { PartUsageMeta, PartUsageOptions } from "./part-usage.js";
 import {
@@ -26,25 +26,24 @@ import {
     TypeMeta,
     ElementParts,
 } from "../KerML/index.js";
-import { enumerable } from "../../utils/index.js";
 
 export interface ConnectionUsageOptions extends PartUsageOptions, ConnectorAsUsageOptions {}
 
 @metamodelOf(ConnectionUsage.$type, {
     base: "Connections::connections",
     binary: "Connections::binaryConnections",
+    object: "Objects::objects",
+    subpart: "Items::Item::subparts",
 })
 export class ConnectionUsageMeta extends Mixin(ConnectorAsUsageMeta, PartUsageMeta) {
-    @enumerable
-    override get isComposite(): boolean {
-        return false;
-    }
-    override set isComposite(value) {
-        // empty
+    override defaultGeneralTypes(): GeneralType[] {
+        const supertypes = super.defaultGeneralTypes();
+        if (this.isSubitem()) supertypes.push("subpart");
+        return supertypes;
     }
 
     override defaultSupertype(): string {
-        return this.isBinary() ? "binary" : "base";
+        return this.ownedEnds().length === 2 ? "binary" : "base";
     }
 
     override ast(): ConnectionUsage | undefined {

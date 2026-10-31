@@ -31,6 +31,7 @@ export type RenderingUsageOptions = PartUsageOptions;
     base: "Views::renderings",
     subrendering: "Views::Rendering::subrenderings",
     viewRendering: "Views::View::viewRendering",
+    subpart: "Items::Item::subparts",
 })
 export class RenderingUsageMeta extends PartUsageMeta {
     override defaultSupertype(): string {
@@ -39,6 +40,7 @@ export class RenderingUsageMeta extends PartUsageMeta {
 
     override defaultGeneralTypes(): GeneralType[] {
         const supertypes = super.defaultGeneralTypes();
+        if (this.isSubitem()) supertypes.push("subpart");
         if (this.isViewRendering()) {
             supertypes.push({ type: "viewRendering", specialization: Redefinition.$type });
         }
@@ -46,8 +48,7 @@ export class RenderingUsageMeta extends PartUsageMeta {
     }
 
     isSubrendering(): boolean {
-        const parent = this.owner();
-        return Boolean(parent?.isAny(RenderingUsage.$type, RenderingDefinition.$type));
+        return Boolean(this.owningType?.isAny(RenderingUsage.$type, RenderingDefinition.$type));
     }
 
     isViewRendering(): boolean {

@@ -15,17 +15,17 @@ This project follows three upstream sources from the OMG SysML v2 ecosystem. Any
 - **Cadence:** Monthly tags formatted `YYYY-MM` (occasionally `YYYY-MM.1` patches).
 - **Role:** De-facto reference for behavior. When the spec is ambiguous or silent, the pilot wins.
 - **Targeting policy:** always the latest available tag at the time of an upgrade. We do not pin to older tags.
-- **Currently at:** `2026-03` (commit `3a1be5b87`, tagged 2026-04-03). Reached as the target of the 2026-03 upgrade cycle (see [`upgrades/2026-03/CYCLE-COMPLETE.md`](upgrades/2026-03/CYCLE-COMPLETE.md)).
+- **Currently at:** `2026-09.1` (commit `d81b2ad50`, tagged 2026-10-28). Reached as the target of the 2026-09.1 upgrade cycle (see [`upgrades/2026-09.1/`](upgrades/2026-09.1/)).
 
 ## 3. Standard library (SysML-v2-Release)
 
 - **Repo:** <https://github.com/Systems-Modeling/SysML-v2-Release>
 - **Cadence:** Monthly tags `YYYY-MM`, in lockstep with the pilot.
 - **What we use:** the `sysml.library/` content. The repo also ships spec PDFs, example models, and installers — those are not consumed here.
-- **Local pinning:** vendored via [`packages/syside-languageserver/scripts/clone-sysml-release.mjs`](../../packages/syside-languageserver/scripts/clone-sysml-release.mjs).
+- **Local pinning:** vendored via [`scripts/clone-sysml-release.mjs`](../../scripts/clone-sysml-release.mjs), which also regenerates the client/browser download registry `packages/syside-base/src/stdlib.ts` from the pin.
 - **Pinning rule:** the standard-library commit **tracks the pilot tag we are targeting**. They are intended to move together — never pin them independently.
 - **Source of truth:** upstream `Systems-Modeling/SysML-v2-Release`. The clone script fetches from there directly. The previous `arminzavada/SysML-v2-Release` fork (carrying legacy customizations from earlier maintainers) was retired during the 2026-03 upgrade cycle and must not be reintroduced.
-- **Current pin:** commit `cd99f7ca70b96abb38f09dfd25725e3cf259baa3` (upstream tag `2026-03`). Bump in [`packages/syside-languageserver/scripts/clone-sysml-release.mjs`](../../packages/syside-languageserver/scripts/clone-sysml-release.mjs) when advancing.
+- **Current pin:** commit `b7a6b77000c9136f8f24822fc9d2cb237c76267f` (upstream tag `2026-09`). Bump `tag` and `commit` in [`scripts/clone-sysml-release.mjs`](../../scripts/clone-sysml-release.mjs) when advancing.
 - **Patches:** the clone script applies all files matching `scripts/patches/*.patch` after checkout. Currently the directory is empty — the one historical fork patch (`Occurrences.kerml` `end` shape) retired itself at upstream tag `2026-01` when upstream emitted the same form.
 
 ## Maintenance rule

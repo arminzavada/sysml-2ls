@@ -19,7 +19,7 @@ contributions.
   [2024-12](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2024-12)
   spec. This fork has advanced through every monthly release and now ships
   on the
-  [2026-03](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2026-03)
+  [2026-09](https://github.com/Systems-Modeling/SysML-v2-Release/tree/2026-09)
   release (see [CHANGELOG.md](CHANGELOG.md) and
   [docs/maintenance/](docs/maintenance/) for the cycle's notes).
 - The goal is _authoring_ support — parser, language server, editor tooling —

@@ -28,10 +28,19 @@ export type OccurrenceUsageOptions = UsageOptions;
 export class OccurrenceUsageMeta extends UsageMeta {
     override defaultGeneralTypes(): GeneralType[] {
         const supertypes = super.defaultGeneralTypes();
-        if (this.isSuboccurrence()) supertypes.push("suboccurrence");
+        if (this.hasDataType()) supertypes.push("dataValue");
+        if (this.hasStructureType()) supertypes.push(this.isSubobject() ? "subobject" : "object");
+        else if (this.isSuboccurrence()) supertypes.push("suboccurrence");
         if (this.portionKind) supertypes.push(this.portionKind);
 
         return supertypes;
+    }
+
+    protected override isSuboccurrence(): boolean {
+        return (
+            super.isSuboccurrence() ||
+            Boolean(this.isComposite && this.owningType?.is(OccurrenceUsage.$type))
+        );
     }
 
     override defaultSupertype(): string {

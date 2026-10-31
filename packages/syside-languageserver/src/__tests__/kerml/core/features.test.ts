@@ -26,6 +26,7 @@ import {
     recursiveObjectContaining,
 } from "../../../testing/index.js";
 import {
+    Association,
     Feature,
     MultiplicityRange,
     LiteralNumber,
@@ -123,6 +124,37 @@ test.concurrent.each([
         qualifiedName: "a",
         [property]: value,
     });
+});
+
+test.each([
+    ["const", true, true],
+    ["var", false, true],
+    ["", false, false],
+])(
+    "feature with prefix '%s' has isConstant %s and isVariable %s",
+    async (prefix, isConstant, isVariable) => {
+        const result = await parseKerML(prefix + " feature a;");
+        expect(result).toMatchObject(NO_ERRORS);
+        expect(result.value.children[0].target?.$meta).toMatchObject({ isConstant, isVariable });
+    }
+);
+
+test("feature prefix 'portion' does not imply 'composite'", async () => {
+    const result = await parseKerML("portion feature a;");
+    expect(result).toMatchObject(NO_ERRORS);
+    expect(result.value.children[0].target?.$meta).toMatchObject({
+        isPortion: true,
+        isComposite: false,
+    });
+});
+
+test("cross subsettings do not contribute types", async () => {
+    const result = await parseKerML(`
+    class A; class B { feature x : B; }
+    assoc R { end a : A crosses b.x; end b : B; }`);
+    expect(result).toMatchObject(NO_ERRORS);
+    const end = (result.value.children[2].target as Association).$meta.ownedFeatures().head();
+    expect(end?.allTypings().map((t) => t.name)).toEqual(["A"]);
 });
 
 test.fails("conjugating feature with a non-feature issues a warning", async () => {

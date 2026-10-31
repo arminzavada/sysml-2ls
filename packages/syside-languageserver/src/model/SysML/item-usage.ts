@@ -33,10 +33,13 @@ export class ItemUsageMeta extends OccurrenceUsageMeta {
         return super.isSuboccurrence() && !this.isSubitem();
     }
 
+    protected override isSubobject(): boolean {
+        return super.isSubobject() && !this.isSubitem();
+    }
+
     protected isSubitem(): boolean {
         if (!this.isComposite) return false;
-        const parent = this.owner();
-        return Boolean(parent?.isAny(ItemDefinition.$type, ItemUsage.$type));
+        return Boolean(this.owningType?.isAny(ItemDefinition.$type, ItemUsage.$type));
     }
 
     override ast(): ItemUsage | undefined {

@@ -30,8 +30,7 @@ export class ViewpointUsageMeta extends RequirementUsageMeta {
     }
 
     isSatisfiedViewpoint(): boolean {
-        const parent = this.owner();
-        return Boolean(parent?.isAny(ViewDefinition.$type, ViewUsage.$type));
+        return Boolean(this.owningType?.isAny(ViewDefinition.$type, ViewUsage.$type));
     }
 
     override ast(): ViewpointUsage | undefined {

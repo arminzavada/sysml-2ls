@@ -33,7 +33,7 @@ export class AnalysisCaseUsageMeta extends CaseUsageMeta {
     }
 
     isSubAnalysisCase(): boolean {
-        const parent = this.owner();
+        const parent = this.owningType;
         return (
             this.isNonEntryExitComposite() &&
             Boolean(parent?.isAny(AnalysisCaseUsage.$type, AnalysisCaseDefinition.$type))

@@ -59,9 +59,7 @@ export class ConstraintUsageMeta extends Mixin(BooleanExpressionMeta, Occurrence
 
     isCheckedConstraint(): boolean {
         if (!this.isComposite) return false;
-
-        const parent = this.owner();
-        return Boolean(parent?.isAny(ItemDefinition.$type, ItemUsage.$type));
+        return Boolean(this.owningType?.isAny(ItemDefinition.$type, ItemUsage.$type));
     }
 
     override ast(): ConstraintUsage | undefined {

@@ -20,6 +20,7 @@ import { BindingConnectorMeta, BindingConnectorOptions } from "../KerML/binding-
 import { metamodelOf } from "../metamodel.js";
 import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
 import type { FeatureMeta } from "../KerML/_internal.js";
+import { enumerable } from "../../utils/common.js";
 
 export interface BindingConnectorAsUsageOptions
     extends BindingConnectorOptions, ConnectorAsUsageOptions {}
@@ -29,6 +30,14 @@ export interface BindingConnectorAsUsageOptions
     binary: "Links::selfLinks",
 })
 export class BindingConnectorAsUsageMeta extends Mixin(BindingConnectorMeta, ConnectorAsUsageMeta) {
+    @enumerable
+    override get isComposite(): boolean {
+        return false;
+    }
+    override set isComposite(value) {
+        // empty
+    }
+
     override ast(): BindingConnectorAsUsage | undefined {
         return this._ast as BindingConnectorAsUsage;
     }

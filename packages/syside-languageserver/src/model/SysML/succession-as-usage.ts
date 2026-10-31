@@ -32,6 +32,7 @@ import { FeatureMembershipMeta, FeatureMeta, MembershipMeta } from "../KerML/ind
 import { SuccessionMeta, SuccessionOptions } from "../KerML/succession.js";
 import { metamodelOf, BasicMetamodel } from "../metamodel.js";
 import { ConnectorAsUsageMeta, ConnectorAsUsageOptions } from "./connector-as-usage.js";
+import { enumerable } from "../../utils/common.js";
 
 export interface SuccessionAsUsageOptions extends SuccessionOptions, ConnectorAsUsageOptions {}
 
@@ -40,6 +41,14 @@ export interface SuccessionAsUsageOptions extends SuccessionOptions, ConnectorAs
     binary: "Occurrences::happensBeforeLinks",
 })
 export class SuccessionAsUsageMeta extends Mixin(SuccessionMeta, ConnectorAsUsageMeta) {
+    @enumerable
+    override get isComposite(): boolean {
+        return false;
+    }
+    override set isComposite(value) {
+        // empty
+    }
+
     override ast(): SuccessionAsUsage | undefined {
         return this._ast as SuccessionAsUsage;
     }

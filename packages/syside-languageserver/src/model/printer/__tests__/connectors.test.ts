@@ -240,6 +240,12 @@ describe("messages", () => {
     it("should print messages with ends only", async () => {
         return expectPrinted("message a to b;").resolves.toEqual("message a to b;\n");
     });
+
+    it("should print explicitly abstract messages", async () => {
+        return expectPrinted("abstract message a of I;").resolves.toEqual(
+            "abstract message a of I;\n"
+        );
+    });
 });
 
 describe("binding connectors as usage", () => {
@@ -394,5 +400,58 @@ describe("interface usage", () => {
         return expectPrinted(`interface i connect (one, two) {}`, {
             format: { interface_usage_connect_keyword: { default: "as_needed" } },
         }).resolves.toEqual(`interface i connect (one, two) {}\n`);
+    });
+
+    it("should print feature values", () => {
+        return expectPrinted(`abstract interface i = i1;`).resolves.toEqual(
+            `abstract interface i = i1;\n`
+        );
+    });
+
+    it("should print feature values before binary ends", () => {
+        return expectPrinted(`interface i : I := i1 connect one to two {}`).resolves.toEqual(
+            `interface i : I := i1 connect one to two {}\n`
+        );
+    });
+
+    it.each([
+        ["binary", "one to two"],
+        ["nary", "(one, two, three)"],
+    ])("should keep connect keyword after a feature value in %s interface", (_, ends) => {
+        return expectPrinted(`interface = i1 connect ${ends} {}`, {
+            format: { interface_usage_connect_keyword: { default: "as_needed" } },
+        }).resolves.toEqual(`interface = i1 connect ${ends} {}\n`);
+    });
+});
+
+describe("ref on connection and flow usages", () => {
+    it.each([
+        [
+            ConnectionUsage.$type,
+            "connection c connect a to b;",
+            "connector_as_usage_reference_keyword",
+        ],
+        [FlowUsage.$type, "flow f from a to b;", "connection_usage_reference_keyword"],
+    ] as const)("%s keeps a ref that decides compositeness", (node, decl, option) => {
+        return expectPrintedAs(`part def P { ref ${decl} }`, {
+            lang: "sysml",
+            node,
+            format: { [option]: { default: "never" } },
+        }).resolves.toEqual(`ref ${decl}\n`);
+    });
+
+    it.each([
+        [
+            ConnectionUsage.$type,
+            "connection c connect a to b;",
+            "connector_as_usage_reference_keyword",
+        ],
+        [FlowUsage.$type, "flow f from a to b;", "connection_usage_reference_keyword"],
+    ] as const)("%s drops a redundant ref", (node, decl, option) => {
+        return expectPrintedAs(`ref ${decl}`, {
+            lang: "sysml",
+            node,
+            format: { [option]: { default: "never" } },
+        }).resolves.toEqual(`${decl}\n`);
     });
 });

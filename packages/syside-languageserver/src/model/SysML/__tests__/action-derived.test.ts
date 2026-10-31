@@ -92,7 +92,7 @@ describe("SendActionUsageMeta derived methods", () => {
             ${COMMON_PROLOGUE}
             part def P {
                 port p: CommandPort;
-                exhibit state S { state s1 { entry send to p; } }
+                action a { send to p; }
             }
         `);
         expect(sends).toHaveLength(1);

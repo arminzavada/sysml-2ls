@@ -84,13 +84,9 @@ export class ConnectorMeta extends Mixin(
     }
 
     override defaultSupertype(): string {
-        if (this.hasStructureType()) {
-            if (this._ends.length > 2) return "object";
-            return this.isBinary() ? "binaryObject" : "object";
-        }
-
-        if (this._ends.length > 2) return "base";
-        return this.isBinary() ? "binary" : "base";
+        const isBinary = this.ownedEnds().length === 2;
+        if (this.hasStructureType()) return isBinary ? "binaryObject" : "object";
+        return isBinary ? "binary" : "base";
     }
 
     override ast(): Connector | undefined {

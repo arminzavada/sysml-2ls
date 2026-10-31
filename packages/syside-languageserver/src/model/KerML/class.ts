@@ -15,7 +15,6 @@
  ********************************************************************************/
 
 import { Class } from "#generated/ast.js";
-import { TypeClassifier } from "../enums.js";
 import { metamodelOf } from "../metamodel.js";
 import { ClassifierMeta, ClassifierOptions } from "./_internal.js";
 
@@ -27,8 +26,6 @@ export type ClassOptions = ClassifierOptions;
 
 @metamodelOf(Class.$type, ImplicitClasses)
 export class ClassMeta extends ClassifierMeta {
-    protected override _classifier = TypeClassifier.Class;
-
     override ast(): Class | undefined {
         return this._ast as Class;
     }

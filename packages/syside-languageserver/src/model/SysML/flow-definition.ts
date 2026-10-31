@@ -24,13 +24,17 @@ import { AstNode, LangiumDocument } from "langium";
 export interface FlowDefinitionOptions extends InteractionOptions, ActionDefinitionOptions {}
 
 @metamodelOf(FlowDefinition.$type, {
-    base: "Flows::Message",
+    base: "Flows::MessageAction",
     binary: "Flows::Message",
 })
 // @ts-expect-error ignoring static inheritance error
 export class FlowDefinitionMeta extends Mixin(InteractionMeta, ActionDefinitionMeta) {
     override ast(): FlowDefinition | undefined {
         return this._ast as FlowDefinition;
+    }
+
+    override defaultSupertype(): string {
+        return this.ownedEnds().length === 2 ? "binary" : "base";
     }
 
     static override create<T extends AstNode>(

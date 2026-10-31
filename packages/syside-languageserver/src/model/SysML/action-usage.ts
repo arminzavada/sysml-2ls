@@ -26,7 +26,6 @@ export interface ActionUsageOptions extends StepOptions, OccurrenceUsageOptions 
     base: "Actions::actions",
     subaction: "Actions::Action::subactions",
     ownedAction: "Parts::Part::ownedActions",
-    subPerformance: "Performances::Performance::subPerformances",
     enclosedPerformance: "Performances::Performance::enclosedPerformances",
     entry: "States::StateAction::entryAction",
     do: "States::StateAction::doAction",
@@ -49,6 +48,7 @@ export class ActionUsageMeta extends Mixin(StepMeta, OccurrenceUsageMeta) {
         const subactionType = this.getSubactionType();
         if (subactionType) supertypes.push(subactionType);
         if (this.isStructureOwnedComposite()) supertypes.push("ownedPerformance");
+        else if (this.isBehaviorOwnedComposite()) supertypes.push("subperformance");
         else if (this.isBehaviorOwned()) supertypes.push("enclosedPerformance");
         return supertypes;
     }
@@ -66,8 +66,7 @@ export class ActionUsageMeta extends Mixin(StepMeta, OccurrenceUsageMeta) {
     }
 
     isPerformedAction(): boolean {
-        const parent = this.owner();
-        return Boolean(parent?.isAny(PartUsage.$type, PartDefinition.$type));
+        return Boolean(this.owningType?.isAny(PartUsage.$type, PartDefinition.$type));
     }
 }
 

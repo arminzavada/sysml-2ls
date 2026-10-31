@@ -43,13 +43,17 @@ There is no SLA. Skipping months is fine; catching up on multiple at once is als
    - [ ] Note the items requiring action.
 
 4. **Port to this repo**
-   - _(Fill in based on first real run — do not pre-invent steps here.)_
+   - [ ] Probe beyond the range: in 2026-09.1 the pre-existing deviations outweighed the in-range port.
+   - [ ] Port in the order stdlib pin, grammar, typing, validation, with tests green at each boundary. The pin (step 5) can go first when the library hop is test-neutral.
+   - [ ] Check each change against the pilot's xpect models, its stdlib XMI (compositeness and typing, see `stdlib-typing.test.ts`) and the release example models.
+   - [ ] Per phase, diff every diagnostic and reference target on the release models before and after; trace each change to an item.
+   - [ ] Record each stricter-than-pilot check, and each pilot-reject still accepted, in [`known_limitations.md`](../known_limitations.md).
 
 5. **Update the standard-library pin**
-   - [ ] Edit [`packages/syside-languageserver/scripts/clone-sysml-release.mjs`](../../packages/syside-languageserver/scripts/clone-sysml-release.mjs):
+   - [ ] Edit [`scripts/clone-sysml-release.mjs`](../../scripts/clone-sysml-release.mjs):
      - The remote must be upstream `Systems-Modeling/SysML-v2-Release` (see [`upstream-sources.md`](upstream-sources.md)). The legacy `arminzavada/SysML-v2-Release` fork was retired in the 2026-03 cycle and must not be reintroduced.
-     - The pinned commit must match the `SysML-v2-Release` tag corresponding to the target pilot tag.
-   - [ ] Re-run the clone script; rebuild.
+     - `tag` and `commit` must match the `SysML-v2-Release` tag corresponding to the target pilot tag.
+   - [ ] Re-run the clone script (`pnpm clone-stdlib`); it also regenerates `packages/syside-base/src/stdlib.ts`. Rebuild.
 
 6. **Validate**
    - [ ] Lint, type-check, full test suite pass.

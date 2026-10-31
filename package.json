@@ -32,8 +32,7 @@
         "vscode:package": "pnpm -F syside-languageserver assemble && pnpm -F syside-languageclient assemble && pnpm --dir packages/syside-vscode vscode:package",
         "cli": "pnpm -F syside-languageserver assemble && pnpm -F syside-cli bundle",
         "grammar:watch": "pnpm --dir packages/syside-languageserver grammar:watch",
-        "clone-stdlib": "node ./scripts/clone-sysml-release.mjs",
-        "update-stdlib": "node ./scripts/update-stdlib.mjs"
+        "clone-stdlib": "node ./scripts/clone-sysml-release.mjs"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",

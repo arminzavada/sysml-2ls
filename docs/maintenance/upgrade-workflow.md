@@ -106,6 +106,8 @@ These are codified as memories; this is their executive summary:
 - **The fork-patch catalogue's "load-bearing" classifications drift.** Always run P1a (reclassify patches) early — the LSP evolves and patches become moot without being marked. The 2026-03 cycle found 23 of 26 patches already moot — a ~15x overestimate in the original catalogue.
 - **Pre-migration audit may underestimate effort.** The 2026-03 audit estimated Phase 0 (Langium upgrade) at "one focused week"; reality was ~2-3 weeks (ESM migration + 3 hops). Build in margin.
 - **Langium 2.0+ is ESM-only.** Any upgrade past 1.x requires a workspace ESM migration as a separate sub-phase.
+- **Chained implementation phases share one working tree.** When each phase builds on the previous uncommitted one, subagents cannot use worktree isolation; they must not `git stash` either, since the user's stashes live there.
+- **Hook timeouts under heavy machine load** look like regressions. Rerun the failing files alone before investigating.
 - **Markdown lint warnings** accumulate when chunks/plan docs are edited iteratively. Do a cleanup pass once strategic content settles, not per-edit.
 - **The Heisenbug** ([`pre-migration-audit.md` §3](pre-migration-audit.md#3-heisenbug-characterization)) is a validation/linking race in `validateFeatureTyping`. Best fixed by the multi-spec scoping work; don't expect Phase 1 stdlib swap to address it.
 

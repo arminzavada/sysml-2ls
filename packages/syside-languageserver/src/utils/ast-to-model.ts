@@ -136,9 +136,9 @@ const AstToModel: {
 
         model.direction = getFeatureDirectionKind(node.direction);
         model.isPortion = !!node.isPortion;
-        model.isComposite = !!node.isComposite || model.isPortion;
+        model.isComposite = !!node.isComposite;
         model.isConstant = !!node.isConstant;
-        model.isVariable = !!node.isVariable;
+        model.isVariable = !!node.isVariable || !!node.isConstant;
         model.isDerived = !!node.isDerived;
         model.isEnd = !!node.isEnd;
 
@@ -237,8 +237,9 @@ const AstToModel: {
     },
 
     [ast.AssignmentActionUsage.$type](model, node) {
-        (model["_targetMember"] as RelationshipMeta) = node.targetMember.$meta;
-        (model["_assignedValue"] as RelationshipMeta) = node.assignedValue.$meta;
+        // missing after parser error recovery, e.g. `assign (p).x := 1;`
+        (model["_targetMember"] as RelationshipMeta | undefined) = node.targetMember?.$meta;
+        (model["_assignedValue"] as RelationshipMeta | undefined) = node.assignedValue?.$meta;
     },
 
     [ast.Definition.$type](model, node) {
@@ -306,6 +307,7 @@ const AstToModel: {
         model.isIndividual = node.isIndividual;
         model.isReference = node.isReference;
         model.portionKind = node.portionKind;
+        model.isPortion = Boolean(node.portionKind);
     },
 
     [ast.WhileLoopActionUsage.$type](model, node) {
