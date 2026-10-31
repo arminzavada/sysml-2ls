@@ -10,6 +10,7 @@ import { SemantifyrStateMapper } from "./SemantifyrStateMapper";
 import { SemantifyrActionMapper } from "./SemantifyrActionMapper";
 import { SemantifyrExpressionMapper } from "./SemantifyrExpressionMapper";
 import { SemantifyrTransitionMapper } from "./SemantifyrTransitionMapper";
+import { SemantifyrTraceResolver } from "./SemantifyrTraceResolver";
 
 export type SemantifyrMapperServices = {
     elementNameProvider: StableElementNameProvider;
@@ -23,6 +24,7 @@ export type SemantifyrMapperServices = {
     verificationCaseMapper: SemantifyrVerificationCaseMapper;
     rootNamespaceMapper: SemantifyrRootNamespaceMapper;
     expressionStringifier: SemantifyrExpressionStringifier;
+    traceResolver: SemantifyrTraceResolver;
 };
 
 export const SemantifyrMapperModule: Module<SemantifyrMapperServices> = {
@@ -37,6 +39,7 @@ export const SemantifyrMapperModule: Module<SemantifyrMapperServices> = {
     verificationCaseMapper: (services) => new SemantifyrVerificationCaseMapper(services),
     rootNamespaceMapper: (services) => new SemantifyrRootNamespaceMapper(services),
     expressionStringifier: (services) => new SemantifyrExpressionStringifier(services),
+    traceResolver: (services) => new SemantifyrTraceResolver(services),
 };
 
 export function createSemantifyrMapperServices(): SemantifyrMapperServices {

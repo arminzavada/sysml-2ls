@@ -26,17 +26,30 @@ class UniqueNameProvider {
 
 export class StableElementNameProvider {
     private readonly uniqueNameProviders: UniqueNameProviderMap = new Map();
+    private readonly namedElements = new Map<string, Set<ast.Element>>();
 
     public stableName(element: ast.Element): string {
         if (element == undefined) {
             return "UNDEFINED_ELEMENT";
         }
 
-        if (element.declaredName != undefined) {
-            return element.declaredName;
-        }
+        const name =
+            element.declaredName ?? this.getTypeNameProvider(element.$type).getStableName(element);
+        this.record(name, element);
+        return name;
+    }
 
-        return this.getTypeNameProvider(element.$type).getStableName(element);
+    public elementsNamed(name: string): ast.Element[] {
+        return [...(this.namedElements.get(name) ?? [])];
+    }
+
+    private record(name: string, element: ast.Element): void {
+        const elements = this.namedElements.get(name);
+        if (elements) {
+            elements.add(element);
+        } else {
+            this.namedElements.set(name, new Set([element]));
+        }
     }
 
     protected getTypeNameProvider(type: ast.Element["$type"]): UniqueNameProvider {

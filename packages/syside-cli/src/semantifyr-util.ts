@@ -27,11 +27,13 @@ import {
     SysMLLanguageMetaData,
     KerMLLanguageMetaData,
     mapSysMLNamespaceToSemantifyr,
+    mapSemantifyrTraceToSysML,
+    SemantifyrTrace,
     SysMLBuildOptions,
 } from "syside-languageserver";
 import { SysMLNodeFileSystem } from "syside-languageserver/node.js";
 
-interface CompileOptions extends CommandOptions {
+interface OutputOptions extends CommandOptions {
     output?: string;
 }
 
@@ -56,11 +58,8 @@ async function collectLibraryFiles(dir: string): Promise<URI[]> {
     return collected;
 }
 
-export const compileAction = async (
-    fileName: string,
-    stdlibPath: string,
-    options: CompileOptions
-): Promise<void> => {
+async function loadModel(fileName: string, stdlibArgument: string): Promise<ast.Namespace> {
+    const stdlibPath = path.resolve(stdlibArgument);
     if (!SysMLExtensions.some((ext) => fileName.endsWith(ext))) {
         console.error(
             chalk.yellow(
@@ -134,7 +133,20 @@ export const compileAction = async (
         process.exit(1);
     }
 
-    const rootNode = modelDoc.parseResult.value as ast.Namespace;
+    return modelDoc.parseResult.value as ast.Namespace;
+}
+
+async function writeOutput(outputFile: string, content: string): Promise<void> {
+    await fsp.mkdir(path.dirname(outputFile), { recursive: true });
+    await fsp.writeFile(outputFile, content);
+}
+
+export const compileAction = async (
+    fileName: string,
+    stdlibPath: string,
+    options: OutputOptions
+): Promise<void> => {
+    const rootNode = await loadModel(fileName, stdlibPath);
     const oxstsCode = mapSysMLNamespaceToSemantifyr(rootNode);
 
     const outputFile =
@@ -144,7 +156,29 @@ export const compileAction = async (
             path.basename(fileName, path.extname(fileName)) + ".oxsts"
         );
 
-    await fsp.mkdir(path.dirname(outputFile), { recursive: true });
-    await fsp.writeFile(outputFile, oxstsCode);
+    await writeOutput(outputFile, oxstsCode);
     console.log(chalk.green(`Compiled ${fileName} -> ${outputFile}`));
+};
+
+export const traceAction = async (
+    fileName: string,
+    stdlibPath: string,
+    traceFile: string,
+    caseName: string,
+    options: OutputOptions
+): Promise<void> => {
+    if (!fs.existsSync(traceFile)) {
+        console.error(chalk.red(`Trace file ${traceFile} doesn't exist.`));
+        process.exit(1);
+    }
+    const trace = JSON.parse(await fsp.readFile(traceFile, "utf-8")) as SemantifyrTrace;
+    const rootNode = await loadModel(fileName, stdlibPath);
+    const sysmlTrace = mapSemantifyrTraceToSysML(rootNode, trace, caseName);
+
+    const outputFile =
+        options.output ??
+        path.join(path.dirname(traceFile), path.basename(traceFile, ".json") + ".sysml");
+
+    await writeOutput(outputFile, sysmlTrace);
+    console.log(chalk.green(`Generated ${traceFile} -> ${outputFile}`));
 };

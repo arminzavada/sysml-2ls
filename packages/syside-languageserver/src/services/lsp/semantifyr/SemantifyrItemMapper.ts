@@ -2,6 +2,9 @@ import { Generated, expandToNode } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
+import { isItemDefinition } from "#generated/ast";
+
+const globalItemPrefix = "global_";
 
 export class SemantifyrItemMapper extends SemantifyrBaseMapper {
     constructor(services: SemantifyrMapperServices) {
@@ -9,7 +12,14 @@ export class SemantifyrItemMapper extends SemantifyrBaseMapper {
     }
 
     public globalItemName(item: ast.ItemDefinition): string {
-        return `global_${this.stableName(item)}`;
+        return `${globalItemPrefix}${this.stableName(item)}`;
+    }
+
+    public globalItemDefinition(globalName: string): ast.ItemDefinition | undefined {
+        if (!globalName.startsWith(globalItemPrefix)) {
+            return undefined;
+        }
+        return this.elementsNamed(globalName.slice(globalItemPrefix.length)).find(isItemDefinition);
     }
 
     public mapItemDefinition(item: ast.ItemDefinition): Generated {

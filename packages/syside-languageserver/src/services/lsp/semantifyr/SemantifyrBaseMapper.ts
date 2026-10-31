@@ -36,6 +36,10 @@ export class SemantifyrBaseMapper {
         return this.stableNameStore.stableName(element);
     }
 
+    protected elementsNamed(name: string): ast.Element[] {
+        return this.stableNameStore.elementsNamed(name);
+    }
+
     /**
      * The classifier (`PartDefinition`, `PortDefinition`, ...) of a usage's
      * first typing. Walks the qualified-name chain via the metamodel's

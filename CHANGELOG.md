@@ -122,6 +122,7 @@
   as part of `pnpm test`).
 - See [docs/maintenance/](docs/maintenance/) for the upgrade notes from the
   2026-03 cycle, including the per-phase result docs.
+- Added the CLI command `trace`, which turns a Semantifyr `trace.json` into a SysML v2 trace model of the verified system, resolving each traced instance through the inverse of the Semantifyr mapper's stable names.
 
 ## 0.9.1 (upstream final)
 

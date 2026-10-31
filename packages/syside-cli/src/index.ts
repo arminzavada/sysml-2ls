@@ -17,7 +17,7 @@
 import { Command, Option } from "commander";
 import { Extensions, evalAction } from "./sysml-util.js";
 import { Version } from "./version.js";
-import { SysMLExtensions, compileAction } from "./semantifyr-util";
+import { SysMLExtensions, compileAction, traceAction } from "./semantifyr-util";
 
 const program = new Command();
 
@@ -50,6 +50,19 @@ program
     .option("-o, --output <file>", "Output file path (default: input file with .oxsts extension)")
     .description("Compile SysML model to Semantifyr (OXSTS) format")
     .action(compileAction);
+
+program
+    .command("trace")
+    .argument(
+        "<model file>",
+        `The model the trace was verified on. possible file extensions: ${SysMLExtensions.join(", ")}`
+    )
+    .argument("<standard library path>", `The path to the standard library root directory`)
+    .argument("<trace file>", "The trace.json Semantifyr emitted for the verification case")
+    .argument("<case name>", "The verification case the trace belongs to")
+    .option("-o, --output <file>", "Output file path (default: trace file with .sysml extension)")
+    .description("Generate the SysML trace model of a Semantifyr (OXSTS) trace")
+    .action(traceAction);
 
 program.parseAsync(process.argv).catch((err) => {
     console.error(err);
