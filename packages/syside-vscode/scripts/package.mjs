@@ -30,8 +30,7 @@ await fs.remove("sysml.library");
 await fs.mkdirp("sysml.library");
 
 await Promise.all([
-    fs.copy(path.join(SYSMLRELEASE, "LICENSE"), path.join("sysml.library", "LICENSE.LGPLv3")),
-    fs.copy(path.join(SYSMLRELEASE, "LICENSE-GPL"), path.join("sysml.library", "LICENSE.GPLv3")),
+    fs.copy(path.join(SYSMLRELEASE, "LICENSE"), path.join("sysml.library", "LICENSE.EPLv2")),
     fs.copy(path.join(SYSMLRELEASE, "sysml.library"), "sysml.library", {
         filter: (src) => !src.split("/").pop().startsWith("."),
     }),

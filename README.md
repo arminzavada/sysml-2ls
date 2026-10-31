@@ -46,7 +46,7 @@ Demos of each feature are kept in [docs/images/](docs/images/).
 
 The extension uses the SysML v2 standard library from
 [Systems-Modeling/SysML-v2-Release](https://github.com/Systems-Modeling/SysML-v2-Release)
-(LGPL v3.0). The library is cloned on demand into `SysML-v2-Release/` (this
+(EPL v2.0). The library is cloned on demand into `SysML-v2-Release/` (this
 directory is gitignored) — see [Building from source](#building-from-source)
 below. To use a different version at runtime, point the
 `syside.editor.standardLibraryPath` setting at your own copy:
@@ -127,10 +127,10 @@ on the original code remains with [Sensmetry](https://sensmetry.com/) and the
 other contributors listed in the git history.
 
 The SysML v2 standard library cloned into `SysML-v2-Release/` is distributed
-under LGPL v3.0 by its original authors at
+under EPL v2.0 by its original authors at
 [Systems-Modeling/SysML-v2-Release](https://github.com/Systems-Modeling/SysML-v2-Release).
 When packaged into a `.vsix`, the relevant portions of that library are
-bundled alongside the extension under the same LGPL v3.0 terms.
+bundled alongside the extension under the same EPL v2.0 terms.
 
 SysML is a trademark of the Object Management Group (OMG).
 
