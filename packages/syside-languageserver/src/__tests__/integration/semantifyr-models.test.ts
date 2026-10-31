@@ -25,6 +25,7 @@ const MODELS = [
     "power_subsystems.sysml",
     "semanticstest.sysml",
     "spacecraft.sysml",
+    "topdowntransition.sysml",
 ];
 
 describe("Semantifyr SysML test models", () => {

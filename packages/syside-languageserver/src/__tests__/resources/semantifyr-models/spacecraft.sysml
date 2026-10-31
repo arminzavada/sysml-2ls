@@ -205,8 +205,6 @@ verification def StationBehaviorOperationWaitingReachable {
     }
 }
 
-
-
 // verification def SpacecraftBehaviorCommunicationReachable {
 //     subject mission: Mission;
 
@@ -382,6 +380,20 @@ verification def GroundStationReceivedDataCanReach20 {
         verify requirement {
             require constraint {
                 eventually(
+                    mission.groundStation.receivedData >= 20
+                )
+            }
+        }
+    }
+}
+
+verification def GroundStationReceivedDataCannotReach20Violated {
+    subject mission: Mission;
+
+    objective {
+        verify requirement {
+            require constraint {
+                not eventually(
                     mission.groundStation.receivedData >= 20
                 )
             }
@@ -571,6 +583,20 @@ verification def SpacecraftDataCanReach60 {
     }
 }
 
+verification def SpacecraftDataCannotReach60Violated {
+    subject mission: Mission;
+
+    objective {
+        verify requirement {
+            require constraint {
+                not eventually(
+                    mission.spacecraft.data <= 60
+                )
+            }
+        }
+    }
+}
+
 verification def SpacecraftDataCanReach50 {
     subject mission: Mission;
 
@@ -661,7 +687,9 @@ verification def SpacecraftBatteryAlwaysAbove0 {
     objective {
         verify requirement {
             require constraint {
-                mission.spacecraft.batteryCharge >= 0
+                mustAlways(
+                    mission.spacecraft.batteryCharge >= 0
+                )
             }
         }
     }
@@ -673,7 +701,9 @@ verification def SpacecraftBatteryAlwaysAbove10 {
     objective {
         verify requirement {
             require constraint {
-                mission.spacecraft.batteryCharge >= 10
+                mustAlways(
+                    mission.spacecraft.batteryCharge >= 10
+                )
             }
         }
     }
@@ -685,7 +715,9 @@ verification def SpacecraftBatteryAlwaysAbove20 {
     objective {
         verify requirement {
             require constraint {
-                mission.spacecraft.batteryCharge >= 20
+                mustAlways(
+                    mission.spacecraft.batteryCharge >= 20
+                )
             }
         }
     }
@@ -697,7 +729,9 @@ verification def SpacecraftBatteryAlwaysAbove30 {
     objective {
         verify requirement {
             require constraint {
-                mission.spacecraft.batteryCharge >= 30
+                mustAlways(
+                    mission.spacecraft.batteryCharge >= 30
+                )
             }
         }
     }
@@ -709,7 +743,9 @@ verification def SpacecraftBatteryAlwaysAbove40 {
     objective {
         verify requirement {
             require constraint {
-                mission.spacecraft.batteryCharge >= 40
+                mustAlways(
+                    mission.spacecraft.batteryCharge >= 40
+                )
             }
         }
     }

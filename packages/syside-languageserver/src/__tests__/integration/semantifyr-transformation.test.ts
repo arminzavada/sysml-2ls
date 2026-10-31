@@ -17,10 +17,16 @@ const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const modelsRoot = path.resolve(currentDir, "..", "resources", "semantifyr-models");
 
 const MODELS = [
-    "crossroads.sysml",
+    "aircraft_engine.sysml",
+    "autonomous_driving.sysml",
     "compressedspacecraft.sysml",
+    "crossroads.sysml",
     "door_access.sysml",
     "orion_protocol.sysml",
+    "power_subsystems.sysml",
+    "semanticstest.sysml",
+    "spacecraft.sysml",
+    "topdowntransition.sysml",
 ];
 
 describe("Semantifyr OXSTS transformation", () => {
@@ -54,7 +60,7 @@ describe("Semantifyr OXSTS transformation", () => {
             const oxsts = mapSysMLNamespaceToSemantifyr(doc.parseResult.value as Namespace);
 
             // Failure markers the mappers emit when they can't interpret a node.
-            // None of the four pinned models should hit any of these.
+            // None of the pinned models should hit any of these.
             const failureMarkers = [
                 "UNKNOWN_TYPE_OF_ACTION",
                 "UNKNOWN_ACCEPT_ACTION",
