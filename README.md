@@ -95,6 +95,8 @@ the resulting `.vsix` manually (`code --install-extension <file>.vsix`) or
 run the extension from the source tree using the launch configurations in
 [.vscode/](.vscode/).
 
+Pushing a `v<version>` tag, with `<version>` equal to the version in `packages/syside-cli/package.json` and `packages/syside-vscode/package.json`, makes the release workflow build `syside-cli-<version>.tar.gz` (the CLI and the standard library), `syside-vscode-<version>.vsix` and `SHA256SUMS` with `scripts/release.sh` and attach them to a GitHub release.
+
 ## Repository layout
 
 - [packages/syside-base/](packages/syside-base/) — shared utilities and constants
