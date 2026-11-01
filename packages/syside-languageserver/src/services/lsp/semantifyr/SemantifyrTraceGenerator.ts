@@ -9,7 +9,6 @@ import {
     isSubjectMembership,
     isTransitionUsage,
     isUsage,
-    isVerificationCaseDefinition,
 } from "#generated/ast";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
@@ -39,6 +38,10 @@ export interface SemantifyrTrace {
 
 type SysMLNode = string | { text: string; members: SysMLNode[] };
 
+const fire = "semantifyr::sysml::states::Transition::fire";
+const setOutgoingItem = "semantifyr::sysml::ports::Port::setOutgoingItem";
+const passTime = "semantifyr::sysml::verification::VerificationCaseDefinition::passTime";
+
 const imports = [
     "private import Occurrences::HappensDuring;",
     "private import Occurrences::HappensJustBefore;",
@@ -47,26 +50,48 @@ const imports = [
     "private import Time::DurationOf;",
 ];
 
+// A name the trace declares must not hide a feature it inherits from the model.
+class Names {
+    private readonly used = new Set<string>();
+
+    constructor(private readonly inherited: ReadonlySet<string>) {}
+
+    unique(base: string): string {
+        let index = 1;
+        while (this.taken(`${base}${index}`)) {
+            index++;
+        }
+        return this.use(`${base}${index}`);
+    }
+
+    fresh(name: string): string {
+        return this.taken(name) ? this.unique(`${name}_`) : this.use(name);
+    }
+
+    private taken(name: string): boolean {
+        return this.used.has(name) || this.inherited.has(name);
+    }
+
+    private use(name: string): string {
+        this.used.add(name);
+        return name;
+    }
+}
+
 class Body {
     readonly members: SysMLNode[] = [];
-    private readonly names = new Set<string>();
+    readonly names: Names;
 
     constructor(
         readonly text: string,
-        readonly path: string
-    ) {}
+        readonly path: string,
+        type?: ast.Type
+    ) {
+        this.names = new Names(featureNames(type));
+    }
 
     get node(): SysMLNode {
         return { text: this.text, members: this.members };
-    }
-
-    uniqueName(base: string): string {
-        let index = 1;
-        while (this.names.has(`${base}${index}`)) {
-            index++;
-        }
-        this.names.add(`${base}${index}`);
-        return `${base}${index}`;
     }
 }
 
@@ -78,7 +103,7 @@ class StateOccurrence extends Body {
         text: string,
         path: string
     ) {
-        super(text, path);
+        super(text, path, state);
     }
 
     activeChild(state: ast.StateUsage): StateOccurrence | undefined {
@@ -95,13 +120,17 @@ class StateOccurrence extends Body {
 
 class PartInstance {
     readonly children: PartInstance[] = [];
-    machine?: StateOccurrence;
+    readonly machines: StateOccurrence[] = [];
+    readonly names: Names;
     startup?: Body;
 
     constructor(
         readonly text: string,
-        readonly path: string
-    ) {}
+        readonly path: string,
+        type: ast.Type
+    ) {
+        this.names = new Names(featureNames(type));
+    }
 
     qualify(name: string): string {
         return this.path === "" ? name : `${this.path}.${name}`;
@@ -110,7 +139,7 @@ class PartInstance {
     members(): SysMLNode[] {
         const sections = [
             this.startup?.node,
-            this.machine?.node,
+            ...this.machines.map((machine) => machine.node),
             ...this.children.map((child) => child.node()),
         ].filter((node) => node !== undefined);
         return sections.flatMap((node, index) => (index === 0 ? [node] : ["", node]));
@@ -132,6 +161,7 @@ class PartInstance {
 interface Firing {
     transition: ast.TransitionUsage;
     part: PartInstance;
+    machine: StateOccurrence;
     sends: Sending[];
 }
 
@@ -175,13 +205,13 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
             throw new Error(`Verification case '${caseName}' has no typed subject`);
         }
         this.system = system;
-        this.root = this.createPart(system, "", "");
+        this.root = this.createPart(system, system, "", "");
     }
 
     public generate(trace: SemantifyrTrace): string {
         for (const part of this.root.preorder()) {
-            if (part.machine) {
-                this.activateRecursive(part.machine, part.machine);
+            for (const machine of part.machines) {
+                this.activateRecursive(machine, machine);
             }
         }
 
@@ -197,7 +227,10 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
         const sections: SysMLNode[][] = [
             this.root.members(),
             this.timeline,
-            ["connection : HappensWhile connect step0 to self.startShot;", ...successions],
+            [
+                `connection : HappensWhile connect ${this.timePoints[0]} to self.startShot;`,
+                ...successions,
+            ],
             this.coincidences,
             this.durations,
         ];
@@ -211,23 +244,35 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
         return lines.join("\n") + "\n";
     }
 
-    private createPart(type: ast.Classifier, text: string, path: string): PartInstance {
-        const part = new PartInstance(text, path);
+    private createPart(
+        feature: ast.Type,
+        type: ast.Classifier,
+        text: string,
+        path: string
+    ): PartInstance {
+        const part = new PartInstance(text, path, feature);
         this.parts.set(path, part);
         for (const element of ownedElements(type)) {
-            if (isExhibitStateUsage(element) && part.machine === undefined) {
+            if (isExhibitStateUsage(element)) {
                 const name = this.stableName(element);
-                part.machine = new StateOccurrence(
-                    element,
-                    `exhibit state ${name} :>> ${name}`,
-                    part.qualify(name)
+                part.machines.push(
+                    new StateOccurrence(
+                        element,
+                        `exhibit state ${name} :>> ${name}`,
+                        part.qualify(name)
+                    )
                 );
             } else if (isPartUsage(element)) {
                 const classifier = this.featureClassifier(element);
                 if (classifier !== undefined) {
                     const name = this.stableName(element);
                     part.children.push(
-                        this.createPart(classifier, `part ${name} :>> ${name}`, part.qualify(name))
+                        this.createPart(
+                            element,
+                            classifier,
+                            `part ${name} :>> ${name}`,
+                            part.qualify(name)
+                        )
                     );
                 }
             }
@@ -251,16 +296,24 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
             const chain = this.traceResolver.resolveInstance(this.verificationCase, entry.self);
             const element = chain[chain.length - 1];
             let innerEnclosing = enclosing;
-            if (isTransitionUsage(element)) {
-                innerEnclosing = { transition: element, part: this.partOf(chain), sends: [] };
+            if (entry.calledTransition === fire && isTransitionUsage(element)) {
+                const part = this.partOf(chain);
+                innerEnclosing = {
+                    transition: element,
+                    part,
+                    machine: machineOf(part, chain),
+                    sends: [],
+                };
                 events.firings.push(innerEnclosing);
-            } else if (isPortUsage(element)) {
+            } else if (entry.calledTransition === setOutgoingItem && isPortUsage(element)) {
                 const sending = { port: element, part: this.partOf(chain), item: this.item(entry) };
                 (enclosing?.sends ?? events.sends).push(sending);
-            } else if (isVerificationCaseDefinition(element)) {
+            } else if (entry.calledTransition === passTime && element === this.verificationCase) {
                 events.advancesTime = true;
             } else {
-                throw new Error(`Traced element '${entry.self}' is a ${element.$type}`);
+                throw new Error(
+                    `Unexpected traced call '${entry.calledTransition}' on '${entry.self}', a ${element.$type}`
+                );
             }
             this.collectInto(entry.innerTraces ?? [], innerEnclosing, events);
         }
@@ -292,7 +345,7 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
     }
 
     private react(step: number, events: StepEvents): void {
-        const snapshot = `step${step}`;
+        const snapshot = this.root.names.fresh(`step${step}`);
         if (step === 0 || events.firings.length > 0) {
             this.timeline.push(`snapshot ${snapshot};`);
             this.timePoints.push(snapshot);
@@ -305,7 +358,8 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
             }
             const part = sending.part;
             if (part.startup === undefined) {
-                part.startup = new Body("action startup", part.qualify("startup"));
+                const name = part.names.fresh("startup");
+                part.startup = new Body(`action ${name}`, part.qualify(name));
                 startups.push(part.startup);
             }
             this.addSend(part.startup, sending, part);
@@ -327,14 +381,14 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
         }
 
         if (events.advancesTime) {
-            const dwell = `dwell${step}`;
+            const dwell = this.root.names.fresh(`dwell${step}`);
             this.timeline.push({
                 text: `timeslice ${dwell}`,
                 members: [`assert constraint { DurationOf(${dwell}) == 1 [s] }`],
             });
             this.timePoints.push(dwell);
             for (const part of this.root.preorder()) {
-                for (const leaf of part.machine?.leaves() ?? []) {
+                for (const leaf of part.machines.flatMap((machine) => machine.leaves())) {
                     this.durations.push(
                         `connection : HappensDuring connect ${dwell} to ${leaf.path};`
                     );
@@ -344,7 +398,7 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
     }
 
     private addSend(body: Body, sending: Sending, from: PartInstance): void {
-        const name = body.uniqueName(`send${this.stableName(sending.item)}`);
+        const name = body.names.unique(`send${this.stableName(sending.item)}`);
         const item = sending.item.$meta.qualifiedName;
         body.members.push(
             `action ${name} send new ${item}() via ${this.portReference(sending, from)};`
@@ -363,10 +417,7 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
     }
 
     private fire(firing: Firing): Body {
-        const machine = firing.part.machine;
-        if (machine === undefined) {
-            throw new Error(`Part '${firing.part.path}' exhibits no state`);
-        }
+        const machine = firing.machine;
         const transition = firing.transition;
         const source = asState(transition.$meta.sourceFeature()?.ast());
         const target = targetState(transition);
@@ -375,14 +426,15 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
         this.ensureActive(machine, source);
         const ownerOccurrence = this.ensureActive(machine, owner);
 
-        const name = ownerOccurrence.uniqueName(
+        const name = ownerOccurrence.names.unique(
             transition.declaredName !== undefined
                 ? lowerFirst(transition.declaredName)
                 : `to${this.stableName(target)}`
         );
         const occurrence = new Body(
             `action ${name} :> ${transition.declaredName ?? "stateTransitions"}`,
-            `${ownerOccurrence.path}.${name}`
+            `${ownerOccurrence.path}.${name}`,
+            transition
         );
         ownerOccurrence.members.push(occurrence.node);
 
@@ -422,7 +474,7 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
             parent.activeChildren.length = 0;
         }
         const stateName = this.stableName(state);
-        const name = parent.uniqueName(lowerFirst(stateName));
+        const name = parent.names.unique(lowerFirst(stateName));
         const occurrence = new StateOccurrence(
             state,
             `state ${name} :> ${stateName}`,
@@ -470,6 +522,25 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
         }
         this.activateRecursive(machine, occurrence);
     }
+}
+
+function featureNames(type: ast.Type | undefined): Set<string> {
+    return new Set(
+        type?.$meta
+            .allFeatures()
+            .flatMap((membership) => [membership.name, membership.shortName])
+            .nonNullable()
+    );
+}
+
+function machineOf(part: PartInstance, chain: ast.Element[]): StateOccurrence {
+    const machine = part.machines.find((candidate) => chain.includes(candidate.state));
+    if (machine === undefined) {
+        throw new Error(
+            `'${chain.at(-1)?.$meta.qualifiedName}' is in no state that part '${part.path}' exhibits`
+        );
+    }
+    return machine;
 }
 
 function ownedElements(namespace: ast.Namespace): ast.Element[] {

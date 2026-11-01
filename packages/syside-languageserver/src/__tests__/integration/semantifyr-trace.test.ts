@@ -59,11 +59,81 @@ function nestUnderPrecedingSibling(entries: SemantifyrTraceEntry[]): SemantifyrT
     return [{ ...first, innerTraces: [...(first.innerTraces ?? []), ...nestedRest] }];
 }
 
+// Two exhibit states in one part, and features named like the trace's own declarations.
+const machineModel = `
+private import ScalarValues::Boolean;
+
+item def Ping;
+port def PingPort {
+    out item ping : Ping;
+}
+
+part def Device {
+    port pings : PingPort;
+    attribute startup : Boolean;
+
+    exhibit state Power {
+        transition first start then Off;
+        state Off;
+        transition powerUp first Off then On;
+        state On;
+    }
+
+    exhibit state Mode {
+        transition first start then Idle;
+        state Idle;
+        transition wake first Idle do send new Ping() via pings then Busy;
+        state Busy;
+    }
+}
+
+part def Machine {
+    part device : Device;
+    attribute step0 : Boolean;
+    attribute dwell1 : Boolean;
+}
+
+verification def MachineCase {
+    subject system : Machine;
+}
+`;
+
+function entry(
+    self: string,
+    calledTransition: string,
+    innerTraces: SemantifyrTraceEntry[] | null = null
+): SemantifyrTraceEntry {
+    const item = { parameter: "item", value: "semantifyr::sysml::model::global_Ping" };
+    const isSend = calledTransition.endsWith("::Port::setOutgoingItem");
+    return { self, calledTransition, arguments: isSend ? [item] : [], innerTraces };
+}
+
+const fire = "semantifyr::sysml::states::Transition::fire";
+const send = "semantifyr::sysml::ports::Port::setOutgoingItem";
+const passTime = "semantifyr::sysml::verification::VerificationCaseDefinition::passTime";
+
+const machineTrace: SemantifyrTrace = {
+    initialStep: { traces: [] },
+    initializedStep: { traces: [entry("root.system.device.pings", send)] },
+    steps: [
+        { traces: [entry("root.system.device.Power.powerUp", fire), entry("root", passTime)] },
+        {
+            traces: [
+                entry("root.system.device.Mode.wake", fire, [
+                    entry("root.system.device.pings", send),
+                ]),
+                entry("root", passTime),
+            ],
+        },
+    ],
+};
+
 describe("Semantifyr trace generation", () => {
     let shared: SysMLSharedServices;
     let model: Namespace;
     let trace: SemantifyrTrace;
     let generated: LangiumDocument;
+    let machine: Namespace;
 
     async function build(document: LangiumDocument): Promise<void> {
         await shared.workspace.DocumentBuilder.build([document], <SysMLBuildOptions>{
@@ -106,6 +176,15 @@ describe("Semantifyr trace generation", () => {
         );
         shared.workspace.LangiumDocuments.addDocument(generated);
         await build(generated);
+
+        const machineDocument = shared.workspace.LangiumDocumentFactory.fromString(
+            machineModel,
+            URI.file(path.join(modelsRoot, "etc", "machine.sysml"))
+        );
+        shared.workspace.LangiumDocuments.addDocument(machineDocument);
+        await build(machineDocument);
+        expect(errors(machineDocument)).toEqual([]);
+        machine = machineDocument.parseResult.value as Namespace;
     }, 180_000);
 
     it("generates a trace that SysIDE validates without errors", () => {
@@ -136,5 +215,65 @@ describe("Semantifyr trace generation", () => {
         expect(mapSemantifyrTraceToSysML(model, misnested, caseName)).toEqual(
             mapSemantifyrTraceToSysML(model, trace, caseName)
         );
+    });
+
+    it("follows the transitions of every state a part exhibits", async () => {
+        const text = mapSemantifyrTraceToSysML(machine, machineTrace, "MachineCase");
+        const document = shared.workspace.LangiumDocumentFactory.fromString(
+            text,
+            URI.file(path.join(modelsRoot, "etc", "machine.trace.sysml"))
+        );
+        shared.workspace.LangiumDocuments.addDocument(document);
+        await build(document);
+
+        expect(errors(document)).toEqual([]);
+        expect(text).toContain("exhibit state Power :>> Power {");
+        expect(text).toContain("exhibit state Mode :>> Mode {");
+        expect(text).toContain("action powerUp1 :> powerUp;");
+        expect(text).toContain("action wake1 :> wake {");
+        expect(text).toContain("connection : HappensDuring connect dwell2 to device.Power.on1;");
+        expect(text).toContain("connection : HappensDuring connect dwell2 to device.Mode.busy1;");
+    }, 180_000);
+
+    it("names its own declarations apart from the features of the model", () => {
+        const text = mapSemantifyrTraceToSysML(machine, machineTrace, "MachineCase");
+
+        expect(text).toContain("action startup_1 {");
+        expect(text).toContain("snapshot step0_1;");
+        expect(text).toContain("timeslice dwell1_1 {");
+        expect(text).toContain("connection : HappensWhile connect step0_1 to self.startShot;");
+        expect(text).toContain("connection : HappensWhile connect step0_1 to device.startup_1;");
+        expect(text).toContain("succession : HappensJustBefore first step1 then dwell1_1;");
+    });
+
+    it("takes the traced call from the trace, not from the element it is called on", () => {
+        const unexpected = (traces: SemantifyrTraceEntry[]): SemantifyrTrace => ({
+            initialStep: { traces: [] },
+            initializedStep: null,
+            steps: [{ traces }],
+        });
+        const setIncomingItem = "semantifyr::sysml::ports::Port::setIncomingItem";
+
+        expect(() =>
+            mapSemantifyrTraceToSysML(
+                machine,
+                unexpected([entry("root.system.device.pings", setIncomingItem)]),
+                "MachineCase"
+            )
+        ).toThrow(`Unexpected traced call '${setIncomingItem}' on 'root.system.device.pings'`);
+        expect(() =>
+            mapSemantifyrTraceToSysML(
+                machine,
+                unexpected([entry("root.system.device.pings", fire)]),
+                "MachineCase"
+            )
+        ).toThrow(`Unexpected traced call '${fire}' on 'root.system.device.pings'`);
+        expect(() =>
+            mapSemantifyrTraceToSysML(
+                machine,
+                unexpected([entry("root.system.device", passTime)]),
+                "MachineCase"
+            )
+        ).toThrow(`Unexpected traced call '${passTime}' on 'root.system.device'`);
     });
 });
