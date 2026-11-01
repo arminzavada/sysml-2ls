@@ -10,12 +10,12 @@ part def TrafficLightABehaviorNormalGreenUnreachableViolatedTrace :> CrossroadSy
             state operating1 :> Operating {
                 state bothYellow1 :> BothYellow;
                 action toBothRed1 :> stateTransitions {
-                    action sendToggleA1 send new Toggle() via controlA;
-                    action sendToggleB1 send new Toggle() via controlB;
+                    action sendToggle1 send new Toggle() via controlA;
+                    action sendToggle2 send new Toggle() via controlB;
                 }
                 state bothRed1 :> BothRed;
                 action toTrafficOnA1 :> stateTransitions {
-                    action sendToggleA2 send new Toggle() via controlA;
+                    action sendToggle1 send new Toggle() via controlA;
                 }
                 state trafficOnA1 :> TrafficOnA;
             }
@@ -24,18 +24,18 @@ part def TrafficLightABehaviorNormalGreenUnreachableViolatedTrace :> CrossroadSy
 
     part trafficLightA :>> trafficLightA {
         action startup {
-            action sendYellow1 send new YellowL() via lightControl;
+            action sendYellowL1 send new YellowL() via lightControl;
         }
 
         exhibit state Behaviour :>> Behaviour {
             state normal1 :> Normal {
                 state yellow1 :> Yellow;
                 action toRed1 :> stateTransitions {
-                    action sendRed1 send new RedL() via lightControl;
+                    action sendRedL1 send new RedL() via lightControl;
                 }
                 state red1 :> Red;
                 action toGreen1 :> stateTransitions {
-                    action sendGreen1 send new GreenL() via lightControl;
+                    action sendGreenL1 send new GreenL() via lightControl;
                 }
                 state green1 :> Green;
             }
@@ -44,14 +44,14 @@ part def TrafficLightABehaviorNormalGreenUnreachableViolatedTrace :> CrossroadSy
 
     part trafficLightB :>> trafficLightB {
         action startup {
-            action sendYellow1 send new YellowL() via lightControl;
+            action sendYellowL1 send new YellowL() via lightControl;
         }
 
         exhibit state Behaviour :>> Behaviour {
             state normal1 :> Normal {
                 state yellow1 :> Yellow;
                 action toRed1 :> stateTransitions {
-                    action sendRed1 send new RedL() via lightControl;
+                    action sendRedL1 send new RedL() via lightControl;
                 }
                 state red1 :> Red;
             }

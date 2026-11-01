@@ -13,17 +13,16 @@ import {
     SemantifyrTrace,
 } from "../../services/lsp/semantifyr/SemantifyrMapper.js";
 import type { SemantifyrTraceEntry } from "../../services/lsp/semantifyr/SemantifyrTraceGenerator.js";
-import { isSendActionUsage, Namespace } from "#generated/ast.js";
+import { Namespace } from "#generated/ast.js";
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const modelsRoot = path.resolve(currentDir, "..", "resources", "semantifyr-models");
 const caseName = "TrafficLightABehaviorNormalGreenUnreachableViolated";
 
-// Send occurrences are named by hand in the reference pair; nothing refers to them.
 function canonical(node: AstNode): Record<string, unknown> {
     const result: Record<string, unknown> = { $type: node.$type };
     for (const [key, value] of Object.entries(node)) {
-        if (!key.startsWith("$") && !(key === "declaredName" && isSendActionUsage(node))) {
+        if (!key.startsWith("$")) {
             result[key] = canonicalValue(value);
         }
     }
