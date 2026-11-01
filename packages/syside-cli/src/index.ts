@@ -17,7 +17,7 @@
 import { Command, Option } from "commander";
 import { Extensions, evalAction } from "./sysml-util.js";
 import { Version } from "./version.js";
-import { SysMLExtensions, compileAction, traceAction } from "./semantifyr-util";
+import { SysMLExtensions, compileAction, compileBatchAction, traceAction } from "./semantifyr-util";
 
 const program = new Command();
 
@@ -50,6 +50,22 @@ program
     .option("-o, --output <file>", "Output file path (default: input file with .oxsts extension)")
     .description("Compile SysML model to Semantifyr (OXSTS) format")
     .action(compileAction);
+
+program
+    .command("compile-batch")
+    .argument("<standard library path>", `The path to the standard library root directory`)
+    .argument(
+        "<model files...>",
+        `The files to be compiled, each in the workspace of its own directory. possible file extensions: ${SysMLExtensions.join(", ")}`
+    )
+    .option(
+        "-d, --output-directory <directory>",
+        "Output directory, each output named after its input (default: next to each input)"
+    )
+    .description(
+        "Compile SysML models to Semantifyr (OXSTS) format, loading the standard library once"
+    )
+    .action(compileBatchAction);
 
 program
     .command("trace")

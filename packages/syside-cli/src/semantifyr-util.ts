@@ -30,11 +30,16 @@ import {
     mapSemantifyrTraceToSysML,
     SemantifyrTrace,
     SysMLBuildOptions,
+    SysMLSharedServices,
 } from "syside-languageserver";
 import { SysMLNodeFileSystem } from "syside-languageserver/node.js";
 
 interface OutputOptions extends CommandOptions {
     output?: string;
+}
+
+interface BatchOptions extends CommandOptions {
+    outputDirectory?: string;
 }
 
 export const SysMLExtensions: string[] = [...SysMLLanguageMetaData.fileExtensions];
@@ -58,25 +63,28 @@ async function collectLibraryFiles(dir: string): Promise<URI[]> {
     return collected;
 }
 
-async function loadModel(fileName: string, stdlibArgument: string): Promise<ast.Namespace> {
-    const stdlibPath = path.resolve(stdlibArgument);
-    if (!SysMLExtensions.some((ext) => fileName.endsWith(ext))) {
-        console.error(
-            chalk.yellow(
-                `Please choose a file with one of these extensions: ${SysMLExtensions.join(", ")}.`
-            )
-        );
-        process.exit(1);
-    }
-    if (!fs.existsSync(fileName)) {
-        console.error(chalk.red(`File ${fileName} doesn't exist.`));
-        process.exit(1);
+function checkInputs(fileNames: string[], stdlibPath: string): void {
+    for (const fileName of fileNames) {
+        if (!SysMLExtensions.some((ext) => fileName.endsWith(ext))) {
+            console.error(
+                chalk.yellow(
+                    `Please choose a file with one of these extensions: ${SysMLExtensions.join(", ")}.`
+                )
+            );
+            process.exit(1);
+        }
+        if (!fs.existsSync(fileName)) {
+            console.error(chalk.red(`File ${fileName} doesn't exist.`));
+            process.exit(1);
+        }
     }
     if (!fs.existsSync(stdlibPath)) {
         console.error(chalk.red(`Standard library path ${stdlibPath} doesn't exist.`));
         process.exit(1);
     }
+}
 
+async function loadStandardLibrary(stdlibPath: string): Promise<SysMLSharedServices> {
     const services = createSysMLServices(SysMLNodeFileSystem, {
         standardLibraryPath: stdlibPath,
         standardLibrary: true,
@@ -90,22 +98,41 @@ async function loadModel(fileName: string, stdlibArgument: string): Promise<ast.
     services.workspace.FileSystemProvider.updateStandardLibrary(stdlibPath);
 
     const documents = services.workspace.LangiumDocuments;
-    const builder = services.workspace.DocumentBuilder;
-
     const stdlibUris = await collectLibraryFiles(stdlibPath);
     const stdDocs = await Promise.all(stdlibUris.map((uri) => documents.getOrCreateDocument(uri)));
     for (const doc of stdDocs) {
         doc.isStandard = true;
     }
-    await builder.build(stdDocs, <SysMLBuildOptions>{
+    await services.workspace.DocumentBuilder.build(stdDocs, <SysMLBuildOptions>{
         validationChecks: "none",
         standalone: false,
     });
+    return services;
+}
 
-    const modelPath = path.resolve(fileName);
-    const modelUri = URI.file(modelPath);
-    const workspaceUris = (await collectLibraryFiles(path.dirname(modelPath))).filter(
-        (uri) => uri.fsPath !== modelPath
+async function buildWorkspace(
+    services: SysMLSharedServices,
+    directory: string,
+    fileNames: string[]
+): Promise<(ast.Namespace | undefined)[]> {
+    const documents = services.workspace.LangiumDocuments;
+    const builder = services.workspace.DocumentBuilder;
+    const index = services.workspace.IndexManager;
+
+    // the previous directory's documents must not take part in this one's name resolution
+    const previous = documents.all
+        .filter((doc) => !doc.isStandard)
+        .map((doc) => doc.uri)
+        .toArray();
+    for (const uri of previous) {
+        documents.deleteDocument(uri);
+        index.remove(uri);
+    }
+    index.invalidate(previous);
+
+    const modelPaths = fileNames.map((fileName) => path.resolve(fileName));
+    const workspaceUris = (await collectLibraryFiles(directory)).filter(
+        (uri) => !modelPaths.includes(uri.fsPath)
     );
     if (workspaceUris.length > 0) {
         const workspaceDocs = await Promise.all(
@@ -117,23 +144,40 @@ async function loadModel(fileName: string, stdlibArgument: string): Promise<ast.
         } as SysMLBuildOptions);
     }
 
-    const modelDoc = await documents.getOrCreateDocument(modelUri);
-    await builder.build([modelDoc], {
+    // models are built once and validated in that build, since a rebuild drops the diagnostics of their linking
+    const modelDocs = await Promise.all(
+        modelPaths.map((modelPath) => documents.getOrCreateDocument(URI.file(modelPath)))
+    );
+    await builder.build(modelDocs, {
         validation: { categories: ["built-in", "fast"] },
         standalone: false,
     } as SysMLBuildOptions);
 
-    const errors = (modelDoc.diagnostics ?? []).filter((d: Diagnostic) => d.severity === 1);
-    if (errors.length > 0) {
-        console.error(chalk.red(`Validation failed for ${fileName}:`));
-        for (const e of errors) {
-            const snippet = modelDoc.textDocument.getText(e.range);
-            console.error(chalk.red(`  line ${e.range.start.line + 1}: ${e.message} [${snippet}]`));
+    return modelDocs.map((modelDoc, modelIndex) => {
+        const errors = (modelDoc.diagnostics ?? []).filter((d: Diagnostic) => d.severity === 1);
+        if (errors.length > 0) {
+            console.error(chalk.red(`Validation failed for ${fileNames[modelIndex]}:`));
+            for (const e of errors) {
+                const snippet = modelDoc.textDocument.getText(e.range);
+                console.error(
+                    chalk.red(`  line ${e.range.start.line + 1}: ${e.message} [${snippet}]`)
+                );
+            }
+            return undefined;
         }
-        process.exit(1);
-    }
+        return modelDoc.parseResult.value as ast.Namespace;
+    });
+}
 
-    return modelDoc.parseResult.value as ast.Namespace;
+async function loadModel(fileName: string, stdlibArgument: string): Promise<ast.Namespace> {
+    const stdlibPath = path.resolve(stdlibArgument);
+    checkInputs([fileName], stdlibPath);
+    const services = await loadStandardLibrary(stdlibPath);
+    const [rootNode] = await buildWorkspace(services, path.dirname(path.resolve(fileName)), [
+        fileName,
+    ]);
+    if (!rootNode) process.exit(1);
+    return rootNode;
 }
 
 async function writeOutput(outputFile: string, content: string): Promise<void> {
@@ -141,23 +185,72 @@ async function writeOutput(outputFile: string, content: string): Promise<void> {
     await fsp.writeFile(outputFile, content);
 }
 
+function defaultOutput(fileName: string): string {
+    return path.join(
+        path.dirname(fileName),
+        path.basename(fileName, path.extname(fileName)) + ".oxsts"
+    );
+}
+
+async function compileModels(stdlibArgument: string, models: [string, string][]): Promise<void> {
+    const stdlibPath = path.resolve(stdlibArgument);
+    checkInputs(
+        models.map(([fileName]) => fileName),
+        stdlibPath
+    );
+    const services = await loadStandardLibrary(stdlibPath);
+
+    const workspaces = new Map<string, [string, string][]>();
+    for (const model of models) {
+        const directory = path.dirname(path.resolve(model[0]));
+        workspaces.set(directory, [...(workspaces.get(directory) ?? []), model]);
+    }
+
+    let failed = false;
+    for (const [directory, members] of workspaces) {
+        const rootNodes = await buildWorkspace(
+            services,
+            directory,
+            members.map(([fileName]) => fileName)
+        );
+        for (const [modelIndex, [fileName, outputFile]] of members.entries()) {
+            const rootNode = rootNodes[modelIndex];
+            if (!rootNode) {
+                failed = true;
+                continue;
+            }
+            await writeOutput(outputFile, mapSysMLNamespaceToSemantifyr(rootNode));
+            console.log(chalk.green(`Compiled ${fileName} -> ${outputFile}`));
+        }
+    }
+    if (failed) process.exit(1);
+}
+
 export const compileAction = async (
     fileName: string,
     stdlibPath: string,
     options: OutputOptions
 ): Promise<void> => {
-    const rootNode = await loadModel(fileName, stdlibPath);
-    const oxstsCode = mapSysMLNamespaceToSemantifyr(rootNode);
+    await compileModels(stdlibPath, [[fileName, options.output ?? defaultOutput(fileName)]]);
+};
 
-    const outputFile =
-        options.output ??
-        path.join(
-            path.dirname(fileName),
-            path.basename(fileName, path.extname(fileName)) + ".oxsts"
-        );
-
-    await writeOutput(outputFile, oxstsCode);
-    console.log(chalk.green(`Compiled ${fileName} -> ${outputFile}`));
+export const compileBatchAction = async (
+    stdlibPath: string,
+    fileNames: string[],
+    options: BatchOptions
+): Promise<void> => {
+    const models = fileNames.map((fileName): [string, string] => [
+        fileName,
+        options.outputDirectory
+            ? path.join(options.outputDirectory, path.basename(defaultOutput(fileName)))
+            : defaultOutput(fileName),
+    ]);
+    const outputs = new Set(models.map(([, outputFile]) => path.resolve(outputFile)));
+    if (outputs.size < models.length) {
+        console.error(chalk.red("Two inputs would be compiled into the same output file."));
+        process.exit(1);
+    }
+    await compileModels(stdlibPath, models);
 };
 
 export const traceAction = async (
