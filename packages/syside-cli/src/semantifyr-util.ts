@@ -20,6 +20,7 @@ import path from "node:path";
 import chalk from "chalk";
 import { URI } from "vscode-uri";
 import type { Diagnostic } from "vscode-languageserver";
+import type { LangiumDocument } from "langium";
 import { CommandOptions } from "commander";
 import {
     createSysMLServices,
@@ -30,6 +31,7 @@ import {
     mapSemantifyrTraceToSysML,
     SemantifyrTrace,
     SysMLBuildOptions,
+    SysMLSharedServices,
 } from "syside-languageserver";
 import { SysMLNodeFileSystem } from "syside-languageserver/node.js";
 
@@ -58,7 +60,12 @@ async function collectLibraryFiles(dir: string): Promise<URI[]> {
     return collected;
 }
 
-async function loadModel(fileName: string, stdlibArgument: string): Promise<ast.Namespace> {
+interface LoadedModel {
+    model: ast.Namespace;
+    shared: SysMLSharedServices;
+}
+
+async function loadModel(fileName: string, stdlibArgument: string): Promise<LoadedModel> {
     const stdlibPath = path.resolve(stdlibArgument);
     if (!SysMLExtensions.some((ext) => fileName.endsWith(ext))) {
         console.error(
@@ -118,22 +125,30 @@ async function loadModel(fileName: string, stdlibArgument: string): Promise<ast.
     }
 
     const modelDoc = await documents.getOrCreateDocument(modelUri);
-    await builder.build([modelDoc], {
+    await validate(services, modelDoc, fileName);
+
+    return { model: modelDoc.parseResult.value as ast.Namespace, shared: services };
+}
+
+async function validate(
+    services: SysMLSharedServices,
+    document: LangiumDocument,
+    fileName: string
+): Promise<void> {
+    await services.workspace.DocumentBuilder.build([document], {
         validation: { categories: ["built-in", "fast"] },
         standalone: false,
     } as SysMLBuildOptions);
 
-    const errors = (modelDoc.diagnostics ?? []).filter((d: Diagnostic) => d.severity === 1);
+    const errors = (document.diagnostics ?? []).filter((d: Diagnostic) => d.severity === 1);
     if (errors.length > 0) {
         console.error(chalk.red(`Validation failed for ${fileName}:`));
         for (const e of errors) {
-            const snippet = modelDoc.textDocument.getText(e.range);
+            const snippet = document.textDocument.getText(e.range);
             console.error(chalk.red(`  line ${e.range.start.line + 1}: ${e.message} [${snippet}]`));
         }
         process.exit(1);
     }
-
-    return modelDoc.parseResult.value as ast.Namespace;
 }
 
 async function writeOutput(outputFile: string, content: string): Promise<void> {
@@ -146,8 +161,8 @@ export const compileAction = async (
     stdlibPath: string,
     options: OutputOptions
 ): Promise<void> => {
-    const rootNode = await loadModel(fileName, stdlibPath);
-    const oxstsCode = mapSysMLNamespaceToSemantifyr(rootNode);
+    const { model } = await loadModel(fileName, stdlibPath);
+    const oxstsCode = mapSysMLNamespaceToSemantifyr(model);
 
     const outputFile =
         options.output ??
@@ -172,12 +187,19 @@ export const traceAction = async (
         process.exit(1);
     }
     const trace = JSON.parse(await fsp.readFile(traceFile, "utf-8")) as SemantifyrTrace;
-    const rootNode = await loadModel(fileName, stdlibPath);
-    const sysmlTrace = mapSemantifyrTraceToSysML(rootNode, trace, caseName);
+    const { model, shared } = await loadModel(fileName, stdlibPath);
+    const sysmlTrace = mapSemantifyrTraceToSysML(model, trace, caseName);
 
     const outputFile =
         options.output ??
         path.join(path.dirname(traceFile), path.basename(traceFile, ".json") + ".sysml");
+
+    const traceDoc = shared.workspace.LangiumDocumentFactory.fromString(
+        sysmlTrace,
+        URI.file(path.resolve(outputFile))
+    );
+    shared.workspace.LangiumDocuments.addDocument(traceDoc);
+    await validate(shared, traceDoc, outputFile);
 
     await writeOutput(outputFile, sysmlTrace);
     console.log(chalk.green(`Generated ${traceFile} -> ${outputFile}`));
