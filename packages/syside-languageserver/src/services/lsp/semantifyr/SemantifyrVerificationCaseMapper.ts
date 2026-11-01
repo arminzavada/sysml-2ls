@@ -27,23 +27,24 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
     }
 
     public mapVerificationCaseDefinition(
+        scope: ast.Namespace,
         verificationCase: ast.VerificationCaseDefinition
     ): Generated {
         return expandToNode`
             @VerificationCase
-            class ${this.stableName(verificationCase)} : VerificationCaseDefinition {
-                ${joinToNode(verificationCase.children, (e) => this.mapMembership(e), { appendNewLineIfNotEmpty: true })}
+            class ${this.declare(scope, verificationCase)} : VerificationCaseDefinition {
+                ${joinToNode(verificationCase.children, (e) => this.mapMembership(verificationCase, e), { appendNewLineIfNotEmpty: true })}
             }
         `;
     }
 
-    private mapMembership(membership: ast.Membership | ast.Import): Generated {
+    private mapMembership(scope: ast.Element, membership: ast.Membership | ast.Import): Generated {
         if (isImport(membership)) {
             return undefined;
         }
 
         if (isFeatureMembership(membership)) {
-            return this.mapFeatureMembership(membership);
+            return this.mapFeatureMembership(scope, membership);
         }
 
         if (isOwningMembership(membership)) {
@@ -53,9 +54,9 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
         return undefined;
     }
 
-    private mapFeatureMembership(membership: ast.FeatureMembership): Generated {
+    private mapFeatureMembership(scope: ast.Element, membership: ast.FeatureMembership): Generated {
         if (isSubjectMembership(membership)) {
-            return this.mapSubjectMembership(membership);
+            return this.mapSubjectMembership(scope, membership);
         }
         if (isObjectiveMembership(membership)) {
             return this.mapObjectiveMembership(membership);
@@ -74,7 +75,7 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
         return undefined; // skip members for now
     }
 
-    private mapSubjectMembership(membership: ast.SubjectMembership): Generated {
+    private mapSubjectMembership(scope: ast.Element, membership: ast.SubjectMembership): Generated {
         const element = membership.target;
         if (!element || !isUsage(element)) {
             throw new Error("Verification case subject must be a Usage");
@@ -86,7 +87,7 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
             );
         }
         return expandToNode`
-            contains ${this.stableName(element)}: ${this.stableName(subjectType)}[1] redefines subject
+            contains ${this.declareTyped(scope, element, subjectType)}: ${this.stableName(subjectType)}[1] redefines subject
         `;
     }
 
@@ -97,7 +98,7 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
         }
         return expandToNode`
             redefine contains objective: Requirement[1] {
-                ${joinToNode(element.children, (e) => this.mapMembership(e), { appendNewLineIfNotEmpty: true })}
+                ${joinToNode(element.children, (e) => this.mapMembership(element, e), { appendNewLineIfNotEmpty: true })}
             }
         `;
     }
@@ -111,7 +112,7 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
         }
         return expandToNode`
             redefine contains verifyRequirement : Constraint[1] {
-                ${joinToNode(element.children, (e) => this.mapMembership(e), { appendNewLineIfNotEmpty: true })}
+                ${joinToNode(element.children, (e) => this.mapMembership(element, e), { appendNewLineIfNotEmpty: true })}
             }
         `;
     }

@@ -21,25 +21,25 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
         this.itemMapper = services.itemMapper;
     }
 
-    public mapPortDefinition(port: ast.PortDefinition): Generated {
+    public mapPortDefinition(scope: ast.Namespace, port: ast.PortDefinition): Generated {
         return expandToNode`
-            ${this.mapNormalPortDefinition(port)}
-            ${this.mapConjugatedPortDefinition(port)}
+            ${this.mapNormalPortDefinition(scope, port)}
+            ${this.mapConjugatedPortDefinition(scope, port)}
         `;
     }
 
-    private mapNormalPortDefinition(port: ast.PortDefinition): Generated {
+    private mapNormalPortDefinition(scope: ast.Namespace, port: ast.PortDefinition): Generated {
         return this.expandToBlock(
-            `class ${this.stableName(port)} : NormalPort`,
+            `class ${this.declare(scope, port)} : NormalPort`,
             port.children,
             (e) => this.mapMembership(e),
             { appendNewLineIfNotEmpty: true }
         );
     }
 
-    private mapConjugatedPortDefinition(port: ast.PortDefinition): Generated {
+    private mapConjugatedPortDefinition(scope: ast.Namespace, port: ast.PortDefinition): Generated {
         return this.expandToBlock(
-            `class Conjugated${this.stableName(port)} : ConjugatedPort`,
+            `class ${this.declare(scope, port, `Conjugated${this.stableName(port)}`)} : ConjugatedPort`,
             port.children,
             (e) => this.mapMembership(e),
             { appendNewLineIfNotEmpty: true }

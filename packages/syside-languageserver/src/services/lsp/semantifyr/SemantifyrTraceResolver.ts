@@ -1,28 +1,17 @@
 import { ast } from "../../..";
-import { isFeature, isStateUsage, isVerificationCaseDefinition } from "#generated/ast";
+import { isVerificationCaseDefinition } from "#generated/ast";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
-import { SemantifyrItemMapper } from "./SemantifyrItemMapper";
-import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
+import { modelPackage } from "./SemantifyrRootNamespaceMapper";
 
 const rootInstance = "root";
 
 export class SemantifyrTraceResolver extends SemantifyrBaseMapper {
-    private readonly itemMapper: SemantifyrItemMapper;
-
-    constructor(services: SemantifyrMapperServices) {
-        super(services);
-
-        this.itemMapper = services.itemMapper;
-    }
-
     public resolveVerificationCase(name: string): ast.VerificationCaseDefinition {
-        const candidates = this.elementsNamed(name).filter(isVerificationCaseDefinition);
-        if (candidates.length !== 1) {
-            throw new Error(
-                `Expected one verification case named '${name}', found ${candidates.length}`
-            );
+        const verificationCase = this.resolveQualifiedName(`${modelPackage}::${name}`);
+        if (!isVerificationCaseDefinition(verificationCase)) {
+            throw new Error(`No verification case is named '${name}'`);
         }
-        return candidates[0];
+        return verificationCase;
     }
 
     public resolveInstance(
@@ -39,29 +28,21 @@ export class SemantifyrTraceResolver extends SemantifyrBaseMapper {
             if (segment.endsWith("]")) {
                 throw new Error(`Indexed instance path '${instancePath}' is not supported`);
             }
-            const scope = this.memberScope(chain[chain.length - 1]);
-            const candidates = this.elementsNamed(segment).filter(
-                (element) => scope !== undefined && element.$meta.owner()?.ast() === scope
-            );
-            if (candidates.length !== 1) {
+            const element = this.member(chain[chain.length - 1], segment);
+            if (element === undefined) {
                 throw new Error(`Cannot resolve '${segment}' in instance path '${instancePath}'`);
             }
-            chain.push(candidates[0]);
+            chain.push(element);
         }
         return chain;
     }
 
-    public resolveItem(value: string): ast.ItemDefinition | undefined {
-        return this.itemMapper.globalItemDefinition(value.split("::").at(-1) ?? value);
-    }
-
-    private memberScope(element: ast.Element): ast.Element | undefined {
-        if (isStateUsage(element) || isVerificationCaseDefinition(element)) {
-            return element;
+    public resolveQualifiedName(qualifiedName: string): ast.Element | undefined {
+        const separator = qualifiedName.lastIndexOf("::");
+        if (separator < 0) {
+            return undefined;
         }
-        if (isFeature(element)) {
-            return this.featureClassifier(element);
-        }
-        return undefined;
+        const scope = this.member(undefined, qualifiedName.slice(0, separator));
+        return scope && this.member(scope, qualifiedName.slice(separator + 2));
     }
 }

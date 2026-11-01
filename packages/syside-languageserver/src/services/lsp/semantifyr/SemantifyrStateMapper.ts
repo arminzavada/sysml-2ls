@@ -25,25 +25,31 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
         this.actionMapper = services.actionMapper;
     }
 
-    public mapExhibitStateUsage(exhibitStateUsage: ast.ExhibitStateUsage): Generated {
-        const exhibitStateName = this.stableName(exhibitStateUsage);
+    public mapExhibitStateUsage(
+        part: ast.PartDefinition,
+        exhibitStateUsage: ast.ExhibitStateUsage
+    ): Generated {
+        const exhibitStateName = this.declare(part, exhibitStateUsage);
         const stateType = exhibitStateUsage.isParallel ? "ParallelState" : "State";
 
         return this.expandToBlock(
             `contains ${exhibitStateName}: ${stateType} redefines exhibitState`,
             exhibitStateUsage.children,
-            (e) => this.mapMembership(e),
+            (e) => this.mapMembership(exhibitStateUsage, e),
             { appendNewLineIfNotEmpty: true }
         );
     }
 
-    private mapMembership(membership: ast.Membership | ast.Import): Generated {
+    private mapMembership(
+        state: ast.StateUsage,
+        membership: ast.Membership | ast.Import
+    ): Generated {
         if (isImport(membership)) {
             return undefined;
         }
 
         if (isFeatureMembership(membership)) {
-            return this.mapFeatureMembership(membership);
+            return this.mapFeatureMembership(state, membership);
         }
 
         if (isOwningMembership(membership)) {
@@ -53,7 +59,10 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
         return undefined;
     }
 
-    private mapFeatureMembership(membership: ast.FeatureMembership): Generated {
+    private mapFeatureMembership(
+        state: ast.StateUsage,
+        membership: ast.FeatureMembership
+    ): Generated {
         const element = membership.target;
 
         if (element === undefined) {
@@ -61,11 +70,11 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
         }
 
         if (isStateUsage(element)) {
-            return this.mapStateUsage(element);
+            return this.mapStateUsage(state, element);
         }
 
         if (isTransitionUsage(element)) {
-            return this.transitionMapper.mapTransitionUsage(element);
+            return this.transitionMapper.mapTransitionUsage(state, element);
         }
 
         if (isStateSubactionMembership(membership)) {
@@ -79,14 +88,14 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
         return undefined; // skip members for now
     }
 
-    private mapStateUsage(stateUsage: ast.StateUsage): Generated {
-        const exhibitStateName = this.stableName(stateUsage);
+    private mapStateUsage(state: ast.StateUsage, stateUsage: ast.StateUsage): Generated {
+        const exhibitStateName = this.declare(state, stateUsage);
         const stateType = stateUsage.isParallel ? "ParallelState" : "State";
 
         return this.expandToBlock(
             `contains ${exhibitStateName}: ${stateType} subsets states`,
             stateUsage.children,
-            (e) => this.mapMembership(e),
+            (e) => this.mapMembership(stateUsage, e),
             { appendNewLineIfNotEmpty: true }
         );
     }

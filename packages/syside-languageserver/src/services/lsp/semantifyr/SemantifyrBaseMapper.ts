@@ -36,8 +36,20 @@ export class SemantifyrBaseMapper {
         return this.stableNameStore.stableName(element);
     }
 
-    protected elementsNamed(name: string): ast.Element[] {
-        return this.stableNameStore.elementsNamed(name);
+    protected declare(scope: ast.Element | undefined, element: ast.Element, name?: string): string {
+        return this.stableNameStore.declare(scope, element, name);
+    }
+
+    protected declareTyped(
+        scope: ast.Element,
+        element: ast.Element,
+        type: ast.Element | undefined
+    ): string {
+        return this.stableNameStore.declareTyped(scope, element, type);
+    }
+
+    protected member(scope: ast.Element | undefined, name: string): ast.Element | undefined {
+        return this.stableNameStore.member(scope, name);
     }
 
     /**

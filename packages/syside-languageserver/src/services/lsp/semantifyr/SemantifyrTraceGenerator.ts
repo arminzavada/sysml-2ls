@@ -1,6 +1,7 @@
 import { ast } from "../../..";
 import {
     isExhibitStateUsage,
+    isItemDefinition,
     isOwningMembership,
     isPartUsage,
     isPortUsage,
@@ -266,13 +267,13 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
     }
 
     private item(entry: SemantifyrTraceEntry): ast.ItemDefinition {
-        for (const argument of entry.arguments) {
-            const item = this.traceResolver.resolveItem(argument.value);
-            if (item !== undefined) {
-                return item;
-            }
+        const value = entry.arguments.find((argument) => argument.parameter === "item")?.value;
+        const item =
+            value === undefined ? undefined : this.traceResolver.resolveQualifiedName(value);
+        if (!isItemDefinition(item)) {
+            throw new Error(`The trace of '${entry.self}' carries no item`);
         }
-        throw new Error(`The trace of '${entry.self}' carries no item`);
+        return item;
     }
 
     private partOf(chain: ast.Element[]): PartInstance {

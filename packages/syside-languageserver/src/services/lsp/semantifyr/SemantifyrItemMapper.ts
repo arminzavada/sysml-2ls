@@ -2,7 +2,6 @@ import { Generated, expandToNode } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
-import { isItemDefinition } from "#generated/ast";
 
 const globalItemPrefix = "global_";
 
@@ -15,22 +14,15 @@ export class SemantifyrItemMapper extends SemantifyrBaseMapper {
         return `${globalItemPrefix}${this.stableName(item)}`;
     }
 
-    public globalItemDefinition(globalName: string): ast.ItemDefinition | undefined {
-        if (!globalName.startsWith(globalItemPrefix)) {
-            return undefined;
-        }
-        return this.elementsNamed(globalName.slice(globalItemPrefix.length)).find(isItemDefinition);
-    }
-
-    public mapItemDefinition(item: ast.ItemDefinition): Generated {
+    public mapItemDefinition(scope: ast.Namespace, item: ast.ItemDefinition): Generated {
         return expandToNode`
             ${this.expandToBlock(
-                `class ${this.stableName(item)} : Item`,
+                `class ${this.declare(scope, item)} : Item`,
                 item.children,
                 (e) => this.mapMembership(e),
                 { appendNewLineIfNotEmpty: true }
             )}
-            global containment ${this.globalItemName(item)}: ${this.stableName(item)}[1]
+            global containment ${this.declare(scope, item, this.globalItemName(item))}: ${this.stableName(item)}[1]
         `;
     }
 

@@ -20,9 +20,12 @@ export class SemantifyrTransitionMapper extends SemantifyrBaseMapper {
         this.actionMapper = services.actionMapper;
     }
 
-    public mapTransitionUsage(transitionUsage: ast.TransitionUsage): Generated {
+    public mapTransitionUsage(
+        state: ast.StateUsage,
+        transitionUsage: ast.TransitionUsage
+    ): Generated {
         const meta = transitionUsage.$meta;
-        const transitionName = this.stableName(transitionUsage);
+        const transitionName = this.declare(state, transitionUsage);
 
         const node = new CompositeGeneratorNode();
         node.append(this.mapTransitionAccepter(meta.acceptAction()?.ast()));

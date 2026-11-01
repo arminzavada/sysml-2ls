@@ -26,7 +26,7 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         this.stateMapper = services.stateMapper;
     }
 
-    public mapPartDefinition(part: ast.PartDefinition): Generated {
+    public mapPartDefinition(scope: ast.Namespace, part: ast.PartDefinition): Generated {
         const childElements = part.children.map((m) => m.target);
 
         // Drop the local port that a binding rebinds; mapBindingConnectorAsUsage
@@ -38,53 +38,57 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         }
 
         return this.expandToBlock(
-            `class ${this.stableName(part)} : Part`,
+            `class ${this.declare(scope, part)} : Part`,
             childElements,
-            (e) => this.mapMemberElements(e),
+            (e) => this.mapMemberElements(part, e),
             { appendNewLineIfNotEmpty: true }
         );
     }
 
-    private mapMemberElements(element: ast.Element | undefined): Generated {
+    private mapMemberElements(
+        part: ast.PartDefinition,
+        element: ast.Element | undefined
+    ): Generated {
         if (element === undefined) {
             return undefined;
         }
 
         if (isPortUsage(element)) {
-            return this.mapPortUsage(element);
+            return this.mapPortUsage(part, element);
         }
 
         if (isPartUsage(element)) {
-            return this.mapPartUsage(element);
+            return this.mapPartUsage(part, element);
         }
 
         if (isItemFlow(element)) {
-            return this.mapItemFlow(element);
+            return this.mapItemFlow(part, element);
         }
 
         if (isAttributeUsage(element)) {
-            return this.mapAttributeUsage(element);
+            return this.mapAttributeUsage(part, element);
         }
 
         if (isExhibitStateUsage(element)) {
-            return this.stateMapper.mapExhibitStateUsage(element);
+            return this.stateMapper.mapExhibitStateUsage(part, element);
         }
 
         if (isBindingConnectorAsUsage(element)) {
-            return this.mapBindingConnectorAsUsage(element);
+            return this.mapBindingConnectorAsUsage(part, element);
         }
 
         return undefined;
     }
 
-    private mapPortUsage(portUsage: ast.PortUsage): Generated {
-        const portName = this.stableName(portUsage);
+    private mapPortUsage(part: ast.PartDefinition, portUsage: ast.PortUsage): Generated {
+        const portName = this.declare(part, portUsage);
         const portType = this.mapTypeOfPort(portUsage);
 
         return `contains ${portName}: ${portType} subsets ports`;
     }
 
     private mapBindingConnectorAsUsage(
+        part: ast.PartDefinition,
         bindingConnectorAsUsage: BindingConnectorAsUsage
     ): Generated {
         const meta = bindingConnectorAsUsage.$meta;
@@ -100,7 +104,7 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
             throw new Error("Binding connector target could not be resolved");
         }
 
-        const sourcePortUsageName = this.stableName(sourcePort);
+        const sourcePortUsageName = this.declare(part, sourcePort);
         const sourcePortUsageType = this.mapTypeOfPort(sourcePort);
         const targetExpressionString = this.expressionStringifier.stringifyElement(targetFeature);
 
@@ -115,16 +119,16 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         return meta.isConjugated() ? `Conjugated${name}` : name;
     }
 
-    private mapPartUsage(partUsage: ast.PartUsage): Generated {
-        const partName = this.stableName(partUsage);
+    private mapPartUsage(part: ast.PartDefinition, partUsage: ast.PartUsage): Generated {
         const classifier = this.featureClassifier(partUsage);
+        const partName = this.declareTyped(part, partUsage, classifier);
         const classifierName = this.stableName(classifier);
 
         return `contains ${partName}: ${classifierName} subsets parts`;
     }
 
-    private mapItemFlow(itemFlow: ast.ItemFlow): Generated {
-        const itemFlowName = this.stableName(itemFlow);
+    private mapItemFlow(part: ast.PartDefinition, itemFlow: ast.ItemFlow): Generated {
+        const itemFlowName = this.declare(part, itemFlow);
         const fromEnd = itemFlow.ends[0]?.target as ItemFlowEnd | undefined;
         const toEnd = itemFlow.ends[1]?.target as ItemFlowEnd | undefined;
         const fromString = this.stringifyItemFlowEnd(fromEnd);
@@ -145,14 +149,17 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         return `${primary}.${member}`;
     }
 
-    private mapAttributeUsage(attributeUsage: ast.AttributeUsage): Generated {
+    private mapAttributeUsage(
+        part: ast.PartDefinition,
+        attributeUsage: ast.AttributeUsage
+    ): Generated {
         const meta = attributeUsage.$meta;
         const dataType = meta.dataType()?.ast();
         if (!dataType) return undefined;
         const classifierName = this.attributeTypeName(dataType);
         const primitiveType = this.attributeTypeToPrimitive(dataType);
         const defaultExpression = meta.defaultExpression()?.ast();
-        const attributeName = this.stableName(attributeUsage);
+        const attributeName = this.declare(part, attributeUsage);
 
         if (!defaultExpression) {
             return `contains ${attributeName}: ${classifierName} subsets attributes`;

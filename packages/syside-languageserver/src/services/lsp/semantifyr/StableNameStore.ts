@@ -2,6 +2,8 @@ import { ast, ElementID } from "../../..";
 
 type NameMap = Map<ElementID, string>;
 type UniqueNameProviderMap = Map<ast.Element["$type"], UniqueNameProvider>;
+// undefined is the global scope, which holds the package
+type Scope = ast.Element | undefined;
 
 class UniqueNameProvider {
     private lastId = 0;
@@ -26,30 +28,39 @@ class UniqueNameProvider {
 
 export class StableElementNameProvider {
     private readonly uniqueNameProviders: UniqueNameProviderMap = new Map();
-    private readonly namedElements = new Map<string, Set<ast.Element>>();
+    private readonly members = new Map<Scope, Map<string, ast.Element>>();
+    private readonly types = new Map<ast.Element, ast.Element>();
 
     public stableName(element: ast.Element): string {
         if (element == undefined) {
             return "UNDEFINED_ELEMENT";
         }
 
-        const name =
-            element.declaredName ?? this.getTypeNameProvider(element.$type).getStableName(element);
-        this.record(name, element);
+        return (
+            element.declaredName ?? this.getTypeNameProvider(element.$type).getStableName(element)
+        );
+    }
+
+    public declare(scope: Scope, element: ast.Element, name = this.stableName(element)): string {
+        const members = this.members.get(scope);
+        if (members) {
+            members.set(name, element);
+        } else {
+            this.members.set(scope, new Map([[name, element]]));
+        }
         return name;
     }
 
-    public elementsNamed(name: string): ast.Element[] {
-        return [...(this.namedElements.get(name) ?? [])];
+    public declareTyped(scope: Scope, element: ast.Element, type: ast.Element | undefined): string {
+        if (type) {
+            this.types.set(element, type);
+        }
+        return this.declare(scope, element);
     }
 
-    private record(name: string, element: ast.Element): void {
-        const elements = this.namedElements.get(name);
-        if (elements) {
-            elements.add(element);
-        } else {
-            this.namedElements.set(name, new Set([element]));
-        }
+    public member(scope: Scope, name: string): ast.Element | undefined {
+        const owner = scope && (this.types.get(scope) ?? scope);
+        return this.members.get(owner)?.get(name);
     }
 
     protected getTypeNameProvider(type: ast.Element["$type"]): UniqueNameProvider {

@@ -62,23 +62,45 @@ function qualifiedNames(elements: ast.Element[]): string[] {
     return elements.map((element) => element.$meta.qualifiedName);
 }
 
-describe("StableElementNameProvider inverse", () => {
-    it("returns every element a name was given to", async () => {
-        const services = await mapped();
-        const store = services.elementNameProvider;
+function members(store: StableElementNameProvider, ...names: string[]): ast.Element | undefined {
+    let scope: ast.Element | undefined = undefined;
+    for (const name of names) {
+        scope = store.member(scope, name);
+    }
+    return scope;
+}
 
-        expect(qualifiedNames(store.elementsNamed("Yellow"))).toEqual([
-            "Controller::Behaviour::Normal::Yellow",
-            "Controller::Behaviour::Blinking::Yellow",
-        ]);
-        const transitions = store.elementsNamed("UnnamedTransitionUsage1");
-        expect(transitions).toHaveLength(1);
-        expect(isTransitionUsage(transitions[0])).toBe(true);
-        expect(store.stableName(transitions[0])).toBe("UnnamedTransitionUsage1");
+describe("StableElementNameProvider scopes", () => {
+    it("records each name in the scope the mapper declared it in", async () => {
+        const store = (await mapped()).elementNameProvider;
+        const behaviour = ["semantifyr::sysml::model", "Controller", "Behaviour"];
+
+        expect(members(store, ...behaviour, "Normal", "Yellow")?.$meta.qualifiedName).toBe(
+            "Controller::Behaviour::Normal::Yellow"
+        );
+        expect(members(store, ...behaviour, "Blinking", "Yellow")?.$meta.qualifiedName).toBe(
+            "Controller::Behaviour::Blinking::Yellow"
+        );
+        expect(members(store, ...behaviour, "Yellow")).toBeUndefined();
+        const transition = members(store, ...behaviour, "Blinking", "UnnamedTransitionUsage2");
+        expect(isTransitionUsage(transition) && store.stableName(transition)).toBe(
+            "UnnamedTransitionUsage2"
+        );
     });
 
-    it("knows no element by a name it never gave", () => {
-        expect(new StableElementNameProvider().elementsNamed("Yellow")).toEqual([]);
+    it("resolves the members of a typed feature in its type", async () => {
+        const store = (await mapped()).elementNameProvider;
+
+        expect(
+            members(store, "semantifyr::sysml::model", "Crossing", "left", "lamp")?.$meta
+                .qualifiedName
+        ).toBe("Controller::lamp");
+    });
+
+    it("knows no element by a name it never declared", () => {
+        expect(new StableElementNameProvider().member(undefined, "semantifyr::sysml::model")).toBe(
+            undefined
+        );
     });
 });
 
@@ -87,7 +109,12 @@ describe("SemantifyrTraceResolver", () => {
         const services = await mapped();
         const verificationCase = services.traceResolver.resolveVerificationCase("Case");
         expect(isVerificationCaseDefinition(verificationCase)).toBe(true);
-        expect(() => services.traceResolver.resolveVerificationCase("Missing")).toThrow(/found 0/);
+        expect(() => services.traceResolver.resolveVerificationCase("Missing")).toThrow(
+            /No verification case is named 'Missing'/
+        );
+        expect(() => services.traceResolver.resolveVerificationCase("Controller")).toThrow(
+            /No verification case is named 'Controller'/
+        );
     });
 
     it("resolves an instance path to the containment chain", async () => {
@@ -161,13 +188,17 @@ describe("SemantifyrTraceResolver", () => {
         );
     });
 
-    it("resolves a traced item argument through the global item name", async () => {
-        const services = await mapped();
-        const item = services.traceResolver.resolveItem("semantifyr::sysml::model::global_Light");
+    it("resolves a traced item argument by the qualified name the mapper emitted", async () => {
+        const resolver = (await mapped()).traceResolver;
+        const item = resolver.resolveQualifiedName("semantifyr::sysml::model::global_Light");
 
         expect(isItemDefinition(item) && item.declaredName).toBe("Light");
-        expect(services.traceResolver.resolveItem("semantifyr::sysml::model::Light")).toBe(
+        expect(resolver.resolveQualifiedName("semantifyr::sysml::other::global_Light")).toBe(
             undefined
         );
+        expect(resolver.resolveQualifiedName("semantifyr::sysml::model::global_Lamp")).toBe(
+            undefined
+        );
+        expect(resolver.resolveQualifiedName("global_Light")).toBe(undefined);
     });
 });

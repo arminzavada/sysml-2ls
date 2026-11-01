@@ -16,6 +16,8 @@ import { SemantifyrPortMapper } from "./SemantifyrPortMapper";
 import { SemantifyrItemMapper } from "./SemantifyrItemMapper";
 import { SemantifyrVerificationCaseMapper } from "./SemantifyrVerificationCaseMapper";
 
+export const modelPackage = "semantifyr::sysml::model";
+
 export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
     private readonly partMapper: SemantifyrPartMapper;
     private readonly portMapper: SemantifyrPortMapper;
@@ -32,11 +34,11 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
 
     public mapRootNamespace(model: ast.Namespace): string {
         const node = expandToNode`
-            package semantifyr::sysml::model
+            package ${this.declare(undefined, model, modelPackage)}
             ${""}
             ${this.imports()}
             ${""}
-            ${joinToNode(model.children, (e) => this.mapGlobalMembership(e), { appendNewLineIfNotEmpty: true })}
+            ${joinToNode(model.children, (e) => this.mapGlobalMembership(model, e), { appendNewLineIfNotEmpty: true })}
         `;
 
         return toString(node);
@@ -56,7 +58,10 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private mapGlobalMembership(membership: ast.Membership | ast.Import): Generated {
+    private mapGlobalMembership(
+        model: ast.Namespace,
+        membership: ast.Membership | ast.Import
+    ): Generated {
         if (isImport(membership)) {
             return undefined;
         }
@@ -66,7 +71,7 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
         }
 
         if (isOwningMembership(membership)) {
-            return this.mapGlobalOwningMembership(membership);
+            return this.mapGlobalOwningMembership(model, membership);
         }
 
         return undefined;
@@ -76,7 +81,10 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
         return undefined; // skip global features for now
     }
 
-    private mapGlobalOwningMembership(membership: ast.OwningMembership): Generated {
+    private mapGlobalOwningMembership(
+        model: ast.Namespace,
+        membership: ast.OwningMembership
+    ): Generated {
         const element = membership.target;
 
         if (element === undefined) {
@@ -84,19 +92,19 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
         }
 
         if (isPartDefinition(element)) {
-            return this.partMapper.mapPartDefinition(element);
+            return this.partMapper.mapPartDefinition(model, element);
         }
 
         if (isPortDefinition(element)) {
-            return this.portMapper.mapPortDefinition(element);
+            return this.portMapper.mapPortDefinition(model, element);
         }
 
         if (isItemDefinition(element)) {
-            return this.itemMapper.mapItemDefinition(element);
+            return this.itemMapper.mapItemDefinition(model, element);
         }
 
         if (isVerificationCaseDefinition(element)) {
-            return this.verificationCaseMapper.mapVerificationCaseDefinition(element);
+            return this.verificationCaseMapper.mapVerificationCaseDefinition(model, element);
         }
 
         return undefined;
