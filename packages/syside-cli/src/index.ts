@@ -17,7 +17,13 @@
 import { Command, Option } from "commander";
 import { Extensions, evalAction } from "./sysml-util.js";
 import { Version } from "./version.js";
-import { SysMLExtensions, compileAction, compileBatchAction, traceAction } from "./semantifyr-util";
+import {
+    SysMLExtensions,
+    compileAction,
+    compileBatchAction,
+    traceAction,
+    validateAction,
+} from "./semantifyr-util";
 
 const program = new Command();
 
@@ -79,6 +85,16 @@ program
     .option("-o, --output <file>", "Output file path (default: trace file with .sysml extension)")
     .description("Generate the SysML trace model of a Semantifyr (OXSTS) trace")
     .action(traceAction);
+
+program
+    .command("validate")
+    .argument(
+        "<file>",
+        `The file to validate in the workspace of its directory. possible file extensions: ${SysMLExtensions.join(", ")}`
+    )
+    .argument("<standard library path>", `The path to the standard library root directory`)
+    .description("Validate a SysML file without translating it")
+    .action(validateAction);
 
 program.parseAsync(process.argv).catch((err) => {
     console.error(err);

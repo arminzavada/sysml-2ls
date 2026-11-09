@@ -286,6 +286,11 @@ export const compileBatchAction = async (
     await compileModels(stdlibPath, models);
 };
 
+export const validateAction = async (fileName: string, stdlibPath: string): Promise<void> => {
+    await loadModel(fileName, stdlibPath);
+    console.log(chalk.green(`Validated ${fileName}`));
+};
+
 export const traceAction = async (
     fileName: string,
     stdlibPath: string,
