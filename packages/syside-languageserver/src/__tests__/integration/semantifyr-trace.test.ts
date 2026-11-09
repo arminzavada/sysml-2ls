@@ -112,7 +112,6 @@ const send = "semantifyr::sysml::ports::Port::setOutgoingItem";
 const passTime = "semantifyr::sysml::verification::VerificationCaseDefinition::passTime";
 
 const machineTrace: SemantifyrTrace = {
-    initialStep: { traces: [] },
     initializedStep: { traces: [entry("root.system.device.pings", send)] },
     steps: [
         { traces: [entry("root.system.device.Power.powerUp", fire), entry("root", passTime)] },
@@ -204,8 +203,7 @@ describe("Semantifyr trace generation", () => {
 
     it("places sends by their enclosing transition however Semantifyr nests them", () => {
         const misnested: SemantifyrTrace = {
-            initialStep: trace.initialStep,
-            initializedStep: trace.initializedStep && {
+            initializedStep: {
                 traces: nestUnderPrecedingSibling(trace.initializedStep.traces),
             },
             steps: trace.steps.map((step) => ({ traces: nestUnderPrecedingSibling(step.traces) })),
@@ -247,8 +245,7 @@ describe("Semantifyr trace generation", () => {
 
     it("takes the traced call from the trace, not from the element it is called on", () => {
         const unexpected = (traces: SemantifyrTraceEntry[]): SemantifyrTrace => ({
-            initialStep: { traces: [] },
-            initializedStep: null,
+            initializedStep: { traces: [] },
             steps: [{ traces }],
         });
         const setIncomingItem = "semantifyr::sysml::ports::Port::setIncomingItem";

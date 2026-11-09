@@ -31,8 +31,7 @@ export interface SemantifyrTraceStep {
 }
 
 export interface SemantifyrTrace {
-    initialStep: SemantifyrTraceStep;
-    initializedStep: SemantifyrTraceStep | null;
+    initializedStep: SemantifyrTraceStep;
     steps: SemantifyrTraceStep[];
 }
 
@@ -215,7 +214,7 @@ export class SemantifyrTraceGenerator extends SemantifyrBaseMapper {
             }
         }
 
-        this.react(0, this.collect(trace.initializedStep?.traces ?? []));
+        this.react(0, this.collect(trace.initializedStep.traces));
         trace.steps.forEach((step, index) => this.react(index + 1, this.collect(step.traces)));
 
         const successions = this.timePoints
