@@ -92,6 +92,26 @@ const cases: UnsupportedCase[] = [
         reported: ";",
     },
     {
+        construct: "a transition to done",
+        model: part(`
+            exhibit state behaviour {
+                state on;
+                transition stop first on then done;
+            }
+        `),
+        reported: "done",
+    },
+    {
+        construct: "a succession to done in an action",
+        model: state(`
+            entry action work {
+                action step;
+                then done;
+            }
+        `),
+        reported: "then done;",
+    },
+    {
         construct: "a real number",
         model: part(`attribute ratio: ScalarValues::Integer = 1.5;`),
         reported: "1.5",
