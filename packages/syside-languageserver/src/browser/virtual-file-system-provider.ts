@@ -21,9 +21,21 @@ import { STDLIB } from "syside-base";
 import fetch from "node-fetch";
 
 export class VirtualFileSystemProvider implements SysMLFileSystemProvider {
-    readonly standardLibrary = URI.parse(STDLIB.raw);
-    readonly files = new Set(STDLIB.files.map((file) => URI.parse(STDLIB.raw + file).toString()));
+    readonly standardLibrary: URI;
+    readonly files: Set<string>;
     protected readonly cachedContents = new Map<string, string>();
+
+    constructor(
+        libraryLocation: string = STDLIB.raw,
+        libraryFiles: readonly string[] = STDLIB.files
+    ) {
+        this.standardLibrary = URI.parse(libraryLocation);
+        this.files = new Set(
+            libraryFiles.map((file) => {
+                return URI.parse(libraryLocation + file).toString();
+            })
+        );
+    }
 
     updateStandardLibrary(): void {
         return;
@@ -48,7 +60,11 @@ export class VirtualFileSystemProvider implements SysMLFileSystemProvider {
             if (!this.existsSync(path)) {
                 throw new Error(`No such file: ${uri}`);
             }
-            const text = await fetch(uri).then((response) => response.text());
+            const response = await fetch(uri);
+            if (!response.ok) {
+                throw new Error(`Cannot fetch ${uri}: ${response.status}`);
+            }
+            const text = await response.text();
             this.cachedContents.set(uri, text);
             file = text;
         }
@@ -124,3 +140,12 @@ export class VirtualFileSystemProvider implements SysMLFileSystemProvider {
 export const VirtualFileSystem = {
     fileSystemProvider: (): SysMLFileSystemProvider => new VirtualFileSystemProvider(),
 };
+
+export function servedLibraryFileSystem(libraryLocation: string): typeof VirtualFileSystem {
+    const location = libraryLocation.endsWith("/") ? libraryLocation : `${libraryLocation}/`;
+    return {
+        fileSystemProvider: (): SysMLFileSystemProvider => {
+            return new VirtualFileSystemProvider(location, [...STDLIB.files, "Verification.sysml"]);
+        },
+    };
+}

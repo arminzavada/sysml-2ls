@@ -17,9 +17,22 @@
 // @ts-check
 import * as esbuild from "esbuild";
 import fs from "node:fs";
-import { nodeOptions, parseFlags } from "../../scripts/esbuild-shared.mjs";
+import { browserOptions, nodeOptions, parseFlags } from "../../scripts/esbuild-shared.mjs";
 
 const { watch, minify, sourcemap } = parseFlags();
+
+if (process.argv.includes("--worker")) {
+    await esbuild.build({
+        ...browserOptions(),
+        entryPoints: ["src/browser/main.ts"],
+        outfile: "dist/worker/syside-worker.cjs",
+        minify,
+        sourcemap,
+    });
+    fs.cpSync("../../SysML-v2-Release/sysml.library", "dist/worker/library", { recursive: true });
+    fs.copyFileSync("library/Verification.sysml", "dist/worker/library/Verification.sysml");
+    process.exit(0);
+}
 
 /** @type {import("esbuild").BuildOptions} */
 const options = {

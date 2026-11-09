@@ -20,20 +20,27 @@ import {
     createConnection,
 } from "vscode-languageserver/browser";
 import { createSysMLServices } from "../sysml-module.js";
-import { VirtualFileSystem } from "./virtual-file-system-provider.js";
+import { servedLibraryFileSystem, VirtualFileSystem } from "./virtual-file-system-provider.js";
 import { startServer as _startServer } from "../launch/index.js";
 
 declare const self: DedicatedWorkerGlobalScope;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface BrowserLaunchOptions {}
+export interface BrowserLaunchOptions {
+    libraryLocation?: string;
+}
 
-export function startServer(options: BrowserLaunchOptions): ReturnType<typeof createSysMLServices> {
+export function startServer({
+    libraryLocation,
+    ...options
+}: BrowserLaunchOptions): ReturnType<typeof createSysMLServices> {
     /* browser specific setup code */
     const input = new BrowserMessageReader(self);
     const output = new BrowserMessageWriter(self);
 
     const connection = createConnection(input, output);
 
-    return _startServer(connection, VirtualFileSystem, options);
+    const fileSystem = libraryLocation
+        ? servedLibraryFileSystem(libraryLocation)
+        : VirtualFileSystem;
+    return _startServer(connection, fileSystem, options);
 }

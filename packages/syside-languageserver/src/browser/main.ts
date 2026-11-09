@@ -16,4 +16,6 @@
 
 import { startServer } from "./server.js";
 
-startServer({});
+const library = new URL(location.href).searchParams.get("library");
+
+startServer(library ? { libraryLocation: new URL(library, location.href).href } : {});

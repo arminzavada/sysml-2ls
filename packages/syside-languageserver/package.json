@@ -28,6 +28,7 @@
         "dist",
         "lib",
         "gen",
+        "library",
         "src"
     ],
     "bin": {
@@ -63,6 +64,7 @@
         "assemble": "pnpm grammar && tsc -b",
         "assemble:watch": "tsc --watch",
         "bundle": "node esbuild.mjs --minify",
+        "bundle:worker": "pnpm assemble && node esbuild.mjs --worker --minify",
         "bundle:watch": "node esbuild.mjs --sourcemap --watch",
         "build": "pnpm check && pnpm assemble && pnpm bundle",
         "build:watch": "concurrently -n tsc,esbuild -c blue,yellow \"pnpm assemble:watch\" \"pnpm bundle:watch\"",

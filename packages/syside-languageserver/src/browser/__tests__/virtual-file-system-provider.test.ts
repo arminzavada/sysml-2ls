@@ -15,7 +15,10 @@
  ********************************************************************************/
 
 import { STDLIB } from "syside-base";
-import { VirtualFileSystemProvider } from "../virtual-file-system-provider.js";
+import {
+    servedLibraryFileSystem,
+    VirtualFileSystemProvider,
+} from "../virtual-file-system-provider.js";
 import { URI } from "vscode-uri";
 
 describe("Virtual FS provider", () => {
@@ -63,5 +66,29 @@ describe("Virtual FS provider", () => {
         expect(nodes).toHaveLength(STDLIB.files.length);
         expect(nodes.find((n) => n.isDirectory)).toBeUndefined();
         expect(nodes.find((n) => !n.isFile)).toBeUndefined();
+    });
+});
+
+describe("Served library", () => {
+    const provider = servedLibraryFileSystem("https://live.example/library").fileSystemProvider();
+
+    it("finds the standard library under the given location", () => {
+        expect(
+            provider.existsSync(URI.parse(`https://live.example/library/${STDLIB.files[0]}`))
+        ).toBeTruthy();
+    });
+
+    it("finds the verification library under the given location", () => {
+        expect(
+            provider.existsSync(URI.parse("https://live.example/library/Verification.sysml"))
+        ).toBeTruthy();
+    });
+});
+
+describe("Default library", () => {
+    it("has no verification library, which the standard library's host does not serve", () => {
+        expect(
+            new VirtualFileSystemProvider().existsSync(URI.parse(`${STDLIB.raw}Verification.sysml`))
+        ).toBeFalsy();
     });
 });
