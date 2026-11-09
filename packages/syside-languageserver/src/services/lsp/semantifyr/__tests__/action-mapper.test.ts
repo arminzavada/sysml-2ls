@@ -17,7 +17,11 @@ port def CommandPort { in item command: Ping; }
 async function compile(modelBody: string): Promise<string> {
     const result = await parseSysML(`${PROLOGUE}\n${modelBody}`);
     expect(result.parserErrors).toHaveLength(0);
-    return mapSysMLNamespaceToSemantifyr(result.value as Namespace);
+    const mapping = mapSysMLNamespaceToSemantifyr(result.value as Namespace);
+    if (mapping.oxsts === undefined) {
+        throw new Error(mapping.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
+    }
+    return mapping.oxsts;
 }
 
 describe("SendActionUsage mapping", () => {

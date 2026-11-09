@@ -17,11 +17,23 @@ const modelsRoot = path.join(
     "semantifyr-models"
 );
 
+const verificationLibrary = path.resolve(
+    modelsRoot,
+    "..",
+    "..",
+    "..",
+    "..",
+    "library",
+    "Verification.sysml"
+);
+
 async function workspace(root: string, name: string, files: string[]): Promise<string> {
     const directory = path.join(root, name);
     await fs.mkdir(directory);
     for (const file of files) {
-        await fs.copyFile(path.join(modelsRoot, file), path.join(directory, file));
+        const source =
+            file === "Verification.sysml" ? verificationLibrary : path.join(modelsRoot, file);
+        await fs.copyFile(source, path.join(directory, file));
     }
     return directory;
 }

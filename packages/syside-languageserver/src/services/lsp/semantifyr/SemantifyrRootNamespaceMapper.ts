@@ -4,6 +4,7 @@ import {
     isImport,
     isFeatureMembership,
     isOwningMembership,
+    isCalculationDefinition,
     isPartDefinition,
     isPortDefinition,
     isItemDefinition,
@@ -38,7 +39,7 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
             ${""}
             ${this.imports()}
             ${""}
-            ${joinToNode(model.children, (e) => this.mapGlobalMembership(model, e), { appendNewLineIfNotEmpty: true })}
+            ${joinToNode(model.children, (e) => this.mapGuardedGlobalMembership(model, e), { appendNewLineIfNotEmpty: true })}
         `;
 
         return toString(node);
@@ -58,6 +59,24 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
         `;
     }
 
+    private mapGuardedGlobalMembership(
+        model: ast.Namespace,
+        membership: ast.Membership | ast.Import
+    ): Generated {
+        try {
+            return this.mapGlobalMembership(model, membership);
+        } catch (error) {
+            // A construct of an unforeseen shape breaks the mapper's casts.
+            if (error instanceof TypeError) {
+                return this.unsupported(
+                    membership,
+                    `Semantifyr cannot translate this element: ${error.message}`
+                );
+            }
+            throw error;
+        }
+    }
+
     private mapGlobalMembership(
         model: ast.Namespace,
         membership: ast.Membership | ast.Import
@@ -74,11 +93,14 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
             return this.mapGlobalOwningMembership(model, membership);
         }
 
-        return undefined;
+        return this.unsupported(
+            membership,
+            "Semantifyr does not support this membership at the top level"
+        );
     }
 
-    private mapGlobalFeatureMembership(_membership: ast.FeatureMembership): Generated {
-        return undefined; // skip global features for now
+    private mapGlobalFeatureMembership(membership: ast.FeatureMembership): Generated {
+        return this.unsupported(membership, "Semantifyr does not support top-level features");
     }
 
     private mapGlobalOwningMembership(
@@ -107,6 +129,13 @@ export class SemantifyrRootNamespaceMapper extends SemantifyrBaseMapper {
             return this.verificationCaseMapper.mapVerificationCaseDefinition(model, element);
         }
 
-        return undefined;
+        if (this.isAnnotation(element) || isCalculationDefinition(element)) {
+            return undefined;
+        }
+
+        return this.unsupported(
+            element,
+            `Semantifyr does not support a top-level ${element.$type}`
+        );
     }
 }

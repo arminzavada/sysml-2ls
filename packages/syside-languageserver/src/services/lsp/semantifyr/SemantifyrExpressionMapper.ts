@@ -59,7 +59,7 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         if (isInvocationExpression(expression)) {
             return this.mapInvocationExpression(featureName, expression);
         }
-        throw new Error(`Unsupported expression type '${expression.$type}'`);
+        return this.unsupported(expression, `Unsupported expression type '${expression.$type}'`);
     }
 
     private mapFeatureReferenceExpression(
@@ -73,13 +73,16 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         if (isFeatureMembership(embedded)) {
             const inner = embedded.target as Expression | undefined;
             if (!inner) {
-                throw new Error("Embedded FeatureMembership has no expression target");
+                return this.unsupported(
+                    embedded,
+                    "Embedded FeatureMembership has no expression target"
+                );
             }
             return this.mapExpression(featureName, inner);
         }
         return expandToNode`
             redefine contains ${featureName}: AttributeReferenceExpression {
-                redefine refers attribute: Attribute = ${this.expressionStringifier.stringifyMembershipReference(expression.expression)}
+                redefine refers attribute: Attribute = ${this.expressionStringifier.stringifyMembershipReference(expression, expression.expression)}
             }
         `;
     }
@@ -91,7 +94,7 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
 
         const operator = expression.operator;
         if (!operator) {
-            throw new Error("OperatorExpression has no operator token");
+            return this.unsupported(expression, "OperatorExpression has no operator token");
         }
         const unaryClass = UNARY_OPERATOR_LIBRARY_CLASS.get(operator);
         if (unaryClass) {
@@ -103,8 +106,8 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         }
 
         const binaryClass = BINARY_OPERATOR_LIBRARY_CLASS.get(operator);
-        if (!binaryClass) {
-            throw new Error(`Unsupported operator '${operator}'`);
+        if (!binaryClass || expression.operands.length < 2) {
+            return this.unsupported(expression, `Unsupported operator '${operator}'`);
         }
         return expandToNode`
             redefine contains ${featureName}: ${binaryClass} {
@@ -121,23 +124,31 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         const parameter = expression.children[0];
         const left = expression.operands[0];
         if (!isFeatureReferenceExpression(left)) {
-            throw new Error(
+            return this.unsupported(
+                expression,
                 "FeatureChainExpression left operand must be a FeatureReferenceExpression"
             );
         }
-        const leftPath = this.expressionStringifier.stringifyMembershipReference(left.expression);
+        const leftPath = this.expressionStringifier.stringifyMembershipReference(
+            left,
+            left.expression
+        );
 
         let rightPath: string;
         if (isOwningMembership(parameter)) {
             const parameterFeature = parameter.target;
             if (!parameterFeature) {
-                throw new Error("FeatureChainExpression member has no target");
+                return this.unsupported(parameter, "FeatureChainExpression member has no target");
             }
             rightPath = this.expressionStringifier.stringifyElement(parameterFeature);
         } else if (isMembership(parameter)) {
-            rightPath = this.expressionStringifier.stringifyMembershipReference(parameter);
+            rightPath = this.expressionStringifier.stringifyMembershipReference(
+                parameter,
+                parameter
+            );
         } else {
-            throw new Error(
+            return this.unsupported(
+                expression,
                 `FeatureChainExpression child has unexpected type '${parameter?.$type}'`
             );
         }
@@ -159,7 +170,10 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         if (isLiteralBoolean(expression)) {
             return this.mapLiteralBooleanExpression(featureName, expression);
         }
-        throw new Error(`Unsupported literal expression type '${expression.$type}'`);
+        return this.unsupported(
+            expression,
+            `Unsupported literal expression type '${expression.$type}'`
+        );
     }
 
     private mapLiteralNumberExpression(
@@ -203,7 +217,8 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
             case "eventually":
                 return this.mapTemporalInvocation(featureName, expression, "Eventually");
             default:
-                throw new Error(
+                return this.unsupported(
+                    expression,
                     `Unsupported invocation '${invokedName ?? "<unknown>"}' (only isStateActive, mustAlways, eventually are recognised)`
                 );
         }
@@ -214,6 +229,9 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         expression: ast.InvocationExpression
     ): Generated {
         const argument = this.firstInvocationArgument(expression);
+        if (!argument) {
+            return undefined;
+        }
         const statePath = this.expressionStringifier.stringifyElement(argument);
         return expandToNode`
             redefine contains ${featureName}: IsStateActiveExpression {
@@ -228,6 +246,9 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         libraryClass: "MustAlways" | "Eventually"
     ): Generated {
         const argument = this.firstInvocationArgument(expression);
+        if (!argument) {
+            return undefined;
+        }
         return expandToNode`
             redefine contains ${featureName}: ${libraryClass} {
                 ${this.mapExpression("body", argument)}
@@ -235,12 +256,12 @@ export class SemantifyrExpressionMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private firstInvocationArgument(expression: ast.InvocationExpression): Expression {
+    private firstInvocationArgument(expression: ast.InvocationExpression): Expression | undefined {
         const argMeta = expression.$meta.arguments().at(0);
         const arg = argMeta?.ast() as Expression | undefined;
         if (!arg) {
             const invoked = expression.$meta.invokes()?.ast()?.declaredName ?? "<unknown>";
-            throw new Error(`Invocation '${invoked}' requires at least one argument`);
+            this.unsupported(expression, `Invocation '${invoked}' requires at least one argument`);
         }
         return arg;
     }

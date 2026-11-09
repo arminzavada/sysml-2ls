@@ -33,7 +33,9 @@ describe("Semantifyr SysML test models", () => {
 
     beforeAll(async () => {
         ({ shared } = await setupServicesWithStdlib());
-        const verificationUri = URI.file(path.join(modelsRoot, "Verification.sysml"));
+        const verificationUri = URI.file(
+            path.resolve(currentDir, "..", "..", "..", "library", "Verification.sysml")
+        );
         const verificationDoc =
             await shared.workspace.LangiumDocuments.getOrCreateDocument(verificationUri);
         await shared.workspace.DocumentBuilder.build([verificationDoc], <SysMLBuildOptions>{

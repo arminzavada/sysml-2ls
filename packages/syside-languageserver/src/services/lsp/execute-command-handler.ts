@@ -18,6 +18,7 @@ import {
     AstNode,
     CstUtils,
     DocumentBuilder,
+    LangiumDocument,
     LangiumDocuments,
     ServiceRegistry,
     stream,
@@ -27,7 +28,13 @@ import {
     ExecuteCommandAcceptor,
     ExecuteCommandFunction,
 } from "langium/lsp";
-import { CancellationToken, Connection, Disposable, Position } from "vscode-languageserver";
+import {
+    CancellationToken,
+    Connection,
+    DiagnosticSeverity,
+    Disposable,
+    Position,
+} from "vscode-languageserver";
 import { URI } from "vscode-uri";
 
 // `vscode-uri@3.x` no longer exposes the deep `lib/umd/uri.js` path through
@@ -47,6 +54,7 @@ import {
     InlineExpression,
     isElement,
     isNamespace,
+    Namespace,
     Type,
 } from "#generated/ast.js";
 import { JSONMetaReplacer, JSONreplacer, toJSON } from "../../utils/common.js";
@@ -55,14 +63,30 @@ import { FeatureMeta, Metamodel } from "../../model/index.js";
 import { RegisterTextEditorCommandsRequest } from "syside-protocol";
 import { makeLinkingScope } from "../../utils/scopes.js";
 import { toSExp } from "../../model/sexp.js";
-import { mapSysMLNamespaceToSemantifyr } from "./semantifyr/SemantifyrMapper";
+import {
+    findSemantifyrVerificationCases,
+    mapSemantifyrTraceToSysML,
+    mapSysMLNamespaceToSemantifyr,
+    SemantifyrMapping,
+    SemantifyrTrace,
+    SemantifyrVerificationCase,
+} from "./semantifyr/SemantifyrMapper";
 import { upsertTextFile } from "../../utils/file-utils";
 
 type EditorCommand<T> = (
     editor: RegisterTextEditorCommandsRequest.Parameters,
     cancelToken: CancellationToken
 ) => T;
-type DocumentCommand<T> = (doc: UriComponents, cancelToken: CancellationToken) => T;
+type DocumentCommand<T, Parameter = UriComponents> = (
+    doc: Parameter,
+    cancelToken: CancellationToken
+) => T;
+export interface SemantifyrTraceParameters {
+    uri: string;
+    caseName: string;
+    trace: SemantifyrTrace;
+}
+
 type SimpleCommand<T> = (cancelToken: CancellationToken) => T;
 
 const CommandMap = Map<string, ExecuteCommandFunction>;
@@ -163,9 +187,9 @@ function simpleCommand(name: string) {
     };
 }
 
-function wrapDocumentCommand<T>(
+function wrapDocumentCommand<T, Parameter>(
     name: string,
-    command: DocumentCommand<T>,
+    command: DocumentCommand<T, Parameter>,
     thisObj?: ThisParameterType<unknown>
 ): ExecuteCommandFunction {
     return function (this: unknown, args, cancelToken) {
@@ -184,10 +208,10 @@ function wrapDocumentCommand<T>(
  * ```
  */
 function documentCommand(name: string) {
-    return <T>(
+    return <T, Parameter>(
         _target: SysMLExecuteCommandHandler,
         _propertyKey: string,
-        descriptor: TypedPropertyDescriptor<DocumentCommand<T>>
+        descriptor: TypedPropertyDescriptor<DocumentCommand<T, Parameter>>
     ): void => {
         const fn = descriptor.value;
         if (!fn) return;
@@ -501,10 +525,69 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
             return;
         }
 
-        const oxstsCode = mapSysMLNamespaceToSemantifyr(rootNode);
+        const mapping = mapSysMLNamespaceToSemantifyr(rootNode);
+        if (mapping.oxsts === undefined) {
+            const messages = mapping.diagnostics.map((diagnostic) => {
+                return `line ${diagnostic.range.start.line + 1}: ${diagnostic.message}`;
+            });
+            this.connection.window.showErrorMessage(messages.join("; "));
+            return;
+        }
         const newuri = uri.toString().replace(".sysml", ".oxsts");
 
-        await upsertTextFile(this.connection, newuri, oxstsCode, "Generated Semantifyr Code");
+        await upsertTextFile(this.connection, newuri, mapping.oxsts, "Generated Semantifyr Code");
+    }
+
+    @documentCommand("syside.semantifyr.sysml.verificationCases")
+    protected semantifyrVerificationCases(
+        uri: string,
+        _ = CancellationToken.None
+    ): Promise<SemantifyrVerificationCase[]> {
+        return this.readCurrentDocument(uri, (document) => {
+            return findSemantifyrVerificationCases(document.parseResult.value as Namespace);
+        });
+    }
+
+    @documentCommand("syside.semantifyr.sysml.oxsts")
+    protected semantifyrOxsts(uri: string, _ = CancellationToken.None): Promise<SemantifyrMapping> {
+        return this.readCurrentDocument(uri, (document) => {
+            const errors = (document.diagnostics ?? []).filter((diagnostic) => {
+                return diagnostic.severity === DiagnosticSeverity.Error;
+            });
+            if (errors.length > 0) {
+                return { diagnostics: errors };
+            }
+            return mapSysMLNamespaceToSemantifyr(document.parseResult.value as Namespace);
+        });
+    }
+
+    @documentCommand("syside.semantifyr.sysml.trace")
+    protected semantifyrTrace(
+        parameters: SemantifyrTraceParameters,
+        _ = CancellationToken.None
+    ): Promise<string> {
+        return this.readCurrentDocument(parameters.uri, (document) => {
+            return mapSemantifyrTraceToSysML(
+                document.parseResult.value as Namespace,
+                parameters.trace,
+                parameters.caseName
+            );
+        });
+    }
+
+    // The lock queues behind the update a preceding didOpen or didChange started.
+    protected async readCurrentDocument<T>(
+        uri: string,
+        read: (document: LangiumDocument) => T
+    ): Promise<T> {
+        await this.shared.workspace.WorkspaceManager.ready;
+        return this.shared.workspace.WorkspaceLock.read(() => {
+            const document = this.documents.getDocument(URI.parse(uri));
+            if (!document) {
+                throw new Error(`Document '${uri}' is not open`);
+            }
+            return read(document);
+        });
     }
 
     override async executeCommand(

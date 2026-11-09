@@ -32,10 +32,6 @@ export class StableElementNameProvider {
     private readonly types = new Map<ast.Element, ast.Element>();
 
     public stableName(element: ast.Element): string {
-        if (element == undefined) {
-            return "UNDEFINED_ELEMENT";
-        }
-
         return (
             element.declaredName ?? this.getTypeNameProvider(element.$type).getStableName(element)
         );

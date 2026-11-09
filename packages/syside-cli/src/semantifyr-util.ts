@@ -239,7 +239,20 @@ async function compileModels(stdlibArgument: string, models: [string, string][])
                 failed = true;
                 continue;
             }
-            await writeOutput(outputFile, mapSysMLNamespaceToSemantifyr(rootNode));
+            const mapping = mapSysMLNamespaceToSemantifyr(rootNode);
+            if (mapping.oxsts === undefined) {
+                console.error(chalk.red(`Cannot translate ${fileName}:`));
+                for (const diagnostic of mapping.diagnostics) {
+                    console.error(
+                        chalk.red(
+                            `  line ${diagnostic.range.start.line + 1}: ${diagnostic.message}`
+                        )
+                    );
+                }
+                failed = true;
+                continue;
+            }
+            await writeOutput(outputFile, mapping.oxsts);
             console.log(chalk.green(`Compiled ${fileName} -> ${outputFile}`));
         }
     }

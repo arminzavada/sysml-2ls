@@ -152,11 +152,12 @@ describe("Semantifyr trace generation", () => {
     beforeAll(async () => {
         ({ shared } = await setupServicesWithStdlib());
         const documents = await Promise.all(
-            ["Verification.sysml", "crossroads.sysml"].map((file) =>
-                shared.workspace.LangiumDocuments.getOrCreateDocument(
-                    URI.file(path.join(modelsRoot, file))
-                )
-            )
+            [
+                path.resolve(currentDir, "..", "..", "..", "library", "Verification.sysml"),
+                path.join(modelsRoot, "crossroads.sysml"),
+            ].map((file) => {
+                return shared.workspace.LangiumDocuments.getOrCreateDocument(URI.file(file));
+            })
         );
         await shared.workspace.DocumentBuilder.build(documents, <SysMLBuildOptions>{
             validation: false,

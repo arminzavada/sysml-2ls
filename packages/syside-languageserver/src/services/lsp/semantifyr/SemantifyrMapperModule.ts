@@ -1,3 +1,4 @@
+import { SemantifyrUnsupportedConstructs } from "./SemantifyrUnsupportedConstructs";
 import { inject, Module } from "langium";
 import { StableElementNameProvider } from "./StableNameStore";
 import { SemantifyrItemMapper } from "./SemantifyrItemMapper";
@@ -25,6 +26,7 @@ export type SemantifyrMapperServices = {
     rootNamespaceMapper: SemantifyrRootNamespaceMapper;
     expressionStringifier: SemantifyrExpressionStringifier;
     traceResolver: SemantifyrTraceResolver;
+    unsupportedConstructs: SemantifyrUnsupportedConstructs;
 };
 
 export const SemantifyrMapperModule: Module<SemantifyrMapperServices> = {
@@ -40,6 +42,7 @@ export const SemantifyrMapperModule: Module<SemantifyrMapperServices> = {
     rootNamespaceMapper: (services) => new SemantifyrRootNamespaceMapper(services),
     expressionStringifier: (services) => new SemantifyrExpressionStringifier(services),
     traceResolver: (services) => new SemantifyrTraceResolver(services),
+    unsupportedConstructs: () => new SemantifyrUnsupportedConstructs(),
 };
 
 export function createSemantifyrMapperServices(): SemantifyrMapperServices {

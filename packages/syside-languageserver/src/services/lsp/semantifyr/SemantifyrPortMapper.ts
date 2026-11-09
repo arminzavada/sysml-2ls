@@ -22,6 +22,7 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
     }
 
     public mapPortDefinition(scope: ast.Namespace, port: ast.PortDefinition): Generated {
+        this.unsupportedHeritage(port);
         return expandToNode`
             ${this.mapNormalPortDefinition(scope, port)}
             ${this.mapConjugatedPortDefinition(scope, port)}
@@ -59,7 +60,10 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
             return this.mapOwningMembership(membership);
         }
 
-        return undefined;
+        return this.unsupported(
+            membership,
+            "Semantifyr does not support this membership in a port definition"
+        );
     }
 
     private mapFeatureMembership(membership: ast.FeatureMembership): Generated {
@@ -71,9 +75,13 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
 
         if (isItemUsage(element)) {
             // return this.mapItemUsage(element);
+            return undefined;
         }
 
-        return undefined;
+        return this.unsupported(
+            element,
+            `Semantifyr does not support a ${element.$type} in a port definition`
+        );
     }
 
     private itemUsageSubsets(itemUsage: ItemUsage): string {
@@ -84,7 +92,7 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
             return `outgoingItems`;
         }
 
-        return "UNEXPECTED_ITEM_DIRECTION";
+        return this.unsupported(itemUsage, "Semantifyr requires a port item to be in or out");
     }
 
     private mapItemUsage(itemUsage: ItemUsage): Generated {
@@ -100,7 +108,13 @@ export class SemantifyrPortMapper extends SemantifyrBaseMapper {
         return `refers ${itemName}: ${classifierName} subsets ${subsets} = ${expression}`;
     }
 
-    private mapOwningMembership(_membership: ast.OwningMembership): Generated {
-        return undefined; // skip port members for now
+    private mapOwningMembership(membership: ast.OwningMembership): Generated {
+        if (this.isAnnotation(membership.target)) {
+            return undefined;
+        }
+        return this.unsupported(
+            membership,
+            "Semantifyr does not support this member in a port definition"
+        );
     }
 }

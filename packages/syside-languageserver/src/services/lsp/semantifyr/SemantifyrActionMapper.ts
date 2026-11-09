@@ -53,7 +53,10 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
             return this.mapSendActionUsage(featureName, actionUsage, actualKind);
         }
 
-        return "UNKNOWN_TYPE_OF_ACTION";
+        return this.unsupported(
+            actionUsage,
+            `Semantifyr does not support a ${actionUsage.$type} here`
+        );
     }
 
     mapAcceptActionUsage(
@@ -75,11 +78,14 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
                 return this.mapAcceptWhenActionUsage(featureName, acceptAction, trigger, kind);
             }
             if (trigger.kind === "at") {
-                return "AT_TRIGGERS_ARE_NOT_SUPPORTED";
+                return this.unsupported(acceptAction, "Semantifyr does not support at triggers");
             }
         }
 
-        return "UNKNOWN_ACCEPT_ACTION";
+        return this.unsupported(
+            acceptAction,
+            "Semantifyr supports accepts of items, after and when"
+        );
     }
 
     private mapAcceptTimoutActionUsage(
@@ -102,7 +108,7 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         } else if (isLiteralNumber(parameterValueExpression)) {
             timeoutValue = parameterValueExpression;
         } else {
-            return "UNKNOWN_TIMEOUT_EXPRESSION";
+            return this.unsupported(trigger, "Semantifyr supports a number as a timeout");
         }
 
         const timeoutValueString = this.expressionStringifier.stringifyElement(timeoutValue);
@@ -140,11 +146,13 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
     ): Generated {
         const meta = acceptAction.$meta;
         const payloadItem = meta.payloadItemDefinition()?.ast();
-        if (!payloadItem) return undefined;
+        if (!payloadItem) {
+            return this.unsupported(acceptAction, "Semantifyr requires an item payload");
+        }
 
         const viaPort = meta.receiverFeature()?.ast();
         if (!viaPort) {
-            throw new Error("AcceptItemAction must have a 'via' port specification");
+            return this.unsupported(acceptAction, "An accept of an item must have a 'via' port");
         }
 
         const payloadItemGlobalName = this.itemMapper.globalItemName(payloadItem);
@@ -165,11 +173,14 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
     ): Generated {
         const target = actionUsage.assignedValue.target as ast.ReferenceUsage;
         const targetValue = target.value as ast.FeatureValue;
-        const targetExpression = targetValue?.target as ast.Expression;
+        const targetExpression = targetValue?.target as ast.Expression | undefined;
+        if (!targetExpression) {
+            return this.unsupported(actionUsage, "An assignment must have a value");
+        }
 
         return expandToNode`
             ${this.containsFeatureLine(featureName, actionUsage, "AssignmentAction", kind)} {
-                redefine refers attribute: Attribute = ${this.expressionStringifier.stringifyMembershipReference(actionUsage.targetMember)}
+                redefine refers attribute: Attribute = ${this.expressionStringifier.stringifyMembershipReference(actionUsage, actionUsage.targetMember)}
                 ${this.expressionMapper.mapExpression("expression", targetExpression)}
             }
         `;
@@ -197,19 +208,20 @@ export class SemantifyrActionMapper extends SemantifyrBaseMapper {
         const meta = sendAction.$meta;
         const payloadItem = meta.payloadItemDefinition()?.ast();
         if (!payloadItem) {
-            throw new Error("Send actions must have an Item payload");
+            return this.unsupported(sendAction, "A send must have an item payload");
         }
         // Only the spec-compliant `send new X(...)` form is accepted. Bare
         // `send X(...)` parses as an invocation of a function named X and
         // does not produce an Item-construction the OXSTS encoding can use.
         if (!meta.isConstructor()) {
-            throw new Error(
+            return this.unsupported(
+                sendAction,
                 `Send action payload must use 'send new ${payloadItem.declaredName ?? "X"}(...)' (constructor form)`
             );
         }
         const viaPort = meta.senderFeature()?.ast();
         if (!viaPort) {
-            throw new Error("Send actions must have a 'via' port specification");
+            return this.unsupported(sendAction, "A send must have a 'via' port");
         }
 
         const payloadItemGlobalName = this.itemMapper.globalItemName(payloadItem);

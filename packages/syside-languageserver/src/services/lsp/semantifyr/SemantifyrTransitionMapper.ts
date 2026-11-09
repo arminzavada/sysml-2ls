@@ -37,8 +37,8 @@ export class SemantifyrTransitionMapper extends SemantifyrBaseMapper {
 
         return expandToNode`
             contains ${transitionName}: Transition subsets transitions {
-                redefine refers from: StateNode = ${this.expressionStringifier.stringifyMembershipReference(transitionUsage.source)}
-                redefine refers to: StateNode = ${this.expressionStringifier.stringifyMembershipReference(transitionUsage.then)}
+                redefine refers from: StateNode = ${this.expressionStringifier.stringifyMembershipReference(transitionUsage, transitionUsage.source)}
+                redefine refers to: StateNode = ${this.expressionStringifier.stringifyMembershipReference(transitionUsage, transitionUsage.then)}
                 ${node}
             }
         `;

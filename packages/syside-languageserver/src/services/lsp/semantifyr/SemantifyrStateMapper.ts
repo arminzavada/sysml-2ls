@@ -29,6 +29,9 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
         part: ast.PartDefinition,
         exhibitStateUsage: ast.ExhibitStateUsage
     ): Generated {
+        for (const relationship of exhibitStateUsage.heritage) {
+            this.unsupported(relationship, "Semantifyr does not support a typed exhibit state");
+        }
         const exhibitStateName = this.declare(part, exhibitStateUsage);
         const stateType = exhibitStateUsage.isParallel ? "ParallelState" : "State";
 
@@ -56,7 +59,10 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
             return this.mapOwningMembership(membership);
         }
 
-        return undefined;
+        return this.unsupported(
+            membership,
+            "Semantifyr does not support this membership in a state"
+        );
     }
 
     private mapFeatureMembership(
@@ -81,11 +87,17 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
             return this.mapStateSubactionMembership(membership);
         }
 
-        return undefined;
+        return this.unsupported(
+            element,
+            `Semantifyr does not support a ${element.$type} in a state`
+        );
     }
 
-    private mapOwningMembership(_membership: ast.OwningMembership): Generated {
-        return undefined; // skip members for now
+    private mapOwningMembership(membership: ast.OwningMembership): Generated {
+        if (this.isAnnotation(membership.target)) {
+            return undefined;
+        }
+        return this.unsupported(membership, "Semantifyr does not support this member in a state");
     }
 
     private mapStateUsage(state: ast.StateUsage, stateUsage: ast.StateUsage): Generated {
@@ -111,7 +123,10 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
             return this.mapExitStateSubactionMembership(stateSubaction);
         }
 
-        throw new Error(`Unexpected subaction kind: ${stateSubaction.kind}`);
+        return this.unsupported(
+            stateSubaction,
+            `Unexpected subaction kind: ${stateSubaction.kind}`
+        );
     }
 
     private mapEntryStateSubactionMembership(
@@ -122,9 +137,9 @@ export class SemantifyrStateMapper extends SemantifyrBaseMapper {
     }
 
     private mapDoStateSubactionMembership(
-        _stateSubactionMembership: ast.StateSubactionMembership
+        stateSubactionMembership: ast.StateSubactionMembership
     ): Generated {
-        throw new Error("Do subaction are not yet supported!");
+        return this.unsupported(stateSubactionMembership, "Semantifyr does not support do actions");
     }
 
     private mapExitStateSubactionMembership(

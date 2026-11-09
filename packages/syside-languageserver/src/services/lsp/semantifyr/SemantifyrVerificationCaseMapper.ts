@@ -30,6 +30,16 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
         scope: ast.Namespace,
         verificationCase: ast.VerificationCaseDefinition
     ): Generated {
+        const verifyMembers = verificationCase.children.flatMap((membership) => {
+            return isObjectiveMembership(membership)
+                ? ((membership.target as RequirementUsage | undefined)?.children.filter(
+                      isRequirementVerificationMembership
+                  ) ?? [])
+                : [];
+        });
+        for (const extraVerify of verifyMembers.slice(1)) {
+            this.unsupported(extraVerify, "Semantifyr supports one verify member per case");
+        }
         return expandToNode`
             @VerificationCase
             class ${this.declare(scope, verificationCase)} : VerificationCaseDefinition {
@@ -51,7 +61,10 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
             return this.mapOwningMembership(membership);
         }
 
-        return undefined;
+        return this.unsupported(
+            membership,
+            "Semantifyr does not support this membership in a verification case"
+        );
     }
 
     private mapFeatureMembership(scope: ast.Element, membership: ast.FeatureMembership): Generated {
@@ -68,21 +81,31 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
             return this.mapRequirementConstraintMembership(membership);
         }
 
-        return undefined;
+        return this.unsupported(
+            membership,
+            `Semantifyr does not support a ${membership.$type} in a verification case`
+        );
     }
 
-    private mapOwningMembership(_membership: ast.OwningMembership): Generated {
-        return undefined; // skip members for now
+    private mapOwningMembership(membership: ast.OwningMembership): Generated {
+        if (this.isAnnotation(membership.target)) {
+            return undefined;
+        }
+        return this.unsupported(
+            membership,
+            "Semantifyr does not support this member in a verification case"
+        );
     }
 
     private mapSubjectMembership(scope: ast.Element, membership: ast.SubjectMembership): Generated {
         const element = membership.target;
         if (!element || !isUsage(element)) {
-            throw new Error("Verification case subject must be a Usage");
+            return this.unsupported(membership, "A verification case subject must be a usage");
         }
         const subjectType = element.$meta.allTypings().at(0)?.ast();
         if (!subjectType) {
-            throw new Error(
+            return this.unsupported(
+                element,
                 `Verification case subject '${element.declaredName ?? "<anonymous>"}' has no resolved type`
             );
         }
@@ -94,7 +117,7 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
     private mapObjectiveMembership(membership: ast.ObjectiveMembership): Generated {
         const element = membership.target as RequirementUsage | undefined;
         if (!element) {
-            throw new Error("Verification case objective is empty");
+            return this.unsupported(membership, "A verification case objective must not be empty");
         }
         return expandToNode`
             redefine contains objective: Requirement[1] {
@@ -108,7 +131,7 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
     ): Generated {
         const element = membership.target as RequirementUsage | undefined;
         if (!element) {
-            throw new Error("Verification requirement is empty");
+            return this.unsupported(membership, "A verification requirement must not be empty");
         }
         return expandToNode`
             redefine contains verifyRequirement : Constraint[1] {
@@ -120,13 +143,17 @@ export class SemantifyrVerificationCaseMapper extends SemantifyrBaseMapper {
     private mapRequirementConstraintMembership(
         membership: ast.RequirementConstraintMembership
     ): Generated {
+        if (membership.kind === "assume") {
+            return this.unsupported(membership, "Semantifyr does not support assume constraints");
+        }
         const element = membership.target as ConstraintUsage | undefined;
         if (!element) {
-            throw new Error("Constraint membership has no target");
+            return this.unsupported(membership, "A constraint membership must have a target");
         }
         const resultExpression = element.$meta.result?.element()?.ast() as Expression | undefined;
         if (!resultExpression) {
-            throw new Error(
+            return this.unsupported(
+                element,
                 `Constraint '${element.declaredName ?? "<anonymous>"}' has no result expression`
             );
         }

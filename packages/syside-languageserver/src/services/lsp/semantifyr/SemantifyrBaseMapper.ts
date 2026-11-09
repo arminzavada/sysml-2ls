@@ -2,13 +2,17 @@ import { expandToNode, Generated, JoinOptions, joinToNode } from "langium/genera
 import { StableElementNameProvider } from "./StableNameStore";
 import { ast } from "../../..";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
-import { isClassifier } from "#generated/ast";
+import { isAnnotatingElement, isClassifier, isMetadataUsage } from "#generated/ast";
+import type { AstNode } from "langium";
+import { SemantifyrUnsupportedConstructs } from "./SemantifyrUnsupportedConstructs";
 
 export class SemantifyrBaseMapper {
     private readonly stableNameStore: StableElementNameProvider;
+    private readonly unsupportedConstructs: SemantifyrUnsupportedConstructs;
 
     constructor(services: SemantifyrMapperServices) {
         this.stableNameStore = services.elementNameProvider;
+        this.unsupportedConstructs = services.unsupportedConstructs;
     }
 
     protected expandToBlock<T>(
@@ -28,11 +32,21 @@ export class SemantifyrBaseMapper {
         `;
     }
 
-    protected stableName(element: ast.Element | undefined): string {
-        if (element === undefined) {
-            return "UNDEFINED_ELEMENT";
-        }
+    protected unsupported(node: AstNode, message: string): string {
+        return this.unsupportedConstructs.report(node, message);
+    }
 
+    protected isAnnotation(element: ast.Element | undefined): boolean {
+        return isAnnotatingElement(element) || isMetadataUsage(element);
+    }
+
+    protected unsupportedHeritage(type: ast.Type): void {
+        for (const relationship of type.heritage) {
+            this.unsupported(relationship, "Semantifyr does not support specialization here");
+        }
+    }
+
+    protected stableName(element: ast.Element): string {
         return this.stableNameStore.stableName(element);
     }
 

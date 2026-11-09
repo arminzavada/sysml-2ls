@@ -34,7 +34,9 @@ describe("Semantifyr OXSTS transformation", () => {
 
     beforeAll(async () => {
         ({ shared } = await setupServicesWithStdlib());
-        const verificationUri = URI.file(path.join(modelsRoot, "Verification.sysml"));
+        const verificationUri = URI.file(
+            path.resolve(currentDir, "..", "..", "..", "library", "Verification.sysml")
+        );
         const verificationDoc =
             await shared.workspace.LangiumDocuments.getOrCreateDocument(verificationUri);
         await shared.workspace.DocumentBuilder.build([verificationDoc], <SysMLBuildOptions>{
@@ -57,7 +59,10 @@ describe("Semantifyr OXSTS transformation", () => {
 
             expect(doc.parseResult.parserErrors).toHaveLength(0);
 
-            const oxsts = mapSysMLNamespaceToSemantifyr(doc.parseResult.value as Namespace);
+            const { oxsts, diagnostics } = mapSysMLNamespaceToSemantifyr(
+                doc.parseResult.value as Namespace
+            );
+            expect(diagnostics).toEqual([]);
 
             // Failure markers the mappers emit when they can't interpret a node.
             // None of the pinned models should hit any of these.

@@ -1,6 +1,7 @@
 import { Generated, expandToNode } from "langium/generate";
 import { ast } from "../../..";
 import { SemantifyrBaseMapper } from "./SemantifyrBaseMapper";
+import { isImport } from "#generated/ast";
 import { SemantifyrMapperServices } from "./SemantifyrMapperModule";
 
 const globalItemPrefix = "global_";
@@ -26,7 +27,13 @@ export class SemantifyrItemMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private mapMembership(_membership: ast.Membership | ast.Import): Generated {
-        return undefined;
+    private mapMembership(membership: ast.Membership | ast.Import): Generated {
+        if (isImport(membership) || this.isAnnotation(membership.target)) {
+            return undefined;
+        }
+        return this.unsupported(
+            membership,
+            "Semantifyr does not support members of an item definition"
+        );
     }
 }

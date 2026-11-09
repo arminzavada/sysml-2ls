@@ -27,7 +27,11 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
     }
 
     public mapPartDefinition(scope: ast.Namespace, part: ast.PartDefinition): Generated {
+        this.unsupportedHeritage(part);
         const childElements = part.children.map((m) => m.target);
+        for (const extraState of childElements.filter(isExhibitStateUsage).slice(1)) {
+            this.unsupported(extraState, "Semantifyr supports one exhibit state per part");
+        }
 
         // Drop the local port that a binding rebinds; mapBindingConnectorAsUsage
         // emits the rebinding declaration in its place.
@@ -77,7 +81,14 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
             return this.mapBindingConnectorAsUsage(part, element);
         }
 
-        return undefined;
+        if (this.isAnnotation(element)) {
+            return undefined;
+        }
+
+        return this.unsupported(
+            element,
+            `Semantifyr does not support a ${element.$type} in a part definition`
+        );
     }
 
     private mapPortUsage(part: ast.PartDefinition, portUsage: ast.PortUsage): Generated {
@@ -95,13 +106,22 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         const sourcePort = meta.sourceFeature()?.ast();
         const targetFeature = meta.targetFeature()?.ast();
         if (!sourcePort) {
-            throw new Error("Binding connector source port could not be resolved");
+            return this.unsupported(
+                bindingConnectorAsUsage,
+                "Binding connector source port could not be resolved"
+            );
         }
         if (!isPortUsage(sourcePort)) {
-            throw new Error("Binding connector source must be a PortUsage");
+            return this.unsupported(
+                bindingConnectorAsUsage,
+                "Binding connector source must be a port"
+            );
         }
         if (!targetFeature) {
-            throw new Error("Binding connector target could not be resolved");
+            return this.unsupported(
+                bindingConnectorAsUsage,
+                "Binding connector target could not be resolved"
+            );
         }
 
         const sourcePortUsageName = this.declare(part, sourcePort);
@@ -114,13 +134,30 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
     private mapTypeOfPort(portUsage: ast.PortUsage): Generated {
         const meta = portUsage.$meta;
         const definition = meta.portDefinition()?.ast();
-        if (!definition) return "UNKNOWN_PORT_TYPE";
+        if (!definition) {
+            return this.unsupported(
+                portUsage,
+                "Semantifyr requires a port to be typed by a port definition"
+            );
+        }
         const name = this.stableName(definition);
         return meta.isConjugated() ? `Conjugated${name}` : name;
     }
 
     private mapPartUsage(part: ast.PartDefinition, partUsage: ast.PartUsage): Generated {
         const classifier = this.featureClassifier(partUsage);
+        if (!classifier) {
+            return this.unsupported(
+                partUsage,
+                "Semantifyr requires a part to be typed by a part definition"
+            );
+        }
+        if (partUsage.multiplicity) {
+            this.unsupported(
+                partUsage.multiplicity,
+                "Semantifyr does not support part multiplicity"
+            );
+        }
         const partName = this.declareTyped(part, partUsage, classifier);
         const classifierName = this.stableName(classifier);
 
@@ -131,8 +168,8 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         const itemFlowName = this.declare(part, itemFlow);
         const fromEnd = itemFlow.ends[0]?.target as ItemFlowEnd | undefined;
         const toEnd = itemFlow.ends[1]?.target as ItemFlowEnd | undefined;
-        const fromString = this.stringifyItemFlowEnd(fromEnd);
-        const toString = this.stringifyItemFlowEnd(toEnd);
+        const fromString = this.stringifyItemFlowEnd(itemFlow, fromEnd);
+        const toString = this.stringifyItemFlowEnd(itemFlow, toEnd);
 
         return expandToNode`
             contains ${itemFlowName}: Flow subsets flows {
@@ -142,11 +179,20 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private stringifyItemFlowEnd(itemFlowEnd: ItemFlowEnd | undefined): string {
+    private stringifyItemFlowEnd(
+        itemFlow: ast.ItemFlow,
+        itemFlowEnd: ItemFlowEnd | undefined
+    ): string {
         const meta = itemFlowEnd?.$meta;
-        const primary = this.stableName(meta?.primaryFeature()?.ast());
-        const member = this.stableName(meta?.memberFeature()?.ast());
-        return `${primary}.${member}`;
+        const primary = meta?.primaryFeature()?.ast();
+        const member = meta?.memberFeature()?.ast();
+        if (!primary || !member) {
+            return this.unsupported(
+                itemFlow,
+                "Semantifyr requires a flow end to name a part and its port"
+            );
+        }
+        return `${this.stableName(primary)}.${this.stableName(member)}`;
     }
 
     private mapAttributeUsage(
@@ -155,9 +201,14 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
     ): Generated {
         const meta = attributeUsage.$meta;
         const dataType = meta.dataType()?.ast();
-        if (!dataType) return undefined;
-        const classifierName = this.attributeTypeName(dataType);
-        const primitiveType = this.attributeTypeToPrimitive(dataType);
+        if (!dataType) {
+            return this.unsupported(
+                attributeUsage,
+                "Semantifyr requires an attribute to be typed by Integer or Boolean"
+            );
+        }
+        const classifierName = this.attributeTypeName(attributeUsage, dataType);
+        const primitiveType = this.attributeTypeToPrimitive(attributeUsage, dataType);
         const defaultExpression = meta.defaultExpression()?.ast();
         const attributeName = this.declare(part, attributeUsage);
 
@@ -174,7 +225,10 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         `;
     }
 
-    private attributeTypeName(classifier: ast.Classifier): string {
+    private attributeTypeName(
+        attributeUsage: ast.AttributeUsage,
+        classifier: ast.Classifier
+    ): string {
         const name = this.stableName(classifier);
         if (name == "Integer") {
             return "IntegerAttribute";
@@ -182,10 +236,16 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         if (name == "Boolean") {
             return "BooleanAttribute";
         }
-        return "UNKNOWN_ATTRIBUTE_TYPE";
+        return this.unsupported(
+            attributeUsage,
+            `Semantifyr does not support attributes of type ${name}`
+        );
     }
 
-    private attributeTypeToPrimitive(classifier: ast.Classifier): string {
+    private attributeTypeToPrimitive(
+        attributeUsage: ast.AttributeUsage,
+        classifier: ast.Classifier
+    ): string {
         const name = this.stableName(classifier);
         if (name == "Integer") {
             return "int";
@@ -193,6 +253,9 @@ export class SemantifyrPartMapper extends SemantifyrBaseMapper {
         if (name == "Boolean") {
             return "bool";
         }
-        return "UNKNOWN_ATTRIBUTE_TYPE";
+        return this.unsupported(
+            attributeUsage,
+            `Semantifyr does not support attributes of type ${name}`
+        );
     }
 }
