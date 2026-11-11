@@ -23,6 +23,7 @@
         }
     ],
     "out": "gen",
+    "mode": "production",
     "chevrotainParserConfig": {
         "recoveryEnabled": true,
         "nodeLocationTracking": "none"
