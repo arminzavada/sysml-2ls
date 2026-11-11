@@ -1,7 +1,13 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { AstUtils, DocumentState, LangiumDocument } from "langium";
+import {
+    AstUtils,
+    Cancellation,
+    DocumentState,
+    LangiumDocument,
+    OperationCancelled,
+} from "langium";
 import { URI } from "vscode-uri";
 import { SysMLNodeFileSystem } from "../../../../node/node-file-system-provider.js";
 import { ElementMeta } from "../../../../model/index.js";
@@ -34,7 +40,7 @@ describe("Workspace manager", () => {
         await fs.rm(root, { recursive: true, force: true });
     });
 
-    async function initialize(): Promise<SysMLSharedServices> {
+    async function createServices(): Promise<SysMLSharedServices> {
         const libraryPath = path.join(root, "library");
         const { shared } = createSysMLServices(SysMLNodeFileSystem, {
             ...TEST_SERVER_OPTIONS,
@@ -47,23 +53,33 @@ describe("Workspace manager", () => {
         });
         shared.workspace.FileSystemProvider.updateStandardLibrary(libraryPath);
         await shared.workspace.ConfigurationProvider.initialized({});
-        await shared.workspace.WorkspaceManager.initializeWorkspace([
-            { uri: URI.file(path.join(root, "workspace")).toString(), name: "workspace" },
-        ]);
         return shared;
     }
 
+    function initialize(
+        shared: SysMLSharedServices,
+        cancelToken = Cancellation.CancellationToken.None
+    ): Promise<void> {
+        return shared.workspace.WorkspaceManager.initializeWorkspace(
+            [{ uri: URI.file(path.join(root, "workspace")).toString(), name: "workspace" }],
+            cancelToken
+        );
+    }
+
+    function messages(document: LangiumDocument | undefined): unknown[] | undefined {
+        return document?.diagnostics?.map((diagnostic) => {
+            return diagnostic.message;
+        });
+    }
+
     test("initialization validates the workspace documents but not the standard library", async () => {
-        const shared = await initialize();
-        const libraryPath = path.join(root, "library");
+        const shared = await createServices();
+        await initialize(shared);
         const documents = shared.workspace.LangiumDocuments;
-        const library = documents.getDocument(URI.file(path.join(libraryPath, "Library.sysml")));
+        const library = documents.getDocument(
+            URI.file(path.join(root, "library", "Library.sysml"))
+        );
         const model = documents.getDocument(URI.file(path.join(root, "workspace", "Model.sysml")));
-        const messages = (document: LangiumDocument | undefined): unknown[] | undefined => {
-            return document?.diagnostics?.map((diagnostic) => {
-                return diagnostic.message;
-            });
-        };
 
         expect(messages(library)).toEqual([]);
         expect(messages(model)).toContainEqual(expect.stringContaining("Undefined"));
@@ -74,8 +90,26 @@ describe("Workspace manager", () => {
         expect(messages(model)).toContainEqual(expect.stringContaining("Undefined"));
     });
 
+    test("an update cancelling the initialization does not validate the standard library", async () => {
+        const shared = await createServices();
+        const source = new Cancellation.CancellationTokenSource();
+        source.cancel();
+        await expect(initialize(shared, source.token)).rejects.toBe(OperationCancelled);
+        const documents = shared.workspace.LangiumDocuments;
+        const library = documents.getDocument(
+            URI.file(path.join(root, "library", "Library.sysml"))
+        );
+        const model = documents.getDocument(URI.file(path.join(root, "workspace", "Model.sysml")));
+
+        await shared.workspace.DocumentBuilder.update([model!.uri], []);
+
+        expect(messages(library)).toEqual([]);
+        expect(messages(model)).toContainEqual(expect.stringContaining("Undefined"));
+    });
+
     test("a request on a library document links all of it", async () => {
-        const shared = await initialize();
+        const shared = await createServices();
+        await initialize(shared);
         const uri = URI.file(path.join(root, "library", "Vehicles.sysml"));
         const document = shared.workspace.LangiumDocuments.getDocument(uri)!;
         const wheel = AstUtils.streamAst(document.parseResult.value)

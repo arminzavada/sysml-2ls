@@ -19,7 +19,6 @@ import {
     DefaultWorkspaceManager,
     DocumentState,
     FileSystemNode,
-    interruptAndCheck,
     LangiumDocument,
     OperationCancelled,
 } from "langium";
@@ -72,14 +71,14 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
 
         await this.loadPlugins(folders);
         const documents = await this.performStartup(folders);
-        await interruptAndCheck(cancelToken);
         const library = documents.filter((document) => {
             return document.isStandard;
         });
+        // uncancelled, since a document opened during startup would have its update validate the library
         await this.documentBuilder.build(
             library,
             <SysMLBuildOptions>{ ...this.initialBuildOptions, validationChecks: "none" },
-            cancelToken
+            CancellationToken.None
         );
         // an unvalidated document would be validated by the next update
         for (const document of library) {
