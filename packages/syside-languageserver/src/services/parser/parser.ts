@@ -16,11 +16,13 @@
 
 import {
     AstNode,
+    AstReflection,
     AstUtils,
     isAstNode,
     LangiumParser,
     Mutable,
     prepareLangiumParser,
+    TypeMetaData,
 } from "langium";
 import {
     EndFeatureMembership,
@@ -237,6 +239,33 @@ function buildPostprocessingMap(): Map<string, ProcessingFunction> {
 
 interface MutableLangiumParser extends Mutable<LangiumParser> {
     construct: (...args: unknown[]) => unknown;
+    astReflection: Pick<AstReflection, "getTypeMetaData">;
+}
+
+// Langium assigns default values by iterating over every property of a node's type on each constructed node
+function defaultedProperties(reflection: AstReflection): Pick<AstReflection, "getTypeMetaData"> {
+    const cache = new Map<string, TypeMetaData>();
+    return {
+        getTypeMetaData(type: string): TypeMetaData {
+            let metaData = cache.get(type);
+            if (!metaData) {
+                const full = reflection.getTypeMetaData(type);
+                const properties = Object.values(full.properties).filter((property) => {
+                    return property.defaultValue !== undefined;
+                });
+                metaData = {
+                    ...full,
+                    properties: Object.fromEntries(
+                        properties.map((property) => {
+                            return [property.name, property];
+                        })
+                    ),
+                };
+                cache.set(type, metaData);
+            }
+            return metaData;
+        },
+    };
 }
 
 // SysML-specific postprocessing is composed onto the parser returned by
@@ -247,6 +276,7 @@ interface MutableLangiumParser extends Mutable<LangiumParser> {
 export function createSysMLParser(services: SysMLDefaultServices): LangiumParser {
     const parser = prepareLangiumParser(services);
     const mutable = parser as unknown as MutableLangiumParser;
+    mutable.astReflection = defaultedProperties(services.shared.AstReflection);
 
     const postprocessingMap = buildPostprocessingMap();
     const originalConstruct = mutable.construct.bind(mutable);
