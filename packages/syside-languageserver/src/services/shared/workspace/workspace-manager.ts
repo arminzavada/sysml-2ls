@@ -17,7 +17,9 @@
 import {
     AstNode,
     DefaultWorkspaceManager,
+    DocumentState,
     FileSystemNode,
+    interruptAndCheck,
     LangiumDocument,
     OperationCancelled,
 } from "langium";
@@ -37,6 +39,7 @@ import { SysMLFileSystemProvider } from "./file-system-provider.js";
 import { ExtensionManager } from "../extension-manager.js";
 import path from "path";
 import { isUriLike, pathToURI } from "syside-base";
+import { SysMLBuildOptions } from "./document-builder.js";
 
 /**
  * Extension of Langium workspace manager that loads the standard library on
@@ -59,7 +62,7 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
 
     override async initializeWorkspace(
         folders: WorkspaceFolder[],
-        cancelToken?: CancellationToken | undefined
+        cancelToken: CancellationToken = CancellationToken.None
     ): Promise<void> {
         await this.config.firstTimeSetup();
         const config = this.config.get();
@@ -68,7 +71,25 @@ export class SysMLWorkspaceManager extends DefaultWorkspaceManager {
         }
 
         await this.loadPlugins(folders);
-        await super.initializeWorkspace(folders, cancelToken);
+        const documents = await this.performStartup(folders);
+        await interruptAndCheck(cancelToken);
+        const library = documents.filter((document) => {
+            return document.isStandard;
+        });
+        await this.documentBuilder.build(
+            library,
+            <SysMLBuildOptions>{ ...this.initialBuildOptions, validationChecks: "none" },
+            cancelToken
+        );
+        // an unvalidated document would be validated by the next update
+        for (const document of library) {
+            document.diagnostics = [];
+            document.state = DocumentState.Validated;
+        }
+        const workspace = documents.filter((document) => {
+            return !document.isStandard;
+        });
+        await this.documentBuilder.build(workspace, this.initialBuildOptions, cancelToken);
     }
 
     /**
