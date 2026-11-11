@@ -16,7 +16,8 @@
 
 import { AstNode, LangiumDocument } from "langium";
 import { FeatureMembership } from "#generated/ast.js";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
+import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { mix, MixinBase } from "../../mixin.js";
 import { FeatureMeta } from "../feature.js";
 import { FeaturingMeta } from "./featuring.js";
 import { OwningMembershipMeta } from "./owning-membership.js";
@@ -32,10 +33,10 @@ export interface FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta>
 @metamodelOf(FeatureMembership.$type)
 @mix(FeaturingMeta, OwningMembershipMeta)
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export class FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta> {
+export class FeatureMembershipMeta<T extends FeatureMeta = FeatureMeta> extends MixinBase {
     // eslint-disable-next-line unused-imports/no-unused-vars
     protected constructor(id: ElementID) {
-        // empty
+        super();
     }
 
     protected onTargetSet(previous?: T, current?: T): void {

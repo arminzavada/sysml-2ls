@@ -305,9 +305,6 @@ importers:
       syside-protocol:
         specifier: workspace:*
         version: link:../syside-protocol
-      ts-mixer:
-        specifier: ^6.0.4
-        version: 6.0.4
       vscode-languageserver:
         specifier: ~10.1.2
         version: 10.1.2
@@ -2681,9 +2678,6 @@ packages:
     engines: {node: '>=18.12'}
     peerDependencies:
       typescript: 6.0.3
-
-  ts-mixer@6.0.4:
-    resolution: {integrity: sha512-ufKpbmrugz5Aou4wcr5Wc1UUFWOLhq+Fm6qa6P0w0K5Qw2yhaUoiWszhCVuNQyNwrlGiscHOmqYoAox1PtvgjA==}
 
   ts-node@10.9.2:
     resolution: {integrity: sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==}
@@ -5287,8 +5281,6 @@ snapshots:
   ts-api-utils@2.5.0(typescript@6.0.3):
     dependencies:
       typescript: 6.0.3
-
-  ts-mixer@6.0.4: {}
 
   ts-node@10.9.2(@types/node@24.19.2)(typescript@6.0.3):
     dependencies:

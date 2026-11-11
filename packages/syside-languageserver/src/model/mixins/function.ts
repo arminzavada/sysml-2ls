@@ -23,8 +23,9 @@ import {
     TypeMeta,
 } from "../KerML/_internal.js";
 import { BasicMetamodel } from "../metamodel.js";
+import { MixinBase } from "../mixin.js";
 
-export class FunctionMixin {
+export class FunctionMixin extends MixinBase {
     protected _result: ResultExpressionMembershipMeta | undefined;
 
     /**

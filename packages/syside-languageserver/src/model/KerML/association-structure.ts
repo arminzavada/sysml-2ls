@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Mixin } from "ts-mixer";
+import { Mixin } from "../mixin.js";
 import { AssociationStructure } from "#generated/ast.js";
 import { metamodelOf } from "../metamodel.js";
 import {

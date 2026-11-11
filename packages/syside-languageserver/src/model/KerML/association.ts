@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Mixin } from "ts-mixer";
+import { Class, Mixin } from "../mixin.js";
 import { Association } from "#generated/ast.js";
-import { ElementID, metamodelOf } from "../metamodel.js";
+import { metamodelOf } from "../metamodel.js";
 import { ConnectorMixin } from "../mixins/connector.js";
 import {
     ClassifierMeta,
@@ -25,7 +25,6 @@ import {
     RelationshipMeta,
     TypeMeta,
 } from "./_internal.js";
-import { Class } from "ts-mixer/dist/types/types";
 
 export const ImplicitAssociations = {
     base: "Links::Link",
@@ -38,7 +37,7 @@ export type AssociationOptions = ClassifierOptions;
 // Note: inherited methods are override by the last class inside `Mixin`
 export class AssociationMeta extends Mixin(
     ConnectorMixin,
-    RelationshipMeta as Class<[ElementID], RelationshipMeta, typeof RelationshipMeta>,
+    RelationshipMeta as Class<RelationshipMeta, typeof RelationshipMeta>,
     ClassifierMeta
 ) {
     override defaultSupertype(): string {

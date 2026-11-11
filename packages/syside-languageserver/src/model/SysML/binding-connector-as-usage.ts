@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Mixin } from "ts-mixer";
+import { Mixin } from "../mixin.js";
 import { BindingConnectorAsUsage } from "#generated/ast.js";
 import { BindingConnectorMeta, BindingConnectorOptions } from "../KerML/binding-connector.js";
 import { metamodelOf } from "../metamodel.js";

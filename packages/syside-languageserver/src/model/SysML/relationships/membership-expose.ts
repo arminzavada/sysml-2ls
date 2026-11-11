@@ -18,7 +18,8 @@ import { AstNode, LangiumDocument } from "langium";
 import { MembershipExpose } from "#generated/ast.js";
 import { MembershipMeta } from "../../KerML/relationships/membership.js";
 import { MembershipImportMeta } from "../../KerML/relationships/membership-import.js";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
+import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { mix, MixinBase } from "../../mixin.js";
 import { ExposeMeta } from "./expose.js";
 import { ImportOptions } from "../../KerML/index.js";
 import { ViewUsageMeta } from "../view-usage.js";
@@ -33,10 +34,10 @@ export interface MembershipExposeMeta<T extends MembershipMeta = MembershipMeta>
 @metamodelOf(MembershipExpose.$type)
 @mix(ExposeMeta, MembershipImportMeta)
 // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unsafe-declaration-merging
-export class MembershipExposeMeta<T extends MembershipMeta = MembershipMeta> {
+export class MembershipExposeMeta<T extends MembershipMeta = MembershipMeta> extends MixinBase {
     // eslint-disable-next-line unused-imports/no-unused-vars
     protected constructor(id: ElementID) {
-        // empty
+        super();
     }
 
     ast(): MembershipExpose | undefined {

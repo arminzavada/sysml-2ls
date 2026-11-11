@@ -14,9 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Mixin } from "ts-mixer";
+import { Class, Mixin } from "../mixin.js";
 import { MetadataFeature } from "#generated/ast.js";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import {
     AnnotatingElementMeta,
     AnnotatingElementOptions,
@@ -24,7 +24,6 @@ import {
     FeatureMeta,
     FeatureOptions,
 } from "./_internal.js";
-import { Class } from "ts-mixer/dist/types/types";
 import { AstNode, LangiumDocument } from "langium";
 
 export const ImplicitMetadataFeatures = {
@@ -37,11 +36,7 @@ export interface MetadataFeatureOptions extends FeatureOptions, AnnotatingElemen
 
 @metamodelOf(MetadataFeature.$type, ImplicitMetadataFeatures)
 export class MetadataFeatureMeta extends Mixin(
-    AnnotatingElementMeta as Class<
-        [ElementID],
-        AnnotatingElementMeta,
-        typeof AnnotatingElementMeta
-    >,
+    AnnotatingElementMeta as Class<AnnotatingElementMeta, typeof AnnotatingElementMeta>,
     FeatureMeta
 ) {
     override ast(): MetadataFeature | undefined {

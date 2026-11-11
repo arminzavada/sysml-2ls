@@ -18,7 +18,8 @@ import { AstNode, LangiumDocument } from "langium";
 import { NamespaceExpose } from "#generated/ast.js";
 import { NamespaceMeta } from "../../KerML/namespace.js";
 import { NamespaceImportMeta } from "../../KerML/relationships/namespace-import.js";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf, mix } from "../../metamodel.js";
+import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../../metamodel.js";
+import { mix, MixinBase } from "../../mixin.js";
 import { ExposeMeta } from "./expose.js";
 import { ImportOptions } from "../../KerML/index.js";
 import { ViewUsageMeta } from "../view-usage.js";
@@ -33,10 +34,10 @@ export interface NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta>
 @metamodelOf(NamespaceExpose.$type)
 @mix(ExposeMeta, NamespaceImportMeta)
 // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unsafe-declaration-merging
-export class NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta> {
+export class NamespaceExposeMeta<T extends NamespaceMeta = NamespaceMeta> extends MixinBase {
     // eslint-disable-next-line unused-imports/no-unused-vars
     protected constructor(id: ElementID) {
-        // empty
+        super();
     }
 
     ast(): NamespaceExpose | undefined {

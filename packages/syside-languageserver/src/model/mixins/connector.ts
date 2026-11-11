@@ -18,6 +18,7 @@ import { stream } from "langium";
 import { EndFeatureMembership, Feature, Redefinition, Subsetting } from "#generated/ast.js";
 import { FeatureMeta, InheritanceMeta, MembershipMeta, TypeMeta } from "../KerML/_internal.js";
 import { PositionalFeaturesBase } from "./positional-features.js";
+import { MixinBase } from "../mixin.js";
 
 const Filter: (f: MembershipMeta<FeatureMeta>) => boolean = (f) =>
     Boolean(f.element()?.isEnd || f.is(EndFeatureMembership.$type));
@@ -90,7 +91,7 @@ class EndFeatures {
     }
 }
 
-export class ConnectorMixin {
+export class ConnectorMixin extends MixinBase {
     private readonly endsCache = new PositionalFeaturesBase();
     /**
      * @returns directly owned end features

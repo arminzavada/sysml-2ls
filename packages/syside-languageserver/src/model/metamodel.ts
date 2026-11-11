@@ -22,9 +22,8 @@ import { BuildState } from "./enums.js";
 import { SubtypeKeys, SysMLType, SysMLTypeList } from "../services/sysml-ast-reflection.js";
 import { Inheritance, NonOwnerType, Specialization } from "#generated/ast.js";
 import type { ElementMeta } from "./KerML/index.js";
-import * as mixer from "ts-mixer";
-import { Class } from "ts-mixer/dist/types/types";
 import { TextComment } from "../utils/index.js";
+import { MixinBase } from "./mixin.js";
 
 export type ElementID = number;
 export type ElementIDProvider = () => ElementID;
@@ -41,11 +40,6 @@ export type Metatype<T extends AstNode = AstNode> = MetatypeProto<T> & {
     ): Metamodel<T>;
 };
 export type AbstractMetatype<T extends AstNode = AstNode> = MetatypeProto<T>;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function mix(...types: MetatypeProto[]): (decoratedClass: any) => any {
-    return mixer.mix(...(types as unknown as Class[]));
-}
 
 // Mapping of implicit generalizations
 type ImplicitGeneralizations = {
@@ -238,7 +232,7 @@ export interface ModelElementOptions<P extends ElementMeta | undefined = Element
     parent?: P;
 }
 
-export class BasicMetamodel<T extends AstNode = AstNode> implements Metamodel<T> {
+export class BasicMetamodel<T extends AstNode = AstNode> extends MixinBase implements Metamodel<T> {
     protected _ast?: T;
     readonly elementId: ElementID;
     protected _parent: Metamodel | undefined;
@@ -250,6 +244,7 @@ export class BasicMetamodel<T extends AstNode = AstNode> implements Metamodel<T>
     notes: TextComment[] = [];
 
     protected constructor(id: ElementID, document: LangiumDocument) {
+        super();
         this.elementId = id;
         this._document = document;
     }

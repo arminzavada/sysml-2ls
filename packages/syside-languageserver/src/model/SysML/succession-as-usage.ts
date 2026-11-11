@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { stream } from "langium";
-import { Mixin } from "ts-mixer";
+import { Mixin } from "../mixin.js";
 import {
     ActionDefinition,
     ActionUsage,

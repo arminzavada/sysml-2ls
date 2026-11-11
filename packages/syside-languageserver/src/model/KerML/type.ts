@@ -15,7 +15,7 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument, Stream, stream, TreeStreamImpl } from "langium";
-import { Mixin } from "ts-mixer";
+import { Class, Mixin } from "../mixin.js";
 import {
     Feature,
     FeatureMembership,
@@ -31,13 +31,7 @@ import { enumerable, KeysMatching } from "../../utils/common.js";
 import { collectRedefinitions } from "../../utils/scope-util.js";
 import { ElementContainer } from "../containers.js";
 import { FeatureDirectionKind } from "../enums.js";
-import {
-    BasicMetamodel,
-    ElementID,
-    ElementIDProvider,
-    metamodelOf,
-    MetatypeProto,
-} from "../metamodel.js";
+import { BasicMetamodel, ElementIDProvider, metamodelOf, MetatypeProto } from "../metamodel.js";
 import { InputParametersMixin } from "../mixins/index.js";
 import {
     Edge,
@@ -58,7 +52,6 @@ import {
     SpecializationMeta,
     TargetType,
 } from "./_internal.js";
-import { Class } from "ts-mixer/dist/types/types";
 
 export const ImplicitTypes = {
     base: "Base::Anything",
@@ -97,7 +90,7 @@ function conjugateDirection(direction: FeatureDirectionKind): FeatureDirectionKi
 @metamodelOf(Type.$type, ImplicitTypes)
 export class TypeMeta extends Mixin(
     InputParametersMixin,
-    NamespaceMeta as Class<[ElementID], NamespaceMeta, typeof NamespaceMeta>
+    NamespaceMeta as Class<NamespaceMeta, typeof NamespaceMeta>
 ) {
     protected readonly _heritage = new ElementContainer<Inheritance>();
     protected readonly _typeRelationships = new ElementContainer<FeatureRelationship>();

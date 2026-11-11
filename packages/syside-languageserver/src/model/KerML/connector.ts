@@ -15,9 +15,9 @@
  ********************************************************************************/
 
 import { AstNode, LangiumDocument, stream } from "langium";
-import { Mixin } from "ts-mixer";
+import { Class, Mixin } from "../mixin.js";
 import { Connector, ReferenceSubsetting } from "#generated/ast.js";
-import { ElementID, ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
+import { ElementIDProvider, MetatypeProto, metamodelOf } from "../metamodel.js";
 import { ConnectorMixin } from "../mixins/connector.js";
 import {
     Edge,
@@ -32,7 +32,6 @@ import {
     TypeMeta,
 } from "./_internal.js";
 import { NonNullable, enumerable } from "../../utils/index.js";
-import { Class } from "ts-mixer/dist/types/types";
 
 export const ImplicitConnectors = {
     base: "Links::links",
@@ -49,7 +48,7 @@ export interface ConnectorOptions extends FeatureOptions {
 // @ts-expect-error stop it with static inheritance errors
 export class ConnectorMeta extends Mixin(
     ConnectorMixin,
-    RelationshipMeta as Class<[ElementID], RelationshipMeta, typeof RelationshipMeta>,
+    RelationshipMeta as Class<RelationshipMeta, typeof RelationshipMeta>,
     FeatureMeta
 ) {
     private _ends: EndFeatureMembershipMeta[] = [];

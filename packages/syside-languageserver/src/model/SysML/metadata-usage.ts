@@ -14,12 +14,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
 
-import { Mixin } from "ts-mixer";
+import { Class, Mixin } from "../mixin.js";
 import { MetadataUsage } from "#generated/ast.js";
 import { MetadataFeatureMeta, MetadataFeatureOptions } from "../KerML/metadata-feature.js";
-import { ElementID, metamodelOf } from "../metamodel.js";
+import { metamodelOf } from "../metamodel.js";
 import { ItemUsageMeta, ItemUsageOptions } from "./item-usage.js";
-import { Class } from "ts-mixer/dist/types/types";
 
 export interface MetadataUsageOptions extends MetadataFeatureOptions, ItemUsageOptions {}
 
@@ -29,7 +28,7 @@ export interface MetadataUsageOptions extends MetadataFeatureOptions, ItemUsageO
     baseType: "Metaobjects::SemanticMetadata::baseType",
 })
 export class MetadataUsageMeta extends Mixin(
-    MetadataFeatureMeta as Class<[ElementID], MetadataFeatureMeta, typeof MetadataFeatureMeta>,
+    MetadataFeatureMeta as Class<MetadataFeatureMeta, typeof MetadataFeatureMeta>,
     ItemUsageMeta
 ) {
     override defaultSupertype(): string {

@@ -17,6 +17,7 @@
 import { OwningMembership } from "#generated/ast.js";
 import { FeatureMeta, MembershipMeta, TypeMeta } from "../KerML/_internal.js";
 import { PositionalFeaturesBase } from "./positional-features.js";
+import { MixinBase } from "../mixin.js";
 
 const Filter: (f: MembershipMeta<FeatureMeta>) => boolean = (f) => {
     if (!f.is(OwningMembership.$type)) return false;
@@ -24,7 +25,7 @@ const Filter: (f: MembershipMeta<FeatureMeta>) => boolean = (f) => {
     return dir === "in" || dir === "inout";
 };
 
-export class InputParametersMixin {
+export class InputParametersMixin extends MixinBase {
     private readonly params = new PositionalFeaturesBase();
     /**
      * @returns directly owned input parameter features
