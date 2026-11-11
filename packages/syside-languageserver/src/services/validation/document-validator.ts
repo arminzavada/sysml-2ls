@@ -117,6 +117,8 @@ export class SysMLDocumentValidator extends DefaultDocumentValidator {
     ): Promise<Diagnostic[]> {
         this._currentDocument = document;
         try {
+            // library documents are linked on demand, their diagnostics need all of it
+            if (document.isStandard) await this.linker.linkAll(document, rest[1]);
             return await super.validateDocument(document, ...rest);
         } finally {
             this._currentDocument = undefined;

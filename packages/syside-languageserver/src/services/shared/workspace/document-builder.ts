@@ -17,14 +17,15 @@
 import {
     AstNode,
     BuildOptions,
+    Cancellation,
     DefaultDocumentBuilder,
     DocumentState,
     LangiumDocument,
+    URI,
 } from "langium";
 import { CancellationToken } from "vscode-languageserver";
-import { SysMLSharedServices } from "../../services.js";
+import { SysMLDefaultServices, SysMLSharedServices } from "../../services.js";
 import { mergeWithPartial, Statistics, Timer } from "../../../utils/common.js";
-import { URI } from "vscode-uri";
 import now from "performance-now";
 import { BuildProgress } from "./documents.js";
 import { SysMLConfigurationProvider } from "./configuration-provider.js";
@@ -205,6 +206,30 @@ export class SysMLDocumentBuilder extends DefaultDocumentBuilder {
             const duration = docs.reduce((total, doc) => total + doc.parseDuration, 0);
             console.log("   Average parse speed:", (bytes / duration).toFixed(0), "bytes/ms");
         }
+    }
+
+    override waitUntil(
+        state: DocumentState,
+        cancelToken?: Cancellation.CancellationToken
+    ): Promise<void>;
+    override waitUntil(
+        state: DocumentState,
+        uri?: URI,
+        cancelToken?: Cancellation.CancellationToken
+    ): Promise<URI>;
+    override async waitUntil(
+        state: DocumentState,
+        uriOrToken?: URI | Cancellation.CancellationToken,
+        cancelToken?: Cancellation.CancellationToken
+    ): Promise<URI | undefined | void> {
+        const uri = await super.waitUntil(state, uriOrToken as URI | undefined, cancelToken);
+        const document = URI.isUri(uri) ? this.langiumDocuments.getDocument(uri) : undefined;
+        // library documents are linked on demand, a request on one needs all of it
+        if (document?.isStandard && state >= DocumentState.Linked) {
+            const services = this.serviceRegistry.getServices(uri) as SysMLDefaultServices;
+            await services.references.Linker.linkAll(document, cancelToken);
+        }
+        return uri;
     }
 
     override async update(

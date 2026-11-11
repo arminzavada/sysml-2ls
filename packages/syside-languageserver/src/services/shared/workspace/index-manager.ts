@@ -29,8 +29,9 @@ import { ElementMeta, NamedChild, sanitizeName, TypeMeta } from "../../../model/
 import { getLanguageId, GlobalScope } from "../../../utils/global-scope.js";
 import { makeScope, SysMLScope } from "../../../utils/scopes.js";
 import { SysMLScopeComputation } from "../../references/scope-computation.js";
-import { SysMLDefaultServices } from "../../services.js";
+import { SysMLDefaultServices, SysMLSharedServices } from "../../services.js";
 import { SysMLNodeDescription } from "./ast-descriptions.js";
+import type { MetamodelBuilder } from "./metamodel-builder.js";
 
 /**
  * Overrides the default IndexManager from Langium to work with members imported
@@ -55,6 +56,23 @@ export class SysMLIndexManager extends DefaultIndexManager {
     protected readonly modelDependencies = new Map<string, Set<string>>();
 
     protected readonly globalScope = new GlobalScope();
+
+    protected readonly metamodelBuilder: () => MetamodelBuilder;
+
+    constructor(services: SysMLSharedServices) {
+        super(services);
+        // the builder depends on the index manager, so it is resolved on use
+        this.metamodelBuilder = (): MetamodelBuilder => {
+            return services.workspace.MetamodelBuilder;
+        };
+    }
+
+    protected setUp<T extends ElementMeta | undefined>(element: T): T {
+        if (element?.setupState === "none") {
+            this.metamodelBuilder().buildElement(element, element.document);
+        }
+        return element;
+    }
 
     override allElements(nodeType = "", _uris?: Set<string>): Stream<SysMLNodeDescription> {
         // cannot cache global elements as they may have import statements which
@@ -161,7 +179,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
 
         let candidate = cache.get(qualifiedName);
         // if not undefined, the description was found in the cache
-        if (candidate !== undefined) return candidate ?? undefined;
+        if (candidate !== undefined) return this.setUp(candidate ?? undefined);
 
         let parts = qualifiedName.split("::").map((name) => sanitizeName(name));
         const root = parts[0];
@@ -179,7 +197,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
 
         // traverse the name chain
         for (const part of parts) {
-            const child: NamedChild | undefined = candidate?.findMember(part);
+            const child: NamedChild | undefined = this.setUp(candidate)?.findMember(part);
             if (typeof child === "string" || !child) continue;
 
             let element: ElementMeta | undefined;
@@ -188,6 +206,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
             candidate = element;
         }
 
+        this.setUp(candidate);
         // cache the found element
         cache.set(qualifiedName, candidate ?? null);
         if (!local && uri && candidate && addDependency) {
@@ -219,7 +238,7 @@ export class SysMLIndexManager extends DefaultIndexManager {
         addDependency = false
     ): TypeMeta | undefined {
         if (!type) return;
-        if (typeof type !== "string") return type;
+        if (typeof type !== "string") return this.setUp(type);
         const result = this.findGlobalElement(type, document, addDependency);
         if (result?.is(Type.$type)) return result;
         return;
@@ -255,9 +274,8 @@ export class SysMLIndexManager extends DefaultIndexManager {
 
     conforms(left: string | TypeMeta, type: string | TypeMeta): boolean {
         if (left === type) return true;
-        if (typeof left === "string") left = this.findType(left) ?? left;
-        if (typeof left === "string")
-            return left === (typeof type === "string" ? type : type.qualifiedName);
-        return left.conforms(type);
+        const resolved = this.findType(left);
+        if (!resolved) return left === (typeof type === "string" ? type : type.qualifiedName);
+        return resolved.conforms(type);
     }
 }

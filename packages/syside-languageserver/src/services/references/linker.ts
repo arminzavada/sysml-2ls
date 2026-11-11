@@ -126,6 +126,8 @@ export class SysMLLinker extends DefaultLinker {
      */
     protected readonly linkFunctions: Map<string, LinkFunction>;
 
+    protected readonly linkedDocuments = new WeakSet<LangiumDocument>();
+
     constructor(services: SysMLDefaultServices) {
         super(services);
         this.scopeProvider = services.references.ScopeProvider;
@@ -143,14 +145,23 @@ export class SysMLLinker extends DefaultLinker {
         document: LangiumDocument,
         cancelToken = CancellationToken.None
     ): Promise<void> {
+        // library elements are set up on demand, when a reference or a lookup reaches them
+        if (!document.isStandard) {
+            this.linkedDocuments.delete(document);
+            await this.linkAll(document, cancelToken);
+        }
+        document.state = DocumentState.Linked;
+    }
+
+    async linkAll(document: LangiumDocument, cancelToken = CancellationToken.None): Promise<void> {
+        if (this.linkedDocuments.has(document)) return;
         await this.metamodelBuilder.preLink(undefined, document, cancelToken);
 
         for (const node of document.astNodes) {
             await interruptAndCheck(cancelToken);
             this.linkNode(node, document);
         }
-
-        document.state = DocumentState.Linked;
+        this.linkedDocuments.add(document);
     }
 
     /**
@@ -607,6 +618,7 @@ export class SysMLLinker extends DefaultLinker {
     }
 
     override unlink(document: LangiumDocument<AstNode>): void {
+        this.linkedDocuments.delete(document);
         // also have to reset the resolved metamodels since they mostly depend
         // on the resolved references
         document.astNodes.forEach((node) => {

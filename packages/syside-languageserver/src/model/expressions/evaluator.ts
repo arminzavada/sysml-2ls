@@ -64,6 +64,7 @@ import {
 import { SysMLSharedServices } from "../../services/services.js";
 import { ModelUtil } from "../../services/shared/model-utils.js";
 import { SysMLIndexManager } from "../../services/shared/workspace/index-manager.js";
+import type { MetamodelBuilder } from "../../services/shared/workspace/metamodel-builder.js";
 
 // import last
 import "./functions/index.js";
@@ -99,12 +100,14 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
     protected readonly evaluators: Map<string, EvaluatorFunction>;
     protected readonly util: ModelUtil;
     protected readonly index: SysMLIndexManager;
+    protected readonly metamodelBuilder: MetamodelBuilder;
     protected readonly stack: ElementMeta[] = [];
 
     constructor(services: SysMLSharedServices, evaluators: Map<string, EvaluatorFunction>) {
         this.evaluators = evaluators;
         this.util = services.Util;
         this.index = services.workspace.IndexManager;
+        this.metamodelBuilder = services.workspace.MetamodelBuilder;
     }
 
     get currentEvaluationStack(): readonly ElementMeta[] {
@@ -127,6 +130,10 @@ export class BuiltinFunctionEvaluator implements ModelLevelExpressionEvaluator {
     }
 
     evaluate(expression: Evaluable, target: ElementMeta): ExpressionResult {
+        // library expressions are linked on demand
+        if (expression.setupState === "none") {
+            this.metamodelBuilder.buildModel(expression, expression.document);
+        }
         this.stack.push(expression);
         const evaluator = this.evaluators.get(expression.nodeType());
         if (evaluator) {

@@ -294,9 +294,7 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
     }
 
     buildModel(root: ElementMeta, document: LangiumDocument<AstNode>): void {
-        for (const element of streamModel(root)) {
-            this.preLinkModel(element, document);
-        }
+        this.buildTree(root, document, false);
     }
 
     protected registerLinkFunctions(
@@ -339,8 +337,6 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
             // date, this is needed for succession as usage resolution, i.e.
             // when the previous element is `first start`
             owner.owner()?.invalidateMemberCaches();
-            // importing name only, same as named import
-            return;
         }
 
         const target = ref.$meta.to.target;
@@ -562,7 +558,50 @@ export class SysMLMetamodelBuilder implements MetamodelBuilder {
 
             // link dependant namespaces recursively
             this.preLinkModel(description);
+
+            const target = description.is(Membership.$type) ? description.element() : description;
+            if (imp.isRecursive && target?.is(Namespace.$type) && target.document.isStandard) {
+                this.setupOwnedNamespaces(target);
+            }
         }
+    }
+
+    // a recursive import exposes the members of library namespaces nothing else sets up
+    protected setupOwnedNamespaces(namespace: NamespaceMeta): void {
+        for (const child of namespace.children) {
+            if (!child.is(OwningMembership.$type)) continue;
+            const element = child.element();
+            if (!element?.is(Namespace.$type)) continue;
+            this.preLinkModel(element);
+            this.setupOwnedNamespaces(element);
+        }
+    }
+
+    // derived state reads the library generals, also those given to already set up features
+    @builder(Type.$type, 100000)
+    protected setupGeneralTypes(node: TypeMeta, _document: LangiumDocument): void {
+        const features = node
+            .featureMembers()
+            .map((member) => {
+                return member.element();
+            })
+            .filter((feature) => {
+                return feature?.setupState === "completed";
+            });
+        for (const type of [node, ...features]) {
+            for (const specialization of type?.specializations() ?? []) {
+                if (specialization.is(CrossSubsetting.$type)) continue;
+                const general = specialization.finalElement();
+                if (general?.document.isStandard) this.preLinkModel(general);
+            }
+        }
+    }
+
+    // the bounds of a library type come from a multiplicity nothing else sets up
+    @builder(Type.$type)
+    protected setupMultiplicity(node: TypeMeta, _document: LangiumDocument): void {
+        const multiplicity = node.multiplicity?.element();
+        if (multiplicity?.document.isStandard) this.preLinkModel(multiplicity);
     }
 
     @builder(Namespace.$type, 10000)

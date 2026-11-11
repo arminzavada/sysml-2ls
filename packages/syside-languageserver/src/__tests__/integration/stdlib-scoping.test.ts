@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { URI } from "vscode-uri";
-import { AstNode, AstUtils, type LangiumDocument } from "langium";
+import { AstNode, AstUtils, DocumentState, type LangiumDocument } from "langium";
 import type { Namespace } from "#generated/ast.js";
 import type { SysMLSharedServices } from "../../services/services.js";
 import type { SysMLBuildOptions } from "../../services/shared/workspace/document-builder.js";
@@ -29,8 +29,9 @@ describe("name resolution against the standard library", () => {
         return doc;
     }
 
-    function stdlibNode(file: string, name: string): AstNode {
+    async function stdlibNode(file: string, name: string): Promise<AstNode> {
         const doc = stdDocs.find((d) => d.uri.path.endsWith(`/${file}`));
+        if (doc) await shared.workspace.DocumentBuilder.waitUntil(DocumentState.Linked, doc.uri);
         const node =
             doc &&
             AstUtils.streamAst(doc.parseResult.value).find(
@@ -40,10 +41,10 @@ describe("name resolution against the standard library", () => {
         return node as AstNode;
     }
 
-    it("resolves a transition source and target in the transition's owning namespace", () => {
+    it("resolves a transition source and target in the transition's owning namespace", async () => {
         expect(
             referenceTargets(
-                stdlibNode("Actions.sysml", "Actions::AcceptAction::aState::aTransition")
+                await stdlibNode("Actions.sysml", "Actions::AcceptAction::aState::aTransition")
             )
         ).toEqual([
             "start -> States::StateAction::start",
@@ -53,9 +54,9 @@ describe("name resolution against the standard library", () => {
         ]);
     });
 
-    it("resolves a function invoked in an operand to the private function, not the operator parameter", () => {
+    it("resolves a function invoked in an operand to the private function, not the operator parameter", async () => {
         const targets = referenceTargets(
-            stdlibNode("CollectionFunctions.kerml", "CollectionFunctions::array#")
+            await stdlibNode("CollectionFunctions.kerml", "CollectionFunctions::array#")
         ).filter((t) => t.startsWith("index ->"));
         expect(targets).toEqual([
             "index -> CollectionFunctions::array#::index",
