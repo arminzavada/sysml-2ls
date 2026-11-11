@@ -542,10 +542,16 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
     protected semantifyrVerificationCases(
         uri: string,
         _ = CancellationToken.None
-    ): Promise<SemantifyrVerificationCase[]> {
-        return this.readCurrentDocument(uri, (document) => {
-            return findSemantifyrVerificationCases(document.parseResult.value as Namespace);
-        });
+    ): SemantifyrVerificationCase[] {
+        const textDocument = this.shared.workspace.TextDocuments.get(uri);
+        if (!textDocument) {
+            throw new Error(`Document '${uri}' is not open`);
+        }
+        // Cases need only the parsed root, so they do not wait for the standard library build.
+        const parser = this.registry.getServices(URI.parse(uri)).parser.LangiumParser;
+        return findSemantifyrVerificationCases(
+            parser.parse<Namespace>(textDocument.getText()).value
+        );
     }
 
     @documentCommand("syside.semantifyr.sysml.oxsts")

@@ -17,6 +17,7 @@
 import { vi } from "vitest";
 import { LangiumDocument, ParseResult } from "langium";
 import { CancellationToken, Disposable, TextDocumentIdentifier } from "vscode-languageserver";
+import { TextDocument } from "vscode-languageserver-textdocument";
 import { URI } from "vscode-uri";
 import { parseKerML, parseSysML, services, TEST_BUILD_OPTIONS } from "../../../testing/index.js";
 import { RegisterTextEditorCommandsRequest } from "syside-protocol";
@@ -92,6 +93,43 @@ describe("document commands can be executed", () => {
             [],
             CancellationToken.None
         );
+    });
+});
+
+const CaseText = `part def Machine {
+    part motor;
+}
+verification def MachineRunning {
+    part machine : Machine;
+}
+`;
+
+describe("syside.semantifyr.sysml.verificationCases", () => {
+    const uri = "file:///cases.sysml";
+    const textDocuments = services.shared.workspace.TextDocuments;
+
+    beforeAll(() => {
+        textDocuments.set(TextDocument.create(uri, "sysml", 1, CaseText));
+    });
+    afterAll(() => {
+        textDocuments.delete(uri);
+    });
+
+    test("returns the cases of an open document while the standard library is not built", async () => {
+        const cases = await services.shared.lsp.ExecuteCommandHandler?.executeCommand(
+            "syside.semantifyr.sysml.verificationCases",
+            [uri]
+        );
+
+        expect(cases).toEqual([
+            {
+                name: "MachineRunning",
+                range: {
+                    start: { line: 3, character: 0 },
+                    end: { line: 5, character: 1 },
+                },
+            },
+        ]);
     });
 });
 
