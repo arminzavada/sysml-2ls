@@ -191,6 +191,14 @@ export const SemantifyrConstructs = {
         "Transition source or target other than a state of the model or the owning state's `done`: actions, decision, terminate",
         "Semantifyr requires a transition between states of the model"
     ),
+    targetTransition: supported(
+        "Transition without `first` in a state's body: `accept ... then X;`, `if c then X;`",
+        "a transition from the owning state"
+    ),
+    targetTransitionEffect: refused(
+        "Transition without `first` with an effect, `do ... then X;`, in a state's body",
+        "SysIDE reads 'do ... then X;' in a state's body as a do action and a separate transition; write 'transition first <state> do ... then X;'"
+    ),
     transitionInParallel: refused(
         "Transition declared in a parallel state",
         "Semantifyr does not support a transition between the regions of a parallel state"

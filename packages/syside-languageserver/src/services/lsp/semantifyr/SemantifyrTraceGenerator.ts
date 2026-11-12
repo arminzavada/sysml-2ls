@@ -605,7 +605,10 @@ export class SemantifyrTraceGenerator {
             entry.self.slice(0, entry.self.lastIndexOf(".")),
             `${location}.self`
         );
-        const sourceElement = transition.source?.targetRef?.parts.at(-1)?.ref;
+        // a transition without `first` leaves the state it is declared in
+        const sourceElement = transition.source
+            ? transition.source.targetRef?.parts.at(-1)?.ref
+            : ownerState.element;
         const source = this.spanAt(this.instanceOf(sourceElement, ownerState.part), step, "end");
         const targetElement = transitionTarget(transition);
         const isDone = isLibraryFeature(targetElement, "done", this.model);

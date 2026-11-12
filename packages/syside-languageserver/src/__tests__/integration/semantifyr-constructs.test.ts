@@ -40,6 +40,11 @@ part def Machine {
 }
 `;
 
+// a state Waiting with the given body, entered from Idle, beside a state Busy
+const waiting = (body: string): string => {
+    return machine("", `state Waiting { ${body} } state Busy; transition first Idle then Waiting;`);
+};
+
 const checked = (constraint: string, model = machine("")): string => `
 ${model}
 verification def Check {
@@ -631,6 +636,38 @@ const cases: ConstructCase[] = [
         construct: "caseMember",
         model: `${machine("")}\nverification def Check { subject machine : Machine; attribute extra : Integer; objective { require constraint { true } } }`,
         located: "attribute extra : Integer;",
+    },
+    {
+        construct: "targetTransition",
+        model: waiting("accept Signal via input then Busy;"),
+        emits: "redefine refers from: StateNode = Waiting",
+    },
+    {
+        construct: "targetTransition",
+        model: waiting("if count > 0 then Busy;"),
+        emits: "redefine refers to: StateNode = Busy",
+    },
+    {
+        construct: "targetTransitionEffect",
+        model: waiting("do action { assign count := 1; } then Busy;"),
+        located: "do action { assign count := 1; }",
+    },
+    {
+        construct: "targetTransition",
+        model: waiting("accept after 2 [s] then Busy;"),
+        emits: "redefine contains acceptAction: AcceptTimeoutAction",
+    },
+    {
+        construct: "transitionTarget",
+        model: machine("", "state Busy; accept Signal via input then Busy;"),
+        located: "accept Signal via input then Busy;",
+    },
+    {
+        construct: "actionOther",
+        model: waiting(
+            "entry action { action setup assign count := 1; action reset assign count := 0; if count > 0 then setup; }"
+        ),
+        located: "if count > 0 then setup;",
     },
 ];
 

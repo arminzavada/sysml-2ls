@@ -931,9 +931,13 @@ export class SemantifyrModelMapper {
     ): void {
         const substates: StateUsage[] = [];
         const transitions: TransitionUsage[] = [];
-        let entryIsEmpty = false;
-        let initials = 0;
+        const initialTransitions = new Set<TransitionUsage>();
+        const skipped = new Set<Element>();
+        // `entry; then X;` is the initial transition only right after its empty entry action
+        let followsEmptyEntry = false;
         for (const membership of state.children) {
+            const afterEmptyEntry = followsEmptyEntry;
+            followsEmptyEntry = false;
             if (isImport(membership)) {
                 continue;
             }
@@ -943,12 +947,24 @@ export class SemantifyrModelMapper {
             }
             if (isStateSubactionMembership(membership)) {
                 if (membership.kind === "do") {
-                    this.report(membership, "doAction");
+                    const next = state.children[state.children.indexOf(membership) + 1];
+                    const shorthand = (next as Membership | undefined)?.target;
+                    if (
+                        isTransitionUsage(shorthand) &&
+                        shorthand.source === undefined &&
+                        !shorthand.accepter &&
+                        !shorthand.guard
+                    ) {
+                        this.report(membership, "targetTransitionEffect");
+                        skipped.add(shorthand);
+                    } else {
+                        this.report(membership, "doAction");
+                    }
                     continue;
                 }
                 const action = member as ActionUsage;
                 if (membership.kind === "entry") {
-                    entryIsEmpty = this.isEmptyAction(action);
+                    followsEmptyEntry = this.isEmptyAction(action);
                 }
                 this.guard(membership, () => {
                     this.mapAction(
@@ -961,20 +977,23 @@ export class SemantifyrModelMapper {
                 continue;
             }
             if (isTransitionUsage(member)) {
+                if (skipped.has(member)) {
+                    continue;
+                }
                 if (state.isParallel) {
                     this.report(member, "transitionInParallel");
                     continue;
                 }
                 const isInitial =
                     member.source === undefined
-                        ? entryIsEmpty
+                        ? afterEmptyEntry
                         : isLibraryFeature(
                               referenced(member.source.targetRef),
                               "start",
                               this.model
                           );
                 if (isInitial) {
-                    initials++;
+                    initialTransitions.add(member);
                 }
                 transitions.push(member);
                 continue;
@@ -1010,10 +1029,17 @@ export class SemantifyrModelMapper {
         }
         for (const transition of transitions) {
             this.guard(transition, () => {
-                this.mapTransition(context, node, state, transition, machine, entryIsEmpty);
+                this.mapTransition(
+                    context,
+                    node,
+                    state,
+                    transition,
+                    machine,
+                    initialTransitions.has(transition)
+                );
             });
         }
-        if (substates.length > 0 && !state.isParallel && initials === 0) {
+        if (substates.length > 0 && !state.isParallel && initialTransitions.size === 0) {
             this.report(state, "compositeWithoutInitial");
         }
     }
@@ -1043,17 +1069,21 @@ export class SemantifyrModelMapper {
         owner: StateUsage | StateDefinition,
         transition: TransitionUsage,
         machine: Element,
-        entryIsEmpty: boolean
+        isInitial: boolean
     ): void {
+        // a transition without `first` in a state's body leaves its owning state (SysML 7.18.3)
+        const isTargetTransition = transition.source === undefined && !isInitial;
         const sourceElement = transition.source
             ? referenced(transition.source.targetRef)
-            : undefined;
-        const isInitial =
-            transition.source === undefined
-                ? entryIsEmpty
-                : isLibraryFeature(sourceElement, "start", this.model);
-        if (transition.source === undefined && !entryIsEmpty) {
-            this.refuse(transition, "transitionTarget");
+            : isTargetTransition
+              ? owner
+              : undefined;
+        if (isTargetTransition && !this.isStateOf(owner, machine)) {
+            this.refuse(
+                transition,
+                "transitionTarget",
+                "Semantifyr requires a transition without 'first' to be declared in a state below the exhibited state, which it leaves"
+            );
         }
         if (!isInitial && !this.isStateOf(sourceElement, machine)) {
             this.refuse(transition.source ?? transition, "transitionTarget");
