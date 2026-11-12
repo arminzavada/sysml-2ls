@@ -9,7 +9,7 @@ export interface SemantifyrTraceEntry {
     self: string;
     calledTransition: string;
     arguments: SemantifyrTraceArgument[];
-    innerTraces: SemantifyrTraceEntry[] | null;
+    innerTraces?: SemantifyrTraceEntry[] | null;
 }
 
 export interface SemantifyrTraceStep {
@@ -98,7 +98,7 @@ const entry: Check = (value, location) => {
         calledTransition: string,
         arguments: array(object({ parameter: string, value: string })),
         innerTraces: array(entry, true),
-    })(value, location);
+    }, ["innerTraces"])(value, location);
 };
 
 const traceStep = object({ traces: array(entry) });

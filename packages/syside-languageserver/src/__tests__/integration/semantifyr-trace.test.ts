@@ -131,6 +131,17 @@ describe("Semantifyr trace generation", () => {
         }).toThrow(/^names\.json\.modelHash: /);
     });
 
+    it("takes a missing innerTraces as null, as the Live backend's wire leaves it out", () => {
+        const trace = JSON.parse(
+            JSON.stringify(reference.trace, (key, value: unknown) => {
+                return key === "innerTraces" && value === null ? undefined : value;
+            })
+        ) as SemantifyrTrace;
+
+        expect(JSON.stringify(trace)).not.toContain('"innerTraces":null');
+        expect(generate({ trace })).toEqual(generate());
+    });
+
     it("locates a malformed entry of the trace", () => {
         const trace = structuredClone(reference.trace);
         (trace.steps[1].traces[0] as unknown as Record<string, unknown>).self = 7;
