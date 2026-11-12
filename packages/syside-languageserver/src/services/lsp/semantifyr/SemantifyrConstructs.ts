@@ -229,7 +229,7 @@ export const SemantifyrConstructs = {
     ),
     acceptWhen: supported(
         "`accept when c`",
-        "enabled in every step c holds, a declared contradiction"
+        "enabled in every step c holds, a selection: the change signal, sent when c turns true or holds at first evaluation, stays acceptable until the source state is left"
     ),
     acceptAt: refused("`accept at t`", "Semantifyr does not support at triggers"),
     guard: supported("Transition guard"),
