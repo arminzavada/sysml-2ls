@@ -20,7 +20,7 @@ import {
     type TransitionUsage,
     type Type,
 } from "#generated/ast";
-import { resolveElementPath } from "./SemantifyrElementPath";
+import { isLibraryFeature, resolveElementPath, transitionTarget } from "./SemantifyrElementPath";
 import { hashModelText, type SemantifyrNameEntry } from "./SemantifyrNameMap";
 import {
     SemantifyrTraceError,
@@ -462,12 +462,6 @@ export class SemantifyrTraceGenerator {
         return activity;
     }
 
-    private targetOf(transition: TransitionUsage): Element | undefined {
-        const succession = transition.then?.target as { ends?: { target?: Type }[] } | undefined;
-        const end = succession?.ends?.[1]?.target;
-        return end?.heritage[0]?.targetRef?.parts.at(-1)?.ref;
-    }
-
     private instanceOf(
         element: Element | undefined,
         part: PartInstance
@@ -491,12 +485,12 @@ export class SemantifyrTraceGenerator {
                     call.entry.self.slice(0, call.entry.self.lastIndexOf("."))
                 );
                 const target = isTransitionUsage(transition)
-                    ? this.targetOf(transition)
+                    ? transitionTarget(transition)
                     : undefined;
                 if (
                     owner &&
                     !owner.parent &&
-                    target?.declaredName === "done" &&
+                    isLibraryFeature(target, "done", this.model) &&
                     !this.doneSteps.has(owner)
                 ) {
                     this.doneSteps.set(owner, step);
@@ -613,8 +607,8 @@ export class SemantifyrTraceGenerator {
         );
         const sourceElement = transition.source?.targetRef?.parts.at(-1)?.ref;
         const source = this.spanAt(this.instanceOf(sourceElement, ownerState.part), step, "end");
-        const targetElement = this.targetOf(transition);
-        const isDone = targetElement?.declaredName === "done" && !isStateUsage(targetElement);
+        const targetElement = transitionTarget(transition);
+        const isDone = isLibraryFeature(targetElement, "done", this.model);
         const target = isDone
             ? undefined
             : this.spanAt(this.instanceOf(targetElement, ownerState.part), step, "start");

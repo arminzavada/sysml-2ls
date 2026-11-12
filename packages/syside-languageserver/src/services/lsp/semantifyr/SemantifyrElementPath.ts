@@ -1,5 +1,14 @@
 import { AstUtils, type AstNode } from "langium";
-import { isElement, isRelationship, type Element, type Namespace } from "#generated/ast";
+import {
+    isElement,
+    isReferenceSubsetting,
+    isRelationship,
+    type Element,
+    type ElementReference,
+    type Feature,
+    type Namespace,
+    type TransitionUsage,
+} from "#generated/ast";
 
 // the elements an element owns, through the memberships that own them, in document order
 export function ownedElements(owner: AstNode): Element[] {
@@ -50,4 +59,31 @@ export function resolveElementPath(root: Namespace, path: string): Element | und
               });
     }
     return current;
+}
+
+function referenced(reference: ElementReference | undefined): Element | undefined {
+    return reference?.parts.at(-1)?.ref;
+}
+
+// the state a transition's `then` names, through a chain `A.B.C` too
+export function transitionTarget(transition: TransitionUsage): Element | undefined {
+    const succession = transition.then?.target as { ends?: { target?: Feature }[] } | undefined;
+    const end = succession?.ends?.[1]?.target;
+    const subsetting = end?.heritage.find(isReferenceSubsetting);
+    if (subsetting?.targetChain) {
+        return referenced(subsetting.targetChain.typeRelationships.at(-1)?.targetRef);
+    }
+    return subsetting ? referenced(subsetting.targetRef) : undefined;
+}
+
+// `start` and `done` of the standard library, which every state inherits
+export function isLibraryFeature(
+    element: Element | undefined,
+    name: string,
+    model: Element
+): boolean {
+    return (
+        element?.declaredName === name &&
+        AstUtils.getDocument(element) !== AstUtils.getDocument(model)
+    );
 }

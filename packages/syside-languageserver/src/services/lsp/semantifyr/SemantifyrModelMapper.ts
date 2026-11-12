@@ -80,7 +80,12 @@ import {
     type VerificationCaseDefinition,
 } from "#generated/ast";
 import { SemantifyrConstructs, type SemantifyrConstructId } from "./SemantifyrConstructs";
-import { elementPath, ownedElements } from "./SemantifyrElementPath";
+import {
+    elementPath,
+    isLibraryFeature,
+    ownedElements,
+    transitionTarget,
+} from "./SemantifyrElementPath";
 import {
     hashModelText,
     type SemantifyrNameEntry,
@@ -194,13 +199,6 @@ function hasFeatureSpecialization(type: Type): boolean {
 
 function valueOf(feature: Element | undefined): Expression | undefined {
     return (feature as Feature | undefined)?.value?.target as Expression | undefined;
-}
-
-function isLibraryFeature(element: Element | undefined, name: string): boolean {
-    return (
-        element?.declaredName === name &&
-        AstUtils.getDocument(element).uri.toString().includes("sysml.library")
-    );
 }
 
 function multiplicityOf(feature: Feature): Multiplicity {
@@ -970,7 +968,11 @@ export class SemantifyrModelMapper {
                 const isInitial =
                     member.source === undefined
                         ? entryIsEmpty
-                        : isLibraryFeature(referenced(member.source.targetRef), "start");
+                        : isLibraryFeature(
+                              referenced(member.source.targetRef),
+                              "start",
+                              this.model
+                          );
                 if (isInitial) {
                     initials++;
                 }
@@ -1035,16 +1037,6 @@ export class SemantifyrModelMapper {
         return current === machine && current !== element;
     }
 
-    private transitionTarget(transition: TransitionUsage): Element | undefined {
-        const succession = transition.then?.target as { ends?: { target?: Feature }[] } | undefined;
-        const end = succession?.ends?.[1]?.target;
-        const subsetting = end?.heritage.find(isReferenceSubsetting);
-        if (subsetting?.targetChain) {
-            return referenced(subsetting.targetChain.typeRelationships.at(-1)?.targetRef);
-        }
-        return subsetting ? referenced(subsetting.targetRef) : undefined;
-    }
-
     private mapTransition(
         context: PartContext,
         parent: OxstsNode,
@@ -1059,15 +1051,15 @@ export class SemantifyrModelMapper {
         const isInitial =
             transition.source === undefined
                 ? entryIsEmpty
-                : isLibraryFeature(sourceElement, "start");
+                : isLibraryFeature(sourceElement, "start", this.model);
         if (transition.source === undefined && !entryIsEmpty) {
             this.refuse(transition, "transitionTarget");
         }
         if (!isInitial && !this.isStateOf(sourceElement, machine)) {
             this.refuse(transition.source ?? transition, "transitionTarget");
         }
-        const targetElement = this.transitionTarget(transition);
-        const isDone = isLibraryFeature(targetElement, "done");
+        const targetElement = transitionTarget(transition);
+        const isDone = isLibraryFeature(targetElement, "done", this.model);
         if (!isDone && !this.isStateOf(targetElement, machine)) {
             this.refuse(transition.then ?? transition, "transitionTarget");
         }
@@ -1365,7 +1357,7 @@ export class SemantifyrModelMapper {
                 });
                 const source = ends[0] ?? members.slice(0, index).reverse().find(isActionUsage);
                 const target = ends[1] ?? members.slice(index + 1).find(isActionUsage);
-                if (isLibraryFeature(target, "done") || !source || !target) {
+                if (isLibraryFeature(target, "done", this.model) || !source || !target) {
                     this.refuse(member, "actionOther");
                 }
                 edges.push([source, target]);
