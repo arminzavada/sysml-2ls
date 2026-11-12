@@ -68,7 +68,7 @@ import {
     mapSemantifyrTraceToSysML,
     mapSysMLNamespaceToSemantifyr,
     SemantifyrMapping,
-    SemantifyrTrace,
+    SemantifyrTraceParameters,
     SemantifyrVerificationCase,
 } from "./semantifyr/SemantifyrMapper";
 import { upsertTextFile } from "../../utils/file-utils";
@@ -81,10 +81,8 @@ type DocumentCommand<T, Parameter = UriComponents> = (
     doc: Parameter,
     cancelToken: CancellationToken
 ) => T;
-export interface SemantifyrTraceParameters {
+export interface SemantifyrTraceCommandParameters extends SemantifyrTraceParameters {
     uri: string;
-    caseName: string;
-    trace: SemantifyrTrace;
 }
 
 type SimpleCommand<T> = (cancelToken: CancellationToken) => T;
@@ -569,15 +567,11 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
 
     @documentCommand("syside.semantifyr.sysml.trace")
     protected semantifyrTrace(
-        parameters: SemantifyrTraceParameters,
+        parameters: SemantifyrTraceCommandParameters,
         _ = CancellationToken.None
     ): Promise<string> {
         return this.readCurrentDocument(parameters.uri, (document) => {
-            return mapSemantifyrTraceToSysML(
-                document.parseResult.value as Namespace,
-                parameters.trace,
-                parameters.caseName
-            );
+            return mapSemantifyrTraceToSysML(document.parseResult.value as Namespace, parameters);
         });
     }
 

@@ -1,0 +1,725 @@
+{
+    "modelHash": "fnv1a64:52bef86d7e530545",
+    "package": "semantifyr::sysml::model",
+    "tick": {
+        "value": "1",
+        "unit": "s"
+    },
+    "entries": [
+        {
+            "sysml": "Police",
+            "oxsts": "Police"
+        },
+        {
+            "sysml": "Toggle",
+            "oxsts": "Toggle"
+        },
+        {
+            "sysml": "RedL",
+            "oxsts": "RedL"
+        },
+        {
+            "sysml": "YellowL",
+            "oxsts": "YellowL"
+        },
+        {
+            "sysml": "GreenL",
+            "oxsts": "GreenL"
+        },
+        {
+            "sysml": "NoneL",
+            "oxsts": "NoneL"
+        },
+        {
+            "sysml": "CentralControl",
+            "oxsts": "CentralControl"
+        },
+        {
+            "sysml": "LightControl",
+            "oxsts": "LightControl"
+        },
+        {
+            "sysml": "CentralController",
+            "oxsts": "CentralController"
+        },
+        {
+            "sysml": "CentralController::control",
+            "oxsts": "CentralController.control",
+            "type": "ConjugatedCentralControl"
+        },
+        {
+            "sysml": "CentralController::controlA",
+            "oxsts": "CentralController.controlA",
+            "type": "CentralControl"
+        },
+        {
+            "sysml": "CentralController::controlB",
+            "oxsts": "CentralController.controlB",
+            "type": "CentralControl"
+        },
+        {
+            "sysml": "CentralController::Behaviour",
+            "oxsts": "CentralController.Behaviour"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating",
+            "oxsts": "CentralController.Behaviour.Operating"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::BothYellow",
+            "oxsts": "CentralController.Behaviour.Operating.BothYellow"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::BothRed",
+            "oxsts": "CentralController.Behaviour.Operating.BothRed"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::TrafficOnA",
+            "oxsts": "CentralController.Behaviour.Operating.TrafficOnA"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::StoppingA",
+            "oxsts": "CentralController.Behaviour.Operating.StoppingA"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::TrafficOnB",
+            "oxsts": "CentralController.Behaviour.Operating.TrafficOnB"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::StoppingB",
+            "oxsts": "CentralController.Behaviour.Operating.StoppingB"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#0",
+            "oxsts": "CentralController.Behaviour.Operating.initial1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#2",
+            "oxsts": "CentralController.Behaviour.Operating.transition1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#2::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition1.acceptAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#2::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition1.action"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#2::#1::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition1.action.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#2::#1::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition1.action.send2"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#4",
+            "oxsts": "CentralController.Behaviour.Operating.transition2"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#4::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition2.acceptAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#4::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition2.action"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#4::#1::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition2.action.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#6",
+            "oxsts": "CentralController.Behaviour.Operating.transition3"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#6::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition3.acceptAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#6::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition3.action"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#6::#1::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition3.action.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#8",
+            "oxsts": "CentralController.Behaviour.Operating.transition4"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#8::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition4.acceptAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#8::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition4.action"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#8::#1::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition4.action.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#8::#1::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition4.action.send2"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#10",
+            "oxsts": "CentralController.Behaviour.Operating.transition5"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#10::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition5.acceptAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#10::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition5.action"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#10::#1::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition5.action.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#12",
+            "oxsts": "CentralController.Behaviour.Operating.transition6"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#12::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition6.acceptAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#12::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition6.action"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#12::#1::#0",
+            "oxsts": "CentralController.Behaviour.Operating.transition6.action.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Operating::#12::#1::#1",
+            "oxsts": "CentralController.Behaviour.Operating.transition6.action.send2"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Interrupted",
+            "oxsts": "CentralController.Behaviour.Interrupted"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Interrupted::#0",
+            "oxsts": "CentralController.Behaviour.Interrupted.entryAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Interrupted::#0::#0",
+            "oxsts": "CentralController.Behaviour.Interrupted.entryAction.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Interrupted::#0::#1",
+            "oxsts": "CentralController.Behaviour.Interrupted.entryAction.send2"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Interrupted::#1",
+            "oxsts": "CentralController.Behaviour.Interrupted.exitAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Interrupted::#1::#0",
+            "oxsts": "CentralController.Behaviour.Interrupted.exitAction.send1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::Interrupted::#1::#1",
+            "oxsts": "CentralController.Behaviour.Interrupted.exitAction.send2"
+        },
+        {
+            "sysml": "CentralController::Behaviour::#0",
+            "oxsts": "CentralController.Behaviour.initial1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::#2",
+            "oxsts": "CentralController.Behaviour.transition1"
+        },
+        {
+            "sysml": "CentralController::Behaviour::#2::#0",
+            "oxsts": "CentralController.Behaviour.transition1.acceptAction"
+        },
+        {
+            "sysml": "CentralController::Behaviour::#3",
+            "oxsts": "CentralController.Behaviour.transition2"
+        },
+        {
+            "sysml": "CentralController::Behaviour::#3::#0",
+            "oxsts": "CentralController.Behaviour.transition2.acceptAction"
+        },
+        {
+            "sysml": "TrafficLightController",
+            "oxsts": "TrafficLightController"
+        },
+        {
+            "sysml": "TrafficLightController::control",
+            "oxsts": "TrafficLightController.control",
+            "type": "ConjugatedCentralControl"
+        },
+        {
+            "sysml": "TrafficLightController::lightControl",
+            "oxsts": "TrafficLightController.lightControl",
+            "type": "LightControl"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour",
+            "oxsts": "TrafficLightController.Behaviour"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal",
+            "oxsts": "TrafficLightController.Behaviour.Normal"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::Yellow",
+            "oxsts": "TrafficLightController.Behaviour.Normal.Yellow"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::Yellow::#0",
+            "oxsts": "TrafficLightController.Behaviour.Normal.Yellow.entryAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::Red",
+            "oxsts": "TrafficLightController.Behaviour.Normal.Red"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::Red::#0",
+            "oxsts": "TrafficLightController.Behaviour.Normal.Red.entryAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::Green",
+            "oxsts": "TrafficLightController.Behaviour.Normal.Green"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::Green::#0",
+            "oxsts": "TrafficLightController.Behaviour.Normal.Green.entryAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::#0",
+            "oxsts": "TrafficLightController.Behaviour.Normal.initial1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::#2",
+            "oxsts": "TrafficLightController.Behaviour.Normal.transition1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::#2::#0",
+            "oxsts": "TrafficLightController.Behaviour.Normal.transition1.acceptAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::#4",
+            "oxsts": "TrafficLightController.Behaviour.Normal.transition2"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::#4::#0",
+            "oxsts": "TrafficLightController.Behaviour.Normal.transition2.acceptAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::#6",
+            "oxsts": "TrafficLightController.Behaviour.Normal.transition3"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Normal::#6::#0",
+            "oxsts": "TrafficLightController.Behaviour.Normal.transition3.acceptAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Yellow",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Yellow"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Yellow::#0",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Yellow.entryAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Black",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Black"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Black::#0",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Black.entryAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::#0",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.initial1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::#2",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.transition1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::#2::#0",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.transition1.acceptAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::#3",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.transition2"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::#3::#0",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.transition2.acceptAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::#0",
+            "oxsts": "TrafficLightController.Behaviour.initial1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::#2",
+            "oxsts": "TrafficLightController.Behaviour.transition1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::#2::#0",
+            "oxsts": "TrafficLightController.Behaviour.transition1.acceptAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::#3",
+            "oxsts": "TrafficLightController.Behaviour.transition2"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::#3::#0",
+            "oxsts": "TrafficLightController.Behaviour.transition2.acceptAction"
+        },
+        {
+            "sysml": "CrossroadSystem",
+            "oxsts": "CrossroadSystem"
+        },
+        {
+            "sysml": "CrossroadSystem::controller",
+            "oxsts": "CrossroadSystem.controller",
+            "type": "CentralController"
+        },
+        {
+            "sysml": "CrossroadSystem::trafficLightA",
+            "oxsts": "CrossroadSystem.trafficLightA",
+            "type": "TrafficLightController"
+        },
+        {
+            "sysml": "CrossroadSystem::trafficLightB",
+            "oxsts": "CrossroadSystem.trafficLightB",
+            "type": "TrafficLightController"
+        },
+        {
+            "sysml": "CrossroadSystem::control",
+            "oxsts": "CrossroadSystem.control",
+            "type": "ConjugatedCentralControl"
+        },
+        {
+            "sysml": "CrossroadSystem::#5",
+            "oxsts": "CrossroadSystem.flow1"
+        },
+        {
+            "sysml": "CrossroadSystem::#6",
+            "oxsts": "CrossroadSystem.flow2"
+        },
+        {
+            "sysml": "ControllerOperatingReachable",
+            "oxsts": "ControllerOperatingReachable"
+        },
+        {
+            "sysml": "ControllerOperatingReachable::system",
+            "oxsts": "ControllerOperatingReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingBothYellowReachable",
+            "oxsts": "ControllerOperatingBothYellowReachable"
+        },
+        {
+            "sysml": "ControllerOperatingBothYellowReachable::system",
+            "oxsts": "ControllerOperatingBothYellowReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingBothRedReachable",
+            "oxsts": "ControllerOperatingBothRedReachable"
+        },
+        {
+            "sysml": "ControllerOperatingBothRedReachable::system",
+            "oxsts": "ControllerOperatingBothRedReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnAReachable",
+            "oxsts": "ControllerOperatingTrafficOnAReachable"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnAReachable::system",
+            "oxsts": "ControllerOperatingTrafficOnAReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingStoppingAReachable",
+            "oxsts": "ControllerOperatingStoppingAReachable"
+        },
+        {
+            "sysml": "ControllerOperatingStoppingAReachable::system",
+            "oxsts": "ControllerOperatingStoppingAReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnBReachable",
+            "oxsts": "ControllerOperatingTrafficOnBReachable"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnBReachable::system",
+            "oxsts": "ControllerOperatingTrafficOnBReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingStoppingBReachable",
+            "oxsts": "ControllerOperatingStoppingBReachable"
+        },
+        {
+            "sysml": "ControllerOperatingStoppingBReachable::system",
+            "oxsts": "ControllerOperatingStoppingBReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerInterruptedReachable",
+            "oxsts": "ControllerInterruptedReachable"
+        },
+        {
+            "sysml": "ControllerInterruptedReachable::system",
+            "oxsts": "ControllerInterruptedReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerInterruptedUnreachableViolated",
+            "oxsts": "ControllerInterruptedUnreachableViolated"
+        },
+        {
+            "sysml": "ControllerInterruptedUnreachableViolated::system",
+            "oxsts": "ControllerInterruptedUnreachableViolated.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalReachable",
+            "oxsts": "TrafficLightABehaviorNormalReachable"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalReachable::system",
+            "oxsts": "TrafficLightABehaviorNormalReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalYellowReachable",
+            "oxsts": "TrafficLightABehaviorNormalYellowReachable"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalYellowReachable::system",
+            "oxsts": "TrafficLightABehaviorNormalYellowReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalRedReachable",
+            "oxsts": "TrafficLightABehaviorNormalRedReachable"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalRedReachable::system",
+            "oxsts": "TrafficLightABehaviorNormalRedReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalGreenReachable",
+            "oxsts": "TrafficLightABehaviorNormalGreenReachable"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalGreenReachable::system",
+            "oxsts": "TrafficLightABehaviorNormalGreenReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalGreenUnreachableViolated",
+            "oxsts": "TrafficLightABehaviorNormalGreenUnreachableViolated"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalGreenUnreachableViolated::system",
+            "oxsts": "TrafficLightABehaviorNormalGreenUnreachableViolated.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedReachable",
+            "oxsts": "TrafficLightABehaviorInterruptedReachable"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedReachable::system",
+            "oxsts": "TrafficLightABehaviorInterruptedReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedYellowReachable",
+            "oxsts": "TrafficLightABehaviorInterruptedYellowReachable"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedYellowReachable::system",
+            "oxsts": "TrafficLightABehaviorInterruptedYellowReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedBlackReachable",
+            "oxsts": "TrafficLightABehaviorInterruptedBlackReachable"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedBlackReachable::system",
+            "oxsts": "TrafficLightABehaviorInterruptedBlackReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalReachable",
+            "oxsts": "TrafficLightBBehaviorNormalReachable"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalReachable::system",
+            "oxsts": "TrafficLightBBehaviorNormalReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalYellowReachable",
+            "oxsts": "TrafficLightBBehaviorNormalYellowReachable"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalYellowReachable::system",
+            "oxsts": "TrafficLightBBehaviorNormalYellowReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalRedReachable",
+            "oxsts": "TrafficLightBBehaviorNormalRedReachable"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalRedReachable::system",
+            "oxsts": "TrafficLightBBehaviorNormalRedReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalGreenReachable",
+            "oxsts": "TrafficLightBBehaviorNormalGreenReachable"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalGreenReachable::system",
+            "oxsts": "TrafficLightBBehaviorNormalGreenReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedReachable",
+            "oxsts": "TrafficLightBBehaviorInterruptedReachable"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedReachable::system",
+            "oxsts": "TrafficLightBBehaviorInterruptedReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedYellowReachable",
+            "oxsts": "TrafficLightBBehaviorInterruptedYellowReachable"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedYellowReachable::system",
+            "oxsts": "TrafficLightBBehaviorInterruptedYellowReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedBlackReachable",
+            "oxsts": "TrafficLightBBehaviorInterruptedBlackReachable"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedBlackReachable::system",
+            "oxsts": "TrafficLightBBehaviorInterruptedBlackReachable.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableRedRed",
+            "oxsts": "ReachableRedRed"
+        },
+        {
+            "sysml": "ReachableRedRed::system",
+            "oxsts": "ReachableRedRed.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableRedGreen",
+            "oxsts": "ReachableRedGreen"
+        },
+        {
+            "sysml": "ReachableRedGreen::system",
+            "oxsts": "ReachableRedGreen.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "UnreachableRedGreenViolated",
+            "oxsts": "UnreachableRedGreenViolated"
+        },
+        {
+            "sysml": "UnreachableRedGreenViolated::system",
+            "oxsts": "UnreachableRedGreenViolated.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableRedYellow",
+            "oxsts": "ReachableRedYellow"
+        },
+        {
+            "sysml": "ReachableRedYellow::system",
+            "oxsts": "ReachableRedYellow.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableGreenRed",
+            "oxsts": "ReachableGreenRed"
+        },
+        {
+            "sysml": "ReachableGreenRed::system",
+            "oxsts": "ReachableGreenRed.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "UnreachableGreenGreen",
+            "oxsts": "UnreachableGreenGreen"
+        },
+        {
+            "sysml": "UnreachableGreenGreen::system",
+            "oxsts": "UnreachableGreenGreen.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "UnreachableGreenYellow",
+            "oxsts": "UnreachableGreenYellow"
+        },
+        {
+            "sysml": "UnreachableGreenYellow::system",
+            "oxsts": "UnreachableGreenYellow.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableYellowRed",
+            "oxsts": "ReachableYellowRed"
+        },
+        {
+            "sysml": "ReachableYellowRed::system",
+            "oxsts": "ReachableYellowRed.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "UnreachableYellowGreen",
+            "oxsts": "UnreachableYellowGreen"
+        },
+        {
+            "sysml": "UnreachableYellowGreen::system",
+            "oxsts": "UnreachableYellowGreen.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableYellowYellow",
+            "oxsts": "ReachableYellowYellow"
+        },
+        {
+            "sysml": "ReachableYellowYellow::system",
+            "oxsts": "ReachableYellowYellow.system",
+            "type": "CrossroadSystem"
+        }
+    ]
+}

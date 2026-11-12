@@ -29,7 +29,7 @@ import {
     KerMLLanguageMetaData,
     mapSysMLNamespaceToSemantifyr,
     mapSemantifyrTraceToSysML,
-    SemantifyrTrace,
+    semantifyrConstructTable,
     SysMLBuildOptions,
     SysMLSharedServices,
 } from "syside-languageserver";
@@ -205,6 +205,21 @@ async function writeOutput(outputFile: string, content: string): Promise<void> {
     await fsp.writeFile(outputFile, content);
 }
 
+function nameMapPath(outputFile: string): string {
+    return outputFile.replace(/\.oxsts$/, "") + ".names.json";
+}
+
+function printDiagnostics(fileName: string, diagnostics: Diagnostic[]): void {
+    for (const diagnostic of diagnostics) {
+        const kind = diagnostic.severity === 1 ? "error" : "warning";
+        console.error(
+            (diagnostic.severity === 1 ? chalk.red : chalk.yellow)(
+                `${fileName}:${diagnostic.range.start.line + 1}:${diagnostic.range.start.character + 1}: ${kind}: ${diagnostic.message}`
+            )
+        );
+    }
+}
+
 function defaultOutput(fileName: string): string {
     return path.join(
         path.dirname(fileName),
@@ -240,19 +255,17 @@ async function compileModels(stdlibArgument: string, models: [string, string][])
                 continue;
             }
             const mapping = mapSysMLNamespaceToSemantifyr(rootNode);
-            if (mapping.oxsts === undefined) {
-                console.error(chalk.red(`Cannot translate ${fileName}:`));
-                for (const diagnostic of mapping.diagnostics) {
-                    console.error(
-                        chalk.red(
-                            `  line ${diagnostic.range.start.line + 1}: ${diagnostic.message}`
-                        )
-                    );
-                }
+            printDiagnostics(fileName, mapping.diagnostics);
+            if (mapping.oxsts === undefined || mapping.nameMap === undefined) {
+                console.error(chalk.red(`Cannot translate ${fileName}`));
                 failed = true;
                 continue;
             }
             await writeOutput(outputFile, mapping.oxsts);
+            await writeOutput(
+                nameMapPath(outputFile),
+                JSON.stringify(mapping.nameMap, undefined, 4) + "\n"
+            );
             console.log(chalk.green(`Compiled ${fileName} -> ${outputFile}`));
         }
     }
@@ -294,17 +307,29 @@ export const validateAction = async (fileName: string, stdlibPath: string): Prom
 export const traceAction = async (
     fileName: string,
     stdlibPath: string,
+    witnessFile: string,
     traceFile: string,
+    nameMapFile: string,
     caseName: string,
     options: OutputOptions
 ): Promise<void> => {
-    if (!fs.existsSync(traceFile)) {
-        console.error(chalk.red(`Trace file ${traceFile} doesn't exist.`));
-        process.exit(1);
+    for (const file of [witnessFile, traceFile, nameMapFile]) {
+        if (!fs.existsSync(file)) {
+            console.error(chalk.red(`File ${file} doesn't exist.`));
+            process.exit(1);
+        }
     }
-    const trace = JSON.parse(await fsp.readFile(traceFile, "utf-8")) as SemantifyrTrace;
+    const read = async (file: string): Promise<unknown> => {
+        return JSON.parse(await fsp.readFile(file, "utf-8"));
+    };
+    const parameters = {
+        caseName,
+        witness: await read(witnessFile),
+        trace: await read(traceFile),
+        nameMap: await read(nameMapFile),
+    };
     const { model, shared } = await loadModel(fileName, stdlibPath);
-    const sysmlTrace = mapSemantifyrTraceToSysML(model, trace, caseName);
+    const sysmlTrace = mapSemantifyrTraceToSysML(model, parameters);
 
     const outputFile =
         options.output ??
@@ -319,4 +344,12 @@ export const traceAction = async (
 
     await writeOutput(outputFile, sysmlTrace);
     console.log(chalk.green(`Generated ${traceFile} -> ${outputFile}`));
+};
+
+export const constructsAction = async (options: OutputOptions): Promise<void> => {
+    if (options.output === undefined) {
+        process.stdout.write(semantifyrConstructTable());
+        return;
+    }
+    await writeOutput(options.output, semantifyrConstructTable());
 };

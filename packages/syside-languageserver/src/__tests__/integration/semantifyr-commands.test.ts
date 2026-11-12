@@ -119,26 +119,33 @@ describe("Semantifyr commands over the LSP connection", () => {
         );
     }, 120_000);
 
-    it("returns the OXSTS of the document as text", async () => {
+    it("returns the OXSTS of the document and its name map", async () => {
         const mapping = await execute<SemantifyrMapping>("syside.semantifyr.sysml.oxsts", uri);
 
         expect(mapping.diagnostics).toEqual([]);
         expect(mapping.oxsts).toContain("class ControllerOperatingReachable");
+        expect(mapping.nameMap?.entries).toContainEqual({
+            sysml: "ControllerOperatingReachable",
+            oxsts: "ControllerOperatingReachable",
+        });
     }, 120_000);
 
-    it("returns the SysML trace model of a named case", async () => {
-        const trace = JSON.parse(
-            await fs.readFile(path.join(modelsRoot, "etc", "crossroads-green.trace.json"), "utf-8")
-        );
+    it("returns the SysML trace model of a named case from its witness, trace and name map", async () => {
+        const mapping = await execute<SemantifyrMapping>("syside.semantifyr.sysml.oxsts", uri);
+        const read = async (name: string): Promise<unknown> => {
+            return JSON.parse(await fs.readFile(path.join(modelsRoot, "etc", name), "utf-8"));
+        };
         const caseName = "TrafficLightABehaviorNormalGreenUnreachableViolated";
 
         const model = await execute<string>("syside.semantifyr.sysml.trace", {
             uri,
             caseName,
-            trace,
+            witness: await read("crossroads-green.witness.json"),
+            trace: await read("crossroads-green.trace.json"),
+            nameMap: mapping.nameMap,
         });
 
-        expect(model).toContain(`part def ${caseName}Trace`);
+        expect(model).toContain(`package ${caseName}Trace {`);
     }, 120_000);
 
     it("sees an edit made just before the command", async () => {

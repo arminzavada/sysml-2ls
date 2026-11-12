@@ -1,25 +1,25 @@
-import { ast } from "../../..";
+import { AstUtils } from "langium";
+import type { Range } from "vscode-languageserver";
+import { isVerificationCaseDefinition, type Namespace } from "#generated/ast";
+import { SemantifyrModelMapper, type SemantifyrMapping } from "./SemantifyrModelMapper";
+import { SemantifyrTraceGenerator } from "./SemantifyrTraceGenerator";
+import { checkTraceInput, type SemantifyrTraceInput } from "./SemantifyrTraceInput";
 
-import type { Diagnostic, Range } from "vscode-languageserver";
-import { isVerificationCaseDefinition } from "#generated/ast";
-import { createSemantifyrMapperServices } from "./SemantifyrMapperModule";
-import { SemantifyrTrace, SemantifyrTraceGenerator } from "./SemantifyrTraceGenerator";
+export type { SemantifyrMapping } from "./SemantifyrModelMapper";
+export type { SemantifyrNameMap } from "./SemantifyrNameMap";
+export type {
+    SemantifyrTrace,
+    SemantifyrTraceInput,
+    SemantifyrWitness,
+} from "./SemantifyrTraceInput";
+export { SemantifyrTraceError } from "./SemantifyrTraceInput";
+export { semantifyrConstructTable } from "./SemantifyrConstructs";
 
-export type { SemantifyrTrace } from "./SemantifyrTraceGenerator";
-
-export interface SemantifyrMapping {
-    oxsts?: string;
-    diagnostics: Diagnostic[];
-}
-
-export function mapSysMLNamespaceToSemantifyr(model: ast.Namespace): SemantifyrMapping {
-    const services = createSemantifyrMapperServices();
-    const oxsts = services.rootNamespaceMapper.mapRootNamespace(model);
-    const diagnostics = services.unsupportedConstructs.diagnostics;
-    if (diagnostics.length > 0) {
-        return { diagnostics };
-    }
-    return { oxsts, diagnostics };
+export function mapSysMLNamespaceToSemantifyr(model: Namespace): SemantifyrMapping {
+    return new SemantifyrModelMapper(
+        model,
+        AstUtils.getDocument(model).textDocument.getText()
+    ).map();
 }
 
 export interface SemantifyrVerificationCase {
@@ -27,9 +27,7 @@ export interface SemantifyrVerificationCase {
     range: Range;
 }
 
-export function findSemantifyrVerificationCases(
-    model: ast.Namespace
-): SemantifyrVerificationCase[] {
+export function findSemantifyrVerificationCases(model: Namespace): SemantifyrVerificationCase[] {
     return model.children.flatMap((membership) => {
         const element = membership.target;
         if (!isVerificationCaseDefinition(element) || !element.declaredName || !element.$cstNode) {
@@ -44,12 +42,18 @@ export function findSemantifyrVerificationCases(
     });
 }
 
+export interface SemantifyrTraceParameters {
+    caseName: string;
+    witness: unknown;
+    trace: unknown;
+    nameMap: unknown;
+}
+
+// the input comes from JSON, so its shape is checked before it is read
 export function mapSemantifyrTraceToSysML(
-    model: ast.Namespace,
-    trace: SemantifyrTrace,
-    caseName: string
+    model: Namespace,
+    parameters: SemantifyrTraceParameters
 ): string {
-    const services = createSemantifyrMapperServices();
-    services.rootNamespaceMapper.mapRootNamespace(model);
-    return new SemantifyrTraceGenerator(services, caseName).generate(trace);
+    checkTraceInput(parameters);
+    return new SemantifyrTraceGenerator(model, parameters as SemantifyrTraceInput).generate();
 }

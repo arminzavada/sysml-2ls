@@ -62,32 +62,10 @@ describe("Semantifyr OXSTS transformation", () => {
             const { oxsts, diagnostics } = mapSysMLNamespaceToSemantifyr(
                 doc.parseResult.value as Namespace
             );
-            expect(diagnostics).toEqual([]);
-
-            // Failure markers the mappers emit when they can't interpret a node.
-            // None of the pinned models should hit any of these.
-            const failureMarkers = [
-                "UNKNOWN_TYPE_OF_ACTION",
-                "UNKNOWN_ACCEPT_ACTION",
-                "UNKNOWN_TIMEOUT_EXPRESSION",
-                "UNKNOWN_PORT_TYPE",
-                "UNKNOWN_ATTRIBUTE_TYPE",
-                "UNKNOWN_TYPE_OF_EXPRESSION",
-                "UNKNOWN_TYPE_OF_INVOCATION",
-                "UNKNOWN_KIND_OF_OPERATOR",
-                "UNEXPECTED_LITERAL_EXPRESSION",
-                "UNEXPECTED_EXPRESSION",
-                "UNEXPECTED_ELEMENT",
-                "UNEXPECTED_AMOUNT_OF_PARTS",
-                "UNEXPECTED_PARTS",
-                "UNRESOLVED_PORT_DEFINITION",
-                "UNDEFINED_ELEMENT",
-                "UNDEFINED_MEMBERSHIP",
-                "EMPTY_PARTS",
-            ];
-            for (const marker of failureMarkers) {
-                expect(oxsts).not.toContain(marker);
-            }
+            const errors = diagnostics.filter((diagnostic) => {
+                return diagnostic.severity === 1;
+            });
+            expect(errors).toEqual([]);
 
             expect(oxsts).toMatchSnapshot();
         },

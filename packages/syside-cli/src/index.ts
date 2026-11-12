@@ -21,6 +21,7 @@ import {
     SysMLExtensions,
     compileAction,
     compileBatchAction,
+    constructsAction,
     traceAction,
     validateAction,
 } from "./semantifyr-util";
@@ -53,7 +54,10 @@ program
             .choices(["none", "standard", "local"])
             .default("standard")
     )
-    .option("-o, --output <file>", "Output file path (default: input file with .oxsts extension)")
+    .option(
+        "-o, --output <file>",
+        "Output file path (default: input file with .oxsts extension); the name map is written beside it with the .names.json extension"
+    )
     .description("Compile SysML model to Semantifyr (OXSTS) format")
     .action(compileAction);
 
@@ -80,11 +84,21 @@ program
         `The model the trace was verified on. possible file extensions: ${SysMLExtensions.join(", ")}`
     )
     .argument("<standard library path>", `The path to the standard library root directory`)
+    .argument("<witness file>", "The witness.json Semantifyr emitted for the verification case")
     .argument("<trace file>", "The trace.json Semantifyr emitted for the verification case")
+    .argument("<name map file>", "The names.json the compile command wrote beside the OXSTS")
     .argument("<case name>", "The verification case the trace belongs to")
     .option("-o, --output <file>", "Output file path (default: trace file with .sysml extension)")
     .description("Generate the SysML trace model of a Semantifyr (OXSTS) trace")
     .action(traceAction);
+
+program
+    .command("constructs")
+    .option("-o, --output <file>", "Output file path (default: standard output)")
+    .description(
+        "Print the SysML constructs the translation supports, warns about or refuses, as a table"
+    )
+    .action(constructsAction);
 
 program
     .command("validate")
