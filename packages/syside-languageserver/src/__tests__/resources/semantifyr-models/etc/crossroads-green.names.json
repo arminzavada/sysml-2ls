@@ -425,6 +425,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "ControllerOperatingReachable::#1::#0",
+            "oxsts": "ControllerOperatingReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerOperatingReachable::#1::#0::#0",
+            "oxsts": "ControllerOperatingReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ControllerOperatingBothYellowReachable",
             "oxsts": "ControllerOperatingBothYellowReachable"
         },
@@ -432,6 +440,14 @@
             "sysml": "ControllerOperatingBothYellowReachable::system",
             "oxsts": "ControllerOperatingBothYellowReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingBothYellowReachable::#1::#0",
+            "oxsts": "ControllerOperatingBothYellowReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerOperatingBothYellowReachable::#1::#0::#0",
+            "oxsts": "ControllerOperatingBothYellowReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "ControllerOperatingBothRedReachable",
@@ -443,6 +459,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "ControllerOperatingBothRedReachable::#1::#0",
+            "oxsts": "ControllerOperatingBothRedReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerOperatingBothRedReachable::#1::#0::#0",
+            "oxsts": "ControllerOperatingBothRedReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ControllerOperatingTrafficOnAReachable",
             "oxsts": "ControllerOperatingTrafficOnAReachable"
         },
@@ -450,6 +474,14 @@
             "sysml": "ControllerOperatingTrafficOnAReachable::system",
             "oxsts": "ControllerOperatingTrafficOnAReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnAReachable::#1::#0",
+            "oxsts": "ControllerOperatingTrafficOnAReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnAReachable::#1::#0::#0",
+            "oxsts": "ControllerOperatingTrafficOnAReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "ControllerOperatingStoppingAReachable",
@@ -461,6 +493,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "ControllerOperatingStoppingAReachable::#1::#0",
+            "oxsts": "ControllerOperatingStoppingAReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerOperatingStoppingAReachable::#1::#0::#0",
+            "oxsts": "ControllerOperatingStoppingAReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ControllerOperatingTrafficOnBReachable",
             "oxsts": "ControllerOperatingTrafficOnBReachable"
         },
@@ -468,6 +508,14 @@
             "sysml": "ControllerOperatingTrafficOnBReachable::system",
             "oxsts": "ControllerOperatingTrafficOnBReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnBReachable::#1::#0",
+            "oxsts": "ControllerOperatingTrafficOnBReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerOperatingTrafficOnBReachable::#1::#0::#0",
+            "oxsts": "ControllerOperatingTrafficOnBReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "ControllerOperatingStoppingBReachable",
@@ -479,6 +527,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "ControllerOperatingStoppingBReachable::#1::#0",
+            "oxsts": "ControllerOperatingStoppingBReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerOperatingStoppingBReachable::#1::#0::#0",
+            "oxsts": "ControllerOperatingStoppingBReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ControllerInterruptedReachable",
             "oxsts": "ControllerInterruptedReachable"
         },
@@ -486,6 +542,14 @@
             "sysml": "ControllerInterruptedReachable::system",
             "oxsts": "ControllerInterruptedReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ControllerInterruptedReachable::#1::#0",
+            "oxsts": "ControllerInterruptedReachable.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerInterruptedReachable::#1::#0::#0",
+            "oxsts": "ControllerInterruptedReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "ControllerInterruptedUnreachableViolated",
@@ -497,6 +561,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "ControllerInterruptedUnreachableViolated::#1::#0",
+            "oxsts": "ControllerInterruptedUnreachableViolated.objective.requirement1"
+        },
+        {
+            "sysml": "ControllerInterruptedUnreachableViolated::#1::#0::#0",
+            "oxsts": "ControllerInterruptedUnreachableViolated.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightABehaviorNormalReachable",
             "oxsts": "TrafficLightABehaviorNormalReachable"
         },
@@ -504,6 +576,14 @@
             "sysml": "TrafficLightABehaviorNormalReachable::system",
             "oxsts": "TrafficLightABehaviorNormalReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalReachable::#1::#0",
+            "oxsts": "TrafficLightABehaviorNormalReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalReachable::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorNormalReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "TrafficLightABehaviorNormalYellowReachable",
@@ -515,6 +595,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "TrafficLightABehaviorNormalYellowReachable::#1::#0",
+            "oxsts": "TrafficLightABehaviorNormalYellowReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalYellowReachable::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorNormalYellowReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightABehaviorNormalRedReachable",
             "oxsts": "TrafficLightABehaviorNormalRedReachable"
         },
@@ -522,6 +610,14 @@
             "sysml": "TrafficLightABehaviorNormalRedReachable::system",
             "oxsts": "TrafficLightABehaviorNormalRedReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalRedReachable::#1::#0",
+            "oxsts": "TrafficLightABehaviorNormalRedReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalRedReachable::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorNormalRedReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "TrafficLightABehaviorNormalGreenReachable",
@@ -533,6 +629,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "TrafficLightABehaviorNormalGreenReachable::#1::#0",
+            "oxsts": "TrafficLightABehaviorNormalGreenReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalGreenReachable::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorNormalGreenReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightABehaviorNormalGreenUnreachableViolated",
             "oxsts": "TrafficLightABehaviorNormalGreenUnreachableViolated"
         },
@@ -540,6 +644,14 @@
             "sysml": "TrafficLightABehaviorNormalGreenUnreachableViolated::system",
             "oxsts": "TrafficLightABehaviorNormalGreenUnreachableViolated.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalGreenUnreachableViolated::#1::#0",
+            "oxsts": "TrafficLightABehaviorNormalGreenUnreachableViolated.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorNormalGreenUnreachableViolated::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorNormalGreenUnreachableViolated.objective.requirement1.constraint1"
         },
         {
             "sysml": "TrafficLightABehaviorInterruptedReachable",
@@ -551,6 +663,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "TrafficLightABehaviorInterruptedReachable::#1::#0",
+            "oxsts": "TrafficLightABehaviorInterruptedReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedReachable::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorInterruptedReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightABehaviorInterruptedYellowReachable",
             "oxsts": "TrafficLightABehaviorInterruptedYellowReachable"
         },
@@ -558,6 +678,14 @@
             "sysml": "TrafficLightABehaviorInterruptedYellowReachable::system",
             "oxsts": "TrafficLightABehaviorInterruptedYellowReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedYellowReachable::#1::#0",
+            "oxsts": "TrafficLightABehaviorInterruptedYellowReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedYellowReachable::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorInterruptedYellowReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "TrafficLightABehaviorInterruptedBlackReachable",
@@ -569,6 +697,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "TrafficLightABehaviorInterruptedBlackReachable::#1::#0",
+            "oxsts": "TrafficLightABehaviorInterruptedBlackReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightABehaviorInterruptedBlackReachable::#1::#0::#0",
+            "oxsts": "TrafficLightABehaviorInterruptedBlackReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightBBehaviorNormalReachable",
             "oxsts": "TrafficLightBBehaviorNormalReachable"
         },
@@ -576,6 +712,14 @@
             "sysml": "TrafficLightBBehaviorNormalReachable::system",
             "oxsts": "TrafficLightBBehaviorNormalReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalReachable::#1::#0",
+            "oxsts": "TrafficLightBBehaviorNormalReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalReachable::#1::#0::#0",
+            "oxsts": "TrafficLightBBehaviorNormalReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "TrafficLightBBehaviorNormalYellowReachable",
@@ -587,6 +731,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "TrafficLightBBehaviorNormalYellowReachable::#1::#0",
+            "oxsts": "TrafficLightBBehaviorNormalYellowReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalYellowReachable::#1::#0::#0",
+            "oxsts": "TrafficLightBBehaviorNormalYellowReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightBBehaviorNormalRedReachable",
             "oxsts": "TrafficLightBBehaviorNormalRedReachable"
         },
@@ -594,6 +746,14 @@
             "sysml": "TrafficLightBBehaviorNormalRedReachable::system",
             "oxsts": "TrafficLightBBehaviorNormalRedReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalRedReachable::#1::#0",
+            "oxsts": "TrafficLightBBehaviorNormalRedReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalRedReachable::#1::#0::#0",
+            "oxsts": "TrafficLightBBehaviorNormalRedReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "TrafficLightBBehaviorNormalGreenReachable",
@@ -605,6 +765,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "TrafficLightBBehaviorNormalGreenReachable::#1::#0",
+            "oxsts": "TrafficLightBBehaviorNormalGreenReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorNormalGreenReachable::#1::#0::#0",
+            "oxsts": "TrafficLightBBehaviorNormalGreenReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightBBehaviorInterruptedReachable",
             "oxsts": "TrafficLightBBehaviorInterruptedReachable"
         },
@@ -612,6 +780,14 @@
             "sysml": "TrafficLightBBehaviorInterruptedReachable::system",
             "oxsts": "TrafficLightBBehaviorInterruptedReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedReachable::#1::#0",
+            "oxsts": "TrafficLightBBehaviorInterruptedReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedReachable::#1::#0::#0",
+            "oxsts": "TrafficLightBBehaviorInterruptedReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "TrafficLightBBehaviorInterruptedYellowReachable",
@@ -623,6 +799,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "TrafficLightBBehaviorInterruptedYellowReachable::#1::#0",
+            "oxsts": "TrafficLightBBehaviorInterruptedYellowReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedYellowReachable::#1::#0::#0",
+            "oxsts": "TrafficLightBBehaviorInterruptedYellowReachable.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "TrafficLightBBehaviorInterruptedBlackReachable",
             "oxsts": "TrafficLightBBehaviorInterruptedBlackReachable"
         },
@@ -630,6 +814,14 @@
             "sysml": "TrafficLightBBehaviorInterruptedBlackReachable::system",
             "oxsts": "TrafficLightBBehaviorInterruptedBlackReachable.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedBlackReachable::#1::#0",
+            "oxsts": "TrafficLightBBehaviorInterruptedBlackReachable.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightBBehaviorInterruptedBlackReachable::#1::#0::#0",
+            "oxsts": "TrafficLightBBehaviorInterruptedBlackReachable.objective.requirement1.constraint1"
         },
         {
             "sysml": "ReachableRedRed",
@@ -641,6 +833,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "ReachableRedRed::#1::#0",
+            "oxsts": "ReachableRedRed.objective.requirement1"
+        },
+        {
+            "sysml": "ReachableRedRed::#1::#0::#0",
+            "oxsts": "ReachableRedRed.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ReachableRedGreen",
             "oxsts": "ReachableRedGreen"
         },
@@ -648,6 +848,14 @@
             "sysml": "ReachableRedGreen::system",
             "oxsts": "ReachableRedGreen.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableRedGreen::#1::#0",
+            "oxsts": "ReachableRedGreen.objective.requirement1"
+        },
+        {
+            "sysml": "ReachableRedGreen::#1::#0::#0",
+            "oxsts": "ReachableRedGreen.objective.requirement1.constraint1"
         },
         {
             "sysml": "UnreachableRedGreenViolated",
@@ -659,6 +867,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "UnreachableRedGreenViolated::#1::#0",
+            "oxsts": "UnreachableRedGreenViolated.objective.requirement1"
+        },
+        {
+            "sysml": "UnreachableRedGreenViolated::#1::#0::#0",
+            "oxsts": "UnreachableRedGreenViolated.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ReachableRedYellow",
             "oxsts": "ReachableRedYellow"
         },
@@ -666,6 +882,14 @@
             "sysml": "ReachableRedYellow::system",
             "oxsts": "ReachableRedYellow.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableRedYellow::#1::#0",
+            "oxsts": "ReachableRedYellow.objective.requirement1"
+        },
+        {
+            "sysml": "ReachableRedYellow::#1::#0::#0",
+            "oxsts": "ReachableRedYellow.objective.requirement1.constraint1"
         },
         {
             "sysml": "ReachableGreenRed",
@@ -677,6 +901,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "ReachableGreenRed::#1::#0",
+            "oxsts": "ReachableGreenRed.objective.requirement1"
+        },
+        {
+            "sysml": "ReachableGreenRed::#1::#0::#0",
+            "oxsts": "ReachableGreenRed.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "UnreachableGreenGreen",
             "oxsts": "UnreachableGreenGreen"
         },
@@ -684,6 +916,14 @@
             "sysml": "UnreachableGreenGreen::system",
             "oxsts": "UnreachableGreenGreen.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "UnreachableGreenGreen::#1::#0",
+            "oxsts": "UnreachableGreenGreen.objective.requirement1"
+        },
+        {
+            "sysml": "UnreachableGreenGreen::#1::#0::#0",
+            "oxsts": "UnreachableGreenGreen.objective.requirement1.constraint1"
         },
         {
             "sysml": "UnreachableGreenYellow",
@@ -695,6 +935,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "UnreachableGreenYellow::#1::#0",
+            "oxsts": "UnreachableGreenYellow.objective.requirement1"
+        },
+        {
+            "sysml": "UnreachableGreenYellow::#1::#0::#0",
+            "oxsts": "UnreachableGreenYellow.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ReachableYellowRed",
             "oxsts": "ReachableYellowRed"
         },
@@ -702,6 +950,14 @@
             "sysml": "ReachableYellowRed::system",
             "oxsts": "ReachableYellowRed.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableYellowRed::#1::#0",
+            "oxsts": "ReachableYellowRed.objective.requirement1"
+        },
+        {
+            "sysml": "ReachableYellowRed::#1::#0::#0",
+            "oxsts": "ReachableYellowRed.objective.requirement1.constraint1"
         },
         {
             "sysml": "UnreachableYellowGreen",
@@ -713,6 +969,14 @@
             "type": "CrossroadSystem"
         },
         {
+            "sysml": "UnreachableYellowGreen::#1::#0",
+            "oxsts": "UnreachableYellowGreen.objective.requirement1"
+        },
+        {
+            "sysml": "UnreachableYellowGreen::#1::#0::#0",
+            "oxsts": "UnreachableYellowGreen.objective.requirement1.constraint1"
+        },
+        {
             "sysml": "ReachableYellowYellow",
             "oxsts": "ReachableYellowYellow"
         },
@@ -720,6 +984,14 @@
             "sysml": "ReachableYellowYellow::system",
             "oxsts": "ReachableYellowYellow.system",
             "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "ReachableYellowYellow::#1::#0",
+            "oxsts": "ReachableYellowYellow.objective.requirement1"
+        },
+        {
+            "sysml": "ReachableYellowYellow::#1::#0::#0",
+            "oxsts": "ReachableYellowYellow.objective.requirement1.constraint1"
         }
     ]
 }

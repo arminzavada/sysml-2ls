@@ -580,12 +580,12 @@ const cases: ConstructCase[] = [
     {
         construct: "objectiveRequire",
         model: `${machine("")}\nverification def Check { subject machine : Machine; objective { require constraint { mustAlways(machine.count >= 0) } } }`,
-        emits: "redefine contains requiredConstraint: MustAlways",
+        emits: "contains constraint1: MustAlways subsets requiredConstraints",
     },
     {
         construct: "verify",
         model: checked("eventually(machine.count > 0)"),
-        emits: "redefine contains verifyRequirement: Constraint[1]",
+        emits: "contains requirement1: Constraint subsets verifiedRequirements",
     },
     {
         construct: "verifyReference",
@@ -625,7 +625,7 @@ const cases: ConstructCase[] = [
     {
         construct: "untemporal",
         model: checked("machine.count >= 0"),
-        emits: "redefine contains requiredConstraint: MustAlways",
+        emits: "contains constraint1: MustAlways subsets requiredConstraints",
     },
     {
         construct: "temporalMixed",
@@ -668,6 +668,16 @@ const cases: ConstructCase[] = [
             "entry action { action setup assign count := 1; action reset assign count := 0; if count > 0 then setup; }"
         ),
         located: "if count > 0 then setup;",
+    },
+    {
+        construct: "initialTransition",
+        model: `${header}\npart def Machine { attribute count : Integer := 0; exhibit state Behaviour { entry action initialize { assign count := 1; } then Idle; state Idle; } }`,
+        emits: "redefine contains entryAction: CompositeAction",
+    },
+    {
+        construct: "initialTransition",
+        model: `${header}\npart def Machine { attribute count : Integer := 0; exhibit state Behaviour { entry assign count := 1; then Idle; state Idle; } }`,
+        emits: "contains initial1: Transition subsets transitions",
     },
 ];
 

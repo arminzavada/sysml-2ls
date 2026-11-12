@@ -295,8 +295,8 @@ class EngineStateMachine : Part {
 class OffReachable : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Off
                 }
@@ -309,8 +309,8 @@ class OffReachable : VerificationCaseDefinition {
 class NominalReachable : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Nominal
                 }
@@ -323,8 +323,8 @@ class NominalReachable : VerificationCaseDefinition {
 class NominalUnreachableViolated : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Nominal
@@ -339,8 +339,8 @@ class NominalUnreachableViolated : VerificationCaseDefinition {
 class JFS_FailureReachable : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.JFS_Failure
                 }
@@ -353,8 +353,8 @@ class JFS_FailureReachable : VerificationCaseDefinition {
 class EngineDownReachable : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.EngineDown
                 }
@@ -367,8 +367,8 @@ class EngineDownReachable : VerificationCaseDefinition {
 class EngineDownUnreachableViolated : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.EngineDown
@@ -383,8 +383,8 @@ class EngineDownUnreachableViolated : VerificationCaseDefinition {
 class MaintenanceUnreachable : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Maintenance
@@ -399,8 +399,8 @@ class MaintenanceUnreachable : VerificationCaseDefinition {
 class NominalAndIdleNeverSimultaneous : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -420,8 +420,8 @@ class NominalAndIdleNeverSimultaneous : VerificationCaseDefinition {
 class NominalAndIdleSimultaneousViolated : VerificationCaseDefinition {
     contains system: EngineStateMachine[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Nominal
@@ -889,8 +889,8 @@ class AutonomousVehicle : Part {
 class HumanModeReachable : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.HumanMode
                 }
@@ -903,8 +903,8 @@ class HumanModeReachable : VerificationCaseDefinition {
 class AutonomousModeReachable : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.AutonomousMode
                 }
@@ -917,8 +917,8 @@ class AutonomousModeReachable : VerificationCaseDefinition {
 class CruiseReachable : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.AutonomousMode.AutonomousDriving.HighwayDriving.Cruise
                 }
@@ -931,8 +931,8 @@ class CruiseReachable : VerificationCaseDefinition {
 class IntersectionReachable : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.AutonomousMode.AutonomousDriving.UrbanDriving.Intersection
                 }
@@ -945,8 +945,8 @@ class IntersectionReachable : VerificationCaseDefinition {
 class CollisionAvoidanceActiveReachable : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.AutonomousMode.ObstacleDetection.CollisionAvoidanceActive
                 }
@@ -959,8 +959,8 @@ class CollisionAvoidanceActiveReachable : VerificationCaseDefinition {
 class CollisionAvoidanceActiveUnreachableViolated : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.AutonomousMode.ObstacleDetection.CollisionAvoidanceActive
@@ -975,8 +975,8 @@ class CollisionAvoidanceActiveUnreachableViolated : VerificationCaseDefinition {
 class AvoidFrontendCollisionReachable : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.AutonomousMode.ObstacleDetection.CollisionAvoidanceActive.CollisionAvoidance.Frontend.AvoidFrontendCollision
                 }
@@ -989,8 +989,8 @@ class AvoidFrontendCollisionReachable : VerificationCaseDefinition {
 class DoneReachable : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -1003,8 +1003,8 @@ class DoneReachable : VerificationCaseDefinition {
 class DoneUnreachableViolated : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Done
@@ -1019,8 +1019,8 @@ class DoneUnreachableViolated : VerificationCaseDefinition {
 class HumanModeAndDoneNeverSimultaneous : VerificationCaseDefinition {
     contains system: AutonomousVehicle[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -1466,8 +1466,8 @@ class Mission : Part {
 class StationBehaviorIdleReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.groundStation.Behaviour.Idle
                 }
@@ -1480,8 +1480,8 @@ class StationBehaviorIdleReachable : VerificationCaseDefinition {
 class StationBehaviorOperationReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.groundStation.Behaviour.Operation
                 }
@@ -1494,8 +1494,8 @@ class StationBehaviorOperationReachable : VerificationCaseDefinition {
 class StationBehaviorOperationWaitingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.groundStation.Behaviour.Operation.Waiting
                 }
@@ -1508,8 +1508,8 @@ class StationBehaviorOperationWaitingReachable : VerificationCaseDefinition {
 class SpacecraftBehaviorCommunicationWaitingPingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.WaitingPing
                 }
@@ -1522,8 +1522,8 @@ class SpacecraftBehaviorCommunicationWaitingPingReachable : VerificationCaseDefi
 class SpacecraftBehaviorCommunicationTransmittingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting
                 }
@@ -1536,8 +1536,8 @@ class SpacecraftBehaviorCommunicationTransmittingReachable : VerificationCaseDef
 class SpacecraftBehaviorCommunicationTransmittingSendDataReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.SendData
                 }
@@ -1550,8 +1550,8 @@ class SpacecraftBehaviorCommunicationTransmittingSendDataReachable : Verificatio
 class SpacecraftBehaviorCommunicationTransmittingSendDataSendingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.SendData.Sending
                 }
@@ -1564,8 +1564,8 @@ class SpacecraftBehaviorCommunicationTransmittingSendDataSendingReachable : Veri
 class SpacecraftBehaviorCommunicationTransmittingConsumePowerReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.ConsumePower
                 }
@@ -1578,8 +1578,8 @@ class SpacecraftBehaviorCommunicationTransmittingConsumePowerReachable : Verific
 class SpacecraftBehaviorCommunicationTransmittingConsumePowerConsumingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.ConsumePower.Consuming
                 }
@@ -1592,8 +1592,8 @@ class SpacecraftBehaviorCommunicationTransmittingConsumePowerConsumingReachable 
 class SpacecraftBehaviorBatteryNotRechargingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Battery.NotRecharging
                 }
@@ -1606,8 +1606,8 @@ class SpacecraftBehaviorBatteryNotRechargingReachable : VerificationCaseDefiniti
 class SpacecraftBehaviorBatteryRechargingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Battery.Recharging
                 }
@@ -1620,8 +1620,8 @@ class SpacecraftBehaviorBatteryRechargingReachable : VerificationCaseDefinition 
 class GroundStationReceivedDataCanReach0 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1639,8 +1639,8 @@ class GroundStationReceivedDataCanReach0 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach10 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1658,8 +1658,8 @@ class GroundStationReceivedDataCanReach10 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach20 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1677,8 +1677,8 @@ class GroundStationReceivedDataCanReach20 : VerificationCaseDefinition {
 class GroundStationReceivedDataCannotReach20Violated : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: GreaterThanOrEqualsOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -1698,8 +1698,8 @@ class GroundStationReceivedDataCannotReach20Violated : VerificationCaseDefinitio
 class GroundStationReceivedDataCanReach30 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1717,8 +1717,8 @@ class GroundStationReceivedDataCanReach30 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach40 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1736,8 +1736,8 @@ class GroundStationReceivedDataCanReach40 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach50 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1755,8 +1755,8 @@ class GroundStationReceivedDataCanReach50 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach60 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1774,8 +1774,8 @@ class GroundStationReceivedDataCanReach60 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach70 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1793,8 +1793,8 @@ class GroundStationReceivedDataCanReach70 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach80 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1812,8 +1812,8 @@ class GroundStationReceivedDataCanReach80 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach90 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1831,8 +1831,8 @@ class GroundStationReceivedDataCanReach90 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach100 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -1850,8 +1850,8 @@ class GroundStationReceivedDataCanReach100 : VerificationCaseDefinition {
 class SpacecraftDataCanReach100 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -1869,8 +1869,8 @@ class SpacecraftDataCanReach100 : VerificationCaseDefinition {
 class SpacecraftDataCanReach90 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -1888,8 +1888,8 @@ class SpacecraftDataCanReach90 : VerificationCaseDefinition {
 class SpacecraftDataCanReach80 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -1907,8 +1907,8 @@ class SpacecraftDataCanReach80 : VerificationCaseDefinition {
 class SpacecraftDataCanReach70 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -1926,8 +1926,8 @@ class SpacecraftDataCanReach70 : VerificationCaseDefinition {
 class SpacecraftDataCanReach60 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -1945,8 +1945,8 @@ class SpacecraftDataCanReach60 : VerificationCaseDefinition {
 class SpacecraftDataCannotReach60Violated : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: LessThanOrEqualsOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -1966,8 +1966,8 @@ class SpacecraftDataCannotReach60Violated : VerificationCaseDefinition {
 class SpacecraftDataCanReach50 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -1985,8 +1985,8 @@ class SpacecraftDataCanReach50 : VerificationCaseDefinition {
 class SpacecraftDataCanReach40 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -2004,8 +2004,8 @@ class SpacecraftDataCanReach40 : VerificationCaseDefinition {
 class SpacecraftDataCanReach30 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -2023,8 +2023,8 @@ class SpacecraftDataCanReach30 : VerificationCaseDefinition {
 class SpacecraftDataCanReach20 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -2042,8 +2042,8 @@ class SpacecraftDataCanReach20 : VerificationCaseDefinition {
 class SpacecraftDataCanReach10 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -2061,8 +2061,8 @@ class SpacecraftDataCanReach10 : VerificationCaseDefinition {
 class SpacecraftDataCanReach0 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -2080,8 +2080,8 @@ class SpacecraftDataCanReach0 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove0 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -2099,8 +2099,8 @@ class SpacecraftBatteryAlwaysAbove0 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove10 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -2118,8 +2118,8 @@ class SpacecraftBatteryAlwaysAbove10 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove20 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -2137,8 +2137,8 @@ class SpacecraftBatteryAlwaysAbove20 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove30 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -2156,8 +2156,8 @@ class SpacecraftBatteryAlwaysAbove30 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove40 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -2496,8 +2496,8 @@ class CrossroadSystem : Part {
 class ControllerOperatingReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Operating
                 }
@@ -2510,8 +2510,8 @@ class ControllerOperatingReachable : VerificationCaseDefinition {
 class ControllerOperatingBothYellowReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Operating.BothYellow
                 }
@@ -2524,8 +2524,8 @@ class ControllerOperatingBothYellowReachable : VerificationCaseDefinition {
 class ControllerOperatingBothRedReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Operating.BothRed
                 }
@@ -2538,8 +2538,8 @@ class ControllerOperatingBothRedReachable : VerificationCaseDefinition {
 class ControllerOperatingTrafficOnAReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Operating.TrafficOnA
                 }
@@ -2552,8 +2552,8 @@ class ControllerOperatingTrafficOnAReachable : VerificationCaseDefinition {
 class ControllerOperatingStoppingAReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Operating.StoppingA
                 }
@@ -2566,8 +2566,8 @@ class ControllerOperatingStoppingAReachable : VerificationCaseDefinition {
 class ControllerOperatingTrafficOnBReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Operating.TrafficOnB
                 }
@@ -2580,8 +2580,8 @@ class ControllerOperatingTrafficOnBReachable : VerificationCaseDefinition {
 class ControllerOperatingStoppingBReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Operating.StoppingB
                 }
@@ -2594,8 +2594,8 @@ class ControllerOperatingStoppingBReachable : VerificationCaseDefinition {
 class ControllerInterruptedReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.controller.Behaviour.Interrupted
                 }
@@ -2608,8 +2608,8 @@ class ControllerInterruptedReachable : VerificationCaseDefinition {
 class ControllerInterruptedUnreachableViolated : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.controller.Behaviour.Interrupted
@@ -2624,8 +2624,8 @@ class ControllerInterruptedUnreachableViolated : VerificationCaseDefinition {
 class TrafficLightABehaviorNormalReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal
                 }
@@ -2638,8 +2638,8 @@ class TrafficLightABehaviorNormalReachable : VerificationCaseDefinition {
 class TrafficLightABehaviorNormalYellowReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Yellow
                 }
@@ -2652,8 +2652,8 @@ class TrafficLightABehaviorNormalYellowReachable : VerificationCaseDefinition {
 class TrafficLightABehaviorNormalRedReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
                 }
@@ -2666,8 +2666,8 @@ class TrafficLightABehaviorNormalRedReachable : VerificationCaseDefinition {
 class TrafficLightABehaviorNormalGreenReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Green
                 }
@@ -2680,8 +2680,8 @@ class TrafficLightABehaviorNormalGreenReachable : VerificationCaseDefinition {
 class TrafficLightABehaviorNormalGreenUnreachableViolated : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Green
@@ -2696,8 +2696,8 @@ class TrafficLightABehaviorNormalGreenUnreachableViolated : VerificationCaseDefi
 class TrafficLightABehaviorInterruptedReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightA.Behaviour.Interrupted
                 }
@@ -2710,8 +2710,8 @@ class TrafficLightABehaviorInterruptedReachable : VerificationCaseDefinition {
 class TrafficLightABehaviorInterruptedYellowReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightA.Behaviour.Interrupted.Yellow
                 }
@@ -2724,8 +2724,8 @@ class TrafficLightABehaviorInterruptedYellowReachable : VerificationCaseDefiniti
 class TrafficLightABehaviorInterruptedBlackReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightA.Behaviour.Interrupted.Black
                 }
@@ -2738,8 +2738,8 @@ class TrafficLightABehaviorInterruptedBlackReachable : VerificationCaseDefinitio
 class TrafficLightBBehaviorNormalReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal
                 }
@@ -2752,8 +2752,8 @@ class TrafficLightBBehaviorNormalReachable : VerificationCaseDefinition {
 class TrafficLightBBehaviorNormalYellowReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Yellow
                 }
@@ -2766,8 +2766,8 @@ class TrafficLightBBehaviorNormalYellowReachable : VerificationCaseDefinition {
 class TrafficLightBBehaviorNormalRedReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Red
                 }
@@ -2780,8 +2780,8 @@ class TrafficLightBBehaviorNormalRedReachable : VerificationCaseDefinition {
 class TrafficLightBBehaviorNormalGreenReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightB.Behaviour.Normal.Green
                 }
@@ -2794,8 +2794,8 @@ class TrafficLightBBehaviorNormalGreenReachable : VerificationCaseDefinition {
 class TrafficLightBBehaviorInterruptedReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightB.Behaviour.Interrupted
                 }
@@ -2808,8 +2808,8 @@ class TrafficLightBBehaviorInterruptedReachable : VerificationCaseDefinition {
 class TrafficLightBBehaviorInterruptedYellowReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightB.Behaviour.Interrupted.Yellow
                 }
@@ -2822,8 +2822,8 @@ class TrafficLightBBehaviorInterruptedYellowReachable : VerificationCaseDefiniti
 class TrafficLightBBehaviorInterruptedBlackReachable : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.trafficLightB.Behaviour.Interrupted.Black
                 }
@@ -2836,8 +2836,8 @@ class TrafficLightBBehaviorInterruptedBlackReachable : VerificationCaseDefinitio
 class ReachableRedRed : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
@@ -2855,8 +2855,8 @@ class ReachableRedRed : VerificationCaseDefinition {
 class ReachableRedGreen : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
@@ -2874,8 +2874,8 @@ class ReachableRedGreen : VerificationCaseDefinition {
 class UnreachableRedGreenViolated : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -2895,8 +2895,8 @@ class UnreachableRedGreenViolated : VerificationCaseDefinition {
 class ReachableRedYellow : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Red
@@ -2914,8 +2914,8 @@ class ReachableRedYellow : VerificationCaseDefinition {
 class ReachableGreenRed : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Green
@@ -2933,8 +2933,8 @@ class ReachableGreenRed : VerificationCaseDefinition {
 class UnreachableGreenGreen : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -2954,8 +2954,8 @@ class UnreachableGreenGreen : VerificationCaseDefinition {
 class UnreachableGreenYellow : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -2975,8 +2975,8 @@ class UnreachableGreenYellow : VerificationCaseDefinition {
 class ReachableYellowRed : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Yellow
@@ -2994,8 +2994,8 @@ class ReachableYellowRed : VerificationCaseDefinition {
 class UnreachableYellowGreen : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -3015,8 +3015,8 @@ class UnreachableYellowGreen : VerificationCaseDefinition {
 class ReachableYellowYellow : VerificationCaseDefinition {
     contains system: CrossroadSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.trafficLightA.Behaviour.Normal.Yellow
@@ -3152,8 +3152,8 @@ class AccessController : Part {
 class LockedReachable : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Locked
                 }
@@ -3166,8 +3166,8 @@ class LockedReachable : VerificationCaseDefinition {
 class CheckingReachable : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Checking
                 }
@@ -3180,8 +3180,8 @@ class CheckingReachable : VerificationCaseDefinition {
 class CheckingUnreachableViolated : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Checking
@@ -3196,8 +3196,8 @@ class CheckingUnreachableViolated : VerificationCaseDefinition {
 class UnlockedReachable : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Unlocked
                 }
@@ -3210,8 +3210,8 @@ class UnlockedReachable : VerificationCaseDefinition {
 class OpenReachable : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Open
                 }
@@ -3224,8 +3224,8 @@ class OpenReachable : VerificationCaseDefinition {
 class OpenUnreachableViolated : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Open
@@ -3240,8 +3240,8 @@ class OpenUnreachableViolated : VerificationCaseDefinition {
 class LockedAndCheckingNeverSimultaneous : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -3261,8 +3261,8 @@ class LockedAndCheckingNeverSimultaneous : VerificationCaseDefinition {
 class LockedAndCheckingSimultaneousViolated : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Locked
@@ -3280,8 +3280,8 @@ class LockedAndCheckingSimultaneousViolated : VerificationCaseDefinition {
 class UnlockedAndOpenNeverSimultaneous : VerificationCaseDefinition {
     contains system: AccessController[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -3923,8 +3923,8 @@ class OrionSystem : Part {
 class MasterClosedReachable : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.master.Behaviour.Closed
                 }
@@ -3937,8 +3937,8 @@ class MasterClosedReachable : VerificationCaseDefinition {
 class MasterConnectingReachable : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.master.Behaviour.Connecting
                 }
@@ -3951,8 +3951,8 @@ class MasterConnectingReachable : VerificationCaseDefinition {
 class MasterConnectedReachable : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.master.Behaviour.Connected
                 }
@@ -3965,8 +3965,8 @@ class MasterConnectedReachable : VerificationCaseDefinition {
 class MasterConnectedUnreachableViolated : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.master.Behaviour.Connected
@@ -3981,8 +3981,8 @@ class MasterConnectedUnreachableViolated : VerificationCaseDefinition {
 class SlaveClosedReachable : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.slave.Behaviour.Closed
                 }
@@ -3995,8 +3995,8 @@ class SlaveClosedReachable : VerificationCaseDefinition {
 class SlaveConnectedReachable : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.slave.Behaviour.Connected
                 }
@@ -4009,8 +4009,8 @@ class SlaveConnectedReachable : VerificationCaseDefinition {
 class SlaveConnectedUnreachableViolated : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.slave.Behaviour.Connected
@@ -4025,8 +4025,8 @@ class SlaveConnectedUnreachableViolated : VerificationCaseDefinition {
 class MasterConnectedAndClosedNeverSimultaneous : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -4046,8 +4046,8 @@ class MasterConnectedAndClosedNeverSimultaneous : VerificationCaseDefinition {
 class BothMasterAndSlaveConnectedReachable : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.master.Behaviour.Connected
@@ -4065,8 +4065,8 @@ class BothMasterAndSlaveConnectedReachable : VerificationCaseDefinition {
 class BothMasterAndSlaveConnectedUnreachableViolated : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -4086,8 +4086,8 @@ class BothMasterAndSlaveConnectedUnreachableViolated : VerificationCaseDefinitio
 class MasterIsConnectedReachable : VerificationCaseDefinition {
     contains system: OrionSystem[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AttributeReferenceExpression {
                     redefine refers attribute: Attribute = system.master.is_Connected
                 }
@@ -4241,8 +4241,8 @@ class PowerManager : Part {
 class OnReachable : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.On
                 }
@@ -4255,8 +4255,8 @@ class OnReachable : VerificationCaseDefinition {
 class OnUnreachableViolated : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.On
@@ -4271,8 +4271,8 @@ class OnUnreachableViolated : VerificationCaseDefinition {
 class LowPowerReachable : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.PowerCritical
                 }
@@ -4285,8 +4285,8 @@ class LowPowerReachable : VerificationCaseDefinition {
 class LowPowerUnreachableViolated : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.PowerCritical
@@ -4301,8 +4301,8 @@ class LowPowerUnreachableViolated : VerificationCaseDefinition {
 class OffReachable : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Off
                 }
@@ -4315,8 +4315,8 @@ class OffReachable : VerificationCaseDefinition {
 class OnAndLowPowerNeverSimultaneous : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -4336,8 +4336,8 @@ class OnAndLowPowerNeverSimultaneous : VerificationCaseDefinition {
 class OnAndOffNeverSimultaneous : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -4357,8 +4357,8 @@ class OnAndOffNeverSimultaneous : VerificationCaseDefinition {
 class OnAndOffSimultaneousViolated : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.On
@@ -4376,8 +4376,8 @@ class OnAndOffSimultaneousViolated : VerificationCaseDefinition {
 class LowPowerAndOffNeverSimultaneous : VerificationCaseDefinition {
     contains system: PowerManager[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -5783,8 +5783,8 @@ class LateReceiverFlowModel : Part {
 class EntryActionFiresOnActivationTestCase : VerificationCaseDefinition {
     contains system: EntryActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.entered
@@ -5802,8 +5802,8 @@ class EntryActionFiresOnActivationTestCase : VerificationCaseDefinition {
 class EntryFlagAlwaysSetWhileStateIsActiveTestCase : VerificationCaseDefinition {
     contains system: EntryActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -5828,8 +5828,8 @@ class EntryFlagAlwaysSetWhileStateIsActiveTestCase : VerificationCaseDefinition 
 class ExitActionFiresOnDeactivationTestCase : VerificationCaseDefinition {
     contains system: ExitActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.exited
@@ -5847,8 +5847,8 @@ class ExitActionFiresOnDeactivationTestCase : VerificationCaseDefinition {
 class ExitFlagAlwaysSetWhenSuccessorIsActiveTestCase : VerificationCaseDefinition {
     contains system: ExitActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -5873,8 +5873,8 @@ class ExitFlagAlwaysSetWhenSuccessorIsActiveTestCase : VerificationCaseDefinitio
 class DoActionFiresOnTransitionTestCase : VerificationCaseDefinition {
     contains system: TransitionDoActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.actionFired
@@ -5892,8 +5892,8 @@ class DoActionFiresOnTransitionTestCase : VerificationCaseDefinition {
 class DoActionAlwaysFiredWhenTargetIsActiveTestCase : VerificationCaseDefinition {
     contains system: TransitionDoActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -5918,8 +5918,8 @@ class DoActionAlwaysFiredWhenTargetIsActiveTestCase : VerificationCaseDefinition
 class CompositeEntryActivatesInitialSubstateTestCase : VerificationCaseDefinition {
     contains system: HierarchicalEntryModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Outer.Inner
                 }
@@ -5932,8 +5932,8 @@ class CompositeEntryActivatesInitialSubstateTestCase : VerificationCaseDefinitio
 class CompositeActiveAlwaysImpliesSubstateActiveTestCase : VerificationCaseDefinition {
     contains system: HierarchicalEntryModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -5955,8 +5955,8 @@ class CompositeActiveAlwaysImpliesSubstateActiveTestCase : VerificationCaseDefin
 class CompositeExitReachesDoneStateTestCase : VerificationCaseDefinition {
     contains system: HierarchicalExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -5969,8 +5969,8 @@ class CompositeExitReachesDoneStateTestCase : VerificationCaseDefinition {
 class CompositeExitFiresExitActionTestCase : VerificationCaseDefinition {
     contains system: HierarchicalExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.outerExited
@@ -5988,8 +5988,8 @@ class CompositeExitFiresExitActionTestCase : VerificationCaseDefinition {
 class ExitActionAlwaysFiredWhenDoneIsActiveTestCase : VerificationCaseDefinition {
     contains system: HierarchicalExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6014,8 +6014,8 @@ class ExitActionAlwaysFiredWhenDoneIsActiveTestCase : VerificationCaseDefinition
 class TransitionsHaveBottomUpPriorityTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.innerFired
@@ -6033,8 +6033,8 @@ class TransitionsHaveBottomUpPriorityTestCase : VerificationCaseDefinition {
 class InnerDoneReachableWithBottomUpPriorityTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Outer.InnerDone
                 }
@@ -6047,8 +6047,8 @@ class InnerDoneReachableWithBottomUpPriorityTestCase : VerificationCaseDefinitio
 class OuterTransitionFiresAfterInnerExhaustedTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.outerFired
@@ -6066,8 +6066,8 @@ class OuterTransitionFiresAfterInnerExhaustedTestCase : VerificationCaseDefiniti
 class OuterTransitionBlockedWhileInnerEnabledTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6092,8 +6092,8 @@ class OuterTransitionBlockedWhileInnerEnabledTestCase : VerificationCaseDefiniti
 class OuterDoneAlwaysImpliesInnerFiredFirstTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6118,8 +6118,8 @@ class OuterDoneAlwaysImpliesInnerFiredFirstTestCase : VerificationCaseDefinition
 class FirstParallelRegionAdvancesIndependentlyTestCase : VerificationCaseDefinition {
     contains system: ParallelRegionsModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.R1.B
                 }
@@ -6132,8 +6132,8 @@ class FirstParallelRegionAdvancesIndependentlyTestCase : VerificationCaseDefinit
 class SecondParallelRegionAdvancesIndependentlyTestCase : VerificationCaseDefinition {
     contains system: ParallelRegionsModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.R2.D
                 }
@@ -6146,8 +6146,8 @@ class SecondParallelRegionAdvancesIndependentlyTestCase : VerificationCaseDefini
 class BothParallelRegionsCanAdvanceSimultaneouslyTestCase : VerificationCaseDefinition {
     contains system: ParallelRegionsModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.R1.B
@@ -6165,8 +6165,8 @@ class BothParallelRegionsCanAdvanceSimultaneouslyTestCase : VerificationCaseDefi
 class RegionSubstatesAreMutuallyExclusiveTestCase : VerificationCaseDefinition {
     contains system: ParallelRegionsModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6186,8 +6186,8 @@ class RegionSubstatesAreMutuallyExclusiveTestCase : VerificationCaseDefinition {
 class TimeoutTransitionFiresAfterDelayTestCase : VerificationCaseDefinition {
     contains system: TimeoutTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -6200,8 +6200,8 @@ class TimeoutTransitionFiresAfterDelayTestCase : VerificationCaseDefinition {
 class WaitingAndDoneAreMutuallyExclusiveTestCase : VerificationCaseDefinition {
     contains system: TimeoutTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6221,8 +6221,8 @@ class WaitingAndDoneAreMutuallyExclusiveTestCase : VerificationCaseDefinition {
 class GuardConditionGatesTransitionTestCase : VerificationCaseDefinition {
     contains system: GuardedTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -6235,8 +6235,8 @@ class GuardConditionGatesTransitionTestCase : VerificationCaseDefinition {
 class GuardAccumulatesCounterTestCase : VerificationCaseDefinition {
     contains system: GuardedTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.counter
@@ -6254,8 +6254,8 @@ class GuardAccumulatesCounterTestCase : VerificationCaseDefinition {
 class DoneNotReachableBeforeGuardSatisfiedTestCase : VerificationCaseDefinition {
     contains system: GuardedTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6280,8 +6280,8 @@ class DoneNotReachableBeforeGuardSatisfiedTestCase : VerificationCaseDefinition 
 class ItemFlowDeliversToReceiverTestCase : VerificationCaseDefinition {
     contains system: ItemFlowModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.receiver.Behaviour.Got
                 }
@@ -6294,8 +6294,8 @@ class ItemFlowDeliversToReceiverTestCase : VerificationCaseDefinition {
 class ReceiverAttributeSetByItemFlowTestCase : VerificationCaseDefinition {
     contains system: ItemFlowModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.receiver.received
@@ -6313,8 +6313,8 @@ class ReceiverAttributeSetByItemFlowTestCase : VerificationCaseDefinition {
 class ReceivedFlagAlwaysSetWhenGotIsActiveTestCase : VerificationCaseDefinition {
     contains system: ItemFlowModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6339,8 +6339,8 @@ class ReceivedFlagAlwaysSetWhenGotIsActiveTestCase : VerificationCaseDefinition 
 class ThreeLevelDeepInitialStateReachableTestCase : VerificationCaseDefinition {
     contains system: CrossHierarchyTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Outer.Middle.Inner
                 }
@@ -6353,8 +6353,8 @@ class ThreeLevelDeepInitialStateReachableTestCase : VerificationCaseDefinition {
 class CrossHierarchyTransitionReachesTwoLevelDeepStateTestCase : VerificationCaseDefinition {
     contains system: CrossHierarchyTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Other.Deep
                 }
@@ -6367,8 +6367,8 @@ class CrossHierarchyTransitionReachesTwoLevelDeepStateTestCase : VerificationCas
 class CrossHierarchyExitActionsFireAtAllLevelsTestCase : VerificationCaseDefinition {
     contains system: CrossHierarchyTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: EqualityOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -6396,8 +6396,8 @@ class CrossHierarchyExitActionsFireAtAllLevelsTestCase : VerificationCaseDefinit
 class CrossHierarchyEntryActionsFireAtAllLevelsTestCase : VerificationCaseDefinition {
     contains system: CrossHierarchyTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: EqualityOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -6425,8 +6425,8 @@ class CrossHierarchyEntryActionsFireAtAllLevelsTestCase : VerificationCaseDefini
 class OuterAndOtherAreMutuallyExclusiveTestCase : VerificationCaseDefinition {
     contains system: CrossHierarchyTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6446,8 +6446,8 @@ class OuterAndOtherAreMutuallyExclusiveTestCase : VerificationCaseDefinition {
 class InnerExitActionFiresBeforeMiddleExitActionTestCase : VerificationCaseDefinition {
     contains system: ExitActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.innerExitStep
@@ -6465,8 +6465,8 @@ class InnerExitActionFiresBeforeMiddleExitActionTestCase : VerificationCaseDefin
 class MiddleExitActionFiresBeforeOuterExitActionTestCase : VerificationCaseDefinition {
     contains system: ExitActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.middleExitStep
@@ -6484,8 +6484,8 @@ class MiddleExitActionFiresBeforeOuterExitActionTestCase : VerificationCaseDefin
 class MiddleNeverExitsBeforeInnerTestCase : VerificationCaseDefinition {
     contains system: ExitActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: LessThanOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -6505,8 +6505,8 @@ class MiddleNeverExitsBeforeInnerTestCase : VerificationCaseDefinition {
 class OuterNeverExitsBeforeMiddleTestCase : VerificationCaseDefinition {
     contains system: ExitActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: LessThanOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -6526,8 +6526,8 @@ class OuterNeverExitsBeforeMiddleTestCase : VerificationCaseDefinition {
 class OutermostEntryActionFiresBeforeMiddleEntryActionTestCase : VerificationCaseDefinition {
     contains system: EntryActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.targetEntryStep
@@ -6545,8 +6545,8 @@ class OutermostEntryActionFiresBeforeMiddleEntryActionTestCase : VerificationCas
 class MiddleEntryActionFiresBeforeInnermostEntryActionTestCase : VerificationCaseDefinition {
     contains system: EntryActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.middleEntryStep
@@ -6564,8 +6564,8 @@ class MiddleEntryActionFiresBeforeInnermostEntryActionTestCase : VerificationCas
 class MiddleNeverEntersBeforeTargetTestCase : VerificationCaseDefinition {
     contains system: EntryActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: LessThanOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -6585,8 +6585,8 @@ class MiddleNeverEntersBeforeTargetTestCase : VerificationCaseDefinition {
 class InnerNeverEntersBeforeMiddleTestCase : VerificationCaseDefinition {
     contains system: EntryActionOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: LessThanOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -6606,8 +6606,8 @@ class InnerNeverEntersBeforeMiddleTestCase : VerificationCaseDefinition {
 class BothParallelRegionsActiveBeforeExitTestCase : VerificationCaseDefinition {
     contains system: ParallelStateExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Running.R1.R1On
@@ -6625,8 +6625,8 @@ class BothParallelRegionsActiveBeforeExitTestCase : VerificationCaseDefinition {
 class ParallelStateCanBeExitedTestCase : VerificationCaseDefinition {
     contains system: ParallelStateExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -6639,8 +6639,8 @@ class ParallelStateCanBeExitedTestCase : VerificationCaseDefinition {
 class AllParallelRegionsDeactivatedOnExitTestCase : VerificationCaseDefinition {
     contains system: ParallelStateExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6660,8 +6660,8 @@ class AllParallelRegionsDeactivatedOnExitTestCase : VerificationCaseDefinition {
 class ParallelRegionsActiveInsideSequentialStateTestCase : VerificationCaseDefinition {
     contains system: ParallelNestedInSequentialModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AndOperatorExpression {
                     redefine contains left: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Outer.Inner.P1.P1A
@@ -6679,8 +6679,8 @@ class ParallelRegionsActiveInsideSequentialStateTestCase : VerificationCaseDefin
 class SequentialStateWithNestedParallelExitableTestCase : VerificationCaseDefinition {
     contains system: ParallelNestedInSequentialModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -6693,8 +6693,8 @@ class SequentialStateWithNestedParallelExitableTestCase : VerificationCaseDefini
 class DoneAndNestedParallelSubstatesAreMutuallyExclusiveTestCase : VerificationCaseDefinition {
     contains system: ParallelNestedInSequentialModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6714,8 +6714,8 @@ class DoneAndNestedParallelSubstatesAreMutuallyExclusiveTestCase : VerificationC
 class SpontaneousTransitionReachesTargetTestCase : VerificationCaseDefinition {
     contains system: SpontaneousTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.S2
                 }
@@ -6728,8 +6728,8 @@ class SpontaneousTransitionReachesTargetTestCase : VerificationCaseDefinition {
 class SpontaneousTransitionDoActionFiresTestCase : VerificationCaseDefinition {
     contains system: SpontaneousTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.transitioned
@@ -6747,8 +6747,8 @@ class SpontaneousTransitionDoActionFiresTestCase : VerificationCaseDefinition {
 class SpontaneousDoActionAlwaysFiredWhenTargetIsActiveTestCase : VerificationCaseDefinition {
     contains system: SpontaneousTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6773,8 +6773,8 @@ class SpontaneousDoActionAlwaysFiredWhenTargetIsActiveTestCase : VerificationCas
 class GuardedSpontaneousTransitionReachesDoneTestCase : VerificationCaseDefinition {
     contains system: GuardedSpontaneousTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -6787,8 +6787,8 @@ class GuardedSpontaneousTransitionReachesDoneTestCase : VerificationCaseDefiniti
 class GuardedSpontaneousCounterReachesThresholdTestCase : VerificationCaseDefinition {
     contains system: GuardedSpontaneousTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.counter
@@ -6806,8 +6806,8 @@ class GuardedSpontaneousCounterReachesThresholdTestCase : VerificationCaseDefini
 class GuardedSpontaneousDoneNotReachableBeforeThresholdTestCase : VerificationCaseDefinition {
     contains system: GuardedSpontaneousTransitionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6832,8 +6832,8 @@ class GuardedSpontaneousDoneNotReachableBeforeThresholdTestCase : VerificationCa
 class RegionTransitionFiresParallelExitActionTestCase : VerificationCaseDefinition {
     contains system: ParallelStateRegionExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.parallelExited
@@ -6851,8 +6851,8 @@ class RegionTransitionFiresParallelExitActionTestCase : VerificationCaseDefiniti
 class RegionTransitionLeavesEveryRegionTestCase : VerificationCaseDefinition {
     contains system: ParallelStateRegionExitModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6872,8 +6872,8 @@ class RegionTransitionLeavesEveryRegionTestCase : VerificationCaseDefinition {
 class RegionExitActionFiresWhenParallelStateExitsTestCase : VerificationCaseDefinition {
     contains system: ParallelRegionExitActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.regionExited
@@ -6891,8 +6891,8 @@ class RegionExitActionFiresWhenParallelStateExitsTestCase : VerificationCaseDefi
 class InactiveParallelStateExitActionNeverFiresTestCase : VerificationCaseDefinition {
     contains system: ParallelRegionExitActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.idleExited
@@ -6910,8 +6910,8 @@ class InactiveParallelStateExitActionNeverFiresTestCase : VerificationCaseDefini
 class ExhibitedStateEntryActionFiresTestCase : VerificationCaseDefinition {
     contains system: ExhibitedStateEntryActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.entered
@@ -6929,8 +6929,8 @@ class ExhibitedStateEntryActionFiresTestCase : VerificationCaseDefinition {
 class ExhibitedStateEntryActionPrecedesSubstateTestCase : VerificationCaseDefinition {
     contains system: ExhibitedStateEntryActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -6955,8 +6955,8 @@ class ExhibitedStateEntryActionPrecedesSubstateTestCase : VerificationCaseDefini
 class ParallelExitReachesDoneTestCase : VerificationCaseDefinition {
     contains system: ParallelExitOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Done
                 }
@@ -6969,8 +6969,8 @@ class ParallelExitReachesDoneTestCase : VerificationCaseDefinition {
 class ParallelExitRunsExitsBeforeEffectTestCase : VerificationCaseDefinition {
     contains system: ParallelExitOrderModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: OrOperatorExpression {
                     redefine contains left: UnaryNotExpression {
                         redefine contains operand: IsStateActiveExpression {
@@ -6995,8 +6995,8 @@ class ParallelExitRunsExitsBeforeEffectTestCase : VerificationCaseDefinition {
 class RegionEntryActionFiresTestCase : VerificationCaseDefinition {
     contains system: RegionEntryActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.regionEntered
@@ -7014,8 +7014,8 @@ class RegionEntryActionFiresTestCase : VerificationCaseDefinition {
 class ItemFiresOneRegionPerStepTestCase : VerificationCaseDefinition {
     contains system: SharedItemModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: AndOperatorExpression {
                         redefine contains left: IsStateActiveExpression {
@@ -7035,8 +7035,8 @@ class ItemFiresOneRegionPerStepTestCase : VerificationCaseDefinition {
 class FirstRegionConsumesItemTestCase : VerificationCaseDefinition {
     contains system: SharedItemModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Running.R1.B
                 }
@@ -7049,8 +7049,8 @@ class FirstRegionConsumesItemTestCase : VerificationCaseDefinition {
 class SecondRegionConsumesItemTestCase : VerificationCaseDefinition {
     contains system: SharedItemModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.Running.R2.D
                 }
@@ -7063,8 +7063,8 @@ class SecondRegionConsumesItemTestCase : VerificationCaseDefinition {
 class InitSendArrivesTestCase : VerificationCaseDefinition {
     contains system: InitSendModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.receiver.Behaviour.Got
                 }
@@ -7077,8 +7077,8 @@ class InitSendArrivesTestCase : VerificationCaseDefinition {
 class UnacceptedItemIsDroppedTestCase : VerificationCaseDefinition {
     contains system: LateReceiverFlowModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.receiver.Behaviour.Got
@@ -7093,7 +7093,7 @@ class UnacceptedItemIsDroppedTestCase : VerificationCaseDefinition {
 class ObjectiveConstraintReachableTestCase : VerificationCaseDefinition {
     contains system: EntryActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains requiredConstraint: Eventually {
+        contains constraint1: Eventually subsets requiredConstraints {
             redefine contains body: EqualityOperatorExpression {
                 redefine contains left: AttributeReferenceExpression {
                     redefine refers attribute: Attribute = system.entered
@@ -7110,7 +7110,7 @@ class ObjectiveConstraintReachableTestCase : VerificationCaseDefinition {
 class ObjectiveConstraintCheckedViolated : VerificationCaseDefinition {
     contains system: EntryActionModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains requiredConstraint: MustAlways {
+        contains constraint1: MustAlways subsets requiredConstraints {
             redefine contains body: EqualityOperatorExpression {
                 redefine contains left: AttributeReferenceExpression {
                     redefine refers attribute: Attribute = system.entered
@@ -7553,8 +7553,8 @@ class Mission : Part {
 class StationBehaviorIdleReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.groundStation.Behaviour.Idle
                 }
@@ -7567,8 +7567,8 @@ class StationBehaviorIdleReachable : VerificationCaseDefinition {
 class StationBehaviorOperationReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.groundStation.Behaviour.Operation
                 }
@@ -7581,8 +7581,8 @@ class StationBehaviorOperationReachable : VerificationCaseDefinition {
 class StationBehaviorOperationWaitingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.groundStation.Behaviour.Operation.Waiting
                 }
@@ -7595,8 +7595,8 @@ class StationBehaviorOperationWaitingReachable : VerificationCaseDefinition {
 class SpacecraftBehaviorCommunicationWaitingPingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.WaitingPing
                 }
@@ -7609,8 +7609,8 @@ class SpacecraftBehaviorCommunicationWaitingPingReachable : VerificationCaseDefi
 class SpacecraftBehaviorCommunicationTransmittingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting
                 }
@@ -7623,8 +7623,8 @@ class SpacecraftBehaviorCommunicationTransmittingReachable : VerificationCaseDef
 class SpacecraftBehaviorCommunicationTransmittingSendDataReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.SendData
                 }
@@ -7637,8 +7637,8 @@ class SpacecraftBehaviorCommunicationTransmittingSendDataReachable : Verificatio
 class SpacecraftBehaviorCommunicationTransmittingSendDataSendingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.SendData.Sending
                 }
@@ -7651,8 +7651,8 @@ class SpacecraftBehaviorCommunicationTransmittingSendDataSendingReachable : Veri
 class SpacecraftBehaviorCommunicationTransmittingConsumePowerReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.ConsumePower
                 }
@@ -7665,8 +7665,8 @@ class SpacecraftBehaviorCommunicationTransmittingConsumePowerReachable : Verific
 class SpacecraftBehaviorCommunicationTransmittingConsumePowerConsumingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Communication.Transmitting.ConsumePower.Consuming
                 }
@@ -7679,8 +7679,8 @@ class SpacecraftBehaviorCommunicationTransmittingConsumePowerConsumingReachable 
 class SpacecraftBehaviorBatteryNotRechargingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Battery.NotRecharging
                 }
@@ -7693,8 +7693,8 @@ class SpacecraftBehaviorBatteryNotRechargingReachable : VerificationCaseDefiniti
 class SpacecraftBehaviorBatteryRechargingReachable : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = mission.spacecraft.Behaviour.Battery.Recharging
                 }
@@ -7707,8 +7707,8 @@ class SpacecraftBehaviorBatteryRechargingReachable : VerificationCaseDefinition 
 class GroundStationReceivedDataCanReach0 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7726,8 +7726,8 @@ class GroundStationReceivedDataCanReach0 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach10 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7745,8 +7745,8 @@ class GroundStationReceivedDataCanReach10 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach20 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7764,8 +7764,8 @@ class GroundStationReceivedDataCanReach20 : VerificationCaseDefinition {
 class GroundStationReceivedDataCannotReach20Violated : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: GreaterThanOrEqualsOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -7785,8 +7785,8 @@ class GroundStationReceivedDataCannotReach20Violated : VerificationCaseDefinitio
 class GroundStationReceivedDataCanReach30 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7804,8 +7804,8 @@ class GroundStationReceivedDataCanReach30 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach40 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7823,8 +7823,8 @@ class GroundStationReceivedDataCanReach40 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach50 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7842,8 +7842,8 @@ class GroundStationReceivedDataCanReach50 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach60 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7861,8 +7861,8 @@ class GroundStationReceivedDataCanReach60 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach70 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7880,8 +7880,8 @@ class GroundStationReceivedDataCanReach70 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach80 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7899,8 +7899,8 @@ class GroundStationReceivedDataCanReach80 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach90 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7918,8 +7918,8 @@ class GroundStationReceivedDataCanReach90 : VerificationCaseDefinition {
 class GroundStationReceivedDataCanReach100 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.groundStation.receivedData
@@ -7937,8 +7937,8 @@ class GroundStationReceivedDataCanReach100 : VerificationCaseDefinition {
 class SpacecraftDataCanReach100 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -7956,8 +7956,8 @@ class SpacecraftDataCanReach100 : VerificationCaseDefinition {
 class SpacecraftDataCanReach90 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -7975,8 +7975,8 @@ class SpacecraftDataCanReach90 : VerificationCaseDefinition {
 class SpacecraftDataCanReach80 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -7994,8 +7994,8 @@ class SpacecraftDataCanReach80 : VerificationCaseDefinition {
 class SpacecraftDataCanReach70 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8013,8 +8013,8 @@ class SpacecraftDataCanReach70 : VerificationCaseDefinition {
 class SpacecraftDataCanReach60 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8032,8 +8032,8 @@ class SpacecraftDataCanReach60 : VerificationCaseDefinition {
 class SpacecraftDataCannotReach60Violated : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: UnaryNotExpression {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: UnaryNotExpression subsets requiredConstraints {
                 redefine contains operand: Eventually {
                     redefine contains body: LessThanOrEqualsOperatorExpression {
                         redefine contains left: AttributeReferenceExpression {
@@ -8053,8 +8053,8 @@ class SpacecraftDataCannotReach60Violated : VerificationCaseDefinition {
 class SpacecraftDataCanReach50 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8072,8 +8072,8 @@ class SpacecraftDataCanReach50 : VerificationCaseDefinition {
 class SpacecraftDataCanReach40 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8091,8 +8091,8 @@ class SpacecraftDataCanReach40 : VerificationCaseDefinition {
 class SpacecraftDataCanReach30 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8110,8 +8110,8 @@ class SpacecraftDataCanReach30 : VerificationCaseDefinition {
 class SpacecraftDataCanReach20 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8129,8 +8129,8 @@ class SpacecraftDataCanReach20 : VerificationCaseDefinition {
 class SpacecraftDataCanReach10 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8148,8 +8148,8 @@ class SpacecraftDataCanReach10 : VerificationCaseDefinition {
 class SpacecraftDataCanReach0 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: LessThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.data
@@ -8167,8 +8167,8 @@ class SpacecraftDataCanReach0 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove0 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -8186,8 +8186,8 @@ class SpacecraftBatteryAlwaysAbove0 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove10 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -8205,8 +8205,8 @@ class SpacecraftBatteryAlwaysAbove10 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove20 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -8224,8 +8224,8 @@ class SpacecraftBatteryAlwaysAbove20 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove30 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -8243,8 +8243,8 @@ class SpacecraftBatteryAlwaysAbove30 : VerificationCaseDefinition {
 class SpacecraftBatteryAlwaysAbove40 : VerificationCaseDefinition {
     contains mission: Mission[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: GreaterThanOrEqualsOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = mission.spacecraft.batteryCharge
@@ -8354,8 +8354,8 @@ class TransitionPriorityTopDownModel : Part {
 class OuterTransitionCanFireTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityTopDownModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: AttributeReferenceExpression {
                     redefine refers attribute: Attribute = system.outerFired
                 }
@@ -8368,8 +8368,8 @@ class OuterTransitionCanFireTestCase : VerificationCaseDefinition {
 class OuterDoneReachableTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityTopDownModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: Eventually {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
                 redefine contains body: IsStateActiveExpression {
                     redefine refers state: AbstractState = system.Behaviour.OuterDone
                 }
@@ -8382,8 +8382,8 @@ class OuterDoneReachableTestCase : VerificationCaseDefinition {
 class InnerTransitionNeverFiresTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityTopDownModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: EqualityOperatorExpression {
                     redefine contains left: AttributeReferenceExpression {
                         redefine refers attribute: Attribute = system.innerFired
@@ -8401,8 +8401,8 @@ class InnerTransitionNeverFiresTestCase : VerificationCaseDefinition {
 class InnerDoneNotReachableTestCase : VerificationCaseDefinition {
     contains system: TransitionPriorityTopDownModel[1] redefines subject
     redefine contains objective: Requirement[1] {
-        redefine contains verifyRequirement: Constraint[1] {
-            redefine contains requiredConstraint: MustAlways {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
                 redefine contains body: UnaryNotExpression {
                     redefine contains operand: IsStateActiveExpression {
                         redefine refers state: AbstractState = system.Behaviour.Outer.InnerDone

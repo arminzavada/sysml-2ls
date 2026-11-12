@@ -185,6 +185,14 @@ export const transitionMembers = [
 
 export const compositeMembers = ["children"];
 
+export const requirementMembers = [
+    "checkedConstraint",
+    "evaluate",
+    "requiredConstraint",
+    "requiredConstraints",
+    "verifiedRequirements",
+];
+
 export const caseMembers = ["objective", "passTime", "subject"];
 
 const identifier = /^[A-Za-z_][A-Za-z0-9_]*$/;

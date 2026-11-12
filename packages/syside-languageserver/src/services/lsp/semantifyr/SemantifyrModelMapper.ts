@@ -97,6 +97,7 @@ import {
     libraryClasses,
     OxstsNode,
     partMembers,
+    requirementMembers,
     stateMembers,
     transitionMembers,
 } from "./SemantifyrOxsts";
@@ -933,11 +934,11 @@ export class SemantifyrModelMapper {
         const transitions: TransitionUsage[] = [];
         const initialTransitions = new Set<TransitionUsage>();
         const skipped = new Set<Element>();
-        // `entry; then X;` is the initial transition only right after its empty entry action
-        let followsEmptyEntry = false;
+        // the transition right after the entry action, `entry; then X;` or `entry action a { ... } then X;`, is the initial one
+        let followsEntry = false;
         for (const membership of state.children) {
-            const afterEmptyEntry = followsEmptyEntry;
-            followsEmptyEntry = false;
+            const afterEntry = followsEntry;
+            followsEntry = false;
             if (isImport(membership)) {
                 continue;
             }
@@ -964,7 +965,7 @@ export class SemantifyrModelMapper {
                 }
                 const action = member as ActionUsage;
                 if (membership.kind === "entry") {
-                    followsEmptyEntry = this.isEmptyAction(action);
+                    followsEntry = true;
                 }
                 this.guard(membership, () => {
                     this.mapAction(
@@ -986,7 +987,7 @@ export class SemantifyrModelMapper {
                 }
                 const isInitial =
                     member.source === undefined
-                        ? afterEmptyEntry
+                        ? afterEntry
                         : isLibraryFeature(
                               referenced(member.source.targetRef),
                               "start",
@@ -1422,9 +1423,18 @@ export class SemantifyrModelMapper {
         feature: string,
         expression: Expression,
         context: ExpressionContext,
-        temporal = false
+        temporal = false,
+        subsetted?: string
     ): void {
+        // a required constraint subsets its collection, every other expression redefines a library feature
         const node = (type: string): OxstsNode => {
+            if (subsetted !== undefined) {
+                return new OxstsNode(
+                    parent,
+                    feature,
+                    () => `contains ${feature}: ${type} subsets ${subsetted}`
+                );
+            }
             return new OxstsNode(parent, feature, () => `redefine contains ${feature}: ${type}`);
         };
         if (
@@ -1435,7 +1445,7 @@ export class SemantifyrModelMapper {
             if (!inner) {
                 this.refuse(expression, "translationFailure");
             }
-            return this.mapExpression(parent, feature, inner, context, temporal);
+            return this.mapExpression(parent, feature, inner, context, temporal, subsetted);
         }
         if (isLiteralNumber(expression)) {
             if (!Number.isInteger(expression.literal)) {
@@ -1650,7 +1660,8 @@ export class SemantifyrModelMapper {
         const objectiveNode = new OxstsNode(
             node,
             "objective",
-            () => "redefine contains objective: Requirement[1]"
+            () => "redefine contains objective: Requirement[1]",
+            requirementMembers
         );
         const verified = objective.children.filter(isRequirementVerificationMembership);
         const own = this.requiredConstraints(objective, subjects, subject);
@@ -1684,11 +1695,14 @@ export class SemantifyrModelMapper {
         if (constraints.length === 0) {
             this.refuse(verified[0], "objectiveMissing");
         }
+        const requirementName = objectiveNode.scope.claim(requirement.declaredName, "requirement");
         const verifyNode = new OxstsNode(
             objectiveNode,
-            "verifyRequirement",
-            () => "redefine contains verifyRequirement: Constraint[1]"
+            requirementName,
+            () => `contains ${requirementName}: Constraint subsets verifiedRequirements`,
+            requirementMembers
         );
+        this.declare(requirement, verifyNode);
         this.mapConstraint(verifyNode, constraints[0], {
             kind: "verification",
             node: verifyNode,
@@ -1768,15 +1782,18 @@ export class SemantifyrModelMapper {
                 ["mustAlways", "eventually"].includes(invoked.declaredName ?? "")
             );
         });
+        const name = parent.scope.claim(constraint.declaredName, "constraint");
         if (hasTemporal) {
-            this.mapExpression(parent, "requiredConstraint", expression, context, true);
+            this.mapExpression(parent, name, expression, context, true, "requiredConstraints");
+            this.declare(constraint, parent.children.at(-1)!);
             return;
         }
         const node = new OxstsNode(
             parent,
-            "requiredConstraint",
-            () => "redefine contains requiredConstraint: MustAlways"
+            name,
+            () => `contains ${name}: MustAlways subsets requiredConstraints`
         );
+        this.declare(constraint, node);
         this.mapExpression(node, "body", expression, { ...context, node });
     }
 
