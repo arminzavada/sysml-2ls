@@ -584,6 +584,11 @@ const cases: ConstructCase[] = [
         located: "1.0",
     },
     {
+        construct: "literalReal",
+        model: machine("attribute ratio : Integer := 1e3;"),
+        located: "1e3",
+    },
+    {
         construct: "literalOther",
         model: machine('attribute label : Integer := "text";'),
         located: '"text"',

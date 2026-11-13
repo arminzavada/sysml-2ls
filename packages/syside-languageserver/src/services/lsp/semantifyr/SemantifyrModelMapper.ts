@@ -1499,7 +1499,10 @@ export class SemantifyrModelMapper {
             return this.mapExpression(parent, feature, inner, context, temporal, subsetted);
         }
         if (isLiteralNumber(expression)) {
-            if (!Number.isInteger(expression.literal) || expression.$cstNode?.text.includes(".")) {
+            if (
+                !Number.isInteger(expression.literal) ||
+                /[.eE]/.test(expression.$cstNode?.text ?? "")
+            ) {
                 this.refuse(expression, "literalReal");
             }
             const literal = node("LiteralIntegerExpression");
