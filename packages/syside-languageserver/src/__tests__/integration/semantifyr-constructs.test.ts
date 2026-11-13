@@ -5,9 +5,11 @@ import { URI } from "vscode-uri";
 import type { SysMLSharedServices } from "../../services/services.js";
 import type { SysMLBuildOptions } from "../../services/shared/workspace/document-builder.js";
 import { mapSysMLNamespaceToSemantifyr } from "../../services/lsp/semantifyr/SemantifyrMapper.js";
+import { DiagnosticSeverity, type Diagnostic } from "vscode-languageserver";
 import {
     SemantifyrConstructs,
     type SemantifyrConstructId,
+    type SemantifyrErrorId,
 } from "../../services/lsp/semantifyr/SemantifyrConstructs.js";
 import type { Namespace } from "#generated/ast.js";
 import { setupServicesWithStdlib } from "./stdlib-fixture.js";
@@ -60,11 +62,42 @@ verification def Check {
 interface ConstructCase {
     construct: SemantifyrConstructId;
     model: string;
-    // the text a diagnostic is located on, for warned and refused constructs
+    // the text a diagnostic is located on, for a construct that draws a warning or is refused
     located?: string;
-    // a line the OXSTS holds, for supported constructs
+    // a line the OXSTS holds, for a construct that translates
     emits?: string;
 }
+
+interface ErrorCase {
+    error: SemantifyrErrorId;
+    model: string;
+    located: string;
+}
+
+const errorCases: ErrorCase[] = [
+    {
+        error: "assignmentToBound",
+        model: machine(
+            "attribute limit : Integer = 3;",
+            "transition first Idle do assign limit := 4 then Idle;"
+        ),
+        located: "assign limit := 4",
+    },
+    {
+        error: "initialGuardClosed",
+        model: `${header}\npart def Machine { exhibit state Behaviour { transition first start if false then Idle; state Idle; } }`,
+        located: "false",
+    },
+    {
+        error: "successionCycle",
+        model: machine(
+            "",
+            "state Busy { entry action steps { action one assign count := 1; action two assign count := 2; first one then two; first two then one; } }"
+        ),
+        located:
+            "action steps { action one assign count := 1; action two assign count := 2; first one then two; first two then one; }",
+    },
+];
 
 const cases: ConstructCase[] = [
     {
@@ -106,6 +139,11 @@ const cases: ConstructCase[] = [
         construct: "topLevelDefinition",
         model: `${machine("")}\naction def Work;`,
         located: "action def Work;",
+    },
+    {
+        construct: "enumerationDefinition",
+        model: `${machine("")}\nenum def Colour { enum red; enum green; }`,
+        located: "enum def Colour { enum red; enum green; }",
     },
     {
         construct: "partDefinition",
@@ -158,9 +196,14 @@ const cases: ConstructCase[] = [
         located: "[3]",
     },
     {
-        construct: "multiplicityOther",
+        construct: "multiplicityOptional",
         model: `${machine("")}\npart def Plant { part machine : Machine[0..1]; }`,
         located: "[0..1]",
+    },
+    {
+        construct: "multiplicityOther",
+        model: `${machine("")}\npart def Plant { part machines : Machine[1..*]; }`,
+        located: "[1..*]",
     },
     {
         construct: "multipleReference",
@@ -168,9 +211,14 @@ const cases: ConstructCase[] = [
         located: "bind feed = machines.input;",
     },
     {
-        construct: "partMember",
+        construct: "partAction",
         model: machine("action work;"),
         located: "action work;",
+    },
+    {
+        construct: "partMember",
+        model: machine("assert constraint { count >= 0 }"),
+        located: "assert constraint { count >= 0 }",
     },
     {
         construct: "connection",
@@ -184,6 +232,11 @@ const cases: ConstructCase[] = [
     },
     {
         construct: "portItem",
+        model: `${machine("")}\nport def Duplex { in item request : Signal; out item reply : Signal; }`,
+        emits: "class Duplex : NormalPort",
+    },
+    {
+        construct: "portItemType",
         model: machine(""),
         emits: "class Feed : NormalPort",
     },
@@ -253,9 +306,14 @@ const cases: ConstructCase[] = [
         emits: "contains ready: BooleanAttribute subsets attributes",
     },
     {
-        construct: "attributeType",
+        construct: "attributeRealOrEnumeration",
         model: machine("attribute ratio : ScalarValues::Real;"),
         located: "attribute ratio : ScalarValues::Real;",
+    },
+    {
+        construct: "attributeType",
+        model: machine("attribute label : ScalarValues::String;"),
+        located: "attribute label : ScalarValues::String;",
     },
     {
         construct: "attributeBinding",
@@ -281,14 +339,6 @@ const cases: ConstructCase[] = [
         construct: "attributeOutsidePart",
         model: machine("", "state Busy { attribute local : Integer; }"),
         located: "attribute local : Integer;",
-    },
-    {
-        construct: "assignmentToBound",
-        model: machine(
-            "attribute limit : Integer = 3;",
-            "transition first Idle do assign limit := 4 then Idle;"
-        ),
-        located: "assign limit := 4",
     },
     {
         construct: "exhibitState",
@@ -354,11 +404,6 @@ const cases: ConstructCase[] = [
         construct: "initialTrigger",
         model: `${header}\npart def Machine { port input : Feed; exhibit state Behaviour { transition first start accept Signal via input then Idle; state Idle; } }`,
         located: "accept Signal via input",
-    },
-    {
-        construct: "initialGuardClosed",
-        model: `${header}\npart def Machine { exhibit state Behaviour { transition first start if false then Idle; state Idle; } }`,
-        located: "false",
     },
     {
         construct: "entryAction",
@@ -496,18 +541,14 @@ const cases: ConstructCase[] = [
         emits: "contains sooner: AssignmentAction subsets children",
     },
     {
-        construct: "successionCycle",
-        model: machine(
-            "",
-            "state Busy { entry action steps { action one assign count := 1; action two assign count := 2; first one then two; first two then one; } }"
-        ),
-        located:
-            "action steps { action one assign count := 1; action two assign count := 2; first one then two; first two then one; }",
-    },
-    {
         construct: "actionOther",
         model: machine("", "state Busy { entry action { if count > 1 { assign count := 1; } } }"),
         located: "if count > 1 { assign count := 1; }",
+    },
+    {
+        construct: "actionAcceptOrControl",
+        model: machine("", "state Busy { entry action { accept Signal via input; } }"),
+        located: "accept Signal via input;",
     },
     {
         construct: "regionsAssignOne",
@@ -523,9 +564,14 @@ const cases: ConstructCase[] = [
         emits: "redefine contains initialValue: LiteralBooleanExpression",
     },
     {
-        construct: "literalOther",
+        construct: "literalReal",
         model: machine("attribute ratio : Integer := 1.5;"),
         located: "1.5",
+    },
+    {
+        construct: "literalOther",
+        model: machine('attribute label : Integer := "text";'),
+        located: '"text"',
     },
     {
         construct: "operator",
@@ -533,9 +579,19 @@ const cases: ConstructCase[] = [
         emits: "redefine contains initialValue: PlusOperatorExpression",
     },
     {
-        construct: "operatorOther",
+        construct: "operatorDivision",
+        model: machine("attribute half : Integer := count / 2;"),
+        emits: "redefine contains initialValue: DivisionOperatorExpression",
+    },
+    {
+        construct: "operatorModuloPower",
         model: machine("attribute rest : Integer := count % 2;"),
         located: "count % 2",
+    },
+    {
+        construct: "operatorOther",
+        model: machine("attribute flag : Boolean := true xor false;"),
+        located: "true xor false",
     },
     {
         construct: "reference",
@@ -695,22 +751,27 @@ describe("the SysML constructs of the translation", () => {
         });
     }, 180_000);
 
-    it("cover every construct of the registry but the translation failure", () => {
+    it("cover every construct of the registry", () => {
         const covered = new Set(
             cases.map((testCase) => {
                 return testCase.construct;
             })
         );
         const missing = Object.keys(SemantifyrConstructs).filter((construct) => {
+            // the arguments of `new X(...)` are features, not usages, and are not refused today
             return (
-                !covered.has(construct as SemantifyrConstructId) &&
-                construct !== "translationFailure"
+                !covered.has(construct as SemantifyrConstructId) && construct !== "sendArguments"
             );
         });
         expect(missing).toEqual([]);
     });
 
-    it.each(cases)("$construct", async ({ construct, model, located, emits }) => {
+    const translate = async (
+        model: string
+    ): Promise<{
+        oxsts: string | undefined;
+        diagnostics: { code: Diagnostic["code"]; severity: Diagnostic["severity"]; text: string }[];
+    }> => {
         const uri = URI.file(path.join(currentDir, "construct.sysml"));
         const document = shared.workspace.LangiumDocumentFactory.fromString(model, uri);
         shared.workspace.LangiumDocuments.addDocument(document);
@@ -721,24 +782,50 @@ describe("the SysML constructs of the translation", () => {
         const mapping = mapSysMLNamespaceToSemantifyr(document.parseResult.value as Namespace);
         const diagnostics = mapping.diagnostics.map((diagnostic) => {
             return {
-                construct: diagnostic.code,
+                code: diagnostic.code,
+                severity: diagnostic.severity,
                 text: document.textDocument.getText(diagnostic.range),
             };
         });
         shared.workspace.LangiumDocuments.deleteDocument(uri);
         shared.workspace.IndexManager.remove(uri);
-
         expect(document.parseResult.parserErrors).toHaveLength(0);
-        const status = SemantifyrConstructs[construct].status;
-        if (status === "supported") {
-            expect(diagnostics).toEqual([]);
-            const lines = mapping.oxsts?.split("\n").map((line) => {
+        return { oxsts: mapping.oxsts, diagnostics };
+    };
+
+    it.each(cases)("$construct", async ({ construct, model, located, emits }) => {
+        const { oxsts, diagnostics } = await translate(model);
+        const { outcome, warning } = SemantifyrConstructs[construct];
+        if (outcome === "planned" || outcome === "unsupported") {
+            expect(diagnostics).toContainEqual({
+                code: construct,
+                severity: DiagnosticSeverity.Error,
+                text: located,
+            });
+            expect(oxsts).toBeUndefined();
+            return;
+        }
+        expect(diagnostics).toEqual(
+            warning
+                ? [{ code: construct, severity: DiagnosticSeverity.Warning, text: located }]
+                : []
+        );
+        if (emits !== undefined) {
+            const lines = oxsts?.split("\n").map((line) => {
                 return line.trim().replace(/ \{$/, "");
             });
             expect(lines).toContain(emits);
-        } else {
-            expect(diagnostics).toContainEqual({ construct, text: located });
-            expect(mapping.oxsts === undefined).toBe(status === "refused");
         }
+        expect(oxsts).toBeDefined();
+    });
+
+    it.each(errorCases)("$error", async ({ error, model, located }) => {
+        const { oxsts, diagnostics } = await translate(model);
+        expect(diagnostics).toContainEqual({
+            code: error,
+            severity: DiagnosticSeverity.Error,
+            text: located,
+        });
+        expect(oxsts).toBeUndefined();
     });
 });

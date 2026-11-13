@@ -95,9 +95,7 @@ program
 program
     .command("constructs")
     .option("-o, --output <file>", "Output file path (default: standard output)")
-    .description(
-        "Print the SysML constructs the translation supports, warns about or refuses, as a table"
-    )
+    .description("Print the SysML constructs of the translation with their outcomes, as a table")
     .action(constructsAction);
 
 program

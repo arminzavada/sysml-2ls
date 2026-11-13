@@ -9,9 +9,12 @@ import {
     isAttributeUsage,
     isBindingConnectorAsUsage,
     isCalculationDefinition,
+    isCalculationUsage,
     isConnectionUsage,
     isConstructorExpression,
+    isControlNode,
     isDefinition,
+    isEnumerationDefinition,
     isExhibitStateUsage,
     isFeatureChainExpression,
     isFeatureMembership,
@@ -79,7 +82,13 @@ import {
     type Type,
     type VerificationCaseDefinition,
 } from "#generated/ast";
-import { SemantifyrConstructs, type SemantifyrConstructId } from "./SemantifyrConstructs";
+import {
+    SemantifyrConstructs,
+    SemantifyrErrors,
+    type SemantifyrConstruct,
+    type SemantifyrConstructId,
+    type SemantifyrErrorId,
+} from "./SemantifyrConstructs";
 import {
     elementPath,
     isLibraryFeature,
@@ -139,6 +148,8 @@ const binaryOperators = new Map([
     ["or", "OrOperatorExpression"],
 ]);
 
+const moduloPowerOperators = new Set(["%", "**", "^"]);
+
 const unaryOperators = new Map([
     ["not", "UnaryNotExpression"],
     ["-", "UnaryMinusExpression"],
@@ -152,7 +163,11 @@ export interface SemantifyrMapping {
 }
 
 type Multiplicity =
-    { kind: "one" } | { kind: "zero" } | { kind: "count"; count: number } | { kind: "other" };
+    | { kind: "one" }
+    | { kind: "zero" }
+    | { kind: "optional" }
+    | { kind: "count"; count: number }
+    | { kind: "other" };
 
 interface PartContext {
     readonly definition: PartDefinition | StateDefinition;
@@ -222,6 +237,14 @@ function multiplicityOf(feature: Feature): Multiplicity {
     }
     if (isOperatorExpression(bound) && bound.operator === "..") {
         const [lower, upper] = bound.operands;
+        if (
+            isLiteralNumber(lower) &&
+            isLiteralNumber(upper) &&
+            lower.literal === 0 &&
+            upper.literal === 1
+        ) {
+            return { kind: "optional" };
+        }
         if (isLiteralNumber(lower) && isLiteralNumber(upper) && lower.literal === upper.literal) {
             if (lower.literal === 1) {
                 return { kind: "one" };
@@ -306,20 +329,28 @@ export class SemantifyrModelMapper {
         };
     }
 
-    private report(node: AstNode, construct: SemantifyrConstructId, detail?: string): void {
-        const entry = SemantifyrConstructs[construct];
+    private report(
+        node: AstNode,
+        code: SemantifyrConstructId | SemantifyrErrorId,
+        detail?: string
+    ): void {
+        const construct: SemantifyrConstruct | undefined =
+            SemantifyrConstructs[code as SemantifyrConstructId];
         this.diagnostics.push({
             range: rangeOf(node),
-            severity:
-                entry.status === "warned" ? DiagnosticSeverity.Warning : DiagnosticSeverity.Error,
+            severity: construct?.warning ? DiagnosticSeverity.Warning : DiagnosticSeverity.Error,
             source: "semantifyr",
-            code: construct,
-            message: detail ?? entry.detail,
+            code,
+            message: detail ?? construct?.detail ?? SemantifyrErrors[code as SemantifyrErrorId],
         });
     }
 
-    private refuse(node: AstNode, construct: SemantifyrConstructId, detail?: string): never {
-        this.report(node, construct, detail);
+    private refuse(
+        node: AstNode,
+        code: SemantifyrConstructId | SemantifyrErrorId,
+        detail?: string
+    ): never {
+        this.report(node, code, detail);
         throw new Refusal();
     }
 
@@ -440,6 +471,9 @@ export class SemantifyrModelMapper {
         }
         if (isUsage(element)) {
             this.refuse(element, "topLevelUsage");
+        }
+        if (isEnumerationDefinition(element)) {
+            this.refuse(element, "enumerationDefinition");
         }
         if (isDefinition(element)) {
             this.refuse(element, "topLevelDefinition");
@@ -607,6 +641,9 @@ export class SemantifyrModelMapper {
             }
             return this.mapExhibitState(context, node, member, true);
         }
+        if (isActionUsage(member) && !isCalculationUsage(member)) {
+            this.refuse(member, "partAction");
+        }
         this.refuse(member, "partMember");
     }
 
@@ -668,6 +705,9 @@ export class SemantifyrModelMapper {
         if (multiplicity.kind === "zero") {
             this.absent.add(usage);
             return;
+        }
+        if (multiplicity.kind === "optional") {
+            this.refuse(usage.multiplicity ?? usage, "multiplicityOptional");
         }
         if (multiplicity.kind === "other") {
             this.refuse(usage.multiplicity ?? usage, "multiplicityOther");
@@ -813,6 +853,9 @@ export class SemantifyrModelMapper {
                 : typeName === "ScalarValues::Boolean"
                   ? "BooleanAttribute"
                   : undefined;
+        if (typeName === "ScalarValues::Real" || isEnumerationDefinition(types[0])) {
+            this.refuse(attribute, "attributeRealOrEnumeration");
+        }
         if (!kind) {
             this.refuse(attribute, "attributeType");
         }
@@ -823,6 +866,9 @@ export class SemantifyrModelMapper {
         }
         if (multiplicity.kind === "count") {
             this.refuse(attribute.multiplicity ?? attribute, "multiplicityAttribute");
+        }
+        if (multiplicity.kind === "optional") {
+            this.refuse(attribute.multiplicity ?? attribute, "multiplicityOptional");
         }
         if (multiplicity.kind === "other") {
             this.refuse(attribute.multiplicity ?? attribute, "multiplicityOther");
@@ -1292,12 +1338,11 @@ export class SemantifyrModelMapper {
                 this.refuse(action.receiver, "sendTo");
             }
             const value = valueOf(action.payload?.target as Element);
-            if (
-                !isConstructorExpression(value) ||
-                value.operands.length > 0 ||
-                ownedElements(value).some(isUsage)
-            ) {
+            if (!isConstructorExpression(value)) {
                 this.refuse(action.payload ?? action, "sendPayload");
+            }
+            if (value.operands.length > 0 || ownedElements(value).some(isUsage)) {
+                this.refuse(action.payload ?? action, "sendArguments");
             }
             const global = this.itemOf(value, action.payload ?? action, "sendPayload");
             const port = this.ownPort(context, action, this.viaFeature(action.sender, action));
@@ -1367,6 +1412,9 @@ export class SemantifyrModelMapper {
             }
             return;
         }
+        if (isAcceptActionUsage(action) || isControlNode(action)) {
+            this.refuse(action, "actionAcceptOrControl");
+        }
         this.refuse(action, "actionOther");
     }
 
@@ -1397,6 +1445,9 @@ export class SemantifyrModelMapper {
             if (isActionUsage(member) && !isAcceptActionUsage(member)) {
                 children.push(member);
                 return;
+            }
+            if (isAcceptActionUsage(member)) {
+                this.refuse(member, "actionAcceptOrControl");
             }
             this.refuse(member, "actionOther");
         });
@@ -1449,7 +1500,7 @@ export class SemantifyrModelMapper {
         }
         if (isLiteralNumber(expression)) {
             if (!Number.isInteger(expression.literal)) {
-                this.refuse(expression, "literalOther");
+                this.refuse(expression, "literalReal");
             }
             const literal = node("LiteralIntegerExpression");
             new OxstsNode(
@@ -1500,6 +1551,9 @@ export class SemantifyrModelMapper {
                 this.mapExpression(operation, "left", expression.operands[0], context);
                 this.mapExpression(operation, "right", expression.operands[1], context);
                 return;
+            }
+            if (moduloPowerOperators.has(operator)) {
+                this.refuse(expression, "operatorModuloPower");
             }
             this.refuse(expression, "operatorOther");
         }
