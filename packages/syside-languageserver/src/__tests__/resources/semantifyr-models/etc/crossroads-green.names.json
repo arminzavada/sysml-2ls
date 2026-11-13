@@ -1,5 +1,5 @@
 {
-    "modelHash": "fnv1a64:52bef86d7e530545",
+    "modelHash": "fnv1a64:1f9db22ff235e2b7",
     "package": "semantifyr::sysml::model",
     "tick": {
         "value": "1",
@@ -336,12 +336,28 @@
             "oxsts": "TrafficLightController.Behaviour.Interrupted.Yellow.entryAction"
         },
         {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Yellow::#1",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Yellow.transition1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Yellow::#1::#0",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Yellow.transition1.acceptAction"
+        },
+        {
             "sysml": "TrafficLightController::Behaviour::Interrupted::Black",
             "oxsts": "TrafficLightController.Behaviour.Interrupted.Black"
         },
         {
             "sysml": "TrafficLightController::Behaviour::Interrupted::Black::#0",
             "oxsts": "TrafficLightController.Behaviour.Interrupted.Black.entryAction"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Black::#1",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Black.transition1"
+        },
+        {
+            "sysml": "TrafficLightController::Behaviour::Interrupted::Black::#1::#0",
+            "oxsts": "TrafficLightController.Behaviour.Interrupted.Black.transition1.acceptAction"
         },
         {
             "sysml": "TrafficLightController::Behaviour::Interrupted::#0",
@@ -374,14 +390,6 @@
         {
             "sysml": "TrafficLightController::Behaviour::#2::#0",
             "oxsts": "TrafficLightController.Behaviour.transition1.acceptAction"
-        },
-        {
-            "sysml": "TrafficLightController::Behaviour::#3",
-            "oxsts": "TrafficLightController.Behaviour.transition2"
-        },
-        {
-            "sysml": "TrafficLightController::Behaviour::#3::#0",
-            "oxsts": "TrafficLightController.Behaviour.transition2.acceptAction"
         },
         {
             "sysml": "CrossroadSystem",
@@ -992,6 +1000,23 @@
         {
             "sysml": "ReachableYellowYellow::#1::#0::#0",
             "oxsts": "ReachableYellowYellow.objective.requirement1.constraint1"
+        },
+        {
+            "sysml": "TrafficLightAReturnsToNormalAfterInterruptionTestCase",
+            "oxsts": "TrafficLightAReturnsToNormalAfterInterruptionTestCase"
+        },
+        {
+            "sysml": "TrafficLightAReturnsToNormalAfterInterruptionTestCase::system",
+            "oxsts": "TrafficLightAReturnsToNormalAfterInterruptionTestCase.system",
+            "type": "CrossroadSystem"
+        },
+        {
+            "sysml": "TrafficLightAReturnsToNormalAfterInterruptionTestCase::#1::#0",
+            "oxsts": "TrafficLightAReturnsToNormalAfterInterruptionTestCase.objective.requirement1"
+        },
+        {
+            "sysml": "TrafficLightAReturnsToNormalAfterInterruptionTestCase::#1::#0::#0",
+            "oxsts": "TrafficLightAReturnsToNormalAfterInterruptionTestCase.objective.requirement1.constraint1"
         }
     ]
 }

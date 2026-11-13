@@ -2428,11 +2428,27 @@ class TrafficLightController : Part {
                     redefine refers viaPort: Port = lightControl
                     redefine refers payload: Item = global_YellowL
                 }
+                contains transition1: Transition subsets transitions {
+                    redefine refers from: StateNode = Yellow
+                    redefine refers to: StateNode = Normal
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = control
+                        redefine refers payload: Item = global_Police
+                    }
+                }
             }
             contains Black: State subsets states {
                 redefine contains entryAction: SendItemAction {
                     redefine refers viaPort: Port = lightControl
                     redefine refers payload: Item = global_NoneL
+                }
+                contains transition1: Transition subsets transitions {
+                    redefine refers from: StateNode = Black
+                    redefine refers to: StateNode = Normal
+                    redefine contains acceptAction: AcceptItemAction {
+                        redefine refers viaPort: Port = control
+                        redefine refers payload: Item = global_Police
+                    }
                 }
             }
             contains initial1: Transition subsets transitions {
@@ -2461,14 +2477,6 @@ class TrafficLightController : Part {
         contains transition1: Transition subsets transitions {
             redefine refers from: StateNode = Normal
             redefine refers to: StateNode = Interrupted
-            redefine contains acceptAction: AcceptItemAction {
-                redefine refers viaPort: Port = control
-                redefine refers payload: Item = global_Police
-            }
-        }
-        contains transition2: Transition subsets transitions {
-            redefine refers from: StateNode = Interrupted
-            redefine refers to: StateNode = Normal
             redefine contains acceptAction: AcceptItemAction {
                 redefine refers viaPort: Port = control
                 redefine refers payload: Item = global_Police
@@ -3029,6 +3037,27 @@ class ReachableYellowYellow : VerificationCaseDefinition {
         }
     }
 }
+
+@VerificationCase
+class TrafficLightAReturnsToNormalAfterInterruptionTestCase : VerificationCaseDefinition {
+    contains system: CrossroadSystem[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: AndOperatorExpression {
+                        redefine contains left: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.controller.Behaviour.Operating.TrafficOnA
+                        }
+                        redefine contains right: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.trafficLightA.Behaviour.Interrupted
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 "
 `;
 
@@ -3290,6 +3319,499 @@ class UnlockedAndOpenNeverSimultaneous : VerificationCaseDefinition {
                         redefine contains right: IsStateActiveExpression {
                             redefine refers state: AbstractState = system.Behaviour.Open
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`Semantifyr OXSTS transformation > OXSTS output for fifoqueue.sysml matches the recorded snapshot 1`] = `
+"package semantifyr::sysml::model
+
+import semantifyr::sysml::expressions
+import semantifyr::sysml::attributes
+import semantifyr::sysml::states
+import semantifyr::sysml::parts
+import semantifyr::sysml::ports
+import semantifyr::sysml::items
+import semantifyr::sysml::actions
+import semantifyr::sysml::triggers
+import semantifyr::sysml::verification
+
+class Oldest : Item
+
+global containment global_Oldest: Oldest[1]
+
+class Middle : Item
+
+global containment global_Middle: Middle[1]
+
+class Newest : Item
+
+global containment global_Newest: Newest[1]
+
+class Feed : NormalPort
+
+class ConjugatedFeed : ConjugatedPort
+
+class Producer : Part {
+    contains output: Feed subsets ports
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Idle: State subsets states
+        contains SentOldest: State subsets states
+        contains SentMiddle: State subsets states
+        contains SentNewest: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Idle
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = SentOldest
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = output
+                    redefine refers payload: Item = global_Oldest
+                }
+            }
+        }
+        contains transition2: Transition subsets transitions {
+            redefine refers from: StateNode = SentOldest
+            redefine refers to: StateNode = SentMiddle
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = output
+                    redefine refers payload: Item = global_Middle
+                }
+            }
+        }
+        contains transition3: Transition subsets transitions {
+            redefine refers from: StateNode = SentMiddle
+            redefine refers to: StateNode = SentNewest
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = output
+                    redefine refers payload: Item = global_Newest
+                }
+            }
+        }
+    }
+}
+
+class Consumer : Part {
+    contains input: ConjugatedFeed subsets ports
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Idle: State subsets states
+        contains FirstWait: State subsets states
+        contains SecondWait: State subsets states
+        contains ThirdWait: State subsets states
+        contains Ready: State subsets states
+        contains GotOldest: State subsets states
+        contains GotMiddle: State subsets states
+        contains GotNewest: State subsets states
+        contains OutOfOrder: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Idle
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = FirstWait
+        }
+        contains transition2: Transition subsets transitions {
+            redefine refers from: StateNode = FirstWait
+            redefine refers to: StateNode = SecondWait
+        }
+        contains transition3: Transition subsets transitions {
+            redefine refers from: StateNode = SecondWait
+            redefine refers to: StateNode = ThirdWait
+        }
+        contains transition4: Transition subsets transitions {
+            redefine refers from: StateNode = ThirdWait
+            redefine refers to: StateNode = Ready
+        }
+        contains transition5: Transition subsets transitions {
+            redefine refers from: StateNode = Ready
+            redefine refers to: StateNode = GotOldest
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_Oldest
+            }
+        }
+        contains transition6: Transition subsets transitions {
+            redefine refers from: StateNode = Ready
+            redefine refers to: StateNode = OutOfOrder
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_Middle
+            }
+        }
+        contains transition7: Transition subsets transitions {
+            redefine refers from: StateNode = GotOldest
+            redefine refers to: StateNode = GotMiddle
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_Middle
+            }
+        }
+        contains transition8: Transition subsets transitions {
+            redefine refers from: StateNode = GotMiddle
+            redefine refers to: StateNode = GotNewest
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_Newest
+            }
+        }
+    }
+}
+
+class QueueModel : Part {
+    contains producer: Producer subsets parts
+    contains consumer: Consumer subsets parts
+    contains flow1: Flow subsets flows {
+        redefine refers source: Port = producer.output
+        redefine refers target: Port = consumer.input
+    }
+}
+
+@VerificationCase
+class QueuedItemIsAcceptedLaterTestCase : VerificationCaseDefinition {
+    contains system: QueueModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.consumer.Behaviour.GotOldest
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class QueuedItemsAreAcceptedInArrivalOrderTestCase : VerificationCaseDefinition {
+    contains system: QueueModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.consumer.Behaviour.GotMiddle
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class QueuedItemsAreNeverAcceptedOutOfOrderTestCase : VerificationCaseDefinition {
+    contains system: QueueModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.consumer.Behaviour.OutOfOrder
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class FullQueueDropsNewestItemTestCase : VerificationCaseDefinition {
+    contains system: QueueModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.consumer.Behaviour.GotNewest
+                    }
+                }
+            }
+        }
+    }
+}
+"
+`;
+
+exports[`Semantifyr OXSTS transformation > OXSTS output for level_crossing.sysml matches the recorded snapshot 1`] = `
+"package semantifyr::sysml::model
+
+import semantifyr::sysml::expressions
+import semantifyr::sysml::attributes
+import semantifyr::sysml::states
+import semantifyr::sysml::parts
+import semantifyr::sysml::ports
+import semantifyr::sysml::items
+import semantifyr::sysml::actions
+import semantifyr::sysml::triggers
+import semantifyr::sysml::verification
+
+class ApproachSignal : Item
+
+global containment global_ApproachSignal: ApproachSignal[1]
+
+class NearSignal : Item
+
+global containment global_NearSignal: NearSignal[1]
+
+class EnterSignal : Item
+
+global containment global_EnterSignal: EnterSignal[1]
+
+class LeaveSignal : Item
+
+global containment global_LeaveSignal: LeaveSignal[1]
+
+class TrainApproaching : Item
+
+global containment global_TrainApproaching: TrainApproaching[1]
+
+class TrainLeft : Item
+
+global containment global_TrainLeft: TrainLeft[1]
+
+class Lower : Item
+
+global containment global_Lower: Lower[1]
+
+class Lift : Item
+
+global containment global_Lift: Lift[1]
+
+class Sensors : NormalPort
+
+class ConjugatedSensors : ConjugatedPort
+
+class TrackReports : NormalPort
+
+class ConjugatedTrackReports : ConjugatedPort
+
+class BarrierCommands : NormalPort
+
+class ConjugatedBarrierCommands : ConjugatedPort
+
+class Track : Part {
+    contains sensors: ConjugatedSensors subsets ports
+    contains controller: TrackReports subsets ports
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Free: State subsets states
+        contains Approaching: State subsets states
+        contains Near: State subsets states
+        contains InCrossing: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Free
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Free
+            redefine refers to: StateNode = Approaching
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = sensors
+                redefine refers payload: Item = global_ApproachSignal
+            }
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = controller
+                    redefine refers payload: Item = global_TrainApproaching
+                }
+            }
+        }
+        contains transition2: Transition subsets transitions {
+            redefine refers from: StateNode = Approaching
+            redefine refers to: StateNode = Near
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = sensors
+                redefine refers payload: Item = global_NearSignal
+            }
+        }
+        contains transition3: Transition subsets transitions {
+            redefine refers from: StateNode = Near
+            redefine refers to: StateNode = InCrossing
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = sensors
+                redefine refers payload: Item = global_EnterSignal
+            }
+        }
+        contains transition4: Transition subsets transitions {
+            redefine refers from: StateNode = InCrossing
+            redefine refers to: StateNode = Free
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = sensors
+                redefine refers payload: Item = global_LeaveSignal
+            }
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = controller
+                    redefine refers payload: Item = global_TrainLeft
+                }
+            }
+        }
+    }
+}
+
+class Controller : Part {
+    contains trackA: ConjugatedTrackReports subsets ports
+    contains trackB: ConjugatedTrackReports subsets ports
+    contains barrier: BarrierCommands subsets ports
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Idle: State subsets states
+        contains TrainPresent: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Idle
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = TrainPresent
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = trackA
+                redefine refers payload: Item = global_TrainApproaching
+            }
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = barrier
+                    redefine refers payload: Item = global_Lower
+                }
+            }
+        }
+        contains transition2: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = TrainPresent
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = trackB
+                redefine refers payload: Item = global_TrainApproaching
+            }
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = barrier
+                    redefine refers payload: Item = global_Lower
+                }
+            }
+        }
+        contains transition3: Transition subsets transitions {
+            redefine refers from: StateNode = TrainPresent
+            redefine refers to: StateNode = Idle
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = trackA
+                redefine refers payload: Item = global_TrainLeft
+            }
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = barrier
+                    redefine refers payload: Item = global_Lift
+                }
+            }
+        }
+        contains transition4: Transition subsets transitions {
+            redefine refers from: StateNode = TrainPresent
+            redefine refers to: StateNode = Idle
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = trackB
+                redefine refers payload: Item = global_TrainLeft
+            }
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = barrier
+                    redefine refers payload: Item = global_Lift
+                }
+            }
+        }
+    }
+}
+
+class Barrier : Part {
+    contains controller: ConjugatedBarrierCommands subsets ports
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Up: State subsets states
+        contains Down: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Up
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Up
+            redefine refers to: StateNode = Down
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = controller
+                redefine refers payload: Item = global_Lower
+            }
+        }
+        contains transition2: Transition subsets transitions {
+            redefine refers from: StateNode = Down
+            redefine refers to: StateNode = Up
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = controller
+                redefine refers payload: Item = global_Lift
+            }
+        }
+    }
+}
+
+class LevelCrossing : Part {
+    contains trackA: Track subsets parts
+    contains trackB: Track subsets parts
+    contains controller: Controller subsets parts
+    contains barrier: Barrier subsets parts
+    refers trackASensors: ConjugatedSensors subsets ports = trackA.sensors
+    contains flow1: Flow subsets flows {
+        redefine refers source: Port = trackA.controller
+        redefine refers target: Port = controller.trackA
+    }
+    refers trackBSensors: ConjugatedSensors subsets ports = trackB.sensors
+    contains flow2: Flow subsets flows {
+        redefine refers source: Port = trackB.controller
+        redefine refers target: Port = controller.trackB
+    }
+    contains flow3: Flow subsets flows {
+        redefine refers source: Port = controller.barrier
+        redefine refers target: Port = barrier.controller
+    }
+}
+
+@VerificationCase
+class BarrierDownWhileTrainInCrossingViolated : VerificationCaseDefinition {
+    contains system: LevelCrossing[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: UnaryNotExpression {
+                        redefine contains operand: OrOperatorExpression {
+                            redefine contains left: IsStateActiveExpression {
+                                redefine refers state: AbstractState = system.trackA.Behaviour.InCrossing
+                            }
+                            redefine contains right: IsStateActiveExpression {
+                                redefine refers state: AbstractState = system.trackB.Behaviour.InCrossing
+                            }
+                        }
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.barrier.Behaviour.Down
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class TwoTrainsCanBeInTheCrossing : VerificationCaseDefinition {
+    contains system: LevelCrossing[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: AndOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trackA.Behaviour.InCrossing
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.trackB.Behaviour.InCrossing
                     }
                 }
             }
@@ -4436,6 +4958,10 @@ class PortMOut : NormalPort
 
 class ConjugatedPortMOut : ConjugatedPort
 
+class PortEFOut : NormalPort
+
+class ConjugatedPortEFOut : ConjugatedPort
+
 class EntryActionModel : Part {
     contains entered: BooleanAttribute subsets attributes {
         redefine contains initialValue: LiteralBooleanExpression {
@@ -5437,6 +5963,11 @@ class ExhibitedStateEntryActionModel : Part {
             redefine refers value: bool = false
         }
     }
+    contains enteredBeforeS1: BooleanAttribute subsets attributes {
+        redefine contains initialValue: LiteralBooleanExpression {
+            redefine refers value: bool = false
+        }
+    }
     contains Behaviour: ExhibitedState redefines exhibitState {
         redefine contains entryAction: CompositeAction {
             contains assignment1: AssignmentAction subsets children {
@@ -5446,7 +5977,16 @@ class ExhibitedStateEntryActionModel : Part {
                 }
             }
         }
-        contains S1: State subsets states
+        contains S1: State subsets states {
+            redefine contains entryAction: CompositeAction {
+                contains assignment1: AssignmentAction subsets children {
+                    redefine refers attribute: Attribute = enteredBeforeS1
+                    redefine contains expression: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = entered
+                    }
+                }
+            }
+        }
         contains initial1: Transition subsets transitions {
             redefine refers from: StateNode = start
             redefine refers to: StateNode = S1
@@ -5773,6 +6313,314 @@ class LateReceiverModel : Part {
 class LateReceiverFlowModel : Part {
     contains sender: SenderPartModel subsets parts
     contains receiver: LateReceiverModel subsets parts
+    contains flow1: Flow subsets flows {
+        redefine refers source: Port = sender.output
+        redefine refers target: Port = receiver.input
+    }
+}
+
+class ExhibitedDoneModel : Part {
+    contains input: PortE subsets ports
+    contains finished: BooleanAttribute subsets attributes {
+        redefine contains initialValue: LiteralBooleanExpression {
+            redefine refers value: bool = false
+        }
+    }
+    contains exited: BooleanAttribute subsets attributes {
+        redefine contains initialValue: LiteralBooleanExpression {
+            redefine refers value: bool = false
+        }
+    }
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        redefine contains exitAction: CompositeAction {
+            contains assignment1: AssignmentAction subsets children {
+                redefine refers attribute: Attribute = exited
+                redefine contains expression: LiteralBooleanExpression {
+                    redefine refers value: bool = true
+                }
+            }
+        }
+        contains Running: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Running
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Running
+            redefine refers to: StateNode = done
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_EventE
+            }
+            redefine contains action: AssignmentAction {
+                redefine refers attribute: Attribute = finished
+                redefine contains expression: LiteralBooleanExpression {
+                    redefine refers value: bool = true
+                }
+            }
+        }
+    }
+}
+
+class CrossRegionEntryModel : Part {
+    contains input: PortE subsets ports
+    contains order: IntegerAttribute subsets attributes {
+        redefine contains initialValue: LiteralIntegerExpression {
+            redefine refers value: int = 0
+        }
+    }
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Idle: State subsets states
+        contains Running: ParallelState subsets states {
+            redefine contains entryAction: AssignmentAction {
+                redefine refers attribute: Attribute = order
+                redefine contains expression: PlusOperatorExpression {
+                    redefine contains left: MultiplicationOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = order
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 10
+                        }
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 1
+                    }
+                }
+            }
+            contains Left: State subsets states {
+                redefine contains entryAction: AssignmentAction {
+                    redefine refers attribute: Attribute = order
+                    redefine contains expression: PlusOperatorExpression {
+                        redefine contains left: MultiplicationOperatorExpression {
+                            redefine contains left: AttributeReferenceExpression {
+                                redefine refers attribute: Attribute = order
+                            }
+                            redefine contains right: LiteralIntegerExpression {
+                                redefine refers value: int = 10
+                            }
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 4
+                        }
+                    }
+                }
+                contains Initial: State subsets states {
+                    redefine contains entryAction: AssignmentAction {
+                        redefine refers attribute: Attribute = order
+                        redefine contains expression: PlusOperatorExpression {
+                            redefine contains left: MultiplicationOperatorExpression {
+                                redefine contains left: AttributeReferenceExpression {
+                                    redefine refers attribute: Attribute = order
+                                }
+                                redefine contains right: LiteralIntegerExpression {
+                                    redefine refers value: int = 10
+                                }
+                            }
+                            redefine contains right: LiteralIntegerExpression {
+                                redefine refers value: int = 9
+                            }
+                        }
+                    }
+                }
+                contains Target: State subsets states {
+                    redefine contains entryAction: AssignmentAction {
+                        redefine refers attribute: Attribute = order
+                        redefine contains expression: PlusOperatorExpression {
+                            redefine contains left: MultiplicationOperatorExpression {
+                                redefine contains left: AttributeReferenceExpression {
+                                    redefine refers attribute: Attribute = order
+                                }
+                                redefine contains right: LiteralIntegerExpression {
+                                    redefine refers value: int = 10
+                                }
+                            }
+                            redefine contains right: LiteralIntegerExpression {
+                                redefine refers value: int = 5
+                            }
+                        }
+                    }
+                }
+                contains initial1: Transition subsets transitions {
+                    redefine refers from: StateNode = start
+                    redefine refers to: StateNode = Initial
+                }
+            }
+            contains Right: State subsets states {
+                redefine contains entryAction: AssignmentAction {
+                    redefine refers attribute: Attribute = order
+                    redefine contains expression: PlusOperatorExpression {
+                        redefine contains left: MultiplicationOperatorExpression {
+                            redefine contains left: AttributeReferenceExpression {
+                                redefine refers attribute: Attribute = order
+                            }
+                            redefine contains right: LiteralIntegerExpression {
+                                redefine refers value: int = 10
+                            }
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 2
+                        }
+                    }
+                }
+                contains Sibling: State subsets states {
+                    redefine contains entryAction: AssignmentAction {
+                        redefine refers attribute: Attribute = order
+                        redefine contains expression: PlusOperatorExpression {
+                            redefine contains left: MultiplicationOperatorExpression {
+                                redefine contains left: AttributeReferenceExpression {
+                                    redefine refers attribute: Attribute = order
+                                }
+                                redefine contains right: LiteralIntegerExpression {
+                                    redefine refers value: int = 10
+                                }
+                            }
+                            redefine contains right: LiteralIntegerExpression {
+                                redefine refers value: int = 3
+                            }
+                        }
+                    }
+                }
+                contains initial1: Transition subsets transitions {
+                    redefine refers from: StateNode = start
+                    redefine refers to: StateNode = Sibling
+                }
+            }
+        }
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Idle
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = Running.Left.Target
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_EventE
+            }
+        }
+    }
+}
+
+class DerivedAttributeModel : Part {
+    contains counter: IntegerAttribute subsets attributes {
+        redefine contains initialValue: LiteralIntegerExpression {
+            redefine refers value: int = 0
+        }
+    }
+    contains doubled: DerivedAttribute subsets attributes {
+        redefine contains expression: MultiplicationOperatorExpression {
+            redefine contains left: AttributeReferenceExpression {
+                redefine refers attribute: Attribute = counter
+            }
+            redefine contains right: LiteralIntegerExpression {
+                redefine refers value: int = 2
+            }
+        }
+    }
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Counting: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Counting
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Counting
+            redefine refers to: StateNode = Counting
+            redefine contains guard: Guard {
+                redefine contains expression: LessThanOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = counter
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 3
+                    }
+                }
+            }
+            redefine contains action: AssignmentAction {
+                redefine refers attribute: Attribute = counter
+                redefine contains expression: PlusOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = counter
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 1
+                    }
+                }
+            }
+        }
+    }
+}
+
+class UnvaluedAttributeModel : Part {
+    contains level: IntegerAttribute subsets attributes
+    contains flag: BooleanAttribute subsets attributes
+    contains initial: IntegerAttribute subsets attributes {
+        redefine contains initialValue: LiteralIntegerExpression {
+            redefine refers value: int = 7
+        }
+    }
+}
+
+class DoubleSenderModel : Part {
+    contains output: PortEFOut subsets ports
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Idle: State subsets states
+        contains Sent: State subsets states {
+            redefine contains entryAction: SendItemAction {
+                redefine refers viaPort: Port = output
+                redefine refers payload: Item = global_EventF
+            }
+        }
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Idle
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Idle
+            redefine refers to: StateNode = Sent
+            redefine contains action: CompositeAction {
+                contains send1: SendItemAction subsets children {
+                    redefine refers viaPort: Port = output
+                    redefine refers payload: Item = global_EventE
+                }
+            }
+        }
+    }
+}
+
+class SlotReceiverModel : Part {
+    contains input: ConjugatedPortEFOut subsets ports
+    contains Behaviour: ExhibitedState redefines exhibitState {
+        contains Waiting: State subsets states
+        contains GotE: State subsets states
+        contains GotF: State subsets states
+        contains initial1: Transition subsets transitions {
+            redefine refers from: StateNode = start
+            redefine refers to: StateNode = Waiting
+        }
+        contains transition1: Transition subsets transitions {
+            redefine refers from: StateNode = Waiting
+            redefine refers to: StateNode = GotE
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_EventE
+            }
+        }
+        contains transition2: Transition subsets transitions {
+            redefine refers from: StateNode = Waiting
+            redefine refers to: StateNode = GotF
+            redefine contains acceptAction: AcceptItemAction {
+                redefine refers viaPort: Port = input
+                redefine refers payload: Item = global_EventF
+            }
+        }
+    }
+}
+
+class LastWinsModel : Part {
+    contains sender: DoubleSenderModel subsets parts
+    contains receiver: SlotReceiverModel subsets parts
     contains flow1: Flow subsets flows {
         redefine refers source: Port = sender.output
         redefine refers target: Port = receiver.input
@@ -6931,19 +7779,14 @@ class ExhibitedStateEntryActionPrecedesSubstateTestCase : VerificationCaseDefini
     redefine contains objective: Requirement[1] {
         contains requirement1: Constraint subsets verifiedRequirements {
             contains constraint1: MustAlways subsets requiredConstraints {
-                redefine contains body: UnaryNotExpression {
-                    redefine contains operand: AndOperatorExpression {
-                        redefine contains left: IsStateActiveExpression {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: UnaryNotExpression {
+                        redefine contains operand: IsStateActiveExpression {
                             redefine refers state: AbstractState = system.Behaviour.S1
                         }
-                        redefine contains right: EqualityOperatorExpression {
-                            redefine contains left: AttributeReferenceExpression {
-                                redefine refers attribute: Attribute = system.entered
-                            }
-                            redefine contains right: LiteralBooleanExpression {
-                                redefine refers value: bool = false
-                            }
-                        }
+                    }
+                    redefine contains right: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.enteredBeforeS1
                     }
                 }
             }
@@ -7117,6 +7960,374 @@ class ObjectiveConstraintCheckedViolated : VerificationCaseDefinition {
                 }
                 redefine contains right: LiteralBooleanExpression {
                     redefine refers value: bool = false
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class ExhibitedStateActiveUntilDoneTestCase : VerificationCaseDefinition {
+    contains system: ExhibitedDoneModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.finished
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.Behaviour
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class ExhibitedStateInactiveAfterDoneTestCase : VerificationCaseDefinition {
+    contains system: ExhibitedDoneModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: UnaryNotExpression {
+                        redefine contains operand: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = system.finished
+                        }
+                    }
+                    redefine contains right: UnaryNotExpression {
+                        redefine contains operand: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class ExhibitedStateReachesDoneTestCase : VerificationCaseDefinition {
+    contains system: ExhibitedDoneModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: EqualityOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.Behaviour
+                    }
+                    redefine contains right: LiteralBooleanExpression {
+                        redefine refers value: bool = false
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class ExhibitedStateExitActionRunsAtDoneTestCase : VerificationCaseDefinition {
+    contains system: ExhibitedDoneModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.Behaviour
+                    }
+                    redefine contains right: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.exited
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class ExhibitedStateStaysActiveViolated : VerificationCaseDefinition {
+    contains system: ExhibitedDoneModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.Behaviour
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class CrossRegionEntryReachesTargetTestCase : VerificationCaseDefinition {
+    contains system: CrossRegionEntryModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.Behaviour.Running.Left.Target
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class CrossRegionEntryEntersSiblingRegionTestCase : VerificationCaseDefinition {
+    contains system: CrossRegionEntryModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: UnaryNotExpression {
+                        redefine contains operand: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour.Running.Left.Target
+                        }
+                    }
+                    redefine contains right: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.Behaviour.Running.Right.Sibling
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class CrossRegionEntryRunsEntriesInOrderTestCase : VerificationCaseDefinition {
+    contains system: CrossRegionEntryModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: UnaryNotExpression {
+                        redefine contains operand: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour.Running.Left.Target
+                        }
+                    }
+                    redefine contains right: EqualityOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = system.order
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 12345
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class CrossRegionEntryInitialDescentViolated : VerificationCaseDefinition {
+    contains system: CrossRegionEntryModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: OrOperatorExpression {
+                    redefine contains left: UnaryNotExpression {
+                        redefine contains operand: IsStateActiveExpression {
+                            redefine refers state: AbstractState = system.Behaviour.Running.Left.Target
+                        }
+                    }
+                    redefine contains right: EqualityOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = system.order
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 12495
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class DerivedAttributeFollowsItsExpressionTestCase : VerificationCaseDefinition {
+    contains system: DerivedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: EqualityOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.doubled
+                    }
+                    redefine contains right: MultiplicationOperatorExpression {
+                        redefine contains left: AttributeReferenceExpression {
+                            redefine refers attribute: Attribute = system.counter
+                        }
+                        redefine contains right: LiteralIntegerExpression {
+                            redefine refers value: int = 2
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class DerivedAttributeChangesTestCase : VerificationCaseDefinition {
+    contains system: DerivedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: EqualityOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.doubled
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 6
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class DerivedAttributeConstantViolated : VerificationCaseDefinition {
+    contains system: DerivedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: EqualityOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.doubled
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 0
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class UnvaluedAttributeMayStartAboveZeroTestCase : VerificationCaseDefinition {
+    contains system: UnvaluedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: GreaterThanOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.level
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 0
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class UnvaluedAttributeMayStartBelowZeroTestCase : VerificationCaseDefinition {
+    contains system: UnvaluedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: LessThanOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.level
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 0
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class UnvaluedBooleanMayStartTrueTestCase : VerificationCaseDefinition {
+    contains system: UnvaluedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: EqualityOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.flag
+                    }
+                    redefine contains right: LiteralBooleanExpression {
+                        redefine refers value: bool = true
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class UnvaluedBooleanMayStartFalseTestCase : VerificationCaseDefinition {
+    contains system: UnvaluedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: EqualityOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.flag
+                    }
+                    redefine contains right: LiteralBooleanExpression {
+                        redefine refers value: bool = false
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class InitialValueHoldsViolated : VerificationCaseDefinition {
+    contains system: UnvaluedAttributeModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: EqualityOperatorExpression {
+                    redefine contains left: AttributeReferenceExpression {
+                        redefine refers attribute: Attribute = system.initial
+                    }
+                    redefine contains right: LiteralIntegerExpression {
+                        redefine refers value: int = 8
+                    }
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class LastItemOnOneSlotIsAcceptedTestCase : VerificationCaseDefinition {
+    contains system: LastWinsModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: Eventually subsets requiredConstraints {
+                redefine contains body: IsStateActiveExpression {
+                    redefine refers state: AbstractState = system.receiver.Behaviour.GotF
+                }
+            }
+        }
+    }
+}
+
+@VerificationCase
+class EarlierItemOnOneSlotIsNeverAcceptedTestCase : VerificationCaseDefinition {
+    contains system: LastWinsModel[1] redefines subject
+    redefine contains objective: Requirement[1] {
+        contains requirement1: Constraint subsets verifiedRequirements {
+            contains constraint1: MustAlways subsets requiredConstraints {
+                redefine contains body: UnaryNotExpression {
+                    redefine contains operand: IsStateActiveExpression {
+                        redefine refers state: AbstractState = system.receiver.Behaviour.GotE
+                    }
                 }
             }
         }

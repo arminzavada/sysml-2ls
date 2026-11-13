@@ -21,6 +21,8 @@ const MODELS = [
     "compressedspacecraft.sysml",
     "crossroads.sysml",
     "door_access.sysml",
+    "fifoqueue.sysml",
+    "level_crossing.sysml",
     "orion_protocol.sysml",
     "power_subsystems.sysml",
     "semanticstest.sysml",
