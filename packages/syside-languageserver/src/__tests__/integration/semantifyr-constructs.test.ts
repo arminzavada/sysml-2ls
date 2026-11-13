@@ -515,6 +515,16 @@ const cases: ConstructCase[] = [
         located: "count",
     },
     {
+        construct: "sendArguments",
+        model: machine("", "transition first Idle do send new Signal(1) via input then Idle;"),
+        located: "send new Signal(1) via input",
+    },
+    {
+        construct: "sendArguments",
+        model: machine("", "transition first Idle do send new Signal(x = 1) via input then Idle;"),
+        located: "send new Signal(x = 1) via input",
+    },
+    {
         construct: "assignment",
         model: machine("", "transition first Idle do assign count := 2 then Idle;"),
         emits: "redefine refers attribute: Attribute = count",
@@ -567,6 +577,11 @@ const cases: ConstructCase[] = [
         construct: "literalReal",
         model: machine("attribute ratio : Integer := 1.5;"),
         located: "1.5",
+    },
+    {
+        construct: "literalReal",
+        model: machine("attribute ratio : Integer := 1.0;"),
+        located: "1.0",
     },
     {
         construct: "literalOther",
@@ -758,10 +773,7 @@ describe("the SysML constructs of the translation", () => {
             })
         );
         const missing = Object.keys(SemantifyrConstructs).filter((construct) => {
-            // the arguments of `new X(...)` are features, not usages, and are not refused today
-            return (
-                !covered.has(construct as SemantifyrConstructId) && construct !== "sendArguments"
-            );
+            return !covered.has(construct as SemantifyrConstructId);
         });
         expect(missing).toEqual([]);
     });

@@ -1341,8 +1341,8 @@ export class SemantifyrModelMapper {
             if (!isConstructorExpression(value)) {
                 this.refuse(action.payload ?? action, "sendPayload");
             }
-            if (value.operands.length > 0 || ownedElements(value).some(isUsage)) {
-                this.refuse(action.payload ?? action, "sendArguments");
+            if (value.operands.length > 0 || ownedElements(value).length > 0) {
+                this.refuse(action, "sendArguments");
             }
             const global = this.itemOf(value, action.payload ?? action, "sendPayload");
             const port = this.ownPort(context, action, this.viaFeature(action.sender, action));
@@ -1499,7 +1499,7 @@ export class SemantifyrModelMapper {
             return this.mapExpression(parent, feature, inner, context, temporal, subsetted);
         }
         if (isLiteralNumber(expression)) {
-            if (!Number.isInteger(expression.literal)) {
+            if (!Number.isInteger(expression.literal) || expression.$cstNode?.text.includes(".")) {
                 this.refuse(expression, "literalReal");
             }
             const literal = node("LiteralIntegerExpression");
