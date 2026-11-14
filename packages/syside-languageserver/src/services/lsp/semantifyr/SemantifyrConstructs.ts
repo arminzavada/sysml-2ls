@@ -152,7 +152,7 @@ export const SemantifyrConstructs = {
     ),
     flowItemType: deviating(
         "Flow with an item type, `flow of X`",
-        "the item type is not read, so an item of another type crosses the flow, a declared contradiction"
+        "the item type is not read, so an item of another type crosses the flow"
     ),
     flowEnd: unsupported(
         "Flow end other than a sub-part's port",
@@ -284,7 +284,7 @@ export const SemantifyrConstructs = {
     ),
     acceptWhen: abstracted(
         "`accept when c`",
-        "enabled in every step c holds, a selection: the change signal, sent when c turns true or holds at first evaluation, stays acceptable until the source state is left"
+        "enabled in every step c holds: the change signal, sent when c turns true or holds at first evaluation, stays acceptable until the source state is left"
     ),
     acceptAt: unsupported("`accept at t`", "Semantifyr does not support at triggers"),
     guard: conformant("Transition guard"),
