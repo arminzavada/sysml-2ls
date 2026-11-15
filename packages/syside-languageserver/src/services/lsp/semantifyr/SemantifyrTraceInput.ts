@@ -1,44 +1,66 @@
 import type { SemantifyrNameMap } from "./SemantifyrNameMap";
 
-export interface SemantifyrTraceArgument {
-    parameter: string;
-    value: string;
-}
+const reportVersion = 2;
 
-export interface SemantifyrTraceEntry {
+export type SemantifyrReportValue =
+    | boolean
+    | number
+    | string
+    | null
+    | SemantifyrReportValue[]
+    | { [field: string]: SemantifyrReportValue };
+
+export interface SemantifyrReportCall {
     self: string;
-    calledTransition: string;
-    arguments: SemantifyrTraceArgument[];
-    innerTraces?: SemantifyrTraceEntry[] | null;
+    transition: string;
+    arguments: Record<string, SemantifyrReportValue>;
+    calls: SemantifyrReportCall[];
 }
 
-export interface SemantifyrTraceStep {
-    traces: SemantifyrTraceEntry[];
+interface SemantifyrReportInitialEntry {
+    state: number;
+    calls: SemantifyrReportCall[];
 }
 
-export interface SemantifyrTrace {
-    initializedStep: SemantifyrTraceStep;
-    steps: SemantifyrTraceStep[];
+interface SemantifyrReportState {
+    values: Record<string, SemantifyrReportValue>;
 }
 
-export interface SemantifyrWitnessValue {
-    variable: string;
-    value: string;
+interface SemantifyrReportStep {
+    source: number;
+    target: number;
+    elapsed: number | string;
+    calls: SemantifyrReportCall[];
 }
 
-export interface SemantifyrWitnessStep {
-    values: SemantifyrWitnessValue[];
+export interface SemantifyrReportTrace {
+    root: string;
+    initial: SemantifyrReportInitialEntry;
+    states: SemantifyrReportState[];
+    steps: SemantifyrReportStep[];
+    missingCalls?: string | null;
 }
 
-export interface SemantifyrWitness {
-    initializedStep: SemantifyrWitnessStep;
-    steps: SemantifyrWitnessStep[];
+interface SemantifyrReportResult {
+    verdict: string;
+}
+
+export interface SemantifyrReport {
+    version: number;
+    result: SemantifyrReportResult;
+    trace?: SemantifyrReportTrace | null;
+}
+
+export interface SemantifyrTraceParameters {
+    caseName: string;
+    report: unknown;
+    nameMap: unknown;
 }
 
 export interface SemantifyrTraceInput {
     caseName: string;
-    witness: SemantifyrWitness;
-    trace: SemantifyrTrace;
+    verdict: "pass" | "fail";
+    trace: SemantifyrReportTrace;
     nameMap: SemantifyrNameMap;
 }
 
@@ -63,6 +85,27 @@ const string: Check = (value, location) => {
     }
 };
 
+const index: Check = (value, location) => {
+    if (!Number.isInteger(value) || (value as number) < 0) {
+        fail(location, "an index");
+    }
+};
+
+const fraction: Check = (value, location) => {
+    const whole = Number.isInteger(value) && (value as number) >= 0;
+    if (!whole && !(typeof value === "string" && /^\d+(\/[1-9]\d*)?$/.test(value))) {
+        fail(location, "a fraction");
+    }
+};
+
+function nullable(check: Check): Check {
+    return (value, location) => {
+        if (value !== null) {
+            check(value, location);
+        }
+    };
+}
+
 function object(fields: Record<string, Check>, optional: readonly string[] = []): Check {
     return (value, location) => {
         if (typeof value !== "object" || value === null || Array.isArray(value)) {
@@ -78,35 +121,53 @@ function object(fields: Record<string, Check>, optional: readonly string[] = [])
     };
 }
 
-function array(element: Check, nullable = false): Check {
+function array(element: Check): Check {
     return (value, location) => {
-        if (nullable && value === null) {
-            return;
-        }
         if (!Array.isArray(value)) {
-            fail(location, nullable ? "an array or null" : "an array");
+            fail(location, "an array");
         }
-        value.forEach((item, index) => {
-            element(item, `${location}[${index}]`);
+        value.forEach((item, position) => {
+            element(item, `${location}[${position}]`);
         });
     };
 }
 
-const entry: Check = (value, location) => {
+const call: Check = (value, location) => {
     object({
         self: string,
-        calledTransition: string,
-        arguments: array(object({ parameter: string, value: string })),
-        innerTraces: array(entry, true),
-    }, ["innerTraces"])(value, location);
+        transition: string,
+        arguments: object({}),
+        calls: array(call),
+    })(value, location);
 };
 
-const traceStep = object({ traces: array(entry) });
-const witnessStep = object({ values: array(object({ variable: string, value: string })) });
-
-const checks: Record<"trace" | "witness" | "nameMap", Check> = {
-    trace: object({ initializedStep: traceStep, steps: array(traceStep) }),
-    witness: object({ initializedStep: witnessStep, steps: array(witnessStep) }),
+const checks: Record<"report" | "nameMap", Check> = {
+    report: object(
+        {
+            version: index,
+            result: object({ verdict: string }),
+            trace: nullable(
+                object(
+                    {
+                        root: string,
+                        initial: object({ state: index, calls: array(call) }),
+                        states: array(object({ values: object({}) })),
+                        steps: array(
+                            object({
+                                source: index,
+                                target: index,
+                                elapsed: fraction,
+                                calls: array(call),
+                            })
+                        ),
+                        missingCalls: nullable(string),
+                    },
+                    ["missingCalls"]
+                )
+            ),
+        },
+        ["trace"]
+    ),
     nameMap: object({
         modelHash: string,
         package: string,
@@ -115,24 +176,68 @@ const checks: Record<"trace" | "witness" | "nameMap", Check> = {
     }),
 };
 
-export function checkTraceInput(input: {
-    witness: unknown;
-    trace: unknown;
-    nameMap: unknown;
-}): asserts input is {
-    witness: SemantifyrWitness;
-    trace: SemantifyrTrace;
-    nameMap: SemantifyrNameMap;
-} {
-    checks.witness(input.witness, "witness.json");
-    checks.trace(input.trace, "trace.json");
-    checks.nameMap(input.nameMap, "names.json");
-    const witness = input.witness as SemantifyrWitness;
-    const trace = input.trace as SemantifyrTrace;
-    if (witness.steps.length !== trace.steps.length) {
+const verdicts: Record<string, "pass" | "fail"> = {
+    Passed: "pass",
+    Failed: "fail",
+};
+
+function checkStates(trace: SemantifyrReportTrace): void {
+    const location = "report.json.trace";
+    const state = (value: number, at: string): void => {
+        if (value >= trace.states.length) {
+            throw new SemantifyrTraceError(
+                at,
+                `state ${value}, where the trace has ${trace.states.length}`
+            );
+        }
+    };
+    state(trace.initial.state, `${location}.initial.state`);
+    let previous = trace.initial.state;
+    trace.steps.forEach((step, position) => {
+        state(step.source, `${location}.steps[${position}].source`);
+        state(step.target, `${location}.steps[${position}].target`);
+        if (step.source !== previous) {
+            throw new SemantifyrTraceError(
+                `${location}.steps[${position}].source`,
+                `state ${step.source}, where the step before it ended in state ${previous}`
+            );
+        }
+        previous = step.target;
+    });
+}
+
+export function readTraceInput(parameters: SemantifyrTraceParameters): SemantifyrTraceInput {
+    checks.report(parameters.report, "report.json");
+    checks.nameMap(parameters.nameMap, "names.json");
+    const report = parameters.report as SemantifyrReport;
+    if (report.version !== reportVersion) {
         throw new SemantifyrTraceError(
-            "trace.json.steps",
-            `${trace.steps.length} steps, where witness.json has ${witness.steps.length}`
+            "report.json.version",
+            `version ${report.version}, where the trace is read from version ${reportVersion}`
         );
     }
+    const verdict = verdicts[report.result.verdict];
+    if (verdict === undefined) {
+        throw new SemantifyrTraceError(
+            "report.json.result.verdict",
+            `${report.result.verdict}, where a trace is shown for Passed or Failed`
+        );
+    }
+    const trace = report.trace;
+    if (!trace) {
+        throw new SemantifyrTraceError("report.json.trace", "the report holds no trace");
+    }
+    if (typeof trace.missingCalls === "string") {
+        throw new SemantifyrTraceError(
+            "report.json.trace.missingCalls",
+            `the report holds no calls, which the SysML trace is built from: ${trace.missingCalls}`
+        );
+    }
+    checkStates(trace);
+    return {
+        caseName: parameters.caseName,
+        verdict,
+        trace,
+        nameMap: parameters.nameMap as SemantifyrNameMap,
+    };
 }

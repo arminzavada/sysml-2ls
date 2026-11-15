@@ -84,11 +84,10 @@ program
         `The model the trace was verified on. possible file extensions: ${SysMLExtensions.join(", ")}`
     )
     .argument("<standard library path>", `The path to the standard library root directory`)
-    .argument("<witness file>", "The witness.json Semantifyr emitted for the verification case")
-    .argument("<trace file>", "The trace.json Semantifyr emitted for the verification case")
+    .argument("<report file>", "The report.json Semantifyr wrote for the verification case")
     .argument("<name map file>", "The names.json the compile command wrote beside the OXSTS")
     .argument("<case name>", "The verification case the trace belongs to")
-    .option("-o, --output <file>", "Output file path (default: trace file with .sysml extension)")
+    .option("-o, --output <file>", "Output file path (default: trace.sysml beside the report)")
     .description("Generate the SysML trace model of a Semantifyr (OXSTS) trace")
     .action(traceAction);
 

@@ -8,14 +8,10 @@ import type { Diagnostic } from "vscode-languageserver";
 import type { SysMLSharedServices } from "../../services/services.js";
 import type { SysMLBuildOptions } from "../../services/shared/workspace/document-builder.js";
 import { setupServicesWithStdlib } from "./stdlib-fixture.js";
-import {
-    mapSemantifyrTraceToSysML,
-    type SemantifyrTraceParameters,
-} from "../../services/lsp/semantifyr/SemantifyrMapper.js";
+import { mapSemantifyrTraceToSysML } from "../../services/lsp/semantifyr/SemantifyrMapper.js";
 import type {
-    SemantifyrTrace,
-    SemantifyrWitness,
-    SemantifyrWitnessStep,
+    SemantifyrReport,
+    SemantifyrReportTrace,
 } from "../../services/lsp/semantifyr/SemantifyrTraceInput.js";
 import type { SemantifyrNameMap } from "../../services/lsp/semantifyr/SemantifyrNameMap.js";
 import type { Namespace } from "#generated/ast.js";
@@ -25,8 +21,7 @@ const modelsRoot = path.resolve(currentDir, "..", "resources", "semantifyr-model
 const caseName = "TrafficLightABehaviorNormalGreenUnreachableViolated";
 
 interface Reference {
-    witness: SemantifyrWitness;
-    trace: SemantifyrTrace;
+    report: SemantifyrReport;
     nameMap: SemantifyrNameMap;
 }
 
@@ -39,12 +34,25 @@ describe("Semantifyr trace generation", () => {
         return JSON.parse(await fs.readFile(path.join(modelsRoot, "etc", name), "utf-8")) as T;
     }
 
-    function parameters(changes: Partial<Reference> = {}): SemantifyrTraceParameters {
-        return { caseName, ...structuredClone(reference), ...changes };
+    function generate(changes: Partial<Reference> = {}): string {
+        return mapSemantifyrTraceToSysML(model, {
+            caseName,
+            ...structuredClone(reference),
+            ...changes,
+        });
     }
 
-    function generate(changes: Partial<Reference> = {}): string {
-        return mapSemantifyrTraceToSysML(model, parameters(changes));
+    function withTrace(change: (trace: SemantifyrReportTrace) => void): Partial<Reference> {
+        const report = structuredClone(reference.report);
+        change(report.trace!);
+        return { report };
+    }
+
+    function timed(): Partial<Reference> {
+        return withTrace((trace) => {
+            trace.steps[0].elapsed = 2;
+            trace.steps[1].elapsed = "3/2";
+        });
     }
 
     function errors(document: LangiumDocument): string[] {
@@ -78,13 +86,12 @@ describe("Semantifyr trace generation", () => {
         });
         model = documents[1].parseResult.value as Namespace;
         reference = {
-            witness: await read("crossroads-green.witness.json"),
-            trace: await read("crossroads-green.trace.json"),
+            report: await read("crossroads-green.report.json"),
             nameMap: await read("crossroads-green.names.json"),
         };
     }, 180_000);
 
-    it("generates the reference trace from the reference witness", async () => {
+    it("generates the reference trace from the reference report", async () => {
         const expected = await fs.readFile(
             path.join(modelsRoot, "etc", "crossroads-green.trace.sysml"),
             "utf-8"
@@ -93,9 +100,9 @@ describe("Semantifyr trace generation", () => {
         expect(generate()).toEqual(expected);
     });
 
-    it("generates a trace that SysIDE validates against the model", async () => {
+    it("generates a trace that SysIDE validates against the model, its waits included", async () => {
         const document = shared.workspace.LangiumDocumentFactory.fromString(
-            generate(),
+            generate(timed()),
             URI.file(path.join(modelsRoot, "etc", "generated.trace.sysml"))
         );
         shared.workspace.LangiumDocuments.addDocument(document);
@@ -107,20 +114,45 @@ describe("Semantifyr trace generation", () => {
         expect(errors(document)).toEqual([]);
     }, 180_000);
 
-    it("follows the traced entries and exits where the optimizer removed a state's flag", () => {
-        const strip = (step: SemantifyrWitnessStep): SemantifyrWitnessStep => {
-            return {
-                values: step.values.filter((value) => {
-                    return !value.variable.endsWith(".activeState");
-                }),
-            };
-        };
-        const witness = {
-            initializedStep: strip(reference.witness.initializedStep),
-            steps: reference.witness.steps.map(strip),
-        };
+    it("states a step's elapsed time as a wait before its firings, in the name map's ticks", () => {
+        const trace = generate(timed());
+        const halfTicks = generate({
+            ...timed(),
+            nameMap: { ...reference.nameMap, tick: { value: "0.5", unit: "s" } },
+        });
 
-        expect(generate({ witness })).toEqual(generate());
+        expect(trace).toContain("first init then dwell1;");
+        expect(trace).toContain("assert constraint { DurationOf(dwell1) == 2 [s] }");
+        expect(trace).toContain("first dwell2 then step2;");
+        expect(trace).toContain("assert constraint { DurationOf(dwell2) == (3 / 2) [s] }");
+        expect(trace).not.toContain("dwell3");
+        expect(halfTicks).toContain("assert constraint { DurationOf(dwell1) == 1 [s] }");
+        expect(halfTicks).toContain("assert constraint { DurationOf(dwell2) == (3 / 4) [s] }");
+    });
+
+    it("shows no wait in a step of no elapsed time", () => {
+        expect(generate()).not.toContain("dwell");
+    });
+
+    it("takes the verdict from the report", () => {
+        const report = { ...structuredClone(reference.report), result: { verdict: "Passed" } };
+
+        expect(generate()).toContain("return :>> verdict = VerdictKind::fail;");
+        expect(generate({ report })).toContain("return :>> verdict = VerdictKind::pass;");
+    });
+
+    it("follows the traced entries and exits where the optimizer removed a state's flag", () => {
+        const stripped = withTrace((trace) => {
+            for (const state of trace.states) {
+                for (const variable of Object.keys(state.values)) {
+                    if (variable.endsWith(".activeState")) {
+                        delete state.values[variable];
+                    }
+                }
+            }
+        });
+
+        expect(generate(stripped)).toEqual(generate());
     });
 
     it("refuses a name map of another model text", () => {
@@ -131,65 +163,86 @@ describe("Semantifyr trace generation", () => {
         }).toThrow(/^names\.json\.modelHash: /);
     });
 
-    it("takes a missing innerTraces as null, as the Live backend's wire leaves it out", () => {
-        const trace = JSON.parse(
-            JSON.stringify(reference.trace, (key, value: unknown) => {
-                return key === "innerTraces" && value === null ? undefined : value;
-            })
-        ) as SemantifyrTrace;
-
-        expect(JSON.stringify(trace)).not.toContain('"innerTraces":null');
-        expect(generate({ trace })).toEqual(generate());
-    });
-
-    it("locates a malformed entry of the trace", () => {
-        const trace = structuredClone(reference.trace);
-        (trace.steps[1].traces[0] as unknown as Record<string, unknown>).self = 7;
+    it("refuses a report of another version", () => {
+        const report = { ...structuredClone(reference.report), version: 1 };
 
         expect(() => {
-            return generate({ trace });
-        }).toThrow("trace.json.steps[1].traces[0].self: expected a string");
+            return generate({ report });
+        }).toThrow(/^report\.json\.version: version 1/);
     });
 
-    it("locates a traced firing the witness does not show", () => {
-        const trace = structuredClone(reference.trace);
-        const firing = trace.steps
-            .flatMap((step) => {
-                return step.traces;
-            })
-            .find((entry) => {
-                return entry.calledTransition.endsWith("::Transition::fire");
-            })!;
-        trace.steps[0].traces.push({ ...firing, innerTraces: null });
-
-        expect(() => {
-            return generate({ trace });
-        }).toThrow(/^trace\.json\.steps\[0\]\.traces\[\d+\]\.self: the witness does not leave/);
-    });
-
-    it("locates an instance path the name map does not know", () => {
-        const trace = structuredClone(reference.trace);
-        trace.steps[0].traces.push({
-            self: "root.system.nothingHere",
-            calledTransition: "semantifyr::sysml::states::Transition::fire",
-            arguments: [],
-            innerTraces: null,
+    it("refuses a report whose calls are missing, with their reason", () => {
+        const missing = withTrace((trace) => {
+            trace.missingCalls = "the calls were not recorded";
         });
 
         expect(() => {
-            return generate({ trace });
+            return generate(missing);
+        }).toThrow(/^report\.json\.trace\.missingCalls: .*: the calls were not recorded$/);
+    });
+
+    it("refuses a step that does not start where the step before it ended", () => {
+        const broken = withTrace((trace) => {
+            trace.steps[1].source = 0;
+        });
+
+        expect(() => {
+            return generate(broken);
+        }).toThrow(/^report\.json\.trace\.steps\[1\]\.source: state 0, where/);
+    });
+
+    it("locates a malformed call of the trace", () => {
+        const malformed = withTrace((trace) => {
+            (trace.steps[1].calls[0] as unknown as Record<string, unknown>).self = 7;
+        });
+
+        expect(() => {
+            return generate(malformed);
+        }).toThrow("report.json.trace.steps[1].calls[0].self: expected a string");
+    });
+
+    it("locates a traced firing the states do not show", () => {
+        const misplaced = withTrace((trace) => {
+            const firing = trace.steps
+                .flatMap((step) => {
+                    return step.calls;
+                })
+                .find((call) => {
+                    return call.transition.endsWith("::Transition::fire");
+                })!;
+            trace.steps[0].calls.push({ ...firing, calls: [] });
+        });
+
+        expect(() => {
+            return generate(misplaced);
+        }).toThrow(/^report\.json\.trace\.steps\[0\]\.calls\[\d+\]\.self: the states do not leave/);
+    });
+
+    it("locates an instance path the name map does not know", () => {
+        const unknown = withTrace((trace) => {
+            trace.steps[0].calls.push({
+                self: "root.system.nothingHere",
+                transition: "semantifyr::sysml::states::Transition::fire",
+                arguments: {},
+                calls: [],
+            });
+        });
+
+        expect(() => {
+            return generate(unknown);
         }).toThrow(/'nothingHere' of 'root\.system\.nothingHere' is in no entry of the name map$/);
     });
 
     it("leaves out a traced call of a site it does not show", () => {
-        const trace = structuredClone(reference.trace);
-        trace.steps[0].traces.push({
-            self: "root.system.controller",
-            calledTransition: "semantifyr::sysml::parts::Part::havocInputEvents",
-            arguments: [],
-            innerTraces: null,
+        const unshown = withTrace((trace) => {
+            trace.steps[0].calls.push({
+                self: "root.system.controller",
+                transition: "semantifyr::sysml::parts::Part::havocInputEvents",
+                arguments: {},
+                calls: [],
+            });
         });
 
-        expect(generate({ trace })).toEqual(generate());
+        expect(generate(unshown)).toEqual(generate());
     });
 });

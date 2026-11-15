@@ -3,15 +3,11 @@ import type { Range } from "vscode-languageserver";
 import { isVerificationCaseDefinition, type Namespace } from "#generated/ast";
 import { SemantifyrModelMapper, type SemantifyrMapping } from "./SemantifyrModelMapper";
 import { SemantifyrTraceGenerator } from "./SemantifyrTraceGenerator";
-import { checkTraceInput, type SemantifyrTraceInput } from "./SemantifyrTraceInput";
+import { readTraceInput, type SemantifyrTraceParameters } from "./SemantifyrTraceInput";
 
 export type { SemantifyrMapping } from "./SemantifyrModelMapper";
 export type { SemantifyrNameMap } from "./SemantifyrNameMap";
-export type {
-    SemantifyrTrace,
-    SemantifyrTraceInput,
-    SemantifyrWitness,
-} from "./SemantifyrTraceInput";
+export type { SemantifyrTraceParameters } from "./SemantifyrTraceInput";
 export { SemantifyrTraceError } from "./SemantifyrTraceInput";
 export { semantifyrConstructTable } from "./SemantifyrConstructs";
 
@@ -42,18 +38,10 @@ export function findSemantifyrVerificationCases(model: Namespace): SemantifyrVer
     });
 }
 
-export interface SemantifyrTraceParameters {
-    caseName: string;
-    witness: unknown;
-    trace: unknown;
-    nameMap: unknown;
-}
-
 // the input comes from JSON, so its shape is checked before it is read
 export function mapSemantifyrTraceToSysML(
     model: Namespace,
     parameters: SemantifyrTraceParameters
 ): string {
-    checkTraceInput(parameters);
-    return new SemantifyrTraceGenerator(model, parameters as SemantifyrTraceInput).generate();
+    return new SemantifyrTraceGenerator(model, readTraceInput(parameters)).generate();
 }

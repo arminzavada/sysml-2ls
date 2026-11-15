@@ -130,7 +130,7 @@ describe("Semantifyr commands over the LSP connection", () => {
         });
     }, 120_000);
 
-    it("returns the SysML trace model of a named case from its witness, trace and name map", async () => {
+    it("returns the SysML trace model of a named case from its report and name map", async () => {
         const mapping = await execute<SemantifyrMapping>("syside.semantifyr.sysml.oxsts", uri);
         const read = async (name: string): Promise<unknown> => {
             return JSON.parse(await fs.readFile(path.join(modelsRoot, "etc", name), "utf-8"));
@@ -140,8 +140,7 @@ describe("Semantifyr commands over the LSP connection", () => {
         const model = await execute<string>("syside.semantifyr.sysml.trace", {
             uri,
             caseName,
-            witness: await read("crossroads-green.witness.json"),
-            trace: await read("crossroads-green.trace.json"),
+            report: await read("crossroads-green.report.json"),
             nameMap: mapping.nameMap,
         });
 

@@ -1,10 +1,7 @@
 import { AstUtils, type AstNode } from "langium";
 import {
     isActionUsage,
-    isCalculationDefinition,
     isFeatureTyping,
-    isInvocationExpression,
-    isOperatorExpression,
     isPartUsage,
     isSendActionUsage,
     isStateSubactionMembership,
@@ -24,7 +21,8 @@ import { isLibraryFeature, resolveElementPath, transitionTarget } from "./Semant
 import { hashModelText, type SemantifyrNameEntry } from "./SemantifyrNameMap";
 import {
     SemantifyrTraceError,
-    type SemantifyrTraceEntry,
+    type SemantifyrReportCall,
+    type SemantifyrReportValue,
     type SemantifyrTraceInput,
 } from "./SemantifyrTraceInput";
 
@@ -39,7 +37,6 @@ const sites = {
         "semantifyr::sysml::states::ParallelState::exit",
     ],
     send: "semantifyr::sysml::actions::SendItemAction::send",
-    passTime: "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
 };
 
 interface TextNode {
@@ -159,8 +156,32 @@ interface StepChanges {
 }
 
 interface Located {
-    entry: SemantifyrTraceEntry;
+    entry: SemantifyrReportCall;
     location: string;
+}
+
+interface Fraction {
+    numerator: bigint;
+    denominator: bigint;
+}
+
+function greatestCommonDivisor(left: bigint, right: bigint): bigint {
+    return right === 0n ? left : greatestCommonDivisor(right, left % right);
+}
+
+function reduced(numerator: bigint, denominator: bigint): Fraction {
+    const divisor = greatestCommonDivisor(numerator, denominator);
+    return { numerator: numerator / divisor, denominator: denominator / divisor };
+}
+
+function parseFraction(value: number | string): Fraction {
+    const [numerator, denominator = "1"] = String(value).split("/");
+    return reduced(BigInt(numerator), BigInt(denominator));
+}
+
+function parseDecimal(text: string): Fraction {
+    const [whole, decimals = ""] = text.split(".");
+    return reduced(BigInt(`${whole}${decimals}`), 10n ** BigInt(decimals.length));
 }
 
 export class SemantifyrTraceGenerator {
@@ -169,9 +190,11 @@ export class SemantifyrTraceGenerator {
     private readonly verificationCase: Element;
     private readonly caseClass: string;
     private readonly subject: PartInstance;
+    private readonly root: string;
     private readonly stepCount: number;
-    private readonly witnessSteps: Map<string, string>[];
+    private readonly stateValues: Map<string, SemantifyrReportValue>[];
     private readonly calls: Located[][];
+    private readonly elapsed: Fraction[];
     private readonly doneSteps = new Map<StateInstance, number>();
 
     constructor(
@@ -209,24 +232,29 @@ export class SemantifyrTraceGenerator {
                 `the case '${input.caseName}' has no subject`
             );
         }
+        const trace = input.trace;
+        this.root = trace.root;
         this.subject = this.buildPart(
-            `root.${subjectEntry.oxsts.slice(this.caseClass.length + 1)}`,
+            `${this.root}.${subjectEntry.oxsts.slice(this.caseClass.length + 1)}`,
             subjectEntry
         );
-        this.stepCount = input.witness.steps.length;
-        this.witnessSteps = [input.witness.initializedStep, ...input.witness.steps].map((step) => {
-            return new Map(
-                step.values.map((value) => {
-                    return [value.variable, value.value];
-                })
-            );
+        this.stepCount = trace.steps.length;
+        this.stateValues = [
+            trace.initial.state,
+            ...trace.steps.map((step) => {
+                return step.target;
+            }),
+        ].map((state) => {
+            return new Map(Object.entries(trace.states[state].values));
         });
-        this.calls = [input.trace.initializedStep, ...input.trace.steps].map((step, index) => {
-            const location =
-                index === 0
-                    ? "trace.json.initializedStep.traces"
-                    : `trace.json.steps[${index - 1}].traces`;
-            return flatten(step.traces, location);
+        this.calls = [
+            flatten(trace.initial.calls, "report.json.trace.initial.calls"),
+            ...trace.steps.map((step, index) => {
+                return flatten(step.calls, `report.json.trace.steps[${index}].calls`);
+            }),
+        ];
+        this.elapsed = trace.steps.map((step) => {
+            return parseFraction(step.elapsed);
         });
     }
 
@@ -323,12 +351,12 @@ export class SemantifyrTraceGenerator {
         location: string
     ): { element: Element; prefixes: string[] } {
         const [head, ...segments] = path.split(".");
-        if (head !== "root") {
-            throw new SemantifyrTraceError(location, `'${path}' does not start at 'root'`);
+        if (head !== this.root) {
+            throw new SemantifyrTraceError(location, `'${path}' does not start at '${this.root}'`);
         }
         let scopes = [this.caseClass];
         let element: Element = this.verificationCase;
-        const prefixes = ["root"];
+        const prefixes = [this.root];
         for (const segment of segments) {
             const entry = scopes
                 .map((scope) => {
@@ -379,22 +407,20 @@ export class SemantifyrTraceGenerator {
     }
 
     private common({ entry, location }: Located): StateInstance | undefined {
-        const value = entry.arguments.find((argument) => {
-            return argument.parameter === "commonState";
-        })?.value;
-        if (value === undefined) {
+        if (!Object.hasOwn(entry.arguments, "commonState")) {
             throw new SemantifyrTraceError(
                 `${location}.arguments`,
                 "the call carries no commonState"
             );
         }
-        return this.states.get(value);
+        const value = entry.arguments.commonState;
+        return typeof value === "string" ? this.states.get(value) : undefined;
     }
 
     private changes(step: number): StepChanges {
         const changes: StepChanges = { entered: new Set(), exited: new Set() };
         for (const call of this.calls[step]) {
-            if (sites.enter.includes(call.entry.calledTransition)) {
+            if (sites.enter.includes(call.entry.transition)) {
                 const target = this.stateAt(call.entry.self, `${call.location}.self`);
                 for (const state of this.below(target, this.common(call))) {
                     changes.entered.add(state);
@@ -404,7 +430,7 @@ export class SemantifyrTraceGenerator {
                         }
                     }
                 }
-            } else if (sites.exit.includes(call.entry.calledTransition)) {
+            } else if (sites.exit.includes(call.entry.transition)) {
                 const source = this.stateAt(call.entry.self, `${call.location}.self`);
                 const top = this.below(source, this.common(call))[0] ?? source;
                 for (const state of this.descendants(top)) {
@@ -415,7 +441,7 @@ export class SemantifyrTraceGenerator {
         return changes;
     }
 
-    // the witness's flags, and where the optimizer removed one, the traced entries and exits since initialization
+    // the states' flags, and where the optimizer removed one, the traced entries and exits since initialization
     private activity(changes: StepChanges[]): Map<StateInstance, boolean[]> {
         const reconstructed = new Map<StateInstance, StateInstance | undefined>();
         const activity = new Map<StateInstance, boolean[]>();
@@ -431,12 +457,12 @@ export class SemantifyrTraceGenerator {
                     reconstructed.set(state.parent, state);
                 }
             }
-            const values = this.witnessSteps[step];
+            const values = this.stateValues[step];
             const isActive = (state: StateInstance): boolean => {
                 if (!state.parent) {
                     const performing = values.get(`${state.path}.performing`);
                     if (performing !== undefined) {
-                        return performing === "true";
+                        return performing === true;
                     }
                     const done = this.doneSteps.get(state);
                     return done === undefined || step < done;
@@ -474,7 +500,7 @@ export class SemantifyrTraceGenerator {
     generate(): string {
         for (let step = 1; step <= this.stepCount; step++) {
             for (const call of this.calls[step]) {
-                if (call.entry.calledTransition !== sites.fire) {
+                if (call.entry.transition !== sites.fire) {
                     continue;
                 }
                 const transition = this.resolveInstance(
@@ -534,24 +560,21 @@ export class SemantifyrTraceGenerator {
             }
         }
         const firings = new Map<number, Firing[]>();
-        const passed = new Set<number>();
         for (let step = 0; step <= this.stepCount; step++) {
             const firingsOfStep: Firing[] = [];
             firings.set(step, firingsOfStep);
             for (const call of this.calls[step]) {
-                if (call.entry.calledTransition === sites.fire) {
+                if (call.entry.transition === sites.fire) {
                     firingsOfStep.push(this.firing(step, call));
-                } else if (call.entry.calledTransition === sites.passTime) {
-                    passed.add(step);
                 }
             }
             for (const call of this.calls[step]) {
-                if (call.entry.calledTransition === sites.send) {
+                if (call.entry.transition === sites.send) {
                     this.placeSend(step, call, firingsOfStep);
                 }
             }
         }
-        return this.render(firings, passed);
+        return this.render(firings);
     }
 
     private spanAt(
@@ -618,7 +641,7 @@ export class SemantifyrTraceGenerator {
         if (!source || (!target && !isDone)) {
             throw new SemantifyrTraceError(
                 `${location}.self`,
-                `the witness does not leave the source and enter the target of '${entry.self}' in this step`
+                `the states do not leave the source and enter the target of '${entry.self}' in this step`
             );
         }
         const owner =
@@ -626,7 +649,7 @@ export class SemantifyrTraceGenerator {
         if (!owner) {
             throw new SemantifyrTraceError(
                 `${location}.self`,
-                `the state declaring '${entry.self}' is not active in the witness`
+                `the state declaring '${entry.self}' is not active in the states`
             );
         }
         const sourceName = source.state.element.declaredName ?? "state";
@@ -690,7 +713,7 @@ export class SemantifyrTraceGenerator {
             if (!span) {
                 throw new SemantifyrTraceError(
                     `${location}.self`,
-                    `'${entry.self}' ran in the ${kind} action of a state the witness does not ${kind === "entry" ? "enter" : "leave"} in this step`
+                    `'${entry.self}' ran in the ${kind} action of a state the states do not ${kind === "entry" ? "enter" : "leave"} in this step`
                 );
             }
             (kind === "entry" ? span.entrySends : span.exitSends).push(run);
@@ -702,27 +725,17 @@ export class SemantifyrTraceGenerator {
         );
     }
 
-    // a witness reaches what eventually asks for and breaks what mustAlways asks for, each negation flipping it
-    private verdict(): string {
-        const temporal = AstUtils.streamAst(this.verificationCase)
-            .filter(isInvocationExpression)
-            .find((invocation) => {
-                const invoked = typeOf(invocation);
-                return (
-                    isCalculationDefinition(invoked) &&
-                    ["mustAlways", "eventually"].includes(invoked.declaredName ?? "")
-                );
-            });
-        let passes = temporal !== undefined && typeOf(temporal)?.declaredName === "eventually";
-        for (let current = temporal?.$container; current; current = current.$container) {
-            if (isOperatorExpression(current) && current.operator === "not") {
-                passes = !passes;
-            }
-        }
-        return passes ? "pass" : "fail";
+    // a step's elapsed time counts in ticks, the unit the mapper writes its bounds in
+    private duration(elapsed: Fraction): string {
+        const tick = parseDecimal(this.input.nameMap.tick.value);
+        const { numerator, denominator } = reduced(
+            elapsed.numerator * tick.numerator,
+            elapsed.denominator * tick.denominator
+        );
+        return denominator === 1n ? `${numerator}` : `(${numerator} / ${denominator})`;
     }
 
-    private render(firings: Map<number, Firing[]>, passed: Set<number>): string {
+    private render(firings: Map<number, Firing[]>): string {
         const tick = this.input.nameMap.tick;
         const system = typeOf(this.subject.element);
         const runNames = new Names(featureNames(system));
@@ -730,11 +743,11 @@ export class SemantifyrTraceGenerator {
             { name: runNames.fresh("init"), step: 0, kind: "init" },
         ];
         for (let step = 1; step <= this.stepCount; step++) {
+            if (this.elapsed[step - 1].numerator > 0n) {
+                slices.push({ name: runNames.fresh(`dwell${step}`), step, kind: "dwell" });
+            }
             if ((firings.get(step) ?? []).length > 0) {
                 slices.push({ name: runNames.fresh(`step${step}`), step, kind: "step" });
-            }
-            if (passed.has(step)) {
-                slices.push({ name: runNames.fresh(`dwell${step}`), step, kind: "dwell" });
             }
         }
         const dwells = new Map(
@@ -754,7 +767,8 @@ export class SemantifyrTraceGenerator {
                     `succession : HappensJustBefore [1] first ${slices[index - 1].name} then ${slice.name};`
                 );
             }
-            const duration = slice.kind === "dwell" ? tick.value : "0";
+            const duration =
+                slice.kind === "dwell" ? this.duration(this.elapsed[slice.step - 1]) : "0";
             const members: Line[] = [
                 `assert constraint { DurationOf(${slice.name}) == ${duration} [${tick.unit}] }`,
             ];
@@ -788,7 +802,7 @@ export class SemantifyrTraceGenerator {
             text: `verification witness : ${this.verificationCase.$meta.qualifiedName}`,
             members: [
                 `subject :>> ${this.subject.element.declaredName ?? "subject"} : Run;`,
-                `return :>> verdict = VerdictKind::${this.verdict()};`,
+                `return :>> verdict = VerdictKind::${this.input.verdict};`,
             ],
         };
         const lines: string[] = [];
@@ -930,9 +944,10 @@ export class SemantifyrTraceGenerator {
                 return item.line();
             })
         );
+        // the wait of a step passes in the state the step leaves
         if (span.state.children.length === 0) {
             const covered = [...dwells.entries()].filter(([step]) => {
-                return step >= span.start && (span.end === undefined || step < span.end);
+                return step > span.start && (span.end === undefined || step <= span.end);
             });
             if (covered.length > 0) {
                 lines.push(`event occurrence firstDwell [1] ::> ${covered[0][1]};`);
@@ -1024,13 +1039,10 @@ export class SemantifyrTraceGenerator {
     }
 }
 
-function flatten(entries: SemantifyrTraceEntry[], location: string): Located[] {
+function flatten(entries: SemantifyrReportCall[], location: string): Located[] {
     return entries.flatMap((entry, index) => {
         const here = `${location}[${index}]`;
-        return [
-            { entry, location: here },
-            ...flatten(entry.innerTraces ?? [], `${here}.innerTraces`),
-        ];
+        return [{ entry, location: here }, ...flatten(entry.calls, `${here}.calls`)];
     });
 }
 

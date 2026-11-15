@@ -307,13 +307,12 @@ export const validateAction = async (fileName: string, stdlibPath: string): Prom
 export const traceAction = async (
     fileName: string,
     stdlibPath: string,
-    witnessFile: string,
-    traceFile: string,
+    reportFile: string,
     nameMapFile: string,
     caseName: string,
     options: OutputOptions
 ): Promise<void> => {
-    for (const file of [witnessFile, traceFile, nameMapFile]) {
+    for (const file of [reportFile, nameMapFile]) {
         if (!fs.existsSync(file)) {
             console.error(chalk.red(`File ${file} doesn't exist.`));
             process.exit(1);
@@ -324,16 +323,13 @@ export const traceAction = async (
     };
     const parameters = {
         caseName,
-        witness: await read(witnessFile),
-        trace: await read(traceFile),
+        report: await read(reportFile),
         nameMap: await read(nameMapFile),
     };
     const { model, shared } = await loadModel(fileName, stdlibPath);
     const sysmlTrace = mapSemantifyrTraceToSysML(model, parameters);
 
-    const outputFile =
-        options.output ??
-        path.join(path.dirname(traceFile), path.basename(traceFile, ".json") + ".sysml");
+    const outputFile = options.output ?? path.join(path.dirname(reportFile), "trace.sysml");
 
     const traceDoc = shared.workspace.LangiumDocumentFactory.fromString(
         sysmlTrace,
@@ -343,7 +339,7 @@ export const traceAction = async (
     await validate(shared, traceDoc, outputFile);
 
     await writeOutput(outputFile, sysmlTrace);
-    console.log(chalk.green(`Generated ${traceFile} -> ${outputFile}`));
+    console.log(chalk.green(`Generated ${reportFile} -> ${outputFile}`));
 };
 
 export const constructsAction = async (options: OutputOptions): Promise<void> => {
