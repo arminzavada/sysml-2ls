@@ -309,7 +309,6 @@ export const traceAction = async (
     stdlibPath: string,
     reportFile: string,
     nameMapFile: string,
-    caseName: string,
     options: OutputOptions
 ): Promise<void> => {
     for (const file of [reportFile, nameMapFile]) {
@@ -322,7 +321,6 @@ export const traceAction = async (
         return JSON.parse(await fsp.readFile(file, "utf-8"));
     };
     const parameters = {
-        caseName,
         report: await read(reportFile),
         nameMap: await read(nameMapFile),
     };

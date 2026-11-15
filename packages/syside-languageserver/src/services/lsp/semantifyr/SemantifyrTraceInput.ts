@@ -47,18 +47,18 @@ interface SemantifyrReportResult {
 
 export interface SemantifyrReport {
     version: number;
+    verificationCase: string;
     result: SemantifyrReportResult;
     trace?: SemantifyrReportTrace | null;
 }
 
 export interface SemantifyrTraceParameters {
-    caseName: string;
     report: unknown;
     nameMap: unknown;
 }
 
 export interface SemantifyrTraceInput {
-    caseName: string;
+    verificationCase: string;
     verdict: "pass" | "fail";
     trace: SemantifyrReportTrace;
     nameMap: SemantifyrNameMap;
@@ -145,6 +145,7 @@ const checks: Record<"report" | "nameMap", Check> = {
     report: object(
         {
             version: index,
+            verificationCase: string,
             result: object({ verdict: string }),
             trace: nullable(
                 object(
@@ -235,7 +236,7 @@ export function readTraceInput(parameters: SemantifyrTraceParameters): Semantify
     }
     checkStates(trace);
     return {
-        caseName: parameters.caseName,
+        verificationCase: report.verificationCase,
         verdict,
         trace,
         nameMap: parameters.nameMap as SemantifyrNameMap,

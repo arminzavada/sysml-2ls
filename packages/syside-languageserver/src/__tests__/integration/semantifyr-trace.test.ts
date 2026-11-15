@@ -18,7 +18,6 @@ import type { Namespace } from "#generated/ast.js";
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const modelsRoot = path.resolve(currentDir, "..", "resources", "semantifyr-models");
-const caseName = "TrafficLightABehaviorNormalGreenUnreachableViolated";
 
 interface Reference {
     report: SemantifyrReport;
@@ -35,11 +34,7 @@ describe("Semantifyr trace generation", () => {
     }
 
     function generate(changes: Partial<Reference> = {}): string {
-        return mapSemantifyrTraceToSysML(model, {
-            caseName,
-            ...structuredClone(reference),
-            ...changes,
-        });
+        return mapSemantifyrTraceToSysML(model, { ...structuredClone(reference), ...changes });
     }
 
     function withTrace(change: (trace: SemantifyrReportTrace) => void): Partial<Reference> {
@@ -161,6 +156,17 @@ describe("Semantifyr trace generation", () => {
         expect(() => {
             return generate({ nameMap });
         }).toThrow(/^names\.json\.modelHash: /);
+    });
+
+    it("refuses a report of a case the name map does not hold", () => {
+        const report = {
+            ...structuredClone(reference.report),
+            verificationCase: "semantifyr::sysml::model::NoSuchCase",
+        };
+
+        expect(() => {
+            return generate({ report });
+        }).toThrow(/^report\.json\.verificationCase: 'semantifyr::sysml::model::NoSuchCase' is no/);
     });
 
     it("refuses a report of another version", () => {

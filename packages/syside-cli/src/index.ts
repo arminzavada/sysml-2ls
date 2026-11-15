@@ -86,7 +86,6 @@ program
     .argument("<standard library path>", `The path to the standard library root directory`)
     .argument("<report file>", "The report.json Semantifyr wrote for the verification case")
     .argument("<name map file>", "The names.json the compile command wrote beside the OXSTS")
-    .argument("<case name>", "The verification case the trace belongs to")
     .option("-o, --output <file>", "Output file path (default: trace.sysml beside the report)")
     .description("Generate the SysML trace model of a Semantifyr (OXSTS) trace")
     .action(traceAction);

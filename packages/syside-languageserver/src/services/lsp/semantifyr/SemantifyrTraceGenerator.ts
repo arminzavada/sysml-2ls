@@ -212,13 +212,15 @@ export class SemantifyrTraceGenerator {
             this.byOxsts.set(entry.oxsts, entry);
         }
         const caseEntry = input.nameMap.entries.find((entry) => {
-            const element = resolveElementPath(model, entry.sysml);
-            return isVerificationCaseDefinition(element) && element.declaredName === input.caseName;
+            return (
+                `${input.nameMap.package}::${entry.oxsts}` === input.verificationCase &&
+                isVerificationCaseDefinition(resolveElementPath(model, entry.sysml))
+            );
         });
         if (!caseEntry) {
             throw new SemantifyrTraceError(
-                "names.json.entries",
-                `no verification case is named '${input.caseName}'`
+                "report.json.verificationCase",
+                `'${input.verificationCase}' is no verification case of the name map`
             );
         }
         this.verificationCase = this.element(caseEntry);
@@ -229,7 +231,7 @@ export class SemantifyrTraceGenerator {
         if (!subjectEntry) {
             throw new SemantifyrTraceError(
                 "names.json.entries",
-                `the case '${input.caseName}' has no subject`
+                `the case '${input.verificationCase}' has no subject`
             );
         }
         const trace = input.trace;

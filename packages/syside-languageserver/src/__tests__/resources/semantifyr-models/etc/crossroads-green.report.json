@@ -2,7 +2,7 @@
     "version": 2,
     "kind": "run",
     "verificationCase": "semantifyr::sysml::model::TrafficLightABehaviorNormalGreenUnreachableViolated",
-    "portfolioId": "theta-cegar-expl",
+    "portfolioId": "theta-cegar-pred-cart",
     "optimization": {
         "enabled": [
             "ExpressionSimplification",
@@ -19,13 +19,164 @@
     "timeout": "PT5M",
     "result": {
         "metadata": {
-            "backendId": "theta:cegar-expl",
-            "startedAt": "2026-11-15T17:00:00Z"
+            "backendId": "theta:cegar-pred-cart",
+            "startedAt": "2026-11-15T19:09:02.297071222Z"
         },
         "verdict": "Failed",
         "soundness": "Exact",
         "isTrusted": true,
-        "metrics": {},
+        "metrics": {
+            "totalDuration": "PT3.827233557S",
+            "backend": {
+                "preparationDuration": "PT0.700467143S",
+                "verificationDuration": "PT2.855991353S",
+                "backAnnotationDuration": "PT0.155213424S"
+            },
+            "verifier": {
+                "compilationDuration": "PT2.740566526S",
+                "compilation": {
+                    "createDuration": "PT0.051906558S",
+                    "instantiationDuration": "PT0.048345209S",
+                    "inliningDuration": "PT2.004426184S",
+                    "flatteningDuration": "PT0.635888575S",
+                    "inliningOptimization": {
+                        "duration": "PT0.184917404S",
+                        "passes": [
+                            {
+                                "name": "OperationCallInlining",
+                                "duration": "PT0.052518866S",
+                                "runs": 2196,
+                                "firings": 377
+                            },
+                            {
+                                "name": "ExpressionSimplificationPass",
+                                "duration": "PT0.064675897S",
+                                "runs": 5,
+                                "firings": 4
+                            },
+                            {
+                                "name": "OperationFlatteningPass",
+                                "duration": "PT0.041421437S",
+                                "runs": 5,
+                                "firings": 3
+                            },
+                            {
+                                "name": "RedundantOperationRemovalPass",
+                                "duration": "PT0.012847030S",
+                                "runs": 5,
+                                "firings": 1
+                            },
+                            {
+                                "name": "AssumeFalsePropagationPass",
+                                "duration": "PT0.012688263S",
+                                "runs": 5,
+                                "firings": 2
+                            },
+                            {
+                                "name": "PropertyExpressionNormalization",
+                                "duration": "PT0.000083492S",
+                                "runs": 1,
+                                "firings": 0
+                            }
+                        ],
+                        "analyses": []
+                    },
+                    "flatteningOptimization": {
+                        "duration": "PT0.328189074S",
+                        "passes": [
+                            {
+                                "name": "ExpressionSimplificationPass",
+                                "duration": "PT0.007971422S",
+                                "runs": 3,
+                                "firings": 1
+                            },
+                            {
+                                "name": "OperationFlatteningPass",
+                                "duration": "PT0.003614478S",
+                                "runs": 3,
+                                "firings": 0
+                            },
+                            {
+                                "name": "RedundantOperationRemovalPass",
+                                "duration": "PT0.004720780S",
+                                "runs": 3,
+                                "firings": 1
+                            },
+                            {
+                                "name": "AssumeFalsePropagationPass",
+                                "duration": "PT0.003519887S",
+                                "runs": 3,
+                                "firings": 0
+                            },
+                            {
+                                "name": "ConstantVariableSubstitutionPass",
+                                "duration": "PT0.052014280S",
+                                "runs": 3,
+                                "firings": 1
+                            },
+                            {
+                                "name": "CopyPropagationPass",
+                                "duration": "PT0.116048079S",
+                                "runs": 3,
+                                "firings": 1
+                            },
+                            {
+                                "name": "DeadStoreEliminationPass",
+                                "duration": "PT0.051863814S",
+                                "runs": 3,
+                                "firings": 1
+                            },
+                            {
+                                "name": "DeadCodeRemovalPass",
+                                "duration": "PT0.037245599S",
+                                "runs": 3,
+                                "firings": 0
+                            },
+                            {
+                                "name": "VariableLivenessPass",
+                                "duration": "PT0.050500505S",
+                                "runs": 3,
+                                "firings": 1
+                            }
+                        ],
+                        "analyses": [
+                            {
+                                "name": "ConstantValueAnalysis",
+                                "duration": "PT0.027077646S",
+                                "computations": 2
+                            },
+                            {
+                                "name": "ReachingDefinitionsAnalysis",
+                                "duration": "PT0.160699871S",
+                                "computations": 3
+                            },
+                            {
+                                "name": "ConeOfInfluenceAnalysis",
+                                "duration": "PT0.034102730S",
+                                "computations": 2
+                            }
+                        ]
+                    },
+                    "inputSize": {
+                        "variables": 0,
+                        "operations": 0,
+                        "expressions": 410
+                    },
+                    "inlinedSize": {
+                        "variables": 66,
+                        "operations": 649,
+                        "expressions": 4702
+                    },
+                    "flattenedSize": {
+                        "variables": 143,
+                        "operations": 608,
+                        "expressions": 1758
+                    }
+                },
+                "backAnnotationDuration": "PT0.048069259S",
+                "portfolioDuration": "PT3.775764145S"
+            }
+        },
         "message": null
     },
     "trace": {
@@ -38,7 +189,7 @@
                         "parameter": "commonState",
                         "type": {
                             "kind": "class",
-                            "name": "semantifyr::sysml::states::State",
+                            "name": "semantifyr::sysml::states::StateNode",
                             "element": null,
                             "size": null
                         }
@@ -47,10 +198,6 @@
             },
             {
                 "transition": "semantifyr::sysml::actions::SendItemAction::send",
-                "parameters": []
-            },
-            {
-                "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
                 "parameters": []
             },
             {
@@ -64,32 +211,46 @@
                         "parameter": "commonState",
                         "type": {
                             "kind": "class",
-                            "name": "semantifyr::sysml::states::State",
+                            "name": "semantifyr::sysml::states::StateNode",
                             "element": null,
                             "size": null
                         }
                     }
                 ]
+            },
+            {
+                "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
+                "parameters": []
             }
         ],
         "variables": [
             {
                 "variable": "root.system.controller.Behaviour.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.controller.control.incomingItem",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "class",
+                        "name": "semantifyr::sysml::items::Item",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
@@ -106,40 +267,60 @@
             {
                 "variable": "root.system.controller.controlA.outgoingItem",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "class",
+                        "name": "semantifyr::sysml::items::Item",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.controller.controlB.outgoingItem",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "class",
+                        "name": "semantifyr::sysml::items::Item",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.Behaviour.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.control.incomingItem",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "class",
+                        "name": "semantifyr::sysml::items::Item",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
@@ -156,20 +337,30 @@
             {
                 "variable": "root.system.trafficLightB.Behaviour.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightB.control.incomingItem",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "class",
+                        "name": "semantifyr::sysml::items::Item",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
@@ -186,50 +377,75 @@
             {
                 "variable": "root.system.controller.Behaviour.Operating.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.Behaviour.Normal.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.Behaviour.Interrupted.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightB.Behaviour.Normal.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightB.Behaviour.Interrupted.activeState",
                 "type": {
-                    "kind": "class",
+                    "kind": "array",
                     "name": null,
-                    "element": null,
-                    "size": null
+                    "element": {
+                        "kind": "feature",
+                        "name": "semantifyr::sysml::states::AbstractState::states",
+                        "element": null,
+                        "size": null
+                    },
+                    "size": 1
                 },
                 "slot": null
             },
@@ -557,18 +773,18 @@
             },
             {
                 "values": {
-                    "root.system.controller.Behaviour.activeState": "root.system.controller.Behaviour.Interrupted",
+                    "root.system.controller.Behaviour.activeState": "root.system.controller.Behaviour.Operating",
                     "root.system.controller.control.incomingItem": null,
                     "root.system.controller.control.consumed": false,
-                    "root.system.controller.controlA.outgoingItem": "semantifyr::sysml::model::global_Police",
-                    "root.system.controller.controlB.outgoingItem": "semantifyr::sysml::model::global_Police",
+                    "root.system.controller.controlA.outgoingItem": null,
+                    "root.system.controller.controlB.outgoingItem": null,
                     "root.system.trafficLightA.Behaviour.activeState": "root.system.trafficLightA.Behaviour.Normal",
-                    "root.system.trafficLightA.control.incomingItem": "semantifyr::sysml::model::global_Police",
+                    "root.system.trafficLightA.control.incomingItem": null,
                     "root.system.trafficLightA.control.consumed": false,
                     "root.system.trafficLightB.Behaviour.activeState": "root.system.trafficLightB.Behaviour.Normal",
-                    "root.system.trafficLightB.control.incomingItem": "semantifyr::sysml::model::global_Police",
+                    "root.system.trafficLightB.control.incomingItem": null,
                     "root.system.trafficLightB.control.consumed": false,
-                    "root.system.controller.Behaviour.Operating.activeState": null,
+                    "root.system.controller.Behaviour.Operating.activeState": "root.system.controller.Behaviour.Operating.TrafficOnA",
                     "root.system.trafficLightA.Behaviour.Normal.activeState": "root.system.trafficLightA.Behaviour.Normal.Green",
                     "root.system.trafficLightA.Behaviour.Interrupted.activeState": null,
                     "root.system.trafficLightB.Behaviour.Normal.activeState": "root.system.trafficLightB.Behaviour.Normal.Red",
@@ -768,42 +984,6 @@
                 "target": 5,
                 "elapsed": 0,
                 "calls": [
-                    {
-                        "self": "root.system.controller.Behaviour.transition1",
-                        "transition": "semantifyr::sysml::states::Transition::fire",
-                        "arguments": {},
-                        "calls": [
-                            {
-                                "self": "root.system.controller.Behaviour.Operating",
-                                "transition": "semantifyr::sysml::states::State::exit",
-                                "arguments": {
-                                    "commonState": "root.system.controller.Behaviour"
-                                },
-                                "calls": []
-                            },
-                            {
-                                "self": "root.system.controller.Behaviour.Interrupted",
-                                "transition": "semantifyr::sysml::states::State::enter",
-                                "arguments": {
-                                    "commonState": "root.system.controller.Behaviour"
-                                },
-                                "calls": [
-                                    {
-                                        "self": "root.system.controller.Behaviour.Interrupted.entryAction.send1",
-                                        "transition": "semantifyr::sysml::actions::SendItemAction::send",
-                                        "arguments": {},
-                                        "calls": []
-                                    },
-                                    {
-                                        "self": "root.system.controller.Behaviour.Interrupted.entryAction.send2",
-                                        "transition": "semantifyr::sysml::actions::SendItemAction::send",
-                                        "arguments": {},
-                                        "calls": []
-                                    }
-                                ]
-                            }
-                        ]
-                    },
                     {
                         "self": "root.system.trafficLightA.Behaviour.Normal.transition2",
                         "transition": "semantifyr::sysml::states::Transition::fire",

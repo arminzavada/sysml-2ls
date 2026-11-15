@@ -37,7 +37,6 @@ package TrafficLightABehaviorNormalGreenUnreachableViolatedTrace {
         succession : HappensJustBefore [1] first step4 then step5;
         timeslice step5 [1] {
             assert constraint { DurationOf(step5) == 0 [s] }
-            event controller.Behaviour.operatingToInterrupted1 [1];
             event trafficLightA.Behaviour.normal1.redToGreen1 [1];
         }
 
@@ -62,16 +61,6 @@ package TrafficLightABehaviorNormalGreenUnreachableViolatedTrace {
                         }
                         then trafficOnA1;
                     state trafficOnA1 [1] :> TrafficOnA;
-                }
-                transition operatingToInterrupted1 [1]
-                    first operating1
-                    accept Police via control
-                    then interrupted1;
-                state interrupted1 [1] :> Interrupted {
-                    entry action {
-                        action sendPolice1 [1] send new Police() via controlA;
-                        action sendPolice2 [1] send new Police() via controlB;
-                    }
                 }
             }
         }
