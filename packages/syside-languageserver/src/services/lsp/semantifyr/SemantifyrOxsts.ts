@@ -126,10 +126,10 @@ export const partMembers = [
     "flows",
     "havocInputEvents",
     "parts",
-    "passTime",
     "ports",
     "resetInputEvents",
     "resetOutputEvents",
+    "sendTimeSignals",
 ];
 
 export const stateMembers = [
@@ -159,9 +159,9 @@ export const stateMembers = [
     "isInnerStateActive",
     "outgoingTransitions",
     "parent",
-    "passTime",
     "performOutgoing",
     "performing",
+    "sendTimeSignals",
     "setActiveState",
     "start",
     "states",
@@ -177,9 +177,9 @@ export const transitionMembers = [
     "initialize",
     "isEnabled",
     "parentState",
-    "passTime",
     "performTransition",
     "performWithin",
+    "sendTimeSignal",
     "to",
 ];
 
@@ -193,7 +193,7 @@ export const requirementMembers = [
     "verifiedRequirements",
 ];
 
-export const caseMembers = ["objective", "passTime", "subject"];
+export const caseMembers = ["objective", "subject"];
 
 const identifier = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
