@@ -277,7 +277,10 @@ export const SemantifyrConstructs = {
         "`via` naming something other than a port of the part",
         "Semantifyr requires 'via' to name a port of the part"
     ),
-    acceptAfter: abstracted("`accept after d` with a literal duration", "a count of ticks"),
+    acceptAfter: deviating(
+        "`accept after d` with a literal duration",
+        "a whole count of ticks, waited for on a clock; two deadlines due at the same instant may fire in different steps, where KerML sends each TimeSignal when its clock's currentTime reaches its signalTime"
+    ),
     acceptAfterOther: unsupported(
         "`accept after` with a non-literal duration or without a unit",
         "Semantifyr requires a literal duration in seconds, minutes, hours or days"
