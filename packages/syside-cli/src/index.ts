@@ -56,9 +56,9 @@ program
     )
     .option(
         "-o, --output <file>",
-        "Output file path (default: input file with .oxsts extension); the name map is written beside it with the .names.json extension"
+        "Output file path (default: input file with .semantifyr extension); the name map is written beside it with the .names.json extension"
     )
-    .description("Compile SysML model to Semantifyr (OXSTS) format")
+    .description("Compile SysML model to Semantifyr format")
     .action(compileAction);
 
 program
@@ -72,9 +72,7 @@ program
         "-d, --output-directory <directory>",
         "Output directory, each output named after its input (default: next to each input)"
     )
-    .description(
-        "Compile SysML models to Semantifyr (OXSTS) format, loading the standard library once"
-    )
+    .description("Compile SysML models to Semantifyr format, loading the standard library once")
     .action(compileBatchAction);
 
 program
@@ -85,9 +83,9 @@ program
     )
     .argument("<standard library path>", `The path to the standard library root directory`)
     .argument("<report file>", "The report.json Semantifyr wrote for the verification case")
-    .argument("<name map file>", "The names.json the compile command wrote beside the OXSTS")
+    .argument("<name map file>", "The names.json the compile command wrote beside the output")
     .option("-o, --output <file>", "Output file path (default: trace.sysml beside the report)")
-    .description("Generate the SysML trace model of a Semantifyr (OXSTS) trace")
+    .description("Generate the SysML trace model of a Semantifyr trace")
     .action(traceAction);
 
 program

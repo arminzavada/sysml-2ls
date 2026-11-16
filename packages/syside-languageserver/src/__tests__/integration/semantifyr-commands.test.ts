@@ -119,7 +119,7 @@ describe("Semantifyr commands over the LSP connection", () => {
         );
     }, 120_000);
 
-    it("returns the OXSTS of the document and its name map", async () => {
+    it("returns the Semantifyr model of the document and its name map", async () => {
         const mapping = await execute<SemantifyrMapping>("syside.semantifyr.sysml.oxsts", uri);
 
         expect(mapping.diagnostics).toEqual([]);
@@ -157,7 +157,7 @@ describe("Semantifyr commands over the LSP connection", () => {
         ]);
     }, 120_000);
 
-    it("returns the errors of a broken document and no OXSTS", async () => {
+    it("returns the errors of a broken document and no Semantifyr model", async () => {
         await edit(`${text}\npart def {`);
 
         const mapping = await execute<SemantifyrMapping>("syside.semantifyr.sysml.oxsts", uri);

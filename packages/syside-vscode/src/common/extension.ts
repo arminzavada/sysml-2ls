@@ -156,7 +156,7 @@ export async function initialize(
     const clientOptions: LanguageClientOptions = {
         // Match by both language id and file extension so the server is not
         // fed unrelated files that other extensions or `files.associations`
-        // happen to label as "sysml" / "kerml" (e.g. generated `.oxsts`
+        // happen to label as "sysml" / "kerml" (e.g. generated `.semantifyr`
         // siblings of `.sysml` sources). Untitled buffers have no extension,
         // so allow them via a scheme-only selector.
         documentSelector: [

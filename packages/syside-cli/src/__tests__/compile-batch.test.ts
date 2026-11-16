@@ -66,15 +66,15 @@ describe("compile-batch", () => {
             outputDirectory: path.join(root, "batch"),
         });
         await compileAction(crossroads, stdlibPath, {
-            output: path.join(root, "single", "crossroads.oxsts"),
+            output: path.join(root, "single", "crossroads.semantifyr"),
         });
 
-        expect(await fs.readFile(path.join(root, "batch", "crossroads.oxsts"), "utf-8")).toBe(
-            await fs.readFile(path.join(root, "single", "crossroads.oxsts"), "utf-8")
+        expect(await fs.readFile(path.join(root, "batch", "crossroads.semantifyr"), "utf-8")).toBe(
+            await fs.readFile(path.join(root, "single", "crossroads.semantifyr"), "utf-8")
         );
-        expect(await fs.readFile(path.join(root, "batch", "spacecraft.oxsts"), "utf-8")).toContain(
-            "Spacecraft"
-        );
+        expect(
+            await fs.readFile(path.join(root, "batch", "spacecraft.semantifyr"), "utf-8")
+        ).toContain("Spacecraft");
     }, 600_000);
 
     it("does not resolve names from the previous directory", async () => {
@@ -95,7 +95,9 @@ describe("compile-batch", () => {
             )
         ).rejects.toThrow("exit 1");
 
-        await expect(fs.access(path.join(complete, "crossroads.oxsts"))).resolves.toBeUndefined();
-        await expect(fs.access(path.join(incomplete, "crossroads.oxsts"))).rejects.toThrow();
+        await expect(
+            fs.access(path.join(complete, "crossroads.semantifyr"))
+        ).resolves.toBeUndefined();
+        await expect(fs.access(path.join(incomplete, "crossroads.semantifyr"))).rejects.toThrow();
     }, 600_000);
 });

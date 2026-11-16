@@ -67,6 +67,7 @@ import {
     findSemantifyrVerificationCases,
     mapSemantifyrTraceToSysML,
     mapSysMLNamespaceToSemantifyr,
+    semantifyrFileUri,
     SemantifyrMapping,
     SemantifyrTraceParameters,
     SemantifyrVerificationCase,
@@ -531,7 +532,7 @@ export class SysMLExecuteCommandHandler extends AbstractExecuteCommandHandler {
             this.connection.window.showErrorMessage(messages.join("; "));
             return;
         }
-        const newuri = uri.toString().replace(".sysml", ".oxsts");
+        const newuri = semantifyrFileUri(uri.toString());
 
         await upsertTextFile(this.connection, newuri, mapping.oxsts, "Generated Semantifyr Code");
     }

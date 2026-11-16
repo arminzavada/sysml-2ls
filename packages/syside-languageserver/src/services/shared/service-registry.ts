@@ -22,7 +22,7 @@ export class SysMLServiceRegistry extends DefaultServiceRegistry {
     override getServices(uri: URI): SysMLDefaultServices {
         // Langium's default routes by languageId first; that hands us files
         // tagged as `sysml` via `files.associations` or a manual mode switch
-        // (e.g. an `.oxsts` sibling of a generated `.sysml`). Route by file
+        // (e.g. a `.semantifyr` sibling of a generated `.sysml`). Route by file
         // extension / fileName instead so we only ever serve `.sysml` /
         // `.kerml`. Buffers without an extension (untitled, pure-language)
         // fall back to languageId, then to the single-language fallback.

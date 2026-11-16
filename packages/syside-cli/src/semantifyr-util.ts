@@ -28,6 +28,7 @@ import {
     SysMLLanguageMetaData,
     KerMLLanguageMetaData,
     mapSysMLNamespaceToSemantifyr,
+    semantifyrFileExtension,
     mapSemantifyrTraceToSysML,
     semantifyrConstructTable,
     SysMLBuildOptions,
@@ -205,8 +206,11 @@ async function writeOutput(outputFile: string, content: string): Promise<void> {
     await fsp.writeFile(outputFile, content);
 }
 
-function nameMapPath(outputFile: string): string {
-    return outputFile.replace(/\.oxsts$/, "") + ".names.json";
+export function nameMapPath(outputFile: string): string {
+    return path.join(
+        path.dirname(outputFile),
+        path.basename(outputFile, path.extname(outputFile)) + ".names.json"
+    );
 }
 
 function printDiagnostics(fileName: string, diagnostics: Diagnostic[]): void {
@@ -220,10 +224,10 @@ function printDiagnostics(fileName: string, diagnostics: Diagnostic[]): void {
     }
 }
 
-function defaultOutput(fileName: string): string {
+export function defaultOutput(fileName: string): string {
     return path.join(
         path.dirname(fileName),
-        path.basename(fileName, path.extname(fileName)) + ".oxsts"
+        path.basename(fileName, path.extname(fileName)) + semantifyrFileExtension
     );
 }
 

@@ -11,6 +11,12 @@ export type { SemantifyrTraceParameters } from "./SemantifyrTraceInput";
 export { SemantifyrTraceError } from "./SemantifyrTraceInput";
 export { semantifyrConstructTable } from "./SemantifyrConstructs";
 
+export const semantifyrFileExtension = ".semantifyr";
+
+export function semantifyrFileUri(sysmlUri: string): string {
+    return sysmlUri.replace(/\.sysml$/, "") + semantifyrFileExtension;
+}
+
 export function mapSysMLNamespaceToSemantifyr(model: Namespace): SemantifyrMapping {
     return new SemantifyrModelMapper(
         model,
