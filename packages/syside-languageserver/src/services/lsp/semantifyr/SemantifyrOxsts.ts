@@ -72,7 +72,6 @@ export const libraryClasses = [
     "CompositeAction",
     "ConjugatedPort",
     "Constraint",
-    "ConstraintReferenceExpression",
     "DerivedAttribute",
     "DivisionOperatorExpression",
     "DoneState",
