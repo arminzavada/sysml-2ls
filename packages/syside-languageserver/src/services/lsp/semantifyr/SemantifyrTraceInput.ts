@@ -1,7 +1,5 @@
 import type { SemantifyrNameMap } from "./SemantifyrNameMap";
 
-const reportVersion = 2;
-
 export type SemantifyrReportValue =
     | boolean
     | number
@@ -38,7 +36,6 @@ export interface SemantifyrReportTrace {
     initial: SemantifyrReportInitialEntry;
     states: SemantifyrReportState[];
     steps: SemantifyrReportStep[];
-    missingCalls?: string | null;
 }
 
 interface SemantifyrReportResult {
@@ -46,7 +43,6 @@ interface SemantifyrReportResult {
 }
 
 export interface SemantifyrReport {
-    version: number;
     verificationCase: string;
     result: SemantifyrReportResult;
     trace?: SemantifyrReportTrace | null;
@@ -144,27 +140,22 @@ const call: Check = (value, location) => {
 const checks: Record<"report" | "nameMap", Check> = {
     report: object(
         {
-            version: index,
             verificationCase: string,
             result: object({ verdict: string }),
             trace: nullable(
-                object(
-                    {
-                        root: string,
-                        initial: object({ state: index, calls: array(call) }),
-                        states: array(object({ values: object({}) })),
-                        steps: array(
-                            object({
-                                source: index,
-                                target: index,
-                                elapsed: fraction,
-                                calls: array(call),
-                            })
-                        ),
-                        missingCalls: nullable(string),
-                    },
-                    ["missingCalls"]
-                )
+                object({
+                    root: string,
+                    initial: object({ state: index, calls: array(call) }),
+                    states: array(object({ values: object({}) })),
+                    steps: array(
+                        object({
+                            source: index,
+                            target: index,
+                            elapsed: fraction,
+                            calls: array(call),
+                        })
+                    ),
+                })
             ),
         },
         ["trace"]
@@ -211,12 +202,6 @@ export function readTraceInput(parameters: SemantifyrTraceParameters): Semantify
     checks.report(parameters.report, "report.json");
     checks.nameMap(parameters.nameMap, "names.json");
     const report = parameters.report as SemantifyrReport;
-    if (report.version !== reportVersion) {
-        throw new SemantifyrTraceError(
-            "report.json.version",
-            `version ${report.version}, where the trace is read from version ${reportVersion}`
-        );
-    }
     const verdict = verdicts[report.result.verdict];
     if (verdict === undefined) {
         throw new SemantifyrTraceError(
@@ -227,12 +212,6 @@ export function readTraceInput(parameters: SemantifyrTraceParameters): Semantify
     const trace = report.trace;
     if (!trace) {
         throw new SemantifyrTraceError("report.json.trace", "the report holds no trace");
-    }
-    if (typeof trace.missingCalls === "string") {
-        throw new SemantifyrTraceError(
-            "report.json.trace.missingCalls",
-            `the report holds no calls, which the SysML trace is built from: ${trace.missingCalls}`
-        );
     }
     checkStates(trace);
     return {

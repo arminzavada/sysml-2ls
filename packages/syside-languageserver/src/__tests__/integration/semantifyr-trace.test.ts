@@ -169,24 +169,6 @@ describe("Semantifyr trace generation", () => {
         }).toThrow(/^report\.json\.verificationCase: 'semantifyr::sysml::model::NoSuchCase' is no/);
     });
 
-    it("refuses a report of another version", () => {
-        const report = { ...structuredClone(reference.report), version: 1 };
-
-        expect(() => {
-            return generate({ report });
-        }).toThrow(/^report\.json\.version: version 1/);
-    });
-
-    it("refuses a report whose calls are missing, with their reason", () => {
-        const missing = withTrace((trace) => {
-            trace.missingCalls = "the calls were not recorded";
-        });
-
-        expect(() => {
-            return generate(missing);
-        }).toThrow(/^report\.json\.trace\.missingCalls: .*: the calls were not recorded$/);
-    });
-
     it("refuses a step that does not start where the step before it ended", () => {
         const broken = withTrace((trace) => {
             trace.steps[1].source = 0;
