@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "kind": "run",
     "verificationCase": "semantifyr::sysml::model::TrafficLightABehaviorNormalGreenUnreachableViolated",
     "portfolioId": "theta-cegar-pred-cart",
@@ -16,65 +15,65 @@
             "VariableLiveness"
         ]
     },
-    "timeout": "PT5M",
+    "timeout": "PT2M",
     "result": {
         "metadata": {
             "backendId": "theta:cegar-pred-cart",
-            "startedAt": "2026-11-15T19:09:02.297071222Z"
+            "startedAt": "2026-11-20T07:56:32.467945855Z"
         },
         "verdict": "Failed",
         "soundness": "Exact",
         "isTrusted": true,
         "metrics": {
-            "totalDuration": "PT3.827233557S",
+            "totalDuration": "PT2.797525151S",
             "backend": {
-                "preparationDuration": "PT0.700467143S",
-                "verificationDuration": "PT2.855991353S",
-                "backAnnotationDuration": "PT0.155213424S"
+                "preparationDuration": "PT0.648816339S",
+                "verificationDuration": "PT1.938976901S",
+                "backAnnotationDuration": "PT0.121152508S"
             },
             "verifier": {
-                "compilationDuration": "PT2.740566526S",
+                "compilationDuration": "PT3.143838941S",
                 "compilation": {
-                    "createDuration": "PT0.051906558S",
-                    "instantiationDuration": "PT0.048345209S",
-                    "inliningDuration": "PT2.004426184S",
-                    "flatteningDuration": "PT0.635888575S",
+                    "createDuration": "PT0.124903960S",
+                    "instantiationDuration": "PT0.082150991S",
+                    "inliningDuration": "PT2.313692671S",
+                    "flatteningDuration": "PT0.623091319S",
                     "inliningOptimization": {
-                        "duration": "PT0.184917404S",
+                        "duration": "PT0.199658837S",
                         "passes": [
                             {
                                 "name": "OperationCallInlining",
-                                "duration": "PT0.052518866S",
-                                "runs": 2196,
-                                "firings": 377
+                                "duration": "PT0.071746368S",
+                                "runs": 2195,
+                                "firings": 376
                             },
                             {
                                 "name": "ExpressionSimplificationPass",
-                                "duration": "PT0.064675897S",
+                                "duration": "PT0.048533252S",
                                 "runs": 5,
                                 "firings": 4
                             },
                             {
                                 "name": "OperationFlatteningPass",
-                                "duration": "PT0.041421437S",
+                                "duration": "PT0.039155509S",
                                 "runs": 5,
                                 "firings": 3
                             },
                             {
                                 "name": "RedundantOperationRemovalPass",
-                                "duration": "PT0.012847030S",
+                                "duration": "PT0.026394756S",
                                 "runs": 5,
                                 "firings": 1
                             },
                             {
                                 "name": "AssumeFalsePropagationPass",
-                                "duration": "PT0.012688263S",
+                                "duration": "PT0.012964698S",
                                 "runs": 5,
                                 "firings": 2
                             },
                             {
                                 "name": "PropertyExpressionNormalization",
-                                "duration": "PT0.000083492S",
+                                "duration": "PT0.000052223S",
                                 "runs": 1,
                                 "firings": 0
                             }
@@ -82,59 +81,59 @@
                         "analyses": []
                     },
                     "flatteningOptimization": {
-                        "duration": "PT0.328189074S",
+                        "duration": "PT0.357707416S",
                         "passes": [
                             {
                                 "name": "ExpressionSimplificationPass",
-                                "duration": "PT0.007971422S",
+                                "duration": "PT0.006434975S",
                                 "runs": 3,
                                 "firings": 1
                             },
                             {
                                 "name": "OperationFlatteningPass",
-                                "duration": "PT0.003614478S",
+                                "duration": "PT0.002257119S",
                                 "runs": 3,
                                 "firings": 0
                             },
                             {
                                 "name": "RedundantOperationRemovalPass",
-                                "duration": "PT0.004720780S",
+                                "duration": "PT0.001794632S",
                                 "runs": 3,
                                 "firings": 1
                             },
                             {
                                 "name": "AssumeFalsePropagationPass",
-                                "duration": "PT0.003519887S",
+                                "duration": "PT0.001729446S",
                                 "runs": 3,
                                 "firings": 0
                             },
                             {
                                 "name": "ConstantVariableSubstitutionPass",
-                                "duration": "PT0.052014280S",
+                                "duration": "PT0.050007647S",
                                 "runs": 3,
                                 "firings": 1
                             },
                             {
                                 "name": "CopyPropagationPass",
-                                "duration": "PT0.116048079S",
+                                "duration": "PT0.126092717S",
                                 "runs": 3,
                                 "firings": 1
                             },
                             {
                                 "name": "DeadStoreEliminationPass",
-                                "duration": "PT0.051863814S",
+                                "duration": "PT0.079427727S",
                                 "runs": 3,
                                 "firings": 1
                             },
                             {
                                 "name": "DeadCodeRemovalPass",
-                                "duration": "PT0.037245599S",
+                                "duration": "PT0.047444654S",
                                 "runs": 3,
                                 "firings": 0
                             },
                             {
                                 "name": "VariableLivenessPass",
-                                "duration": "PT0.050500505S",
+                                "duration": "PT0.041778706S",
                                 "runs": 3,
                                 "firings": 1
                             }
@@ -142,17 +141,17 @@
                         "analyses": [
                             {
                                 "name": "ConstantValueAnalysis",
-                                "duration": "PT0.027077646S",
+                                "duration": "PT0.024448953S",
                                 "computations": 2
                             },
                             {
                                 "name": "ReachingDefinitionsAnalysis",
-                                "duration": "PT0.160699871S",
+                                "duration": "PT0.196728865S",
                                 "computations": 3
                             },
                             {
                                 "name": "ConeOfInfluenceAnalysis",
-                                "duration": "PT0.034102730S",
+                                "duration": "PT0.043469982S",
                                 "computations": 2
                             }
                         ]
@@ -163,24 +162,23 @@
                         "expressions": 410
                     },
                     "inlinedSize": {
-                        "variables": 66,
-                        "operations": 649,
-                        "expressions": 4702
+                        "variables": 76,
+                        "operations": 731,
+                        "expressions": 5013
                     },
                     "flattenedSize": {
-                        "variables": 143,
-                        "operations": 608,
-                        "expressions": 1758
+                        "variables": 152,
+                        "operations": 690,
+                        "expressions": 1811
                     }
                 },
-                "backAnnotationDuration": "PT0.048069259S",
-                "portfolioDuration": "PT3.775764145S"
+                "backAnnotationDuration": "PT0.025989505S",
+                "portfolioDuration": "PT2.792293291S"
             }
         },
         "message": null
     },
     "trace": {
-        "root": "root",
         "transitions": [
             {
                 "transition": "semantifyr::sysml::states::State::enter",
@@ -189,9 +187,7 @@
                         "parameter": "commonState",
                         "type": {
                             "kind": "class",
-                            "name": "semantifyr::sysml::states::StateNode",
-                            "element": null,
-                            "size": null
+                            "name": "semantifyr::sysml::states::StateNode"
                         }
                     }
                 ]
@@ -211,46 +207,26 @@
                         "parameter": "commonState",
                         "type": {
                             "kind": "class",
-                            "name": "semantifyr::sysml::states::StateNode",
-                            "element": null,
-                            "size": null
+                            "name": "semantifyr::sysml::states::StateNode"
                         }
                     }
                 ]
-            },
-            {
-                "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
-                "parameters": []
             }
         ],
         "variables": [
             {
                 "variable": "root.system.controller.Behaviour.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.controller.control.incomingItem",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "class",
-                        "name": "semantifyr::sysml::items::Item",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "class",
+                    "name": "semantifyr::sysml::items::Item"
                 },
                 "slot": null
             },
@@ -258,69 +234,39 @@
                 "variable": "root.system.controller.control.consumed",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::bool",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.controller.controlA.outgoingItem",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "class",
-                        "name": "semantifyr::sysml::items::Item",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "class",
+                    "name": "semantifyr::sysml::items::Item"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.controller.controlB.outgoingItem",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "class",
-                        "name": "semantifyr::sysml::items::Item",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "class",
+                    "name": "semantifyr::sysml::items::Item"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.Behaviour.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.control.incomingItem",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "class",
-                        "name": "semantifyr::sysml::items::Item",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "class",
+                    "name": "semantifyr::sysml::items::Item"
                 },
                 "slot": null
             },
@@ -328,39 +274,23 @@
                 "variable": "root.system.trafficLightA.control.consumed",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::bool",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightB.Behaviour.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightB.control.incomingItem",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "class",
-                        "name": "semantifyr::sysml::items::Item",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "class",
+                    "name": "semantifyr::sysml::items::Item"
                 },
                 "slot": null
             },
@@ -368,184 +298,207 @@
                 "variable": "root.system.trafficLightB.control.consumed",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::bool",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.controller.Behaviour.Operating.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.Behaviour.Normal.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightA.Behaviour.Interrupted.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightB.Behaviour.Normal.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
                 "variable": "root.system.trafficLightB.Behaviour.Interrupted.activeState",
                 "type": {
-                    "kind": "array",
-                    "name": null,
-                    "element": {
-                        "kind": "feature",
-                        "name": "semantifyr::sysml::states::AbstractState::states",
-                        "element": null,
-                        "size": null
-                    },
-                    "size": 1
+                    "kind": "feature",
+                    "name": "semantifyr::sysml::states::AbstractState::states"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.controller.Behaviour.Operating.transition1.acceptAction.remainingTime",
+                "variable": "root.system.controller.Behaviour.Operating.transition1.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.controller.Behaviour.Operating.transition2.acceptAction.remainingTime",
+                "variable": "root.system.controller.Behaviour.Operating.transition2.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.controller.Behaviour.Operating.transition3.acceptAction.remainingTime",
+                "variable": "root.system.controller.Behaviour.Operating.transition3.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.controller.Behaviour.Operating.transition4.acceptAction.remainingTime",
+                "variable": "root.system.controller.Behaviour.Operating.transition4.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.controller.Behaviour.Operating.transition5.acceptAction.remainingTime",
+                "variable": "root.system.controller.Behaviour.Operating.transition5.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.controller.Behaviour.Operating.transition6.acceptAction.remainingTime",
+                "variable": "root.system.controller.Behaviour.Operating.transition6.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.remainingTime",
+                "variable": "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.remainingTime",
+                "variable": "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.remainingTime",
+                "variable": "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
                 },
                 "slot": null
             },
             {
-                "variable": "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.remainingTime",
+                "variable": "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.signalSent",
                 "type": {
                     "kind": "datatype",
-                    "name": "semantifyr::int",
-                    "element": null,
-                    "size": null
+                    "name": "semantifyr::bool"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.controller.Behaviour.Operating.transition1.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.controller.Behaviour.Operating.transition2.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.controller.Behaviour.Operating.transition3.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.controller.Behaviour.Operating.transition4.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.controller.Behaviour.Operating.transition5.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.controller.Behaviour.Operating.transition6.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
+                },
+                "slot": null
+            },
+            {
+                "variable": "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.waited",
+                "type": {
+                    "kind": "datatype",
+                    "name": "semantifyr::clock"
                 },
                 "slot": null
             }
@@ -639,46 +592,26 @@
                     "root.system.trafficLightA.Behaviour.Interrupted.activeState": null,
                     "root.system.trafficLightB.Behaviour.Normal.activeState": "root.system.trafficLightB.Behaviour.Normal.Yellow",
                     "root.system.trafficLightB.Behaviour.Interrupted.activeState": null,
-                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.remainingTime": 1,
-                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0
-                }
-            },
-            {
-                "values": {
-                    "root.system.controller.Behaviour.activeState": "root.system.controller.Behaviour.Operating",
-                    "root.system.controller.control.incomingItem": null,
-                    "root.system.controller.control.consumed": false,
-                    "root.system.controller.controlA.outgoingItem": null,
-                    "root.system.controller.controlB.outgoingItem": null,
-                    "root.system.trafficLightA.Behaviour.activeState": "root.system.trafficLightA.Behaviour.Normal",
-                    "root.system.trafficLightA.control.incomingItem": null,
-                    "root.system.trafficLightA.control.consumed": false,
-                    "root.system.trafficLightB.Behaviour.activeState": "root.system.trafficLightB.Behaviour.Normal",
-                    "root.system.trafficLightB.control.incomingItem": null,
-                    "root.system.trafficLightB.control.consumed": false,
-                    "root.system.controller.Behaviour.Operating.activeState": "root.system.controller.Behaviour.Operating.BothYellow",
-                    "root.system.trafficLightA.Behaviour.Normal.activeState": "root.system.trafficLightA.Behaviour.Normal.Yellow",
-                    "root.system.trafficLightA.Behaviour.Interrupted.activeState": null,
-                    "root.system.trafficLightB.Behaviour.Normal.activeState": "root.system.trafficLightB.Behaviour.Normal.Yellow",
-                    "root.system.trafficLightB.Behaviour.Interrupted.activeState": null,
-                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.waited": 0,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.waited": 0,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.waited": 0,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.waited": 0,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.waited": 0
                 }
             },
             {
@@ -699,46 +632,26 @@
                     "root.system.trafficLightA.Behaviour.Interrupted.activeState": null,
                     "root.system.trafficLightB.Behaviour.Normal.activeState": "root.system.trafficLightB.Behaviour.Normal.Yellow",
                     "root.system.trafficLightB.Behaviour.Interrupted.activeState": null,
-                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.remainingTime": 1,
-                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0
-                }
-            },
-            {
-                "values": {
-                    "root.system.controller.Behaviour.activeState": "root.system.controller.Behaviour.Operating",
-                    "root.system.controller.control.incomingItem": null,
-                    "root.system.controller.control.consumed": false,
-                    "root.system.controller.controlA.outgoingItem": null,
-                    "root.system.controller.controlB.outgoingItem": null,
-                    "root.system.trafficLightA.Behaviour.activeState": "root.system.trafficLightA.Behaviour.Normal",
-                    "root.system.trafficLightA.control.incomingItem": null,
-                    "root.system.trafficLightA.control.consumed": false,
-                    "root.system.trafficLightB.Behaviour.activeState": "root.system.trafficLightB.Behaviour.Normal",
-                    "root.system.trafficLightB.control.incomingItem": null,
-                    "root.system.trafficLightB.control.consumed": false,
-                    "root.system.controller.Behaviour.Operating.activeState": "root.system.controller.Behaviour.Operating.BothRed",
-                    "root.system.trafficLightA.Behaviour.Normal.activeState": "root.system.trafficLightA.Behaviour.Normal.Red",
-                    "root.system.trafficLightA.Behaviour.Interrupted.activeState": null,
-                    "root.system.trafficLightB.Behaviour.Normal.activeState": "root.system.trafficLightB.Behaviour.Normal.Red",
-                    "root.system.trafficLightB.Behaviour.Interrupted.activeState": null,
-                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.signalSent": true,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.waited": 1,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.waited": 1,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.waited": 1,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.waited": 1,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.waited": 1,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.waited": 1,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.waited": 1,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.waited": 1,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.waited": 1
                 }
             },
             {
@@ -759,16 +672,26 @@
                     "root.system.trafficLightA.Behaviour.Interrupted.activeState": null,
                     "root.system.trafficLightB.Behaviour.Normal.activeState": "root.system.trafficLightB.Behaviour.Normal.Red",
                     "root.system.trafficLightB.Behaviour.Interrupted.activeState": null,
-                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.remainingTime": 1,
-                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.signalSent": true,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.signalSent": true,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.waited": 3,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.waited": 2,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.waited": 3,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.waited": 3,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.waited": 3,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.waited": 3,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.waited": 3,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.waited": 3,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.waited": 3
                 }
             },
             {
@@ -789,16 +712,26 @@
                     "root.system.trafficLightA.Behaviour.Interrupted.activeState": null,
                     "root.system.trafficLightB.Behaviour.Normal.activeState": "root.system.trafficLightB.Behaviour.Normal.Red",
                     "root.system.trafficLightB.Behaviour.Interrupted.activeState": null,
-                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.remainingTime": 0,
-                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.remainingTime": 0,
-                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.remainingTime": 0
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.signalSent": true,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.signalSent": true,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.signalSent": false,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.signalSent": false,
+                    "root.system.controller.Behaviour.Operating.transition1.acceptAction.waited": 3,
+                    "root.system.controller.Behaviour.Operating.transition2.acceptAction.waited": 2,
+                    "root.system.controller.Behaviour.Operating.transition3.acceptAction.waited": 0,
+                    "root.system.controller.Behaviour.Operating.transition4.acceptAction.waited": 3,
+                    "root.system.controller.Behaviour.Operating.transition5.acceptAction.waited": 3,
+                    "root.system.controller.Behaviour.Operating.transition6.acceptAction.waited": 3,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition1.acceptAction.waited": 3,
+                    "root.system.trafficLightA.Behaviour.Interrupted.transition2.acceptAction.waited": 3,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition1.acceptAction.waited": 3,
+                    "root.system.trafficLightB.Behaviour.Interrupted.transition2.acceptAction.waited": 3
                 }
             }
         ],
@@ -806,20 +739,7 @@
             {
                 "source": 0,
                 "target": 1,
-                "elapsed": 0,
-                "calls": [
-                    {
-                        "self": "root",
-                        "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
-                        "arguments": {},
-                        "calls": []
-                    }
-                ]
-            },
-            {
-                "source": 1,
-                "target": 2,
-                "elapsed": 0,
+                "elapsed": 1,
                 "calls": [
                     {
                         "self": "root.system.controller.Behaviour.Operating.transition1",
@@ -855,20 +775,43 @@
                                 "calls": []
                             }
                         ]
-                    },
-                    {
-                        "self": "root",
-                        "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
-                        "arguments": {},
-                        "calls": []
                     }
                 ]
             },
             {
-                "source": 2,
-                "target": 3,
-                "elapsed": 0,
+                "source": 1,
+                "target": 2,
+                "elapsed": 2,
                 "calls": [
+                    {
+                        "self": "root.system.controller.Behaviour.Operating.transition2",
+                        "transition": "semantifyr::sysml::states::Transition::fire",
+                        "arguments": {},
+                        "calls": [
+                            {
+                                "self": "root.system.controller.Behaviour.Operating.BothRed",
+                                "transition": "semantifyr::sysml::states::State::exit",
+                                "arguments": {
+                                    "commonState": "root.system.controller.Behaviour.Operating"
+                                },
+                                "calls": []
+                            },
+                            {
+                                "self": "root.system.controller.Behaviour.Operating.transition2.action.send1",
+                                "transition": "semantifyr::sysml::actions::SendItemAction::send",
+                                "arguments": {},
+                                "calls": []
+                            },
+                            {
+                                "self": "root.system.controller.Behaviour.Operating.TrafficOnA",
+                                "transition": "semantifyr::sysml::states::State::enter",
+                                "arguments": {
+                                    "commonState": "root.system.controller.Behaviour.Operating"
+                                },
+                                "calls": []
+                            }
+                        ]
+                    },
                     {
                         "self": "root.system.trafficLightA.Behaviour.Normal.transition1",
                         "transition": "semantifyr::sysml::states::Transition::fire",
@@ -928,60 +871,12 @@
                                 ]
                             }
                         ]
-                    },
-                    {
-                        "self": "root",
-                        "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
-                        "arguments": {},
-                        "calls": []
                     }
                 ]
             },
             {
-                "source": 3,
-                "target": 4,
-                "elapsed": 0,
-                "calls": [
-                    {
-                        "self": "root.system.controller.Behaviour.Operating.transition2",
-                        "transition": "semantifyr::sysml::states::Transition::fire",
-                        "arguments": {},
-                        "calls": [
-                            {
-                                "self": "root.system.controller.Behaviour.Operating.BothRed",
-                                "transition": "semantifyr::sysml::states::State::exit",
-                                "arguments": {
-                                    "commonState": "root.system.controller.Behaviour.Operating"
-                                },
-                                "calls": []
-                            },
-                            {
-                                "self": "root.system.controller.Behaviour.Operating.transition2.action.send1",
-                                "transition": "semantifyr::sysml::actions::SendItemAction::send",
-                                "arguments": {},
-                                "calls": []
-                            },
-                            {
-                                "self": "root.system.controller.Behaviour.Operating.TrafficOnA",
-                                "transition": "semantifyr::sysml::states::State::enter",
-                                "arguments": {
-                                    "commonState": "root.system.controller.Behaviour.Operating"
-                                },
-                                "calls": []
-                            }
-                        ]
-                    },
-                    {
-                        "self": "root",
-                        "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
-                        "arguments": {},
-                        "calls": []
-                    }
-                ]
-            },
-            {
-                "source": 4,
-                "target": 5,
+                "source": 2,
+                "target": 3,
                 "elapsed": 0,
                 "calls": [
                     {
@@ -1013,16 +908,9 @@
                                 ]
                             }
                         ]
-                    },
-                    {
-                        "self": "root",
-                        "transition": "semantifyr::sysml::verification::VerificationCaseDefinition::passTime",
-                        "arguments": {},
-                        "calls": []
                     }
                 ]
             }
-        ],
-        "missingCalls": null
+        ]
     }
 }

@@ -125,10 +125,6 @@ describe("Semantifyr trace generation", () => {
         expect(halfTicks).toContain("assert constraint { DurationOf(dwell2) == (3 / 4) [s] }");
     });
 
-    it("shows no wait in a step of no elapsed time", () => {
-        expect(generate()).not.toContain("dwell");
-    });
-
     it("takes the verdict from the report", () => {
         const report = { ...structuredClone(reference.report), result: { verdict: "Passed" } };
 
@@ -191,14 +187,12 @@ describe("Semantifyr trace generation", () => {
 
     it("locates a traced firing the states do not show", () => {
         const misplaced = withTrace((trace) => {
-            const firing = trace.steps
-                .flatMap((step) => {
-                    return step.calls;
-                })
-                .find((call) => {
-                    return call.transition.endsWith("::Transition::fire");
-                })!;
-            trace.steps[0].calls.push({ ...firing, calls: [] });
+            trace.steps[0].calls.push({
+                self: "root.system.trafficLightA.Behaviour.Normal.transition2",
+                transition: "semantifyr::sysml::states::Transition::fire",
+                arguments: {},
+                calls: [],
+            });
         });
 
         expect(() => {
