@@ -32,7 +32,6 @@ interface SemantifyrReportStep {
 }
 
 export interface SemantifyrReportTrace {
-    root: string;
     initial: SemantifyrReportInitialEntry;
     states: SemantifyrReportState[];
     steps: SemantifyrReportStep[];
@@ -144,7 +143,6 @@ const checks: Record<"report" | "nameMap", Check> = {
             result: object({ verdict: string }),
             trace: nullable(
                 object({
-                    root: string,
                     initial: object({ state: index, calls: array(call) }),
                     states: array(object({ values: object({}) })),
                     steps: array(

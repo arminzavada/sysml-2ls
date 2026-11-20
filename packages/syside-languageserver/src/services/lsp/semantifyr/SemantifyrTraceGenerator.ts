@@ -26,6 +26,8 @@ import {
     type SemantifyrTraceInput,
 } from "./SemantifyrTraceInput";
 
+const root = "root";
+
 const sites = {
     fire: "semantifyr::sysml::states::Transition::fire",
     enter: [
@@ -190,7 +192,6 @@ export class SemantifyrTraceGenerator {
     private readonly verificationCase: Element;
     private readonly caseClass: string;
     private readonly subject: PartInstance;
-    private readonly root: string;
     private readonly stepCount: number;
     private readonly stateValues: Map<string, SemantifyrReportValue>[];
     private readonly calls: Located[][];
@@ -235,9 +236,8 @@ export class SemantifyrTraceGenerator {
             );
         }
         const trace = input.trace;
-        this.root = trace.root;
         this.subject = this.buildPart(
-            `${this.root}.${subjectEntry.oxsts.slice(this.caseClass.length + 1)}`,
+            `${root}.${subjectEntry.oxsts.slice(this.caseClass.length + 1)}`,
             subjectEntry
         );
         this.stepCount = trace.steps.length;
@@ -353,12 +353,12 @@ export class SemantifyrTraceGenerator {
         location: string
     ): { element: Element; prefixes: string[] } {
         const [head, ...segments] = path.split(".");
-        if (head !== this.root) {
-            throw new SemantifyrTraceError(location, `'${path}' does not start at '${this.root}'`);
+        if (head !== root) {
+            throw new SemantifyrTraceError(location, `'${path}' does not start at '${root}'`);
         }
         let scopes = [this.caseClass];
         let element: Element = this.verificationCase;
-        const prefixes = [this.root];
+        const prefixes = [root];
         for (const segment of segments) {
             const entry = scopes
                 .map((scope) => {
