@@ -222,8 +222,8 @@ export const SemantifyrConstructs = {
         "Semantifyr requires a composite state to have an initial transition"
     ),
     initialTransition: conformant(
-        "`entry; then X;`, `entry; if c then X; if d then Y;`, `entry action a { ... } then X;` and `transition first start then X;`",
-        "every transition between the entry action and the next state usage, the entry action kept"
+        "`entry; then X;`, `entry; if c then X; if d then Y;`, `entry action a { ... } then X;`, `transition first a then X;` and `transition first start then X;`",
+        "every transition between the entry action and the next state usage, and every transition whose `first` names the entry action of its state, the entry action kept"
     ),
     initialTrigger: unsupported(
         "Trigger on an initial transition",

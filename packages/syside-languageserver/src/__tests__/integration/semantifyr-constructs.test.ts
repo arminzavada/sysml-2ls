@@ -94,6 +94,11 @@ const errorCases: ErrorCase[] = [
         located: "false",
     },
     {
+        error: "initialGuardClosed",
+        model: `${header}\npart def Machine { exhibit state Behaviour { entry action init; transition first init if false then Idle; state Idle; } }`,
+        located: "false",
+    },
+    {
         error: "transitionWithoutSource",
         model: waiting("accept Signal via input then Busy;"),
         located: "accept Signal via input then Busy;",
@@ -419,6 +424,16 @@ const cases: ConstructCase[] = [
         construct: "initialTrigger",
         model: `${header}\npart def Machine { port input : Feed; exhibit state Behaviour { entry; then Idle; accept Signal via input then Idle; state Idle; } }`,
         located: "accept Signal via input",
+    },
+    {
+        construct: "initialTrigger",
+        model: `${header}\npart def Machine { port input : Feed; exhibit state Behaviour { entry action init; transition first init accept Signal via input then Idle; state Idle; } }`,
+        located: "accept Signal via input",
+    },
+    {
+        construct: "transitionTarget",
+        model: machine("", "state Busy { entry action setup; } transition first setup then Idle;"),
+        located: "setup",
     },
     {
         construct: "entryAction",
@@ -905,6 +920,26 @@ describe("the SysML constructs of the translation", () => {
             "initial1: start -> Off",
             "initial2: start -> On",
             "transition1: Off -> On",
+        ]);
+    });
+
+    it("takes a transition whose `first` names its owner's entry action as initial, as the shorthand", async () => {
+        const named = `${header}\npart def Machine { attribute isInitOff : Boolean := true; exhibit state Behaviour { entry action init; transition first init if isInitOff then Off; transition first init if not isInitOff then On; state Off; state On; } }`;
+        const shorthand = `${header}\npart def Machine { attribute isInitOff : Boolean := true; exhibit state Behaviour { entry action init; if isInitOff then Off; if not isInitOff then On; state Off; state On; } }`;
+
+        expect(await transitions(named)).toEqual([
+            "initial1: start -> Off",
+            "initial2: start -> On",
+        ]);
+        expect((await translate(named)).oxsts).toEqual((await translate(shorthand)).oxsts);
+    });
+
+    it("skips a member other than a transition between the state usage and a transition without `first`", async () => {
+        const model = machine("", "state Busy; exit action e; then Idle;");
+
+        expect(await transitions(model)).toEqual([
+            "initial1: start -> Idle",
+            "transition1: Busy -> Idle",
         ]);
     });
 });

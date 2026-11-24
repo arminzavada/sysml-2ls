@@ -1026,14 +1026,10 @@ export class SemantifyrModelMapper {
                     this.report(member, "transitionInParallel");
                     continue;
                 }
+                const source = transitionSource(member);
                 const isInitial =
-                    member.source === undefined
-                        ? isEntryAction(transitionSource(member))
-                        : isLibraryFeature(
-                              referenced(member.source.targetRef),
-                              "start",
-                              this.model
-                          );
+                    isLibraryFeature(source, "start", this.model) ||
+                    (isEntryAction(source) && source?.$container?.$container === state);
                 if (isInitial) {
                     initialTransitions.add(member);
                 }
