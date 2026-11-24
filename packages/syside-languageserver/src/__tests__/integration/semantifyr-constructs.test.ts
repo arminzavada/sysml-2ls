@@ -89,6 +89,16 @@ const errorCases: ErrorCase[] = [
         located: "false",
     },
     {
+        error: "initialGuardClosed",
+        model: `${header}\npart def Machine { exhibit state Behaviour { entry; then Idle; if false then Idle; state Idle; } }`,
+        located: "false",
+    },
+    {
+        error: "transitionWithoutSource",
+        model: waiting("accept Signal via input then Busy;"),
+        located: "accept Signal via input then Busy;",
+    },
+    {
         error: "successionCycle",
         model: machine(
             "",
@@ -406,6 +416,11 @@ const cases: ConstructCase[] = [
         located: "accept Signal via input",
     },
     {
+        construct: "initialTrigger",
+        model: `${header}\npart def Machine { port input : Feed; exhibit state Behaviour { entry; then Idle; accept Signal via input then Idle; state Idle; } }`,
+        located: "accept Signal via input",
+    },
+    {
         construct: "entryAction",
         model: machine("", "state Busy { entry assign count := 1; }"),
         emits: "redefine contains entryAction: AssignmentAction",
@@ -715,28 +730,28 @@ const cases: ConstructCase[] = [
     },
     {
         construct: "targetTransition",
-        model: waiting("accept Signal via input then Busy;"),
-        emits: "redefine refers from: StateNode = Waiting",
+        model: machine("", "state Busy; accept Signal via input then Idle;"),
+        emits: "redefine refers from: StateNode = Busy",
     },
     {
         construct: "targetTransition",
-        model: waiting("if count > 0 then Busy;"),
-        emits: "redefine refers to: StateNode = Busy",
+        model: machine("", "state Busy; if count > 0 then Idle;"),
+        emits: "redefine refers to: StateNode = Idle",
     },
     {
         construct: "targetTransitionEffect",
-        model: waiting("do action { assign count := 1; } then Busy;"),
+        model: machine("", "state Busy; do action { assign count := 1; } then Idle;"),
         located: "do action { assign count := 1; }",
     },
     {
         construct: "targetTransition",
-        model: waiting("accept after 2 [s] then Busy;"),
+        model: machine("", "state Busy; accept after 2 [s] then Idle;"),
         emits: "redefine contains acceptAction: AcceptTimeoutAction",
     },
     {
         construct: "transitionTarget",
-        model: machine("", "state Busy; accept Signal via input then Busy;"),
-        located: "accept Signal via input then Busy;",
+        model: machine("", "action work; transition first work then Idle;"),
+        located: "work",
     },
     {
         construct: "actionOther",
@@ -844,5 +859,52 @@ describe("the SysML constructs of the translation", () => {
             text: located,
         });
         expect(oxsts).toBeUndefined();
+    });
+
+    // each transition of the OXSTS as `name: from -> to`
+    const transitions = async (model: string): Promise<string[]> => {
+        const { oxsts, diagnostics } = await translate(model);
+        expect(diagnostics).toEqual([]);
+        const lines = (oxsts ?? "").split("\n").map((line) => {
+            return line.trim();
+        });
+        return lines.flatMap((line, index) => {
+            const name = /^contains (\w+): Transition subsets transitions/.exec(line)?.[1];
+            if (name === undefined) {
+                return [];
+            }
+            const end = (kind: string): string | undefined => {
+                return lines
+                    .slice(index + 1)
+                    .find((member) => {
+                        return member.startsWith(`redefine refers ${kind}: StateNode = `);
+                    })
+                    ?.split(" = ")[1];
+            };
+            return [`${name}: ${end("from")} -> ${end("to")}`];
+        });
+    };
+
+    it("takes a transition without `first` from the closest previous state usage, a transition in between not counting", async () => {
+        const model = machine(
+            "",
+            "state Busy; transition first Idle then Busy; accept Signal via input then Idle;"
+        );
+
+        expect(await transitions(model)).toEqual([
+            "initial1: start -> Idle",
+            "transition1: Idle -> Busy",
+            "transition2: Busy -> Idle",
+        ]);
+    });
+
+    it("takes every transition between the entry action and the next state usage as initial", async () => {
+        const model = `${header}\npart def Machine { attribute isInitOff : Boolean := true; exhibit state Behaviour { entry; if isInitOff then Off; if not isInitOff then On; state Off; if isInitOff then On; state On; } }`;
+
+        expect(await transitions(model)).toEqual([
+            "initial1: start -> Off",
+            "initial2: start -> On",
+            "transition1: Off -> On",
+        ]);
     });
 });

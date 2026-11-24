@@ -91,8 +91,10 @@ import {
 } from "./SemantifyrConstructs";
 import {
     elementPath,
+    isEntryAction,
     isLibraryFeature,
     ownedElements,
+    transitionSource,
     transitionTarget,
 } from "./SemantifyrElementPath";
 import {
@@ -980,11 +982,7 @@ export class SemantifyrModelMapper {
         const transitions: TransitionUsage[] = [];
         const initialTransitions = new Set<TransitionUsage>();
         const skipped = new Set<Element>();
-        // the transition right after the entry action, `entry; then X;` or `entry action a { ... } then X;`, is the initial one
-        let followsEntry = false;
         for (const membership of state.children) {
-            const afterEntry = followsEntry;
-            followsEntry = false;
             if (isImport(membership)) {
                 continue;
             }
@@ -1010,9 +1008,6 @@ export class SemantifyrModelMapper {
                     continue;
                 }
                 const action = member as ActionUsage;
-                if (membership.kind === "entry") {
-                    followsEntry = true;
-                }
                 this.guard(membership, () => {
                     this.mapAction(
                         context,
@@ -1033,7 +1028,7 @@ export class SemantifyrModelMapper {
                 }
                 const isInitial =
                     member.source === undefined
-                        ? afterEntry
+                        ? isEntryAction(transitionSource(member))
                         : isLibraryFeature(
                               referenced(member.source.targetRef),
                               "start",
@@ -1118,19 +1113,9 @@ export class SemantifyrModelMapper {
         machine: Element,
         isInitial: boolean
     ): void {
-        // a transition without `first` in a state's body leaves its owning state (SysML 7.18.3)
-        const isTargetTransition = transition.source === undefined && !isInitial;
-        const sourceElement = transition.source
-            ? referenced(transition.source.targetRef)
-            : isTargetTransition
-              ? owner
-              : undefined;
-        if (isTargetTransition && !this.isStateOf(owner, machine)) {
-            this.refuse(
-                transition,
-                "transitionTarget",
-                "Semantifyr requires a transition without 'first' to be declared in a state below the exhibited state, which it leaves"
-            );
+        const sourceElement = isInitial ? undefined : transitionSource(transition);
+        if (!isInitial && transition.source === undefined && sourceElement === undefined) {
+            this.refuse(transition, "transitionWithoutSource");
         }
         if (!isInitial && !this.isStateOf(sourceElement, machine)) {
             this.refuse(transition.source ?? transition, "transitionTarget");

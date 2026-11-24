@@ -13,7 +13,10 @@ import type {
     SemantifyrReport,
     SemantifyrReportTrace,
 } from "../../services/lsp/semantifyr/SemantifyrTraceInput.js";
-import type { SemantifyrNameMap } from "../../services/lsp/semantifyr/SemantifyrNameMap.js";
+import {
+    hashModelText,
+    type SemantifyrNameMap,
+} from "../../services/lsp/semantifyr/SemantifyrNameMap.js";
 import type { Namespace } from "#generated/ast.js";
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
@@ -123,6 +126,29 @@ describe("Semantifyr trace generation", () => {
         expect(trace).not.toContain("dwell3");
         expect(halfTicks).toContain("assert constraint { DurationOf(dwell1) == 1 [s] }");
         expect(halfTicks).toContain("assert constraint { DurationOf(dwell2) == (3 / 4) [s] }");
+    });
+
+    it("takes the source of a transition without `first` from the closest previous state usage", async () => {
+        const written = "transition first Yellow accept Toggle via control then Red;";
+        const text = (
+            await fs.readFile(path.join(modelsRoot, "crossroads.sysml"), "utf-8")
+        ).replace(written, "accept Toggle via control then Red;");
+        const uri = URI.file(path.join(modelsRoot, "etc", "shorthand.sysml"));
+        const document = shared.workspace.LangiumDocumentFactory.fromString(text, uri);
+        shared.workspace.LangiumDocuments.addDocument(document);
+        await shared.workspace.DocumentBuilder.build([document], <SysMLBuildOptions>{
+            validation: false,
+            standalone: false,
+        });
+        const trace = mapSemantifyrTraceToSysML(document.parseResult.value as Namespace, {
+            report: structuredClone(reference.report),
+            nameMap: { ...reference.nameMap, modelHash: hashModelText(text) },
+        });
+        shared.workspace.LangiumDocuments.deleteDocument(uri);
+        shared.workspace.IndexManager.remove(uri);
+
+        expect(text).not.toContain(written);
+        expect(trace).toEqual(generate());
     });
 
     it("takes the verdict from the report", () => {

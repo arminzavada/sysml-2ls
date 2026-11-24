@@ -3,9 +3,12 @@ import {
     isElement,
     isReferenceSubsetting,
     isRelationship,
+    isStateSubactionMembership,
+    isStateUsage,
     type Element,
     type ElementReference,
     type Feature,
+    type Membership,
     type Namespace,
     type TransitionUsage,
 } from "#generated/ast";
@@ -74,6 +77,30 @@ export function transitionTarget(transition: TransitionUsage): Element | undefin
         return referenced(subsetting.targetChain.typeRelationships.at(-1)?.targetRef);
     }
     return subsetting ? referenced(subsetting.targetRef) : undefined;
+}
+
+// without `first`, the closest lexically previous state usage or entry action of the owner (SysML 7.18.3)
+export function transitionSource(transition: TransitionUsage): Element | undefined {
+    if (transition.source) {
+        return referenced(transition.source.targetRef);
+    }
+    const members = (transition.$container?.$container as Namespace | undefined)?.children ?? [];
+    const previous = members.slice(0, members.indexOf(transition.$container as Membership));
+    for (const membership of previous.reverse()) {
+        if (isStateSubactionMembership(membership) && membership.kind === "entry") {
+            return membership.target as Element;
+        }
+        const member = (membership as Membership).target;
+        if (isStateUsage(member)) {
+            return member;
+        }
+    }
+    return undefined;
+}
+
+export function isEntryAction(element: Element | undefined): boolean {
+    const membership = element?.$container;
+    return isStateSubactionMembership(membership) && membership.kind === "entry";
 }
 
 // `start` and `done` of the standard library, which every state inherits
